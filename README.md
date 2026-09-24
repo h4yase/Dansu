@@ -37,4 +37,4 @@ https://github.com/user-attachments/assets/cf0018e2-d398-4343-98b9-a3cf06028f71
 ## Dependency
 - https://github.com/h4yase/Godot-DansuORM
 - https://github.com/h4yase/Godot-TimeStampInput
-- https://godotsteam.com/
+- https://codeberg.org/godotsteam/godotsteam
