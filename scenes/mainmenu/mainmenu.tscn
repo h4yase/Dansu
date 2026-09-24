@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://by3ih1cu6lh5s" path="res://scenes/mainmenu/visualizer.gd" id="7_wnqqh"]
 [ext_resource type="Script" uid="uid://djhm3b0hsswb5" path="res://scenes/mainmenu/menu_audio.gd" id="9_x46xa"]
 [ext_resource type="Script" uid="uid://b0f8fo72g82lr" path="res://scenes/mainmenu/pivot.gd" id="10_6yf2l"]
-[ext_resource type="Texture2D" uid="uid://dxnbtm30d45y8" path="res://mockup/original.png" id="10_apyk3"]
+[ext_resource type="Texture2D" uid="uid://dxnbtm30d45y8" path="res://mockup/big.png" id="10_apyk3"]
 [ext_resource type="Shader" uid="uid://qbfnricvyktb" path="res://resources/shaders/wave.gdshader" id="10_jyltf"]
 [ext_resource type="Script" uid="uid://dvjmrd7igbpip" path="res://scenes/mainmenu/difficulty_select.gd" id="11_1w8yq"]
 [ext_resource type="Script" uid="uid://n4yyyajfnst0" path="res://scenes/mainmenu/chart_info.gd" id="11_ll1i1"]
