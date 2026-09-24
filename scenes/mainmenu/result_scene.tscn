@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c38kmmrek716x"]
 
-[ext_resource type="Script" uid="uid://cndji7g2243bh" path="res://result/result_scene.gd" id="1_ofb62"]
+[ext_resource type="Script" uid="uid://cndji7g2243bh" path="res://gameplay/result_scene.gd" id="1_ofb62"]
 [ext_resource type="Shader" uid="uid://cflu32au5woaj" path="res://resources/shaders/bg.gdshader" id="2_b83s4"]
 [ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="3_dpngd"]
 [ext_resource type="PackedScene" uid="uid://c51ndn5ftq4wo" path="res://scenes/mainmenu/menubutton.tscn" id="4_0nb76"]

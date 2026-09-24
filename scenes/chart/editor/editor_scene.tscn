@@ -13,11 +13,11 @@
 [ext_resource type="Texture2D" uid="uid://cw8cihgunxcv6" path="res://icon.svg" id="7_0st15"]
 [ext_resource type="Script" uid="uid://cc1p2wgobvjop" path="res://chart/editor/editor_inspector_controller.gd" id="7_c2fm2"]
 [ext_resource type="Script" uid="uid://div8cel1k4aam" path="res://chart/editor/editor_edit_controller.gd" id="9_mjlwm"]
-[ext_resource type="PackedScene" uid="uid://cwras8rjfuils" path="res://scenes/editor/shared/unsaved_changes_dialog.tscn" id="10_unsaved"]
+[ext_resource type="PackedScene" uid="uid://cwras8rjfuils" path="res://scenes/common/unsaved_changes_dialog.tscn" id="10_unsaved"]
 [ext_resource type="Script" uid="uid://s7411x2x10wk" path="res://chart/editor/editor_rail_timeline.gd" id="11_rail_timeline"]
-[ext_resource type="Script" path="res://chart/editor/game_preview.gd" id="12_game_preview"]
-[ext_resource type="Script" path="res://chart/editor/overlay_frame_view.gd" id="13_frame_view"]
-[ext_resource type="PackedScene" path="res://scenes/gameplay/gameplay.tscn" id="14_gameplay_preview"]
+[ext_resource type="Script" uid="uid://cm18ld8rfd7b3" path="res://chart/editor/game_preview.gd" id="12_game_preview"]
+[ext_resource type="Script" uid="uid://bgdadwghe6gtx" path="res://chart/editor/overlay_frame_view.gd" id="13_frame_view"]
+[ext_resource type="PackedScene" uid="uid://d0gsgs0n6371q" path="res://scenes/gameplay/gameplay.tscn" id="14_gameplay_preview"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_game_preview"]
 resource_local_to_scene = true

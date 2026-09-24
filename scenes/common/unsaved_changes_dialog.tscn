@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cwras8rjfuils"]
 
-[ext_resource type="Script" uid="uid://cl6fjxlornego" path="res://editor/shared/unsaved_changes_dialog.gd" id="1_dialog"]
+[ext_resource type="Script" uid="uid://cl6fjxlornego" path="res://scenes/common/unsaved_changes_dialog.gd" id="1_dialog"]
 [ext_resource type="Theme" uid="uid://d3ctsqw4vkokp" path="res://resources/themes/editor_mainmenu_theme.tres" id="2_theme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jckv"]

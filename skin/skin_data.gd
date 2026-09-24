@@ -30,7 +30,7 @@ func get_folder_path() -> String:
 		return resource_directory
 	match type:
 		TYPE.BUILT_IN:
-			return "res://resources/skins/".path_join(folder_name)
+			return "res://contents/skin".path_join(folder_name)
 		TYPE.IN_CHART:
 			if CM.selected_chart == null:
 				return ""
@@ -126,7 +126,7 @@ func load_texture(file_name: String) -> Texture2D:
 			if image.load(texture_path) == OK:
 				_texture = ImageTexture.create_from_image(image)
 			else:
-				_texture = load("res://resources/skins/big/sprites/idle.png")
+				_texture = load("res://contents/skins/danshe/sprites/idle.png")
 		if _texture != null:
 			break
 

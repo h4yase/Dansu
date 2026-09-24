@@ -1,7 +1,6 @@
 # Godot editor-generated cache
 .godot/
 contents/*
-!contents/chartsets.json
 # Generated export/build directories
 /android/
 /plugins/

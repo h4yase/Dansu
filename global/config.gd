@@ -12,7 +12,7 @@ const SECTION_ETC := "ETC"
 
 ## CONST
 const FILE_EXTENSION = ".dansu"
-const DEFAULT_SKIN_PATH = "res://resources/skins/danshe/skin.json"
+const DEFAULT_SKIN_PATH = "res://contents/skins/danshe/skin.json"
 const SERVER_URL = ServerURLs.BASE_URL
 const MIN_MAX_FPS := 30
 const MAX_FINITE_FPS := 1000

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ciy8qmxxf5it3"]
 
 [ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="1_ala5t"]
-[ext_resource type="Texture2D" uid="uid://bmbyphvjkh055" path="res://resources/skins/original/sprites/dance1.png" id="1_np8ps"]
+[ext_resource type="Texture2D" uid="uid://bmbyphvjkh055" path="res://contents/skins/original/sprites/dance1.png" id="1_np8ps"]
 
 [node name="Dialogue" type="Panel" unique_id=1370387063]
 anchors_preset = 1

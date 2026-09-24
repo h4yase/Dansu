@@ -1,7 +1,7 @@
 extends RefCounted
 class_name FileSystem
 
-const res_skin_path: String = "res://resources/skins/"
+const res_skin_path: String = "res://contents/skins/"
 const res_hitsounds_path: String = "res://resources/audio/hitsounds/"
 const official_chart_path: String = "res://contents/chartsets"
 const packaged_chartsets_manifest_path := "res://contents/chartsets.json"

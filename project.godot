@@ -50,11 +50,16 @@ mouse_cursor/custom_image_hotspot=Vector2(12, 12)
 [file_customization]
 
 folder_colors={
+"res://addons/": "gray",
 "res://chart/": "yellow",
-"res://editor/": "yellow",
+"res://contents/": "purple",
+"res://gameplay/": "yellow",
+"res://global/": "yellow",
+"res://mockup/": "purple",
+"res://network/": "blue",
 "res://resources/": "purple",
 "res://scenes/": "green",
-"res://skin/": "yellow"
+"res://skin/": "purple"
 }
 
 [input]

@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://txbv3tuwtel0" path="res://scenes/skin/editor/sprite_image.tscn" id="4_6eirq"]
 [ext_resource type="Shader" uid="uid://cflu32au5woaj" path="res://resources/shaders/bg.gdshader" id="6_bg"]
 [ext_resource type="Shader" uid="uid://cnchsob31pe3k" path="res://resources/shaders/liquid.gdshader" id="7_liquid"]
-[ext_resource type="PackedScene" uid="uid://cwras8rjfuils" path="res://scenes/editor/shared/unsaved_changes_dialog.tscn" id="8_unsaved"]
+[ext_resource type="PackedScene" uid="uid://cwras8rjfuils" path="res://scenes/common/unsaved_changes_dialog.tscn" id="8_unsaved"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
 shader = ExtResource("6_bg")
