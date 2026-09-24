@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://deqdwxgcegkci"]
+
+[ext_resource type="Script" uid="uid://yt15g07posb4" path="res://gameplay/note_game.gd" id="1_yi1o8"]
+[ext_resource type="Texture2D" uid="uid://0tsl2wcyjngr" path="res://resources/textures/gameplay/hit_note.png" id="2_6hwfw"]
+[ext_resource type="PackedScene" uid="uid://24osfal67ed8" path="res://scenes/gameplay/note_particle.tscn" id="3_break"]
+[ext_resource type="Script" uid="uid://5607wkdcl8ir" path="res://gameplay/long_note_visual.gd" id="4_long_note"]
+[ext_resource type="Texture2D" uid="uid://dvnjnnyr3ulxr" path="res://resources/textures/white-circle.svg" id="5_circle"]
+
+[node name="Note" type="Node3D" unique_id=495088426 node_paths=PackedStringArray("note_sprite", "note_shadow", "long_note_visual")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+script = ExtResource("1_yi1o8")
+note_sprite = NodePath("Sprite")
+note_shadow = NodePath("SpriteShadow")
+break_effect_scene = ExtResource("3_break")
+long_note_visual = NodePath("LongNoteVisual")
+
+[node name="Sprite" type="Sprite3D" parent="." unique_id=645126525]
+transform = Transform3D(1, 0, 0, 0, 1.25, 0, 0, 0, 1, 0, 0, 0)
+layers = 4
+pixel_size = 0.003
+double_sided = false
+texture = ExtResource("2_6hwfw")
+
+[node name="SpriteShadow" type="Sprite3D" parent="." unique_id=845779430]
+transform = Transform3D(-1, -8.742277e-08, 0, 8.742278e-08, -0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
+layers = 4
+modulate = Color(0.37036446, 0.3703645, 0.37036446, 0.9411765)
+pixel_size = 0.003
+double_sided = false
+texture = ExtResource("2_6hwfw")
+
+[node name="LongNoteVisual" type="Node3D" parent="." unique_id=1191920442 node_paths=PackedStringArray("body", "tail_cap")]
+script = ExtResource("4_long_note")
+body = NodePath("Body")
+tail_cap = NodePath("TailCap")
+
+[node name="Body" type="MeshInstance3D" parent="LongNoteVisual" unique_id=935700326]
+layers = 4
+cast_shadow = 0
+
+[node name="TailCap" type="Sprite3D" parent="LongNoteVisual" unique_id=1071042446]
+layers = 4
+axis = 1
+no_depth_test = true
+render_priority = 1
+texture = ExtResource("5_circle")

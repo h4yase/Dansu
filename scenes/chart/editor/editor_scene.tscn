@@ -1,0 +1,990 @@
+[gd_scene format=3 uid="uid://c1v7j8hnhy2gv"]
+
+[ext_resource type="Script" uid="uid://c41cwux0rhct3" path="res://chart/editor/property.gd" id="1_ryhys"]
+[ext_resource type="Script" uid="uid://orocu1cstoen" path="res://chart/editor/chart_editor.gd" id="1_tudub"]
+[ext_resource type="Script" uid="uid://cfpsx7jd38jr4" path="res://chart/editor/sfx_panel.gd" id="1_yxg55"]
+[ext_resource type="Script" uid="uid://tbp77g1a1cni" path="res://chart/editor/editor_bpm_lines.gd" id="2_9wr6r"]
+[ext_resource type="Shader" uid="uid://cflu32au5woaj" path="res://resources/shaders/bg.gdshader" id="2_37swi"]
+[ext_resource type="Theme" uid="uid://d3ctsqw4vkokp" path="res://resources/themes/editor_mainmenu_theme.tres" id="2_theme"]
+[ext_resource type="PackedScene" uid="uid://bu0j8qugn442u" path="res://scenes/chart/editor/ui/inspector/point.tscn" id="3_1ne32"]
+[ext_resource type="PackedScene" uid="uid://bg8obfjf1d3ei" path="res://scenes/chart/editor/ui/inspector/timing.tscn" id="4_8or05"]
+[ext_resource type="PackedScene" uid="uid://btmqivw5ns62f" path="res://scenes/chart/editor/hit_sound.tscn" id="5_7qxkj"]
+[ext_resource type="Script" uid="uid://b8yql4aso0jt0" path="res://chart/editor/editor_view_controller.gd" id="6_8vclr"]
+[ext_resource type="Texture2D" uid="uid://cw8cihgunxcv6" path="res://icon.svg" id="7_0st15"]
+[ext_resource type="Script" uid="uid://cc1p2wgobvjop" path="res://chart/editor/editor_inspector_controller.gd" id="7_c2fm2"]
+[ext_resource type="Script" uid="uid://div8cel1k4aam" path="res://chart/editor/editor_edit_controller.gd" id="9_mjlwm"]
+[ext_resource type="PackedScene" uid="uid://cwras8rjfuils" path="res://scenes/editor/shared/unsaved_changes_dialog.tscn" id="10_unsaved"]
+[ext_resource type="Script" uid="uid://s7411x2x10wk" path="res://chart/editor/editor_rail_timeline.gd" id="11_rail_timeline"]
+[ext_resource type="Script" path="res://chart/editor/game_preview.gd" id="12_game_preview"]
+[ext_resource type="Script" path="res://chart/editor/overlay_frame_view.gd" id="13_frame_view"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/gameplay.tscn" id="14_gameplay_preview"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_game_preview"]
+resource_local_to_scene = true
+viewport_path = NodePath("PreviewColumn/GameFrame/GamePreview/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ysqcj"]
+shader = ExtResource("2_37swi")
+shader_parameter/bg_color = Color(0.0627451, 0.0627451, 0.078431375, 1)
+shader_parameter/shape_color = Color(0.080000006, 0.080000006, 0.1, 1)
+shader_parameter/rect_size = Vector2(1920, 1080)
+shader_parameter/cell_size = 180.0
+shader_parameter/move_speed = 0.5
+shader_parameter/cycle_speed = 0.2
+shader_parameter/transition_ratio = 0.12
+shader_parameter/softness = 0.0
+shader_parameter/circle_size = 0.3
+shader_parameter/square_size = 0.2
+shader_parameter/triangle_size = 0.3
+shader_parameter/square_roundness = 0.05
+shader_parameter/triangle_roundness = 0.025
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_top"]
+bg_color = Color(0.05490196, 0.05882353, 0.08627451, 0.94)
+border_width_bottom = 1
+border_color = Color(0.47058824, 0.40392157, 0.8784314, 0.32)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_37swi"]
+bg_color = Color(0.05490196, 0.05882353, 0.08627451, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.47058824, 0.40392157, 0.8784314, 0.34)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_t60lc"]
+color = Color(0.4509804, 0.3882353, 0.84313726, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t60lc"]
+bg_color = Color(0.2, 0.18039216, 0.3529412, 1)
+shadow_color = Color(0.2, 0.18039216, 0.3529412, 0.5764706)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dtukb"]
+content_margin_top = 14.0
+content_margin_bottom = 14.0
+bg_color = Color(0.11764706, 0.12156863, 0.1882353, 1)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ruend"]
+content_margin_top = 14.0
+content_margin_bottom = 14.0
+bg_color = Color(0.47058824, 0.40392157, 0.8784314, 0.95)
+border_width_right = 10
+border_color = Color(0.46815994, 0.40479997, 0.88, 0.41568628)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qkvgq"]
+content_margin_top = 14.0
+content_margin_bottom = 14.0
+bg_color = Color(0.47058824, 0.40392157, 0.8784314, 0.9490196)
+border_width_right = 10
+border_color = Color(1, 1, 1, 1)
+
+[node name="EditorScene" type="Control" unique_id=317898238 node_paths=PackedStringArray("chart_root", "chart_panel", "note_pivot", "bpm_lines", "song_slider", "current_time_label", "back_button", "playtest_button", "save_button", "delete_button", "hit_button", "trace_button", "left_button", "right_button", "spike_button", "title_line_edit", "artist_line_edit", "creator_line_edit", "difficulty_line_edit", "source_line_edit", "tags_line_edit", "beat_division_slider", "beat_division_label", "add_timing_button", "timing_list_container", "timing_template", "skin_file_label", "skin_browser_button", "open_skin_editor_button", "open_event_editor_button", "view_controller", "inspector_controller", "edit_controller", "unsaved_exit_dialog", "fps_label")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_tudub")
+chart_root = NodePath("Chart")
+chart_panel = NodePath("Chart/Panel")
+note_pivot = NodePath("Chart/TimePivot")
+bpm_lines = NodePath("Chart/Panel/BPMLines")
+song_slider = NodePath("SongSlider")
+current_time_label = NodePath("SongSlider/CurrentTime")
+back_button = NodePath("TopBar/Margin/Row/Back")
+playtest_button = NodePath("PreviewColumn/Toolbar/PlayTest")
+save_button = NodePath("Object/Save")
+delete_button = NodePath("Object/Delete")
+hit_button = NodePath("Object/Hit")
+trace_button = NodePath("Object/Trace")
+left_button = NodePath("Object/Left")
+right_button = NodePath("Object/Right")
+spike_button = NodePath("Object/Spike")
+title_line_edit = NodePath("Inspector/Chart/ScrollContainer/Contents/title")
+artist_line_edit = NodePath("Inspector/Chart/ScrollContainer/Contents/artist")
+creator_line_edit = NodePath("Inspector/Chart/ScrollContainer/Contents/creator")
+difficulty_line_edit = NodePath("Inspector/Chart/ScrollContainer/Contents/difficulty")
+source_line_edit = NodePath("Inspector/Chart/ScrollContainer/Contents/source")
+tags_line_edit = NodePath("Inspector/Chart/ScrollContainer/Contents/tags")
+beat_division_slider = NodePath("TopBar/Margin/Row/BeatDivisionSlider")
+beat_division_label = NodePath("TopBar/Margin/Row/BeatDivisionValue")
+add_timing_button = NodePath("Inspector/Timing/ScrollContainer/HBoxContainer/AddTiming")
+timing_list_container = NodePath("Inspector/Timing/ScrollContainer/HBoxContainer")
+timing_template = NodePath("Inspector/Timing/ScrollContainer/HBoxContainer/Timing")
+skin_file_label = NodePath("Inspector/Chart/ScrollContainer/Contents/skin_file_name")
+skin_browser_button = NodePath("Inspector/Chart/ScrollContainer/Contents/SkinBrowserButton")
+open_skin_editor_button = NodePath("TopBar/Margin/Row/SkinEditor")
+open_event_editor_button = NodePath("TopBar/Margin/Row/EventEditor")
+view_controller = NodePath("Controllers/ViewController")
+inspector_controller = NodePath("Controllers/InspectorController")
+edit_controller = NodePath("Controllers/EditController")
+unsaved_exit_dialog = NodePath("Dialogs/UnsavedChangesDialog")
+fps_label = NodePath("VBoxContainer/Label")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1588616375]
+material = SubResource("ShaderMaterial_ysqcj")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" type="PanelContainer" parent="." unique_id=1495042675]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 58.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_top")
+
+[node name="Margin" type="MarginContainer" parent="TopBar" unique_id=1847649518]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 10
+
+[node name="Row" type="HBoxContainer" parent="TopBar/Margin" unique_id=385251240]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Back" type="Button" parent="TopBar/Margin/Row" unique_id=2033992967]
+layout_mode = 2
+text = "Back to menu"
+
+[node name="SkinEditor" type="Button" parent="TopBar/Margin/Row" unique_id=882752776]
+layout_mode = 2
+text = "Skin Editor"
+
+[node name="EventEditor" type="Button" parent="TopBar/Margin/Row" unique_id=1179785375]
+visible = false
+layout_mode = 2
+text = "Event Editor"
+
+[node name="Spacer" type="Control" parent="TopBar/Margin/Row" unique_id=142528898]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BeatDivisionLabel" type="Label" parent="TopBar/Margin/Row" unique_id=1602701495]
+layout_mode = 2
+text = "Beat Division"
+vertical_alignment = 1
+
+[node name="BeatDivisionValue" type="Label" parent="TopBar/Margin/Row" unique_id=1347535791]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+text = "1/4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BeatDivisionSlider" type="HSlider" parent="TopBar/Margin/Row" unique_id=1733959881]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Controllers" type="Node" parent="." unique_id=1327209880]
+
+[node name="ViewController" type="Node" parent="Controllers" unique_id=2077752679 node_paths=PackedStringArray("editor", "chart_root", "chart_panel", "note_pivot", "bpm_lines", "rail_layer", "note_layer")]
+script = ExtResource("6_8vclr")
+editor = NodePath("../..")
+chart_root = NodePath("../../Chart")
+chart_panel = NodePath("../../Chart/Panel")
+note_pivot = NodePath("../../Chart/TimePivot")
+bpm_lines = NodePath("../../Chart/Panel/BPMLines")
+rail_layer = NodePath("../../Chart/Panel/RailLayer")
+note_layer = NodePath("../../Chart/Panel/NoteLayer")
+
+[node name="InspectorController" type="Node" parent="Controllers" unique_id=953762169 node_paths=PackedStringArray("editor", "title_line_edit", "artist_line_edit", "creator_line_edit", "difficulty_line_edit", "source_line_edit", "tags_line_edit", "beat_division_slider", "beat_division_label", "add_timing_button", "timing_list_container", "timing_template", "skin_file_label", "skin_browser_button", "cover_texture_rect", "cover_file_label", "audio_file_label", "cover_browser_button", "audio_browser_button", "skin_picker_menu", "cover_file_dialog", "audio_file_dialog")]
+script = ExtResource("7_c2fm2")
+editor = NodePath("../..")
+title_line_edit = NodePath("../../Inspector/Chart/ScrollContainer/Contents/title")
+artist_line_edit = NodePath("../../Inspector/Chart/ScrollContainer/Contents/artist")
+creator_line_edit = NodePath("../../Inspector/Chart/ScrollContainer/Contents/creator")
+difficulty_line_edit = NodePath("../../Inspector/Chart/ScrollContainer/Contents/difficulty")
+source_line_edit = NodePath("../../Inspector/Chart/ScrollContainer/Contents/source")
+tags_line_edit = NodePath("../../Inspector/Chart/ScrollContainer/Contents/tags")
+beat_division_slider = NodePath("../../TopBar/Margin/Row/BeatDivisionSlider")
+beat_division_label = NodePath("../../TopBar/Margin/Row/BeatDivisionValue")
+add_timing_button = NodePath("../../Inspector/Timing/ScrollContainer/HBoxContainer/AddTiming")
+timing_list_container = NodePath("../../Inspector/Timing/ScrollContainer/HBoxContainer")
+timing_template = NodePath("../../Inspector/Timing/ScrollContainer/HBoxContainer/Timing")
+skin_file_label = NodePath("../../Inspector/Chart/ScrollContainer/Contents/skin_file_name")
+skin_browser_button = NodePath("../../Inspector/Chart/ScrollContainer/Contents/SkinBrowserButton")
+cover_texture_rect = NodePath("../../Inspector/Chart/ScrollContainer/Contents/Header/CoverTexture")
+cover_file_label = NodePath("../../Inspector/Chart/ScrollContainer/Contents/Header/Detail/file_cover_art")
+audio_file_label = NodePath("../../Inspector/Chart/ScrollContainer/Contents/Header/Detail/file_audio")
+cover_browser_button = NodePath("../../Inspector/Chart/ScrollContainer/Contents/Header/Detail/CoverBrowserButton")
+audio_browser_button = NodePath("../../Inspector/Chart/ScrollContainer/Contents/Header/Detail/AudioBrowserButton")
+skin_picker_menu = NodePath("../../Dialogs/SkinPickerMenu")
+cover_file_dialog = NodePath("../../Dialogs/CoverFileDialog")
+audio_file_dialog = NodePath("../../Dialogs/AudioFileDialog")
+
+[node name="EditController" type="Node" parent="Controllers" unique_id=939770427 node_paths=PackedStringArray("editor")]
+script = ExtResource("9_mjlwm")
+editor = NodePath("../..")
+
+[node name="Inspector" type="TabContainer" parent="." unique_id=792765145]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.94166666
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -392.0
+offset_top = 70.0
+offset_right = -24.0
+offset_bottom = -84.0
+pivot_offset = Vector2(430, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_37swi")
+current_tab = 0
+tab_focus_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Chart" type="TabBar" parent="Inspector" unique_id=65841320]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Inspector/Chart" unique_id=403598176]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = -12.0
+horizontal_scroll_mode = 0
+
+[node name="Contents" type="VBoxContainer" parent="Inspector/Chart/ScrollContainer" unique_id=27965570]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1290609303]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CoverTexture" type="TextureRect" parent="Inspector/Chart/ScrollContainer/Contents/Header" unique_id=887230808]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("7_0st15")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Detail" type="VBoxContainer" parent="Inspector/Chart/ScrollContainer/Contents/Header" unique_id=1061495277]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="file_cover_art" type="Label" parent="Inspector/Chart/ScrollContainer/Contents/Header/Detail" unique_id=1344941544]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Failed to load cover file"
+clip_text = true
+text_overrun_behavior = 5
+
+[node name="CoverBrowserButton" type="Button" parent="Inspector/Chart/ScrollContainer/Contents/Header/Detail" unique_id=479850018]
+unique_name_in_owner = true
+layout_mode = 2
+text = "select cover
+from browser"
+
+[node name="file_audio" type="Label" parent="Inspector/Chart/ScrollContainer/Contents/Header/Detail" unique_id=1865292649]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Failed to load audio file"
+clip_text = true
+text_overrun_behavior = 5
+
+[node name="AudioBrowserButton" type="Button" parent="Inspector/Chart/ScrollContainer/Contents/Header/Detail" unique_id=36270786]
+unique_name_in_owner = true
+layout_mode = 2
+text = "select audio
+from file browser"
+
+[node name="label" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1915322027]
+layout_mode = 2
+text = "*title"
+horizontal_alignment = 1
+
+[node name="title" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1474887788]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "song name"
+alignment = 1
+
+[node name="label4" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1570904117]
+layout_mode = 2
+text = "artist"
+horizontal_alignment = 1
+
+[node name="artist" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=748049689]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "artist name"
+alignment = 1
+
+[node name="CreatorLabel" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=302793973]
+layout_mode = 2
+text = "creator"
+horizontal_alignment = 1
+
+[node name="creator" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1734135703]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "creator name(s)"
+alignment = 1
+
+[node name="label2" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=498360221]
+layout_mode = 2
+text = "*difficulty"
+horizontal_alignment = 1
+
+[node name="difficulty" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1577139298]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "hard"
+alignment = 1
+
+[node name="label3" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1438855725]
+layout_mode = 2
+text = "source"
+horizontal_alignment = 1
+
+[node name="source" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=234651857]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "other game"
+alignment = 1
+
+[node name="label5" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1640637456]
+layout_mode = 2
+text = "tags"
+horizontal_alignment = 1
+
+[node name="tags" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=177184767]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "ost game tech peak tricky stemina long"
+alignment = 1
+
+[node name="label6" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=605982539]
+layout_mode = 2
+text = "skin file"
+horizontal_alignment = 1
+
+[node name="skin_file_name" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1827001061]
+visible = false
+layout_mode = 2
+text = "(no linked skin file)"
+horizontal_alignment = 1
+clip_text = true
+text_overrun_behavior = 5
+
+[node name="SkinBrowserButton" type="Button" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1963833186]
+layout_mode = 2
+text = "Select Skin"
+
+[node name="Property" type="TabBar" parent="Inspector" unique_id=826723775 node_paths=PackedStringArray("editor", "note_tab", "rail_tab", "note_time_lineedit", "note_type_option", "note_length_lineedit", "note_animation_option", "note_hitsound_option", "note_dir_option", "point_position_slider", "point_curve_slider", "point_time_lineedit")]
+visible = false
+layout_mode = 2
+script = ExtResource("1_ryhys")
+editor = NodePath("../..")
+note_tab = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Note")
+rail_tab = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Rail")
+note_time_lineedit = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Note/time/LineEdit")
+note_type_option = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Note/type/OptionButton")
+note_length_lineedit = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Note/length/LineEdit")
+note_animation_option = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Note/animation/OptionButton")
+note_hitsound_option = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Note/SFX/OptionButton")
+note_dir_option = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Note/dir/OptionButton")
+point_position_slider = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Rail/PanelContainer/MarginContainer/Point/position")
+point_curve_slider = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Rail/PanelContainer/MarginContainer/Point/curve")
+point_time_lineedit = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Rail/PanelContainer/MarginContainer/Point/LineEdit")
+metadata/_tab_index = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Inspector/Property" unique_id=1591273615]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = -12.0
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Inspector/Property/ScrollContainer" unique_id=1040505119]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer" unique_id=1931066086]
+layout_mode = 2
+
+[node name="Note" type="VBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer" unique_id=570037262]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=80382324]
+layout_mode = 2
+text = "Note"
+
+[node name="HSeparator" type="HSeparator" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=594055940]
+layout_mode = 2
+
+[node name="time" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=1000023139]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/time" unique_id=1318776239]
+layout_mode = 2
+text = "time"
+
+[node name="LineEdit" type="LineEdit" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/time" unique_id=725895020]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "1000"
+
+[node name="type" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=818998700]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/type" unique_id=1778811650]
+layout_mode = 2
+text = "type"
+
+[node name="OptionButton" type="OptionButton" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/type" unique_id=475769546]
+layout_mode = 2
+selected = 1
+item_count = 4
+popup/item_0/text = "Hit"
+popup/item_0/id = 1
+popup/item_1/text = "Move"
+popup/item_1/id = 2
+popup/item_2/text = "Trace"
+popup/item_2/id = 3
+popup/item_3/text = "Spike"
+popup/item_3/id = 4
+
+[node name="dir" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=610865530]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/dir" unique_id=1959779201]
+layout_mode = 2
+text = "dir"
+
+[node name="OptionButton" type="OptionButton" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/dir" unique_id=611654619]
+layout_mode = 2
+selected = 1
+item_count = 2
+popup/item_0/text = "LEFT"
+popup/item_0/id = 0
+popup/item_1/text = "RIGHT"
+popup/item_1/id = 1
+
+[node name="length" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=1638812228]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/length" unique_id=948612822]
+layout_mode = 2
+text = "length"
+
+[node name="LineEdit" type="LineEdit" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/length" unique_id=128109492]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "0"
+
+[node name="animation" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=1695244177]
+layout_mode = 2
+
+[node name="animation" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/animation" unique_id=546716715]
+layout_mode = 2
+text = "animation"
+
+[node name="OptionButton" type="OptionButton" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/animation" unique_id=992438532]
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 5
+clip_text = true
+fit_to_longest_item = false
+
+[node name="SFX" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=72922546]
+layout_mode = 2
+
+[node name="sfx" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/SFX" unique_id=1233933479]
+layout_mode = 2
+text = "sfx"
+
+[node name="OptionButton" type="OptionButton" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/SFX" unique_id=836315521]
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 5
+clip_text = true
+fit_to_longest_item = false
+
+[node name="Rail" type="VBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer" unique_id=1988892705]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Rail" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Rail" unique_id=1785285807]
+layout_mode = 2
+text = "Rail"
+
+[node name="HSeparator" type="HSeparator" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Rail" unique_id=1703293512]
+layout_mode = 2
+theme_override_constants/separation = 10
+theme_override_styles/separator = SubResource("StyleBoxLine_t60lc")
+
+[node name="PanelContainer" type="PanelContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Rail" unique_id=773364680]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Rail/PanelContainer" unique_id=325320651]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Point" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Rail/PanelContainer/MarginContainer" unique_id=1859474528 instance=ExtResource("3_1ne32")]
+layout_mode = 2
+
+[node name="Timing" type="TabBar" parent="Inspector" unique_id=1819708243]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Inspector/Timing" unique_id=2104129323]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = -12.0
+horizontal_scroll_mode = 0
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Inspector/Timing/ScrollContainer" unique_id=13395794]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AddTiming" type="Button" parent="Inspector/Timing/ScrollContainer/HBoxContainer" unique_id=1791564311]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Add new timing"
+
+[node name="Timing" parent="Inspector/Timing/ScrollContainer/HBoxContainer" unique_id=2110964154 instance=ExtResource("4_8or05")]
+layout_mode = 2
+
+[node name="SFX" type="TabBar" parent="Inspector" unique_id=1614543602 node_paths=PackedStringArray("editor", "hit_option", "move_option", "trace_option", "spike_option", "release_option", "add_sfx_button", "list_container", "hitsound_template", "file_dialog")]
+visible = false
+layout_mode = 2
+script = ExtResource("1_yxg55")
+editor = NodePath("../..")
+hit_option = NodePath("ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer/Hit")
+move_option = NodePath("ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer2/Move")
+trace_option = NodePath("ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Trace")
+spike_option = NodePath("ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer4/Spike")
+release_option = NodePath("ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer5/Release")
+add_sfx_button = NodePath("ScrollContainer/VBoxContainer/Add new sfx")
+list_container = NodePath("ScrollContainer/VBoxContainer")
+hitsound_template = NodePath("ScrollContainer/VBoxContainer/HitSound")
+file_dialog = NodePath("../../Dialogs/SFXFileDialog")
+metadata/_tab_index = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Inspector/SFX" unique_id=1398805194]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = -12.0
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Inspector/SFX/ScrollContainer" unique_id=805109826]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Inspector/SFX/ScrollContainer/VBoxContainer" unique_id=1072015265]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer" unique_id=983321059]
+layout_mode = 2
+
+[node name="label" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1646588012]
+layout_mode = 2
+text = "Hit Note"
+
+[node name="Hit" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1066772196]
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 5
+clip_text = true
+fit_to_longest_item = false
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer" unique_id=1470712079]
+layout_mode = 2
+
+[node name="hit" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=64586634]
+layout_mode = 2
+text = "Move Note"
+
+[node name="Move" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1080815256]
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 5
+clip_text = true
+fit_to_longest_item = false
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer" unique_id=344322435]
+layout_mode = 2
+
+[node name="hit" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1052878308]
+layout_mode = 2
+text = "Trace Note"
+
+[node name="Trace" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1082399630]
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 5
+clip_text = true
+fit_to_longest_item = false
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer" unique_id=12234411]
+layout_mode = 2
+
+[node name="spike" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=12234412]
+layout_mode = 2
+text = "Spike Note"
+
+[node name="Spike" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=12234413]
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 5
+clip_text = true
+fit_to_longest_item = false
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer" unique_id=12234414]
+layout_mode = 2
+
+[node name="release" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer5" unique_id=12234415]
+layout_mode = 2
+text = "Long Release"
+
+[node name="Release" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer5" unique_id=12234416]
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 5
+clip_text = true
+fit_to_longest_item = false
+
+[node name="Add new sfx" type="Button" parent="Inspector/SFX/ScrollContainer/VBoxContainer" unique_id=1874760297]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Add new sfx"
+
+[node name="HitSound" parent="Inspector/SFX/ScrollContainer/VBoxContainer" unique_id=1481942741 instance=ExtResource("5_7qxkj")]
+layout_mode = 2
+
+[node name="Chart" type="Control" parent="." unique_id=342643612]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 183.0
+offset_top = 70.0
+offset_right = -1189.0
+offset_bottom = -84.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Panel" type="Panel" parent="Chart" unique_id=154676679]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_37swi")
+
+[node name="BPMLines" type="Control" parent="Chart/Panel" unique_id=758959830 node_paths=PackedStringArray("editor", "chart_panel")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_9wr6r")
+editor = NodePath("../../..")
+chart_panel = NodePath("..")
+metadata/_edit_use_anchors_ = true
+
+[node name="RailLayer" type="Control" parent="Chart/Panel" unique_id=159060883]
+layout_mode = 1
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="NoteLayer" type="Control" parent="Chart/Panel" unique_id=1675443136]
+layout_mode = 1
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="TimePivot" type="Control" parent="Chart" unique_id=1264453362]
+layout_mode = 1
+anchor_top = 0.76900005
+anchor_right = 1.0
+anchor_bottom = 0.76900005
+offset_top = -0.52008057
+offset_bottom = 1.4799194
+
+[node name="Line" type="Panel" parent="Chart/TimePivot" unique_id=136817854]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -1.0
+offset_bottom = 2.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_t60lc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Object" type="VBoxContainer" parent="." unique_id=2054365102]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 250.0
+offset_right = 136.0
+offset_bottom = -120.0
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Label" type="Label" parent="Object" unique_id=1191092861]
+layout_mode = 2
+text = "Notes"
+
+[node name="Hit2" type="Button" parent="Object" unique_id=66446060]
+layout_mode = 2
+text = "Rail (R)"
+
+[node name="Hit" type="Button" parent="Object" unique_id=823023364]
+layout_mode = 2
+text = "Hit (Z)"
+
+[node name="Trace" type="Button" parent="Object" unique_id=53886401]
+layout_mode = 2
+text = "Trace (X)"
+
+[node name="Left" type="Button" parent="Object" unique_id=653754946]
+layout_mode = 2
+text = "Left (A)"
+
+[node name="Right" type="Button" parent="Object" unique_id=711043301]
+layout_mode = 2
+text = "Right (D)"
+
+[node name="Spike" type="Button" parent="Object" unique_id=469186168]
+layout_mode = 2
+text = "Spike (C)"
+
+[node name="Label2" type="Label" parent="Object" unique_id=1482789204]
+layout_mode = 2
+text = "Controls"
+
+[node name="Delete" type="Button" parent="Object" unique_id=1709305272]
+layout_mode = 2
+text = "Delete"
+
+[node name="Copy" type="Button" parent="Object" unique_id=2126726355]
+layout_mode = 2
+text = "Copy"
+
+[node name="Paste" type="Button" parent="Object" unique_id=650479365]
+layout_mode = 2
+text = "Paste"
+
+[node name="Undo" type="Button" parent="Object" unique_id=1200218470]
+layout_mode = 2
+text = "Undo"
+
+[node name="Redo" type="Button" parent="Object" unique_id=1009727530]
+layout_mode = 2
+text = "Redo"
+
+[node name="Label3" type="Label" parent="Object" unique_id=81705010]
+layout_mode = 2
+text = "chart"
+
+[node name="Save" type="Button" parent="Object" unique_id=1739146947]
+layout_mode = 2
+text = "Save chart"
+
+[node name="SongSlider" type="HSlider" parent="." unique_id=1825726041]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -28.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/slider = SubResource("StyleBoxFlat_dtukb")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_ruend")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_qkvgq")
+value = 5.0
+
+[node name="CurrentTime" type="Label" parent="SongSlider" unique_id=114104395]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = -26.999977
+offset_right = 159.0
+offset_bottom = 2.2888184e-05
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "1:20/3:20(62,000ms)"
+
+[node name="RailPointContainer" type="Control" parent="SongSlider" unique_id=1918331506]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -50.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("11_rail_timeline")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1611196157]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 70.0
+offset_right = 63.0
+offset_bottom = 110.0
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=160094082]
+layout_mode = 2
+text = "fps:"
+
+[node name="Label2" type="Label" parent="VBoxContainer" unique_id=1809489432]
+layout_mode = 2
+text = "note count:  9999999"
+
+[node name="Label3" type="Label" parent="VBoxContainer" unique_id=1235892994]
+layout_mode = 2
+text = "rail count: 9999999"
+
+[node name="PreviewColumn" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.39
+anchor_right = 0.73
+anchor_bottom = 1.0
+offset_top = 70.0
+offset_bottom = -84.0
+theme_override_constants/separation = 12
+
+[node name="GameFrame" type="AspectRatioContainer" parent="PreviewColumn"]
+layout_mode = 2
+ratio = 1.7777778
+stretch_mode = 2
+
+[node name="GamePreview" type="TextureRect" parent="PreviewColumn/GameFrame" node_paths=PackedStringArray("editor")]
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+texture = SubResource("ViewportTexture_game_preview")
+script = ExtResource("12_game_preview")
+editor = NodePath("../../..")
+
+[node name="SubViewport" type="SubViewport" parent="PreviewColumn/GameFrame/GamePreview"]
+handle_input_locally = false
+gui_disable_input = true
+own_world_3d = true
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="Gameplay" parent="PreviewColumn/GameFrame/GamePreview/SubViewport" instance=ExtResource("14_gameplay_preview")]
+editor_preview = true
+
+[node name="Toolbar" type="HBoxContainer" parent="PreviewColumn"]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="PreviewColumn/Toolbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlayTest" type="Button" parent="PreviewColumn/Toolbar"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Play test"
+
+[node name="OverlayFrameView" type="Control" parent="PreviewColumn" node_paths=PackedStringArray("event_editor")]
+layout_mode = 2
+size_flags_vertical = 3
+clip_contents = true
+script = ExtResource("13_frame_view")
+event_editor = NodePath("../..")
+
+[node name="FrameBackground" type="ColorRect" parent="PreviewColumn/OverlayFrameView"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.063, 0.063, 0.094, 1)
+
+[node name="Dialogs" type="Node" parent="." unique_id=1647625674]
+
+[node name="SkinPickerMenu" type="PopupMenu" parent="Dialogs" unique_id=750320579]
+oversampling_override = 1.0
+
+[node name="CoverFileDialog" type="FileDialog" parent="Dialogs" unique_id=1775982255]
+oversampling_override = 1.0
+title = "Open a File"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png,*.jpg,*.jpeg,*.webp ; Cover Image")
+use_native_dialog = true
+
+[node name="AudioFileDialog" type="FileDialog" parent="Dialogs" unique_id=355767714]
+oversampling_override = 1.0
+title = "Open a File"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.mp3,*.ogg,*.wav ; Audio File")
+use_native_dialog = true
+
+[node name="SFXFileDialog" type="FileDialog" parent="Dialogs" unique_id=2099921210]
+oversampling_override = 1.0
+title = "Open a File"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.wav ; WAV Audio")
+use_native_dialog = true
+
+[node name="UnsavedChangesDialog" parent="Dialogs" unique_id=171144 instance=ExtResource("10_unsaved")]
+visible = false
+message = "Save chart changes before leaving?"

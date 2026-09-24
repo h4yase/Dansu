@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://bu0j8qugn442u"]
+
+[node name="Point" type="VBoxContainer" unique_id=1859474528]
+
+[node name="Label4" type="Label" parent="." unique_id=1437085320]
+layout_mode = 2
+text = "point"
+
+[node name="HSeparator" type="HSeparator" parent="." unique_id=1021443731]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="." unique_id=718418282]
+layout_mode = 2
+text = "position"
+horizontal_alignment = 1
+
+[node name="position" type="HSlider" parent="." unique_id=51686213]
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+value = 0.5
+
+[node name="Label3" type="Label" parent="." unique_id=994785040]
+layout_mode = 2
+text = "curve"
+horizontal_alignment = 1
+
+[node name="curve" type="HSlider" parent="." unique_id=1061330397]
+layout_mode = 2
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+
+[node name="Label2" type="Label" parent="." unique_id=1447457270]
+layout_mode = 2
+text = "timing"
+horizontal_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="." unique_id=1392784769]
+layout_mode = 2
+placeholder_text = "10000"
+alignment = 1

@@ -1,0 +1,318 @@
+[gd_scene format=3 uid="uid://bn7mb3j7iupek"]
+
+[ext_resource type="Script" uid="uid://jkk21oi4ker1" path="res://scenes/mainmenu/song_filter_popup.gd" id="1_filter"]
+[ext_resource type="Theme" uid="uid://d3ctsqw4vkokp" path="res://resources/themes/editor_mainmenu_theme.tres" id="1_qdnxl"]
+[ext_resource type="Theme" uid="uid://bqwa4bxpqfagm" path="res://resources/themes/dansu.tres" id="3_7524n"]
+[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="4_7524n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_filter_panel"]
+content_margin_left = 30.0
+content_margin_top = 24.0
+content_margin_right = 30.0
+content_margin_bottom = 24.0
+bg_color = Color(0.09019608, 0.08235294, 0.14901961, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.44313726, 0.3764706, 0.7411765, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[node name="SongFilterPopup" type="Control" unique_id=494650392 node_paths=PackedStringArray("_sort", "_status", "_played", "_reverse", "_nsfl", "_error", "_panel", "_overlay", "min_length", "max_length", "min_rating", "max_rating", "max_size", "rank_status_row", "content_row", "max_download_row", "close_button", "reset_button", "cancel_button", "apply_button")]
+visible = false
+z_index = 50
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_qdnxl")
+script = ExtResource("1_filter")
+_sort = NodePath("Panel/Layout/Scroll/Body/SortRow/Sort")
+_status = NodePath("Panel/Layout/Scroll/Body/RankStatusRow/Status")
+_played = NodePath("Panel/Layout/Scroll/Body/PlayHistoryRow/Played")
+_reverse = NodePath("Panel/Layout/Scroll/Body/DirectionRow/Reverse")
+_nsfl = NodePath("Panel/Layout/Scroll/Body/ContentRow/NSFL")
+_error = NodePath("Panel/Layout/Error")
+_panel = NodePath("Panel")
+_overlay = NodePath("Overlay")
+min_length = NodePath("Panel/Layout/Scroll/Body/DurationRow/MinLength")
+max_length = NodePath("Panel/Layout/Scroll/Body/DurationRow/MaxLength")
+min_rating = NodePath("Panel/Layout/Scroll/Body/DifficultyRow/MinRating")
+max_rating = NodePath("Panel/Layout/Scroll/Body/DifficultyRow/MaxRating")
+max_size = NodePath("Panel/Layout/Scroll/Body/MaxDownloadRow/MaxSize")
+rank_status_row = NodePath("Panel/Layout/Scroll/Body/RankStatusRow")
+content_row = NodePath("Panel/Layout/Scroll/Body/ContentRow")
+max_download_row = NodePath("Panel/Layout/Scroll/Body/MaxDownloadRow")
+close_button = NodePath("Panel/Layout/Heading/Close")
+reset_button = NodePath("Panel/Layout/Actions/Reset")
+cancel_button = NodePath("Panel/Layout/Actions/Cancel")
+apply_button = NodePath("Panel/Layout/Actions/Apply")
+
+[node name="Overlay" type="ColorRect" parent="." unique_id=1524443800]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.02, 0.04, 0.78)
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=867405457]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -390.0
+offset_top = -350.0
+offset_right = 390.0
+offset_bottom = 350.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_filter_panel")
+
+[node name="Layout" type="VBoxContainer" parent="Panel" unique_id=532850133]
+layout_mode = 2
+theme = ExtResource("3_7524n")
+theme_override_constants/separation = 16
+
+[node name="Heading" type="HBoxContainer" parent="Panel/Layout" unique_id=695113754]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/Layout/Heading" unique_id=1847512758]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_7524n")
+theme_override_font_sizes/font_size = 32
+text = "Search options"
+
+[node name="Close" type="Button" parent="Panel/Layout/Heading" unique_id=1857254918]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Close"
+
+[node name="Scroll" type="ScrollContainer" parent="Panel/Layout" unique_id=1897390181]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Body" type="VBoxContainer" parent="Panel/Layout/Scroll" unique_id=118622278]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 18
+
+[node name="SortRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=487713314]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/SortRow" unique_id=1618840815]
+custom_minimum_size = Vector2(265, 0)
+layout_mode = 2
+text = "Sort by"
+horizontal_alignment = 1
+
+[node name="Sort" type="OptionButton" parent="Panel/Layout/Scroll/Body/SortRow" unique_id=702403405]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DirectionRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=1210636680]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/DirectionRow" unique_id=122858907]
+custom_minimum_size = Vector2(265, 0)
+layout_mode = 2
+text = "Direction"
+horizontal_alignment = 1
+
+[node name="Reverse" type="CheckBox" parent="Panel/Layout/Scroll/Body/DirectionRow" unique_id=653113743]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reverse order"
+
+[node name="RankStatusRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=2100843490]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/RankStatusRow" unique_id=833465232]
+custom_minimum_size = Vector2(265, 0)
+layout_mode = 2
+text = "status"
+horizontal_alignment = 1
+
+[node name="Status" type="OptionButton" parent="Panel/Layout/Scroll/Body/RankStatusRow" unique_id=594070854]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 4
+popup/item_0/text = "Any status"
+popup/item_0/id = 0
+popup/item_1/text = "Ranked"
+popup/item_1/id = 1
+popup/item_2/text = "Approved"
+popup/item_2/id = 2
+popup/item_3/text = "Unranked"
+popup/item_3/id = 3
+
+[node name="DurationRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=1704275615]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/DurationRow" unique_id=164259409]
+custom_minimum_size = Vector2(265, 0)
+layout_mode = 2
+text = "Duration (seconds)"
+horizontal_alignment = 1
+
+[node name="MinLength" type="LineEdit" parent="Panel/Layout/Scroll/Body/DurationRow" unique_id=874020249]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Min"
+max_length = 12
+
+[node name="Dash" type="Label" parent="Panel/Layout/Scroll/Body/DurationRow" unique_id=335375944]
+layout_mode = 2
+text = "–"
+
+[node name="MaxLength" type="LineEdit" parent="Panel/Layout/Scroll/Body/DurationRow" unique_id=236113760]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Max"
+max_length = 12
+
+[node name="DifficultyRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=1301470583]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/DifficultyRow" unique_id=1709141561]
+custom_minimum_size = Vector2(265, 0)
+layout_mode = 2
+text = "rating"
+horizontal_alignment = 1
+
+[node name="MinRating" type="LineEdit" parent="Panel/Layout/Scroll/Body/DifficultyRow" unique_id=1706228933]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Min"
+max_length = 12
+
+[node name="Dash" type="Label" parent="Panel/Layout/Scroll/Body/DifficultyRow" unique_id=539619541]
+layout_mode = 2
+text = "–"
+
+[node name="MaxRating" type="LineEdit" parent="Panel/Layout/Scroll/Body/DifficultyRow" unique_id=1370276704]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Max"
+max_length = 12
+
+[node name="PlayHistoryRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=202846105]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/PlayHistoryRow" unique_id=1083312021]
+custom_minimum_size = Vector2(265, 0)
+layout_mode = 2
+text = "Play history"
+horizontal_alignment = 1
+
+[node name="Played" type="OptionButton" parent="Panel/Layout/Scroll/Body/PlayHistoryRow" unique_id=1057701044]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 3
+popup/item_0/text = "Any"
+popup/item_0/id = 0
+popup/item_1/text = "Played"
+popup/item_1/id = 1
+popup/item_2/text = "Not played"
+popup/item_2/id = 2
+
+[node name="ContentRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=125481164]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/ContentRow" unique_id=1915083840]
+visible = false
+custom_minimum_size = Vector2(265, 0)
+layout_mode = 2
+text = "Content"
+
+[node name="NSFL" type="CheckBox" parent="Panel/Layout/Scroll/Body/ContentRow" unique_id=1635890208]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Include NSFL"
+
+[node name="MaxDownloadRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=1569934807]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/MaxDownloadRow" unique_id=871139673]
+visible = false
+custom_minimum_size = Vector2(265, 0)
+layout_mode = 2
+text = "Max download (MiB)"
+
+[node name="MaxSize" type="LineEdit" parent="Panel/Layout/Scroll/Body/MaxDownloadRow" unique_id=1219696718]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "No limit"
+max_length = 12
+
+[node name="Error" type="Label" parent="Panel/Layout" unique_id=132289593]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.654902, 0.7019608, 1)
+autowrap_mode = 2
+
+[node name="Actions" type="HBoxContainer" parent="Panel/Layout" unique_id=874249419]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Reset" type="Button" parent="Panel/Layout/Actions" unique_id=805911858]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Reset"
+
+[node name="Spacer" type="Control" parent="Panel/Layout/Actions" unique_id=1810700578]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Cancel" type="Button" parent="Panel/Layout/Actions" unique_id=1994364086]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Cancel"
+
+[node name="Apply" type="Button" parent="Panel/Layout/Actions" unique_id=781171190]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Apply"

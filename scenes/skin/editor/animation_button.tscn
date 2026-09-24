@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://c0f1pv7v7l8io"]
+
+[ext_resource type="Script" path="res://skin/editor/ui/animation_button.gd" id="1_7r7cb"]
+[ext_resource type="Texture2D" uid="uid://cw8cihgunxcv6" path="res://icon.svg" id="1_syu7c"]
+
+[node name="animation" type="Button" unique_id=382686474 node_paths=PackedStringArray("animation_name", "first_frame_texture", "remove_button")]
+custom_minimum_size = Vector2(0, 128)
+offset_right = 352.0
+offset_bottom = 128.0
+script = ExtResource("1_7r7cb")
+animation_name = NodePath("AnimationName")
+first_frame_texture = NodePath("FirstFrameTexture")
+remove_button = NodePath("Button")
+
+[node name="AnimationName" type="LineEdit" parent="." unique_id=1503107827]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 9.0
+offset_top = 8.0
+offset_right = -16.0
+offset_bottom = 39.0
+grow_horizontal = 2
+placeholder_text = "animation name"
+max_length = 20
+
+[node name="FirstFrameTexture" type="TextureRect" parent="." unique_id=64632614]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.002
+anchor_top = 1.0
+anchor_right = 0.002
+anchor_bottom = 1.0
+offset_left = 16.198
+offset_top = -80.0
+offset_right = 80.198
+offset_bottom = -16.0
+texture = ExtResource("1_syu7c")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Button" type="Button" parent="." unique_id=660320707]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -40.0
+offset_right = -9.0
+offset_bottom = -9.0
+text = "remove animation"

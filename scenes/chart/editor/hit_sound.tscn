@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://btmqivw5ns62f"]
+
+[ext_resource type="Script" path="res://scenes/chart/editor/hit_sound_row.gd" id="1_row"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ryhys"]
+
+[node name="HitSound" type="PanelContainer" unique_id=1481942741 node_paths=PackedStringArray("file_name_label", "remove_button")]
+script = ExtResource("1_row")
+file_name_label = NodePath("MarginContainer/HBoxContainer/file_name")
+remove_button = NodePath("MarginContainer/HBoxContainer/Remove")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=304508947]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1195328594]
+layout_mode = 2
+
+[node name="file_name" type="Label" parent="MarginContainer/HBoxContainer" unique_id=952875251]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "FileName.wav"
+clip_text = true
+text_overrun_behavior = 5
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer" unique_id=669223752]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_ryhys")
+
+[node name="Remove" type="Button" parent="MarginContainer/HBoxContainer" unique_id=1510869327]
+layout_mode = 2
+text = "REMOVE"

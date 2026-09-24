@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dbfcbvast1ccw"]
+
+[ext_resource type="Script" uid="uid://cjsooaktpg2dh" path="res://gameplay/visuals/judge_popup.gd" id="1_uo2ix"]
+[ext_resource type="Texture2D" uid="uid://mciamsppds5e" path="res://resources/textures/judges/just.png" id="2_1uc0m"]
+
+[node name="JudgePopup" type="Sprite3D" unique_id=465667131]
+pixel_size = 0.008
+render_priority = 2
+texture = ExtResource("2_1uc0m")
+script = ExtResource("1_uo2ix")

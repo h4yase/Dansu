@@ -1,0 +1,644 @@
+[gd_scene format=3 uid="uid://d0gsgs0n6371q"]
+
+[ext_resource type="Script" uid="uid://bevepd3rd0moe" path="res://gameplay/gameplay.gd" id="1_m3hu3"]
+[ext_resource type="Script" uid="uid://b40g7sb3k05x2" path="res://scenes/gameplay/camera_3d.gd" id="2_0w2j2"]
+[ext_resource type="Script" uid="uid://htxxtrys50xl" path="res://gameplay/player.gd" id="2_q64rj"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/player_hit_stars.tscn" id="3_hit_stars"]
+[ext_resource type="Script" uid="uid://3sywjcfkoeok" path="res://skin/skin_sprite.gd" id="4_gh441"]
+[ext_resource type="Script" uid="uid://bbdx5bqe5jpho" path="res://scenes/gameplay/shadow.gd" id="4_i6m2i"]
+[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="6_0w2j2"]
+[ext_resource type="Shader" uid="uid://qbfnricvyktb" path="res://resources/shaders/wave.gdshader" id="6_gh441"]
+[ext_resource type="AudioStream" uid="uid://86xa1i5ms4gd" path="res://resources/audio/combobreak2.wav" id="7_l0mho"]
+[ext_resource type="Texture2D" uid="uid://bmbyphvjkh055" path="res://resources/skins/original/sprites/dance1.png" id="7_sxh0i"]
+[ext_resource type="Shader" uid="uid://bsgm7ys7ay7o" path="res://resources/shaders/stage_sky.gdshader" id="8_t6o8f"]
+[ext_resource type="Texture2D" uid="uid://cw8cihgunxcv6" path="res://icon.svg" id="9_elju3"]
+[ext_resource type="Script" uid="uid://diqrkfivlom6w" path="res://scenes/gameplay/song_meta.gd" id="9_lb4ud"]
+[ext_resource type="Script" uid="uid://7f545n8r3bi5" path="res://gameplay/visuals/stage_visualizer.gd" id="9_stage_visualizer"]
+[ext_resource type="Shader" uid="uid://4mtwqgndg04i" path="res://resources/shaders/replay_vignette.gdshader" id="11_7cr05"]
+[ext_resource type="FontFile" uid="uid://cay31gip2omwr" path="res://resources/fonts/BebasNeue-Regular.ttf" id="11_bhb63"]
+[ext_resource type="Shader" uid="uid://dy3vprchl3ib" path="res://resources/shaders/stage_interface.gdshader" id="16_stage_interface"]
+[ext_resource type="Script" uid="uid://b4cssi4m02jn6" path="res://gameplay/visuals/stage_overlay.gd" id="17_stage_overlay"]
+[ext_resource type="Shader" uid="uid://c2itb617g8s1e" path="res://resources/shaders/stage_vignette.gdshader" id="18_stage_vignette"]
+[ext_resource type="PackedScene" uid="uid://ciy8qmxxf5it3" path="res://scenes/gameplay/dialogue.tscn" id="19_c6mtg"]
+[ext_resource type="Script" uid="uid://dal7wvp1onurm" path="res://scenes/gameplay/label.gd" id="20_r4rys"]
+[ext_resource type="PackedScene" uid="uid://c51ndn5ftq4wo" path="res://scenes/mainmenu/menubutton.tscn" id="20_sxh0i"]
+[ext_resource type="Texture2D" uid="uid://g4w7jxdx88sv" path="res://resources/icons/play.svg" id="21_c6mtg"]
+[ext_resource type="Texture2D" uid="uid://bkx4imkofvyyn" path="res://resources/icons/clock.svg" id="21_sxh0i"]
+[ext_resource type="Texture2D" uid="uid://4mpob6r0inkq" path="res://resources/icons/arrow-big-left.svg" id="23_ol8dy"]
+[ext_resource type="Script" uid="uid://eviwqn52onoo" path="res://gameplay/visuals/score_hud.gd" id="30_score_hud"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sky1"]
+shader = ExtResource("8_t6o8f")
+shader_parameter/base_color = Color(0, 0, 0, 1)
+shader_parameter/detail_color = Color(0.15570518, 0.15570173, 0.18305299, 1)
+
+[sub_resource type="Sky" id="Sky_q64rj"]
+sky_material = SubResource("ShaderMaterial_sky1")
+
+[sub_resource type="Environment" id="Environment_0w2j2"]
+background_mode = 2
+sky = SubResource("Sky_q64rj")
+sky_rotation = Vector3(-0.4712389, 3.1415927, 0)
+tonemap_mode = 2
+glow_enabled = true
+fog_light_color = Color(0, 0, 0, 1)
+fog_light_energy = 0.0
+fog_sky_affect = 0.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_player_shadow"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.023529412, 0.019607844, 0.05490196, 0.5137255)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_player_shadow"]
+material = SubResource("StandardMaterial3D_player_shadow")
+height = 0.015
+radial_segments = 48
+
+[sub_resource type="Animation" id="Animation_c6mtg"]
+length = 0.93333334
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Control/Vignette:material:shader_parameter/edge_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("VFXAnimationPlayer/AudioStreamPlayer2:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+
+[sub_resource type="Animation" id="Animation_l0mho"]
+resource_name = "miss"
+length = 0.36666667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.03333333, 0.36666667),
+"transitions": PackedFloat32Array(1, 0.20306315),
+"update": 0,
+"values": [Color(0.44, 0.096800014, 0.096800014, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.03333334, 0.36666667),
+"transitions": PackedFloat32Array(0.17677675, 1),
+"update": 0,
+"values": [Vector3(-0.34906584, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Control/Vignette:material:shader_parameter/edge_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.033333335, 0.23333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.7, 0.133, 0.133, 1), Color(0, 0, 0, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("VFXAnimationPlayer/AudioStreamPlayer2:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ol8dy"]
+_data = {
+&"RESET": SubResource("Animation_c6mtg"),
+&"miss": SubResource("Animation_l0mho")
+}
+
+[sub_resource type="Animation" id="Animation_00tan"]
+length = 0.001
+tracks/0/type = "scale_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player/Sprite3D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 1, 1, 1)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Player/Sprite3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_l1v76"]
+resource_name = "groove"
+length = 0.36666667
+tracks/0/type = "scale_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player/Sprite3D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 1, 1.15, 1, 0.15, 1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_ct7aa"]
+resource_name = "spin"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player/Sprite3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06, 0.12),
+"transitions": PackedFloat32Array(0.4061271, 1.5157164, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 3.1415927, 0), Vector3(0, 6.2831855, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ct7aa"]
+_data = {
+&"RESET": SubResource("Animation_00tan"),
+&"groove": SubResource("Animation_l1v76"),
+&"spin": SubResource("Animation_ct7aa")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_stage_interface"]
+render_priority = -2
+shader = ExtResource("16_stage_interface")
+shader_parameter/floor_color = Color(0, 0, 0, 1)
+shader_parameter/guide_color = Color(0, 0, 0, 1)
+shader_parameter/accent_color = Color(0, 0, 0, 1)
+shader_parameter/detail_color = Color(0, 0, 0, 1)
+shader_parameter/line_opacity = 0.74
+shader_parameter/floor_opacity = 0.34
+shader_parameter/volume_alpha_boost = 0.78
+shader_parameter/scroll_offset = 0.0
+shader_parameter/low_energy = 0.0
+shader_parameter/mid_energy = 0.0
+shader_parameter/high_energy = 0.0
+shader_parameter/volume_level = 0.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_00tan"]
+lightmap_size_hint = Vector2i(152, 402)
+material = SubResource("ShaderMaterial_stage_interface")
+size = Vector2(18.5, 66)
+center_offset = Vector3(0, 0, -24)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_elju3"]
+bg_color = Color(0.08235294, 0.0627451, 0.19607843, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lb4ud"]
+bg_color = Color(0.6, 0.6, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5fgof"]
+shader = ExtResource("11_7cr05")
+shader_parameter/dot_color = Color(1, 1, 1, 0.30980393)
+shader_parameter/open_area = Vector2(0.9, 0.8)
+shader_parameter/ring_spacing = 18.000000569999997
+shader_parameter/dot_spacing = 64.0
+shader_parameter/max_dot_radius = 5.070000193325
+shader_parameter/shrink_distance = 172.406007714285
+shader_parameter/speed = 10.000000475
+shader_parameter/softness = 1.0
+shader_parameter/squareness = 4.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pa1on"]
+shader = ExtResource("6_gh441")
+shader_parameter/height = 3.0
+shader_parameter/frequency = 20.0
+shader_parameter/speed = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sxh0i"]
+shader = ExtResource("6_gh441")
+shader_parameter/height = 3.0
+shader_parameter/frequency = 20.0
+shader_parameter/speed = 3.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_stage_vignette"]
+shader = ExtResource("18_stage_vignette")
+shader_parameter/edge_color = Color(0, 0, 0, 1)
+shader_parameter/strength = 0.46
+
+[node name="Gameplay" type="Node3D" unique_id=1019670328 node_paths=PackedStringArray("player", "rail_container", "songplayer", "dim", "pause_menu", "gameplay_camera", "hud_root", "combo_container", "combo_label", "score_hud", "world_environment", "stage_visualizer")]
+script = ExtResource("1_m3hu3")
+player = NodePath("Player")
+rail_container = NodePath("PlayArea/RailContainer")
+songplayer = NodePath("AudioStreamPlayer")
+dim = NodePath("Control/DIM")
+pause_menu = NodePath("Control/PauseMenu")
+gameplay_camera = NodePath("Camera3D")
+hud_root = NodePath("Control")
+combo_container = NodePath("Control/VBoxContainer")
+combo_label = NodePath("Control/VBoxContainer/Combo")
+score_hud = NodePath("Control/VBoxContainer2")
+world_environment = NodePath("WorldEnvironment")
+stage_visualizer = NodePath("PlayArea/StageVisualizer")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1092359596 node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 3.5)
+fov = 74.0
+script = ExtResource("2_0w2j2")
+player = NodePath("../Player")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=151517771]
+environment = SubResource("Environment_0w2j2")
+
+[node name="Shadow" type="MeshInstance3D" parent="." unique_id=287039653 node_paths=PackedStringArray("player")]
+transform = Transform3D(1.2, 0, 0, 0, 0.90326446, -0.25, 0, 0.5215, 0.4330127, 0, 0.025, 0)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_player_shadow")
+skeleton = NodePath("../Player")
+script = ExtResource("4_i6m2i")
+player = NodePath("../Player")
+
+[node name="Player" type="Node3D" parent="." unique_id=480149074 node_paths=PackedStringArray("sprite")]
+script = ExtResource("2_q64rj")
+sprite = NodePath("Sprite3D")
+hit_star_effect_scene = ExtResource("3_hit_stars")
+
+[node name="VFXAnimationPlayer" type="AnimationPlayer" parent="Player" unique_id=952719552]
+libraries/ = SubResource("AnimationLibrary_ol8dy")
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Player/VFXAnimationPlayer" unique_id=302843884]
+stream = ExtResource("7_l0mho")
+volume_db = -28.907
+pitch_scale = 1.5
+bus = &"SFX"
+
+[node name="SkinEffects" type="AnimationPlayer" parent="Player" unique_id=297134405]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_ct7aa")
+
+[node name="Sprite3D" type="Sprite3D" parent="Player" unique_id=1036638687 node_paths=PackedStringArray("effectplayer")]
+layers = 4
+offset = Vector2(0, 980)
+pixel_size = 0.0009
+render_priority = 2
+texture = ExtResource("7_sxh0i")
+script = ExtResource("4_gh441")
+effectplayer = NodePath("../SkinEffects")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=906267777]
+bus = &"Music"
+
+[node name="PlayArea" type="Node3D" parent="." unique_id=1670040184]
+transform = Transform3D(1, 0, 0, 0, 0.8329211, -0.5533914, 0, 0.5533914, 0.8329211, 0, 0, 0)
+
+[node name="Ground" type="MeshInstance3D" parent="PlayArea" unique_id=910030164]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0)
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_00tan")
+
+[node name="GroundDecals" type="Node3D" parent="PlayArea" unique_id=1887894158]
+
+[node name="StageVisualizer" type="Node3D" parent="PlayArea" unique_id=1180810529 node_paths=PackedStringArray("ground", "player", "vignette")]
+script = ExtResource("9_stage_visualizer")
+ground = NodePath("../Ground")
+player = NodePath("../../Player")
+vignette = NodePath("../../Control/Vignette")
+
+[node name="RailContainer" type="Node3D" parent="PlayArea" unique_id=739287196]
+transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, 0, -50.5)
+
+[node name="Control" type="Control" parent="." unique_id=1030558378]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Control" unique_id=86631262]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_elju3")
+theme_override_styles/fill = SubResource("StyleBoxFlat_lb4ud")
+show_percentage = false
+
+[node name="ReplayVignette" type="ColorRect" parent="Control" unique_id=1474494976]
+visible = false
+material = SubResource("ShaderMaterial_5fgof")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="StageOverlay" type="Control" parent="Control" unique_id=1031890760 node_paths=PackedStringArray("visualizer")]
+z_index = -10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("17_stage_overlay")
+visualizer = NodePath("../../PlayArea/StageVisualizer")
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=40893792]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.416
+anchor_right = 1.0
+anchor_bottom = 0.416
+offset_left = -544.0
+offset_top = -72.28
+offset_right = -128.0
+offset_bottom = 99.72
+grow_vertical = 0
+alignment = 1
+
+[node name="Combo" type="Label" parent="Control/VBoxContainer" unique_id=2031579115]
+material = SubResource("ShaderMaterial_pa1on")
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.39607844, 0.30980393, 0.8627451, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 5
+theme_override_constants/shadow_outline_size = 10
+theme_override_fonts/font = ExtResource("6_0w2j2")
+theme_override_font_sizes/font_size = 84
+text = "1000"
+horizontal_alignment = 1
+vertical_alignment = 3
+metadata/_edit_lock_ = true
+
+[node name="Combo2" type="Label" parent="Control/VBoxContainer" unique_id=1893212674]
+material = SubResource("ShaderMaterial_pa1on")
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.39607844, 0.30980393, 0.8627451, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 5
+theme_override_constants/shadow_outline_size = 10
+theme_override_fonts/font = ExtResource("6_0w2j2")
+theme_override_font_sizes/font_size = 48
+text = "combo"
+horizontal_alignment = 1
+vertical_alignment = 3
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="Control" unique_id=372332153 node_paths=PackedStringArray("rank_label", "accuracy_label")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.004
+anchor_right = 0.5
+anchor_bottom = 0.004
+offset_left = -128.0
+offset_top = -2.3200002
+offset_right = 126.558105
+offset_bottom = 126.70994
+grow_vertical = 0
+mouse_filter = 2
+alignment = 1
+script = ExtResource("30_score_hud")
+rank_label = NodePath("Rank")
+accuracy_label = NodePath("Score")
+
+[node name="Rank" type="Label" parent="Control/VBoxContainer2" unique_id=1746702844]
+custom_minimum_size = Vector2(95, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.39607844, 0.30980393, 0.8627451, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 5
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("6_0w2j2")
+theme_override_font_sizes/font_size = 64
+horizontal_alignment = 2
+vertical_alignment = 3
+
+[node name="Score" type="Label" parent="Control/VBoxContainer2" unique_id=1658216824]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.39607844, 0.30980393, 0.8627451, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 5
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("6_0w2j2")
+theme_override_font_sizes/font_size = 32
+text = "99.5%"
+vertical_alignment = 3
+
+[node name="Meta" type="Control" parent="Control" unique_id=1865963799 node_paths=PackedStringArray("title_label", "info_label", "cover")]
+anchors_preset = 0
+offset_right = 728.0
+offset_bottom = 169.0
+script = ExtResource("9_lb4ud")
+title_label = NodePath("Title")
+info_label = NodePath("Info")
+cover = NodePath("Cover")
+
+[node name="Cover" type="TextureRect" parent="Control/Meta" unique_id=2105000127]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 176.0
+offset_bottom = 168.0
+texture = ExtResource("9_elju3")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="Control/Meta" unique_id=967768691]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 198.0
+offset_top = 33.0
+offset_right = 576.0
+offset_bottom = 66.0
+theme_override_colors/font_color = Color(0.97997814, 0.9852869, 0.98720556, 1)
+theme_override_fonts/font = ExtResource("11_bhb63")
+theme_override_font_sizes/font_size = 32
+text = "title"
+text_overrun_behavior = 5
+
+[node name="Info" type="Label" parent="Control/Meta" unique_id=2122765083]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 198.0
+offset_top = 67.0
+offset_right = 576.0
+offset_bottom = 97.0
+theme_override_colors/font_color = Color(0.39607844, 0.30980393, 0.8627451, 1)
+theme_override_colors/font_outline_color = Color(0.08235294, 0.0627451, 0.19607843, 1)
+theme_override_fonts/font = ExtResource("11_bhb63")
+theme_override_font_sizes/font_size = 24
+text = "difficulty (bpm)"
+text_overrun_behavior = 5
+
+[node name="Dialogue" parent="Control" unique_id=1526561723 instance=ExtResource("19_c6mtg")]
+visible = false
+layout_mode = 1
+
+[node name="DIM" type="ColorRect" parent="Control" unique_id=904665879]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+metadata/_edit_lock_ = true
+
+[node name="PauseMenu" type="VBoxContainer" parent="Control" unique_id=897823575]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -195.0
+offset_top = -100.0
+offset_right = 195.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 1080)
+
+[node name="Resume" parent="Control/PauseMenu" unique_id=869280924 instance=ExtResource("20_sxh0i")]
+custom_minimum_size = Vector2(300, 64)
+layout_mode = 2
+bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
+button_text = "resume"
+icon_texture = ExtResource("21_c6mtg")
+hover_scale = 1.04
+
+[node name="Retry" parent="Control/PauseMenu" unique_id=1558929082 instance=ExtResource("20_sxh0i")]
+custom_minimum_size = Vector2(300, 64)
+layout_mode = 2
+bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
+button_text = "retry"
+icon_texture = ExtResource("21_sxh0i")
+hover_scale = 1.04
+
+[node name="Quit" parent="Control/PauseMenu" unique_id=977372013 instance=ExtResource("20_sxh0i")]
+custom_minimum_size = Vector2(300, 64)
+layout_mode = 2
+bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
+button_text = "quit"
+icon_texture = ExtResource("23_ol8dy")
+hover_scale = 1.04
+
+[node name="ReplayLabel" type="Label" parent="Control" unique_id=1550486121]
+visible = false
+material = SubResource("ShaderMaterial_sxh0i")
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -68.5
+offset_top = -82.0
+offset_right = 68.5
+offset_bottom = -59.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("6_0w2j2")
+theme_override_font_sizes/font_size = 32
+text = "Watching Replay"
+
+[node name="Vignette" type="ColorRect" parent="Control" unique_id=930881837]
+z_index = -20
+material = SubResource("ShaderMaterial_stage_vignette")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="." unique_id=1168744697]
+offset_left = 24.0
+offset_top = 8.0
+offset_right = 89.0
+offset_bottom = 32.0
+text = "fps 1000"
+script = ExtResource("20_r4rys")
+
+[connection signal="activated" from="Control/PauseMenu/Resume" to="." method="_on_resume_activated"]
+[connection signal="activated" from="Control/PauseMenu/Retry" to="." method="_on_retry_activated"]
+[connection signal="activated" from="Control/PauseMenu/Quit" to="." method="_on_quit_activated"]

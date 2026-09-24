@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://02cn5r1238k1"]
+
+[ext_resource type="Texture2D" uid="uid://dsuq2l4s6g0ku" path="res://resources/icons/star.svg" id="1_emj12"]
+
+[node name="Star" type="TextureRect" unique_id=1216917206]
+custom_minimum_size = Vector2(20, 20)
+modulate = Color(0.48883152, 0.50413513, 0.7820467, 1)
+texture = ExtResource("1_emj12")
+expand_mode = 2
+stretch_mode = 5

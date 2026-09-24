@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://txbv3tuwtel0"]
+
+[ext_resource type="Script" uid="uid://ctohnvsr275ai" path="res://skin/editor/ui/sprite_image.gd" id="1_suuvg"]
+
+[node name="SpriteImage" type="VBoxContainer" unique_id=414158218 node_paths=PackedStringArray("file_name_label", "texture_rect")]
+alignment = 1
+script = ExtResource("1_suuvg")
+file_name_label = NodePath("file_name")
+texture_rect = NodePath("TextureRect")
+
+[node name="file_name" type="Label" parent="." unique_id=862158639]
+layout_mode = 2
+text = "sprite file name"
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1611643655]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5

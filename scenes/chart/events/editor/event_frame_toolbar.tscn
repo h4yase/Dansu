@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://doxrt0duc8l2s" path="res://chart/events/editor/event_frame_toolbar.gd" id="1_toolbar"]
+
+[node name="EventFrameToolbar" type="HBoxContainer" node_paths=PackedStringArray("selector", "add_button", "duplicate_button", "remove_button")]
+theme_override_constants/separation = 8
+script = ExtResource("1_toolbar")
+selector = NodePath("Selector")
+add_button = NodePath("Add")
+duplicate_button = NodePath("Duplicate")
+remove_button = NodePath("Remove")
+
+[node name="Selector" type="OptionButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+fit_to_longest_item = false
+clip_text = true
+text_overrun_behavior = 5
+
+[node name="Add" type="Button" parent="."]
+layout_mode = 2
+text = "+"
+
+[node name="Duplicate" type="Button" parent="."]
+layout_mode = 2
+text = "Duplicate"
+
+[node name="Remove" type="Button" parent="."]
+layout_mode = 2
+text = "-"

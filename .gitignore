@@ -1,0 +1,22 @@
+# Godot editor-generated cache
+.godot/
+contents/*
+!contents/chartsets.json
+# Generated export/build directories
+/android/
+/plugins/
+
+# Local editor settings
+.vscode/
+
+# Temporary and backup files
+*.[Tt][Mm][Pp]
+*.old
+/bin/~*.dll
+/addons/**/~*.dll
+*.pdb
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini

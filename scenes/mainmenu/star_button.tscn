@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://bi38ewb02pdbn"]
+
+[ext_resource type="Texture2D" uid="uid://dsuq2l4s6g0ku" path="res://resources/icons/star.svg" id="1_gol86"]
+[ext_resource type="Script" uid="uid://co8sjsrhea7lh" path="res://scenes/mainmenu/star_button.gd" id="2_el5pr"]
+[ext_resource type="FontFile" uid="uid://cay31gip2omwr" path="res://resources/fonts/BebasNeue-Regular.ttf" id="3_iorlk"]
+
+[node name="StarButton" type="TextureRect" unique_id=939246191 node_paths=PackedStringArray("rating_label", "selection_glow")]
+self_modulate = Color(0.49019608, 0.5058824, 0.78039217, 1)
+offset_right = 128.0
+offset_bottom = 120.0
+mouse_default_cursor_shape = 2
+texture = ExtResource("1_gol86")
+expand_mode = 2
+script = ExtResource("2_el5pr")
+rating_label = NodePath("Label")
+selection_glow = NodePath("SelectionGlow")
+
+[node name="SelectionGlow" type="TextureRect" parent="." unique_id=2001392262]
+modulate = Color(0.1148968, 0.11489681, 0.1148968, 0.5764706)
+self_modulate = Color(0.33, 0.33, 0.33, 1)
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_gol86")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="." unique_id=595766297]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.523
+anchor_right = 0.5
+anchor_bottom = 0.523
+offset_left = -42.0
+offset_top = -18.472
+offset_right = 42.0
+offset_bottom = 20.528
+mouse_filter = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_iorlk")
+theme_override_font_sizes/font_size = 35
+text = "12"
+horizontal_alignment = 1
+vertical_alignment = 1

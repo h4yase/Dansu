@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://24osfal67ed8"]
+
+[ext_resource type="Script" uid="uid://dtb1qrk67f0u" path="res://gameplay/note_break_effect.gd" id="1_effect"]
+[ext_resource type="Shader" uid="uid://bta7elmnijq6" path="res://resources/shaders/note_shard_process.gdshader" id="2_process"]
+[ext_resource type="Shader" uid="uid://b1kpa22deomx" path="res://resources/shaders/note_shard.gdshader" id="3_draw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_process"]
+resource_local_to_scene = true
+shader = ExtResource("2_process")
+shader_parameter/full_size = Vector2(1, 1)
+shader_parameter/shard_columns = 2
+shader_parameter/shard_rows = 1
+shader_parameter/burst_speed_min = 1.15
+shader_parameter/burst_speed_max = 2.45
+shader_parameter/vertical_lift = 0.85
+shader_parameter/gravity = 16.0
+shader_parameter/drag = 1.2
+shader_parameter/spin_min = 0.45
+shader_parameter/spin_max = 1.5
+shader_parameter/forward_inertia = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_shard"]
+resource_local_to_scene = true
+render_priority = 1
+shader = ExtResource("3_draw")
+shader_parameter/tint = Color(1, 1, 1, 1)
+shader_parameter/shard_columns = 2
+shader_parameter/shard_rows = 1
+shader_parameter/flip_h = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_shard"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_shard")
+size = Vector2(0.2, 0.2)
+
+[node name="NoteBreakEffect" type="Node3D" unique_id=1982852363 node_paths=PackedStringArray("particles")]
+script = ExtResource("1_effect")
+particles = NodePath("Shards")
+inertia_ratio = 0.09
+
+[node name="Shards" type="GPUParticles3D" parent="." unique_id=781432013]
+layers = 4
+emitting = false
+amount = 2
+lifetime = 0.38
+one_shot = true
+explosiveness = 1.0
+randomness = 0.08
+fixed_fps = 60
+visibility_aabb = AABB(-4, -4, -2, 8, 8, 4)
+local_coords = true
+process_material = SubResource("ShaderMaterial_process")
+draw_pass_1 = SubResource("QuadMesh_shard")
+
+[connection signal="finished" from="Shards" to="." method="_on_particles_finished"]

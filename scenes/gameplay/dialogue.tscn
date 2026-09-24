@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://ciy8qmxxf5it3"]
+
+[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="1_ala5t"]
+[ext_resource type="Texture2D" uid="uid://bmbyphvjkh055" path="res://resources/skins/original/sprites/dance1.png" id="1_np8ps"]
+
+[node name="Dialogue" type="Panel" unique_id=1370387063]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -539.0
+offset_right = 1.0
+offset_bottom = 137.0
+grow_horizontal = 0
+
+[node name="Panel" type="Panel" parent="." unique_id=284588897]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.016569851
+anchor_top = 0.027238535
+anchor_right = 0.016569851
+anchor_bottom = 0.027238535
+offset_left = 0.16998291
+offset_top = 0.06199932
+offset_right = 132.16998
+offset_bottom = 126.38
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="Panel" unique_id=1871572895]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+offset_right = 131.99998
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_np8ps")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="." unique_id=1649130542]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+offset_left = 151.99997
+offset_top = 18.0
+offset_right = 377.99997
+offset_bottom = -15.317001
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("1_ala5t")
+theme_override_font_sizes/font_size = 32
+text = "example text"
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true

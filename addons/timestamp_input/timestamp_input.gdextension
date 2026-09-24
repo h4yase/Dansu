@@ -1,0 +1,9 @@
+[configuration]
+
+entry_symbol = "timestamp_input_library_init"
+compatibility_minimum = "4.7.2"
+
+[libraries]
+
+windows.debug.x86_64 = "res://addons/timestamp_input/timestamp_input.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "res://addons/timestamp_input/timestamp_input.windows.template_release.x86_64.dll"

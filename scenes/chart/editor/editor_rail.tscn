@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c4xj2r5kj0wka"]
+
+[ext_resource type="Texture2D" uid="uid://wgfo6ovey1hs" path="res://resources/textures/editor/editor_rail.tres" id="1_5qn84"]
+[ext_resource type="Script" uid="uid://d1r7elp5jbj8m" path="res://chart/editor/rail_editor.gd" id="2_sx6qy"]
+[ext_resource type="Texture2D" uid="uid://wg23gkypegfp" path="res://resources/textures/editor/editor_railpoint.svg" id="3_point"]
+
+[node name="Rail" type="TextureRect" unique_id=1455615527 node_paths=PackedStringArray("point_handle_template")]
+texture = ExtResource("1_5qn84")
+script = ExtResource("2_sx6qy")
+point_handle_template = NodePath("PointHandleTemplate")
+
+[node name="PointHandleTemplate" type="TextureRect" parent="." unique_id=867723468]
+visible = false
+z_index = 1
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 0
+offset_right = 18.0
+offset_bottom = 18.0
+mouse_filter = 2
+texture = ExtResource("3_point")
+expand_mode = 2

@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://c70h3r7fc4lba"]
+
+[ext_resource type="Script" uid="uid://bb6mntjq428sa" path="res://chart/events/editor/event_editor_timeline.gd" id="1_timeline"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.05490196, 0.05882353, 0.08627451, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.47058824, 0.40392157, 0.8784314, 0.38)
+
+[node name="EventDock" type="PanelContainer" unique_id=625527830]
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=878013964]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 12
+
+[node name="Layout" type="VBoxContainer" parent="Margin" unique_id=890516542]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Toolbar" type="HBoxContainer" parent="Margin/Layout" unique_id=93210564]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Margin/Layout/Toolbar" unique_id=1368322434]
+custom_minimum_size = Vector2(118, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.95, 0.99, 1)
+theme_override_font_sizes/font_size = 18
+text = "EVENT TIMELINE"
+
+[node name="AddOverlay" type="Button" parent="Margin/Layout/Toolbar" unique_id=517003828]
+unique_name_in_owner = true
+layout_mode = 2
+text = "+ Overlay"
+
+[node name="Spacer" type="Control" parent="Margin/Layout/Toolbar" unique_id=207448616]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ZoomLabel" type="Label" parent="Margin/Layout/Toolbar" unique_id=1974072371]
+layout_mode = 2
+text = "Zoom"
+vertical_alignment = 1
+
+[node name="Zoom" type="HSlider" parent="Margin/Layout/Toolbar" unique_id=1923736676]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+min_value = 0.015
+max_value = 0.4
+step = 0.005
+value = 0.08
+
+[node name="Follow" type="Button" parent="Margin/Layout/Toolbar" unique_id=1925593602]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+text = "Follow"
+
+[node name="Collapse" type="Button" parent="Margin/Layout/Toolbar" unique_id=488563623]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Collapse"
+
+[node name="Timeline" type="Control" parent="Margin/Layout" unique_id=997993742]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 182)
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("1_timeline")

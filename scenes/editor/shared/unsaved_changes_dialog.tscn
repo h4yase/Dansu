@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://cwras8rjfuils"]
+
+[ext_resource type="Script" uid="uid://cl6fjxlornego" path="res://editor/shared/unsaved_changes_dialog.gd" id="1_dialog"]
+[ext_resource type="Theme" uid="uid://d3ctsqw4vkokp" path="res://resources/themes/editor_mainmenu_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jckv"]
+bg_color = Color(0, 0, 0, 0.47058824)
+expand_margin_left = 5.0
+expand_margin_top = 36.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
+[node name="UnsavedChangesDialog" type="Window" unique_id=1331416570 node_paths=PackedStringArray("message_label", "save_button", "discard_button", "cancel_button")]
+oversampling_override = 1.0
+title = "Unsaved changes"
+initial_position = 2
+size = Vector2i(520, 180)
+transient = true
+exclusive = true
+unresizable = true
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_1jckv")
+script = ExtResource("1_dialog")
+message_label = NodePath("Panel/Margin/Content/Message")
+save_button = NodePath("Panel/Margin/Content/Actions/Save")
+discard_button = NodePath("Panel/Margin/Content/Actions/Discard")
+cancel_button = NodePath("Panel/Margin/Content/Actions/Cancel")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=795375464]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+
+[node name="Margin" type="MarginContainer" parent="Panel" unique_id=108227937]
+layout_mode = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 22
+
+[node name="Content" type="VBoxContainer" parent="Panel/Margin" unique_id=67236186]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="Message" type="Label" parent="Panel/Margin/Content" unique_id=832863892]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Save changes before leaving?"
+vertical_alignment = 1
+
+[node name="Actions" type="HBoxContainer" parent="Panel/Margin/Content" unique_id=1186073934]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Spacer" type="Control" parent="Panel/Margin/Content/Actions" unique_id=334757996]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Discard" type="Button" parent="Panel/Margin/Content/Actions" unique_id=1865422616]
+custom_minimum_size = Vector2(150, 38)
+layout_mode = 2
+text = "Leave without saving"
+
+[node name="Cancel" type="Button" parent="Panel/Margin/Content/Actions" unique_id=1552528499]
+custom_minimum_size = Vector2(90, 38)
+layout_mode = 2
+text = "Cancel"
+
+[node name="Save" type="Button" parent="Panel/Margin/Content/Actions" unique_id=328998681]
+custom_minimum_size = Vector2(130, 38)
+layout_mode = 2
+text = "Save and leave"

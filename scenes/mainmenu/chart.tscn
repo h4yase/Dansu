@@ -1,0 +1,121 @@
+[gd_scene format=3 uid="uid://cij7mo4rkb3uj"]
+
+[ext_resource type="Script" uid="uid://dow8q3xbpsbpe" path="res://scenes/mainmenu/menu_chart_button.gd" id="1_oshov"]
+[ext_resource type="Texture2D" uid="uid://cw8cihgunxcv6" path="res://icon.svg" id="2_olni0"]
+[ext_resource type="FontFile" uid="uid://cay31gip2omwr" path="res://resources/fonts/BebasNeue-Regular.ttf" id="3_3ftk4"]
+[ext_resource type="AudioStream" uid="uid://d3iw0ufj1v4w7" path="res://resources/audio/buttons/click2.ogg" id="4_3yoln"]
+[ext_resource type="AudioStream" uid="uid://c2jir4psytu6t" path="res://resources/audio/buttons/switch37.ogg" id="5_es5n0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3yoln"]
+bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="Chart" type="Control" unique_id=1752993019 node_paths=PackedStringArray("panel", "rating_hbox", "hover_player", "click_player", "thumb", "title_label", "description_label")]
+custom_minimum_size = Vector2(0, 148)
+layout_mode = 3
+anchor_top = 0.069000006
+anchor_bottom = 0.069000006
+offset_top = -74.520004
+offset_right = 742.0
+offset_bottom = 100.479996
+mouse_filter = 1
+script = ExtResource("1_oshov")
+panel = NodePath("PanelContainer")
+rating_hbox = NodePath("PanelContainer/MarginContainer/HBoxContainer2/VBoxContainer/Levels")
+hover_player = NodePath("SFX/Hover")
+click_player = NodePath("SFX/Click")
+thumb = NodePath("PanelContainer/MarginContainer/HBoxContainer2/Thumb")
+title_label = NodePath("PanelContainer/MarginContainer/HBoxContainer2/VBoxContainer/Title")
+description_label = NodePath("PanelContainer/MarginContainer/HBoxContainer2/VBoxContainer/Desc")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=982317533]
+modulate = Color(1, 1, 1, 0.8)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -74.0
+offset_right = 700.0
+offset_bottom = 74.0
+grow_vertical = 2
+pivot_offset = Vector2(-100, 74)
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_3yoln")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=456640987]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/MarginContainer" unique_id=690489495]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Thumb" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer2" unique_id=1850767528]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(124, 124)
+layout_mode = 2
+texture = ExtResource("2_olni0")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer2" unique_id=651726071]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="TopSpacer" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer2/VBoxContainer" unique_id=2091060496]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer2/VBoxContainer" unique_id=30459335]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88444847, 0.88448644, 0.9887944, 1)
+theme_override_fonts/font = ExtResource("3_3ftk4")
+theme_override_font_sizes/font_size = 32
+text = "song title"
+clip_text = true
+text_overrun_behavior = 5
+
+[node name="Desc" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer2/VBoxContainer" unique_id=539646590]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.33913502, 0.24247676, 0.7301808, 1)
+theme_override_fonts/font = ExtResource("3_3ftk4")
+theme_override_font_sizes/font_size = 16
+text = "artist (mapper)"
+clip_text = true
+text_overrun_behavior = 5
+
+[node name="BottomSpacer" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer2/VBoxContainer" unique_id=1868764869]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Levels" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer2/VBoxContainer" unique_id=1541851174]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+alignment = 2
+
+[node name="SFX" type="Node" parent="." unique_id=293365030]
+
+[node name="Hover" type="AudioStreamPlayer" parent="SFX" unique_id=1070871605]
+unique_name_in_owner = true
+stream = ExtResource("4_3yoln")
+volume_db = -77.6
+bus = &"SFX"
+
+[node name="Click" type="AudioStreamPlayer" parent="SFX" unique_id=1261242889]
+unique_name_in_owner = true
+stream = ExtResource("5_es5n0")
+bus = &"SFX"

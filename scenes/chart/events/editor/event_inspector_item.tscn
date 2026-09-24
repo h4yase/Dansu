@@ -1,0 +1,93 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://dbx4abkbrdok2" path="res://chart/events/editor/event_inspector_item.gd" id="1_item"]
+
+[node name="EventInspectorItem" type="VBoxContainer" node_paths=PackedStringArray("title_label", "badge_label", "separator", "separator_label", "field_row", "field_label", "line_edit", "spin_box", "check_box", "color_picker", "option_button", "import_button", "action_button")]
+script = ExtResource("1_item")
+title_label = NodePath("Title")
+badge_label = NodePath("Badge")
+separator = NodePath("Separator")
+separator_label = NodePath("Separator/Label")
+field_row = NodePath("Field")
+field_label = NodePath("Field/Label")
+line_edit = NodePath("Field/LineEdit")
+spin_box = NodePath("Field/SpinBox")
+check_box = NodePath("Field/CheckBox")
+color_picker = NodePath("Field/ColorPickerButton")
+option_button = NodePath("Field/OptionButton")
+import_button = NodePath("Field/Import")
+action_button = NodePath("Action")
+
+[node name="Title" type="Label" parent="."]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.929412, 0.94902, 0.980392, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="Badge" type="Label" parent="."]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+
+[node name="Separator" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="Separator"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.462745, 0.509804, 0.588235, 1)
+theme_override_font_sizes/font_size = 11
+
+[node name="HSeparator" type="HSeparator" parent="Separator"]
+layout_mode = 2
+
+[node name="Field" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="Field"]
+custom_minimum_size = Vector2(108, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.666667, 0.698039, 0.752941, 1)
+
+[node name="LineEdit" type="LineEdit" parent="Field"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpinBox" type="SpinBox" parent="Field"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+allow_greater = true
+allow_lesser = true
+
+[node name="CheckBox" type="CheckBox" parent="Field"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="Field"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+edit_alpha = true
+
+[node name="OptionButton" type="OptionButton" parent="Field"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+fit_to_longest_item = false
+clip_text = true
+text_overrun_behavior = 5
+
+[node name="Import" type="Button" parent="Field"]
+visible = false
+layout_mode = 2
+text = "Import"
+
+[node name="Action" type="Button" parent="."]
+visible = false
+layout_mode = 2

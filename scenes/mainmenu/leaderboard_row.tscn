@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://h0t8r6ti2gwc"]
+
+[ext_resource type="Script" path="res://scenes/mainmenu/leaderboard_row.gd" id="1_row"]
+[ext_resource type="FontFile" uid="uid://cay31gip2omwr" path="res://resources/fonts/BebasNeue-Regular.ttf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://cw8cihgunxcv6" path="res://icon.svg" id="3_3groa"]
+[ext_resource type="Theme" uid="uid://d3ctsqw4vkokp" path="res://resources/themes/editor_mainmenu_theme.tres" id="4_3fa0w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleRow"]
+bg_color = Color(0.105, 0.09, 0.165, 0.92)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[node name="LeaderboardRow" type="PanelContainer" unique_id=1747893795 node_paths=PackedStringArray("rank_label", "name_label", "accuracy_label", "combo_label")]
+custom_minimum_size = Vector2(0, 48)
+offset_right = 588.0
+offset_bottom = 48.0
+theme_override_styles/panel = SubResource("StyleRow")
+script = ExtResource("1_row")
+rank_label = NodePath("Margin/Columns/Rank")
+name_label = NodePath("Margin/Columns/Name")
+accuracy_label = NodePath("Margin/Columns/Accuracy")
+combo_label = NodePath("Margin/Columns/Combo")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1066525827]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_right = 14
+
+[node name="Columns" type="HBoxContainer" parent="Margin" unique_id=1755008434]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Rank" type="Label" parent="Margin/Columns" unique_id=1750449800]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 22
+text = "#1"
+vertical_alignment = 1
+
+[node name="ProfileImage" type="TextureRect" parent="Margin/Columns" unique_id=1752096110]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("3_3groa")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Margin/Columns" unique_id=564368374]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 22
+text = "PLAYER"
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="Accuracy" type="Label" parent="Margin/Columns" unique_id=928376877]
+custom_minimum_size = Vector2(115, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 22
+text = "100.00%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Combo" type="Label" parent="Margin/Columns" unique_id=1645122352]
+custom_minimum_size = Vector2(145, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 22
+text = "Full Combo"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Replay" type="Button" parent="Margin/Columns" unique_id=2046232149]
+layout_mode = 2
+theme = ExtResource("4_3fa0w")
+text = "replay"

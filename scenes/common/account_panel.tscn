@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://v4bxpkucqi2h"]
+
+[ext_resource type="Script" uid="uid://dxgkudjnbinxa" path="res://scenes/mainmenu/account_panel.gd" id="1_account"]
+[ext_resource type="Texture2D" uid="uid://1n7idyv4tpvm" path="res://resources/textures/gameplay/stage_decal_cross.svg" id="2_d65th"]
+[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="2_title"]
+[ext_resource type="FontFile" uid="uid://cay31gip2omwr" path="res://resources/fonts/BebasNeue-Regular.ttf" id="3_body"]
+
+[sub_resource type="StyleBoxFlat" id="StylePanel"]
+bg_color = Color(0.05565999, 0.0473, 0.11, 0.92156863)
+border_width_left = 5
+border_width_bottom = 5
+border_color = Color(0.4392157, 0.35686275, 0.87058824, 0.9)
+corner_radius_bottom_left = 20
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleAvatar"]
+bg_color = Color(0.09, 0.08, 0.16, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+corner_detail = 1
+
+[node name="AccountPanel" type="PanelContainer" unique_id=2131798476 node_paths=PackedStringArray("avatar", "avatar_placeholder", "name_label", "rating_label", "rank_label", "avatar_request")]
+clip_children = 2
+custom_minimum_size = Vector2(432, 116)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StylePanel")
+script = ExtResource("1_account")
+avatar = NodePath("Layer/Margin/Content/AvatarFrame/Avatar")
+avatar_placeholder = NodePath("Layer/Margin/Content/AvatarFrame/Placeholder")
+name_label = NodePath("Layer/Margin/Content/Details/Name")
+rating_label = NodePath("Layer/Margin/Content/Details/Metrics/Rating/Value")
+rank_label = NodePath("Layer/Margin/Content/Details/Metrics/Rank/Value")
+avatar_request = NodePath("AvatarRequest")
+
+[node name="Layer" type="Control" parent="." unique_id=1644740277]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="StageDecalCross" type="Sprite2D" parent="Layer" unique_id=1116283372]
+self_modulate = Color(1, 1, 1, 0.20784314)
+position = Vector2(331, 51)
+texture = ExtResource("2_d65th")
+
+[node name="Margin" type="MarginContainer" parent="Layer" unique_id=1712345264]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 13.0
+offset_right = -16.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Content" type="HBoxContainer" parent="Layer/Margin" unique_id=1907065363]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+
+[node name="AvatarFrame" type="PanelContainer" parent="Layer/Margin/Content" unique_id=2090042657]
+custom_minimum_size = Vector2(82, 82)
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleAvatar")
+
+[node name="Placeholder" type="Label" parent="Layer/Margin/Content/AvatarFrame" unique_id=448724984]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.627451, 0.53333336, 1, 0.75)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 42
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Avatar" type="TextureRect" parent="Layer/Margin/Content/AvatarFrame" unique_id=1374517084]
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Details" type="VBoxContainer" parent="Layer/Margin/Content" unique_id=161339468]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Name" type="Label" parent="Layer/Margin/Content/Details" unique_id=1291858051]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96862745, 0.95686275, 1, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 28
+text = "PLAYER"
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="Metrics" type="HBoxContainer" parent="Layer/Margin/Content/Details" unique_id=1913390468]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="Rank" type="VBoxContainer" parent="Layer/Margin/Content/Details/Metrics" unique_id=882735863]
+layout_mode = 2
+
+[node name="Value" type="Label" parent="Layer/Margin/Content/Details/Metrics/Rank" unique_id=405587020]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 24
+text = "not placed"
+
+[node name="Rating" type="VBoxContainer" parent="Layer/Margin/Content/Details/Metrics" unique_id=721522958]
+layout_mode = 2
+
+[node name="Value" type="Label" parent="Layer/Margin/Content/Details/Metrics/Rating" unique_id=547290537]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 24
+text = "0.00 SR"
+
+[node name="AvatarRequest" type="HTTPRequest" parent="." unique_id=1670614514]
+body_size_limit = 4194304
+timeout = 15.0

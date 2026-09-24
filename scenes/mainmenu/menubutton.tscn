@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://c51ndn5ftq4wo"]
+
+[ext_resource type="Script" uid="uid://3hdl10yuw46u" path="res://scenes/mainmenu/menu_button_root.gd" id="1_1nit5"]
+[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="2_e2jnd"]
+[ext_resource type="StyleBox" uid="uid://cvsjh4b0mjet" path="res://resources/themes/button_empty_stylebox.tres" id="3_b8tx0"]
+[ext_resource type="AudioStream" uid="uid://d3iw0ufj1v4w7" path="res://resources/audio/buttons/click2.ogg" id="3_e2jnd"]
+[ext_resource type="AudioStream" uid="uid://cyuw8dpw5to0o" path="res://resources/audio/buttons/switch4.ogg" id="4_xy60t"]
+
+[sub_resource type="GDScript" id="GDScript_da4vi"]
+
+[node name="MenuBigButton" type="Control" unique_id=869280924 node_paths=PackedStringArray("pivot", "background", "button", "icon", "hover_player", "click_player")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 256.0
+offset_bottom = 64.0
+script = ExtResource("1_1nit5")
+pivot = NodePath("Pivot")
+background = NodePath("Pivot/Background")
+button = NodePath("Pivot/Button")
+icon = NodePath("Pivot/Icon")
+hover_player = NodePath("hover")
+click_player = NodePath("click")
+
+[node name="Pivot" type="Control" parent="." unique_id=1867853219]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_transform_enabled = true
+
+[node name="Background" type="ColorRect" parent="Pivot" unique_id=1024784731]
+modulate = Color(1, 1, 1, 0)
+texture_filter = 6
+layout_mode = 0
+offset_left = -128.0
+offset_top = -30.0
+offset_right = 57.0
+offset_bottom = 28.0
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0, 0)
+offset_transform_pivot_ratio = Vector2(0, 0.5)
+color = Color(0.4392157, 0.35686275, 0.87058824, 1)
+
+[node name="Button" type="Button" parent="Pivot" unique_id=109064066]
+layout_mode = 0
+offset_left = -128.0
+offset_top = -32.0
+offset_right = 128.0
+offset_bottom = 32.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_e2jnd")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = ExtResource("3_b8tx0")
+theme_override_styles/normal_mirrored = ExtResource("3_b8tx0")
+theme_override_styles/pressed = ExtResource("3_b8tx0")
+theme_override_styles/pressed_mirrored = ExtResource("3_b8tx0")
+theme_override_styles/hover = ExtResource("3_b8tx0")
+theme_override_styles/disabled = ExtResource("3_b8tx0")
+theme_override_styles/disabled_mirrored = ExtResource("3_b8tx0")
+theme_override_styles/focus = ExtResource("3_b8tx0")
+text = "PLAY"
+alignment = 0
+text_overrun_behavior = 0
+clip_text = false
+script = SubResource("GDScript_da4vi")
+
+[node name="Icon" type="Sprite2D" parent="Pivot" unique_id=453830182]
+position = Vector2(-104, 9.536743e-07)
+scale = Vector2(0.1796875, 0.1796875)
+
+[node name="hover" type="AudioStreamPlayer" parent="." unique_id=1614550564]
+stream = ExtResource("3_e2jnd")
+bus = &"SFX"
+
+[node name="click" type="AudioStreamPlayer" parent="." unique_id=748765477]
+stream = ExtResource("4_xy60t")
+volume_db = 6.969

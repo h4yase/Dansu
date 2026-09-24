@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://3rgo3pf21gx1"]
+
+[ext_resource type="Script" path="res://skin/editor/ui/frame.gd" id="1_8dht2"]
+[ext_resource type="Texture2D" uid="uid://cw8cihgunxcv6" path="res://icon.svg" id="1_q7gpl"]
+
+[node name="FrameTexture" type="TextureRect" unique_id=1039923924 node_paths=PackedStringArray("frame_index_label")]
+offset_right = 128.0
+offset_bottom = 128.0
+texture = ExtResource("1_q7gpl")
+expand_mode = 3
+stretch_mode = 5
+script = ExtResource("1_8dht2")
+frame_index_label = NodePath("FrameIndex")
+
+[node name="FrameIndex" type="Label" parent="." unique_id=956017719]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.47800002
+anchor_top = 0.957
+anchor_right = 0.47800002
+anchor_bottom = 0.957
+offset_left = -67.952
+offset_top = -24.087997
+offset_right = 68.048
+offset_bottom = -1.0879974
+theme_override_font_sizes/font_size = 21
+text = "1"
+horizontal_alignment = 1

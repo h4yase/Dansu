@@ -1,0 +1,423 @@
+[gd_scene format=3 uid="uid://b61fiutj2ccpr"]
+
+[ext_resource type="Script" uid="uid://cok8t52rpdwr5" path="res://skin/editor/skin_editor.gd" id="1_1bx3f"]
+[ext_resource type="PackedScene" uid="uid://c0f1pv7v7l8io" path="res://scenes/skin/editor/animation_button.tscn" id="1_xwaek"]
+[ext_resource type="PackedScene" uid="uid://3rgo3pf21gx1" path="res://scenes/skin/editor/frame.tscn" id="2_6eirq"]
+[ext_resource type="Theme" uid="uid://d3ctsqw4vkokp" path="res://resources/themes/editor_mainmenu_theme.tres" id="3_theme"]
+[ext_resource type="PackedScene" uid="uid://txbv3tuwtel0" path="res://scenes/skin/editor/sprite_image.tscn" id="4_6eirq"]
+[ext_resource type="Shader" uid="uid://cflu32au5woaj" path="res://resources/shaders/bg.gdshader" id="6_bg"]
+[ext_resource type="Shader" uid="uid://cnchsob31pe3k" path="res://resources/shaders/liquid.gdshader" id="7_liquid"]
+[ext_resource type="PackedScene" uid="uid://cwras8rjfuils" path="res://scenes/editor/shared/unsaved_changes_dialog.tscn" id="8_unsaved"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
+shader = ExtResource("6_bg")
+shader_parameter/bg_color = Color(0.0627451, 0.0627451, 0.078431375, 1)
+shader_parameter/shape_color = Color(0.080000006, 0.080000006, 0.1, 1)
+shader_parameter/rect_size = Vector2(1920, 1080)
+shader_parameter/cell_size = 180.0
+shader_parameter/move_speed = 0.5
+shader_parameter/cycle_speed = 0.2
+shader_parameter/transition_ratio = 0.12
+shader_parameter/softness = 0.0
+shader_parameter/circle_size = 0.3
+shader_parameter/square_size = 0.2
+shader_parameter/triangle_size = 0.3
+shader_parameter/square_roundness = 0.05
+shader_parameter/triangle_roundness = 0.025
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wave"]
+shader = ExtResource("7_liquid")
+shader_parameter/water_color = Color(0.4392157, 0.35686275, 0.87058824, 1)
+shader_parameter/water_height = 0.3
+shader_parameter/amplitude = 0.1
+shader_parameter/speed = 0.9
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_top"]
+bg_color = Color(0.05490196, 0.05882353, 0.08627451, 0.94)
+border_width_bottom = 1
+border_color = Color(0.47058824, 0.40392157, 0.8784314, 0.32)
+
+[node name="SkinEditor" type="Control" unique_id=1593651549 node_paths=PackedStringArray("name_line_edit", "idle_option", "left_option", "right_option", "scale_spinbox", "hits_option", "hits_add_new_button", "skin_contents", "new_animation_button", "animation_list_container", "animation_template", "frames_container", "frame_template", "delete_frame_button", "calculate_scale_button", "onion_skin_button", "preview_play_button", "fps_line_edit", "effect_option", "save_button", "back_to_menu_button", "back_to_chart_button", "import_sprite_button", "sprite_list_container", "sprite_template", "preview_sprite", "preview_onion_prev", "preview_onion_next", "drag_preview", "import_dialog", "unsaved_exit_dialog")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_theme")
+script = ExtResource("1_1bx3f")
+name_line_edit = NodePath("Inspector/TabContainer/Skin/ScrollContainer/Contents/name")
+idle_option = NodePath("Inspector/TabContainer/Skin/ScrollContainer/Contents/idle")
+left_option = NodePath("Inspector/TabContainer/Skin/ScrollContainer/Contents/left")
+right_option = NodePath("Inspector/TabContainer/Skin/ScrollContainer/Contents/right2")
+scale_spinbox = NodePath("Inspector/TabContainer/Skin/ScrollContainer/Contents/Scale")
+hits_option = NodePath("Inspector/TabContainer/Skin/ScrollContainer/Contents/HBoxContainer/hits_option")
+hits_add_new_button = NodePath("Inspector/TabContainer/Skin/ScrollContainer/Contents/hits_add_new")
+skin_contents = NodePath("Inspector/TabContainer/Skin/ScrollContainer/Contents")
+new_animation_button = NodePath("Inspector/TabContainer/Animations/ScrollContainer/Contents/Button")
+animation_list_container = NodePath("Inspector/TabContainer/Animations/ScrollContainer/Contents")
+animation_template = NodePath("Inspector/TabContainer/Animations/ScrollContainer/Contents/animation")
+frames_container = NodePath("FramesPanel/MarginContainer/VBoxContainer/ScrollContainer/Frames")
+frame_template = NodePath("FramesPanel/MarginContainer/VBoxContainer/ScrollContainer/Frames/FrameTexture")
+delete_frame_button = NodePath("FramesPanel/MarginContainer/VBoxContainer/HBoxContainer/DeleteFrame")
+calculate_scale_button = NodePath("FramesPanel/MarginContainer/VBoxContainer/HBoxContainer/CalculateScale")
+onion_skin_button = NodePath("FramesPanel/MarginContainer/VBoxContainer/HBoxContainer/OnionSkin")
+preview_play_button = NodePath("FramesPanel/MarginContainer/VBoxContainer/HBoxContainer/PlayPreview")
+fps_line_edit = NodePath("FramesPanel/MarginContainer/VBoxContainer/HBoxContainer/fps")
+effect_option = NodePath("FramesPanel/MarginContainer/VBoxContainer/HBoxContainer/effect")
+save_button = NodePath("TopBar/Margin/Row/Save")
+back_to_menu_button = NodePath("TopBar/Margin/Row/BackToMenu")
+back_to_chart_button = NodePath("TopBar/Margin/Row/BackToChart")
+import_sprite_button = NodePath("SpritesPanel/MarginContainer/VBoxContainer/ImportSpriteImage")
+sprite_list_container = NodePath("SpritesPanel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer")
+sprite_template = NodePath("SpritesPanel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer/SpriteImage")
+preview_sprite = NodePath("Sprite")
+preview_onion_prev = NodePath("SpriteOnionPrev")
+preview_onion_next = NodePath("SpriteOnionNext")
+drag_preview = NodePath("DragPreview")
+import_dialog = NodePath("Dialogs/ImportDialog")
+unsaved_exit_dialog = NodePath("Dialogs/UnsavedChangesDialog")
+
+[node name="Background" type="ColorRect" parent="." unique_id=883904287]
+material = SubResource("ShaderMaterial_background")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="WaveFront" type="ColorRect" parent="." unique_id=1281707973]
+material = SubResource("ShaderMaterial_wave")
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -112.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="TopBar" type="PanelContainer" parent="." unique_id=2029148826]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 58.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_top")
+
+[node name="Margin" type="MarginContainer" parent="TopBar" unique_id=1804557621]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 10
+
+[node name="Row" type="HBoxContainer" parent="TopBar/Margin" unique_id=1109787247]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BackToMenu" type="Button" parent="TopBar/Margin/Row" unique_id=1651710621]
+visible = false
+layout_mode = 2
+text = "Back to menu"
+
+[node name="BackToChart" type="Button" parent="TopBar/Margin/Row" unique_id=879595120]
+visible = false
+layout_mode = 2
+text = "Back to chart"
+
+[node name="Spacer" type="Control" parent="TopBar/Margin/Row" unique_id=1778590122]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Save" type="Button" parent="TopBar/Margin/Row" unique_id=2016360290]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Save skin file"
+
+[node name="Inspector" type="PanelContainer" parent="." unique_id=1602893852]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7911042
+anchor_right = 1.0
+anchor_bottom = 0.7740741
+offset_left = 0.079956055
+offset_top = 70.0
+pivot_offset = Vector2(430, 0)
+metadata/_edit_use_anchors_ = true
+
+[node name="TabContainer" type="TabContainer" parent="Inspector" unique_id=1463497172]
+layout_mode = 2
+current_tab = 0
+
+[node name="Skin" type="TabBar" parent="Inspector/TabContainer" unique_id=295694327]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Inspector/TabContainer/Skin" unique_id=2000608902]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+
+[node name="Contents" type="VBoxContainer" parent="Inspector/TabContainer/Skin/ScrollContainer" unique_id=1974561451]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="label" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=9864851]
+layout_mode = 2
+text = "name"
+horizontal_alignment = 1
+
+[node name="name" type="LineEdit" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=2030152571]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "my skin"
+alignment = 1
+
+[node name="label2" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=619402232]
+layout_mode = 2
+text = "idle animation"
+horizontal_alignment = 1
+
+[node name="idle" type="OptionButton" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=244902117]
+layout_mode = 2
+
+[node name="label4" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=415920648]
+layout_mode = 2
+text = "move left animation"
+horizontal_alignment = 1
+
+[node name="left" type="OptionButton" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=1343311813]
+layout_mode = 2
+
+[node name="label3" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=1939916250]
+layout_mode = 2
+text = "move right animation"
+horizontal_alignment = 1
+
+[node name="right2" type="OptionButton" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=2072640537]
+layout_mode = 2
+
+[node name="label6" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=851556867]
+layout_mode = 2
+text = "scale"
+horizontal_alignment = 1
+
+[node name="Scale" type="SpinBox" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=820968436]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+max_value = 1000.0
+step = 1e-06
+value = 1.0
+allow_greater = true
+suffix = "x"
+
+[node name="label5" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=684326436]
+layout_mode = 2
+text = "note hit animations"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=1120306511]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents/HBoxContainer" unique_id=644629935]
+layout_mode = 2
+text = "hit 1"
+
+[node name="hits_option" type="OptionButton" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents/HBoxContainer" unique_id=2038547040]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="hits_add_new" type="Button" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=529149328]
+layout_mode = 2
+text = "+"
+
+[node name="Animations" type="TabBar" parent="Inspector/TabContainer" unique_id=1174930704]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Inspector/TabContainer/Animations" unique_id=854261867]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+
+[node name="Contents" type="VBoxContainer" parent="Inspector/TabContainer/Animations/ScrollContainer" unique_id=1646037166]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Inspector/TabContainer/Animations/ScrollContainer/Contents" unique_id=1257861288]
+layout_mode = 2
+text = "new animation"
+
+[node name="animation" parent="Inspector/TabContainer/Animations/ScrollContainer/Contents" unique_id=382686474 instance=ExtResource("1_xwaek")]
+layout_mode = 2
+
+[node name="FramesPanel" type="PanelContainer" parent="." unique_id=1993371915]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.83000004
+anchor_right = 1.0
+anchor_bottom = 1.0070001
+offset_top = -56.400024
+offset_bottom = -7.5600586
+
+[node name="MarginContainer" type="MarginContainer" parent="FramesPanel" unique_id=1994497269]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="FramesPanel/MarginContainer" unique_id=804154613]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FramesPanel/MarginContainer/VBoxContainer" unique_id=874745668]
+layout_mode = 2
+
+[node name="DeleteFrame" type="Button" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1511105545]
+layout_mode = 2
+text = "remove current frame"
+
+[node name="CalculateScale" type="Button" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=563814713]
+layout_mode = 2
+text = "calculate scale value"
+
+[node name="OnionSkin" type="Button" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1324408407]
+layout_mode = 2
+text = "toggle onion skin"
+
+[node name="PlayPreview" type="Button" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=165551658]
+layout_mode = 2
+toggle_mode = true
+text = "play preview"
+
+[node name="Label" type="Label" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1760615125]
+layout_mode = 2
+text = "animation fps"
+
+[node name="fps" type="LineEdit" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=474481636]
+layout_mode = 2
+placeholder_text = "12.0"
+
+[node name="Label3" type="Label" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=771486672]
+layout_mode = 2
+text = "animation effect"
+
+[node name="effect" type="OptionButton" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=181024848]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=365699353]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="FramesPanel/MarginContainer/VBoxContainer" unique_id=1096305131]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Frames" type="HBoxContainer" parent="FramesPanel/MarginContainer/VBoxContainer/ScrollContainer" unique_id=728766601]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="FrameTexture" parent="FramesPanel/MarginContainer/VBoxContainer/ScrollContainer/Frames" unique_id=1039923924 instance=ExtResource("2_6eirq")]
+layout_mode = 2
+expand_mode = 2
+
+[node name="SpritesPanel" type="PanelContainer" parent="." unique_id=449119778]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.77300006
+offset_top = 61.0
+offset_right = 241.0
+offset_bottom = 0.15991211
+
+[node name="MarginContainer" type="MarginContainer" parent="SpritesPanel" unique_id=1209615263]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SpritesPanel/MarginContainer" unique_id=854838507]
+layout_mode = 2
+
+[node name="ImportSpriteImage" type="Button" parent="SpritesPanel/MarginContainer/VBoxContainer" unique_id=1399224635]
+layout_mode = 2
+text = "Import Sprite Images"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SpritesPanel/MarginContainer/VBoxContainer" unique_id=1982852125]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SpritesPanel/MarginContainer/VBoxContainer/ScrollContainer" unique_id=663961290]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="GridContainer" type="VBoxContainer" parent="SpritesPanel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=20170196]
+layout_mode = 2
+
+[node name="SpriteImage" parent="SpritesPanel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer" unique_id=414158218 instance=ExtResource("4_6eirq")]
+layout_mode = 2
+
+[node name="SpriteImage2" parent="SpritesPanel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer" unique_id=72291586 instance=ExtResource("4_6eirq")]
+layout_mode = 2
+
+[node name="SpriteImage3" parent="SpritesPanel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer" unique_id=1905580688 instance=ExtResource("4_6eirq")]
+layout_mode = 2
+
+[node name="SpriteImage4" parent="SpritesPanel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GridContainer" unique_id=387552020 instance=ExtResource("4_6eirq")]
+layout_mode = 2
+
+[node name="SpriteOnionPrev" type="Sprite2D" parent="." unique_id=1459623995]
+visible = false
+modulate = Color(0.8117647, 0.14509805, 0.3529412, 0.2784314)
+position = Vector2(968, 496)
+scale = Vector2(0.2, 0.2)
+
+[node name="SpriteOnionNext" type="Sprite2D" parent="." unique_id=1828528770]
+visible = false
+modulate = Color(0.25490198, 1, 1, 0.23921569)
+position = Vector2(968, 496)
+scale = Vector2(0.2, 0.2)
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1149870736]
+position = Vector2(968, 496)
+scale = Vector2(0.2, 0.2)
+
+[node name="DragPreview" type="TextureRect" parent="." unique_id=1573458474]
+visible = false
+self_modulate = Color(1, 1, 1, 0.5)
+z_index = 100
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 0
+offset_right = 96.0
+offset_bottom = 96.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Dialogs" type="Node" parent="." unique_id=319213067]
+
+[node name="ImportDialog" type="FileDialog" parent="Dialogs" unique_id=98028452]
+title = "Open File(s)"
+file_mode = 1
+access = 2
+filters = PackedStringArray("*.png ; PNG Image")
+use_native_dialog = true
+
+[node name="UnsavedChangesDialog" parent="Dialogs" unique_id=1239745447 instance=ExtResource("8_unsaved")]
+visible = false
+message = "Save skin changes before leaving?"

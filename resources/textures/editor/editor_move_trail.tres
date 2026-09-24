@@ -1,0 +1,8 @@
+[gd_resource type="GradientTexture1D" format=3 uid="uid://cytikum4r3axk"]
+
+[sub_resource type="Gradient" id="Gradient_ivpwc"]
+offsets = PackedFloat32Array(0.53333336)
+colors = PackedColorArray(1, 0, 0, 1)
+
+[resource]
+gradient = SubResource("Gradient_ivpwc")
