@@ -316,13 +316,13 @@ func refresh_inspector() -> void:
 	if event != null:
 		_add_title(_get_event_type_name(event).to_upper())
 		if event is OverlayEvent:
-			_add_number_row("Start (ms)", event.time, editor.timeline.get_min_time(), editor.timeline.get_max_time(), 1, _change_start.bind(event))
+			_add_time_row("Start (ms)", event.time, _change_start.bind(event))
 			_add_number_row("Duration", event.duration, 1, editor.timeline.get_max_time(), 1, _change_duration.bind(event))
 			_add_number_row("X order", event.x, 0, SLOT_COUNT - 1, 1, _change_slot.bind(event))
 			_add_overlay_anchor_row(event.anchor, _on_overlay_anchor_changed.bind(event))
 			_add_frame_toolbar(event)
 		if frame != null:
-			_add_number_row("Time (ms)", event.time + frame.time, editor.timeline.get_min_time(), editor.timeline.get_max_time(), 1, _change_frame_time.bind(event, frame))
+			_add_time_row("Time (ms)", event.time + frame.time, _change_frame_time.bind(event, frame))
 			if frame is ThemeEventFrame:
 				_build_theme_frame_inspector(event, frame)
 			elif frame is CameraEventFrame:
@@ -330,10 +330,15 @@ func refresh_inspector() -> void:
 			elif frame is OverlayEventFrame:
 				_build_overlay_frame_inspector(event, frame)
 		if event is SkinEvent:
-			_add_number_row("Time (ms)", event.time, editor.timeline.get_min_time(), editor.timeline.get_max_time(), 1, _change_start.bind(event))
+			_add_time_row("Time (ms)", event.time, _change_start.bind(event))
 			_add_resource_row("Skin JSON", event.skin_json, "skin", event, null)
 	UIFocusUtils.disable_focus_recursive(inspector_content)
 	_syncing = false
+
+func _add_time_row(label: String, time: int, callback: Callable) -> void:
+	var item := _add_inspector_item()
+	item.spin_box.allow_lesser = true
+	item.setup_number(label, time, editor.timeline.get_min_time(), editor.timeline.get_max_time(), 1, callback)
 
 func _change_start(value: float, event: ChartEvent) -> void:
 	if _syncing:
