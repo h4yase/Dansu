@@ -2,7 +2,7 @@ extends Control
 class_name DansuMainMenu
 
 @onready var inline_leaderboard: InlineLeaderboard = $ChartInfo/InlineLeaderboard
-@onready var playlist_selector: Button = $Charts/VBoxContainer/TabBar/PlaylistSelector
+@onready var playlist_selector: Button = $Charts/VBoxContainer/Control/PlaylistSelector
 
 const LOGO_IDLE_SCALE := 1.0
 const LOGO_PEAK_SCALE := 1.15
@@ -131,10 +131,6 @@ func _ready() -> void:
 		playlist_selector.text = title
 		playlist_selector.tooltip_text = title
 		_catalogue.set_playlist(id)
-	)
-	playlist_panel.membership_changed.connect(func():
-		if _catalogue.playlist_id > 0:
-			_catalogue.refresh()
 	)
 	playlist_panel.visibility_set.connect(func(blocked: bool): chart_scroll.input_blocked = blocked)
 	playlist_panel.chartset_chosen.connect(_on_playlist_chartset_chosen)
@@ -408,6 +404,9 @@ func _on_database_sync_finished(_success: bool) -> void:
 		await get_tree().process_frame
 	while Auth.is_username_setup_pending():
 		await get_tree().process_frame
+	while CM.playlist_loader.loading:
+		current_chartset_label.text = "loading playlists…"
+		await get_tree().process_frame
 	if not is_inside_tree() or is_exiting:
 		return
 
@@ -569,10 +568,7 @@ func _open_playlists() -> void:
 	if playlist_panel.is_open():
 		playlist_panel.close()
 		return
-	var metadata := {}
-	if CM.selected_chartset != null:
-		metadata = CM.selected_chartset.online_metadata
-	playlist_panel.open(metadata, playlist_button.get_global_rect())
+	playlist_panel.open(CM.selected_chartset, playlist_button.get_global_rect())
 
 
 func _open_playlist_selector() -> void:

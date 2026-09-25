@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/mainmenu/playlist_panel.gd" id="1_script"]
 [ext_resource type="FontFile" path="res://resources/fonts/BebasNeue-Regular.ttf" id="3_body"]
 
-[node name="PlaylistPanel" type="Control" node_paths=PackedStringArray("request", "panel", "status_label", "item_list", "scroll")]
+[node name="PlaylistPanel" type="Control" node_paths=PackedStringArray("panel", "status_label", "item_list", "scroll")]
 visible = false
 z_index = 72
 layout_mode = 3
@@ -14,7 +14,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_script")
-request = NodePath("Request")
 panel = NodePath("Panel")
 status_label = NodePath("Panel/Margin/Layout/Status")
 item_list = NodePath("Panel/Margin/Layout/Scroll/Items")
@@ -58,9 +57,3 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
-
-[node name="Request" type="HTTPRequest" parent="."]
-timeout = 20.0
-body_size_limit = 4194304
-
-[connection signal="request_completed" from="Request" to="." method="_on_request_completed"]

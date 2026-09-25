@@ -30,7 +30,7 @@ func get_folder_path() -> String:
 		return resource_directory
 	match type:
 		TYPE.BUILT_IN:
-			return "res://contents/skin".path_join(folder_name)
+			return FileSystem.res_skin_path.path_join(folder_name)
 		TYPE.IN_CHART:
 			if CM.selected_chart == null:
 				return ""
@@ -56,7 +56,7 @@ func parse_objects(_type:TYPE,_folder_name:String,_json_name:String) -> bool:
 
 	var file = FileAccess.open(folder_path.path_join(json_name), FileAccess.READ)
 	if not file:
-		push_warning("FILE : %s is missing" , folder_path.path_join(folder_name))
+		push_warning("Skin file is missing: %s" % folder_path.path_join(json_name))
 		return false
 	var json = JSON.parse_string(file.get_as_text())
 	if typeof(json) != TYPE_DICTIONARY:

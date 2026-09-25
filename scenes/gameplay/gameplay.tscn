@@ -9,7 +9,7 @@
 [ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="6_0w2j2"]
 [ext_resource type="Shader" uid="uid://qbfnricvyktb" path="res://resources/shaders/wave.gdshader" id="6_gh441"]
 [ext_resource type="AudioStream" uid="uid://86xa1i5ms4gd" path="res://resources/audio/combobreak2.wav" id="7_l0mho"]
-[ext_resource type="Texture2D" uid="uid://bmbyphvjkh055" path="res://contents/skins/original/sprites/dance1.png" id="7_sxh0i"]
+[ext_resource type="Texture2D" uid="uid://dsticf7edhysl" path="res://contents/skins/danshe/sprites/idle.png" id="8_l0mho"]
 [ext_resource type="Shader" uid="uid://bsgm7ys7ay7o" path="res://resources/shaders/stage_sky.gdshader" id="8_t6o8f"]
 [ext_resource type="Texture2D" uid="uid://cw8cihgunxcv6" path="res://icon.svg" id="9_elju3"]
 [ext_resource type="Script" uid="uid://diqrkfivlom6w" path="res://scenes/gameplay/song_meta.gd" id="9_lb4ud"]
@@ -332,7 +332,7 @@ layers = 4
 offset = Vector2(0, 980)
 pixel_size = 0.0009
 render_priority = 2
-texture = ExtResource("7_sxh0i")
+texture = ExtResource("8_l0mho")
 script = ExtResource("4_gh441")
 effectplayer = NodePath("../SkinEffects")
 

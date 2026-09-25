@@ -22,7 +22,6 @@ corner_radius_bottom_right = 24
 corner_radius_bottom_left = 24
 
 [node name="SongFilterPopup" type="Control" unique_id=494650392 node_paths=PackedStringArray("_sort", "_status", "_played", "_reverse", "_nsfl", "_error", "_panel", "_overlay", "min_length", "max_length", "min_rating", "max_rating", "max_size", "rank_status_row", "content_row", "max_download_row", "close_button", "reset_button", "cancel_button", "apply_button")]
-visible = false
 z_index = 50
 layout_mode = 3
 anchors_preset = 15

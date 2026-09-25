@@ -4,7 +4,6 @@ class_name PlaylistPanel
 signal visibility_set(blocked: bool)
 signal chartset_chosen(metadata: Dictionary)
 signal playlist_selected(id: int, title: String)
-signal membership_changed
 
 const OPEN_OFFSET := Vector2(-336.0, 14.0)
 const OPEN_DURATION := 0.12
@@ -20,22 +19,18 @@ const COLOR_TEXT := Color(0.94, 0.93, 1.0, 1.0)
 const COLOR_ADDED_TEXT := Color(1.0, 0.98, 0.72, 1.0)
 const COLOR_MUTED := Color(0.68, 0.65, 0.82, 1.0)
 
-@export var request: HTTPRequest
 @export var panel: PanelContainer
 @export var status_label: Label
 @export var item_list: VBoxContainer
 @export var scroll: ScrollContainer
 @export var item_font: FontFile
 
-var _playlists: Array[Dictionary] = []
-var _current_chartset: Dictionary = {}
-var _operation := ""
+var _playlists: Array[Playlist] = []
+var _current_chartset: ChartSet
 var _target_rect := Rect2()
 var _tween: Tween = null
-var _busy := false
 var browsing := false
 var selected_id := 0
-var _items_appear: Tween
 
 
 func _ready() -> void:
@@ -51,23 +46,23 @@ func _ready() -> void:
 	visibility_changed.connect(func(): visibility_set.emit(visible))
 	_apply_styles()
 	panel.resized.connect(_position_panel)
+	CM.playlists_changed.connect(_on_playlists_changed)
+	CM.playlist_state_changed.connect(_update_item_disabled_state)
 
 
 func open_browser(target_rect: Rect2, playlist_id: int) -> void:
 	browsing = true
 	selected_id = playlist_id
-	open({}, target_rect)
+	open(null, target_rect)
 
 
-func open(chartset_metadata: Dictionary = {}, target_rect: Rect2 = Rect2()) -> void:
+func open(chartset: ChartSet = null, target_rect: Rect2 = Rect2()) -> void:
 	if not Auth.is_authenticated():
 		Notification.notice("Sign in to use playlists.", Notification.Type.WARNING)
 		return
-	_current_chartset = chartset_metadata.duplicate(true)
-	if _items_appear:
-		_items_appear.kill()
+	_current_chartset = chartset
 	item_list.modulate.a = 1.0
-	if not chartset_metadata.is_empty():
+	if chartset != null:
 		browsing = false
 	_target_rect = target_rect
 	visible = true
@@ -78,22 +73,12 @@ func open(chartset_metadata: Dictionary = {}, target_rect: Rect2 = Rect2()) -> v
 		panel.offset_transform_scale = Vector2(0.96, 0.96)
 	_position_panel()
 	_play_open_animation()
-	_playlists.clear()
-	if browsing:
-		_playlists.append({"id": 0, "name": "All Beatmaps"})
-	_render_playlists()
-	scroll.custom_minimum_size.y = ITEM_HEIGHT if browsing else 0.0
-	panel.reset_size()
-	_request_playlists()
+	_show_playlists()
 
 
 func close() -> void:
 	if not visible:
 		return
-	if request != null:
-		request.cancel_request()
-	_operation = ""
-	_busy = false
 	_play_close_animation()
 
 
@@ -101,104 +86,27 @@ func is_open() -> bool:
 	return visible and (panel == null or panel.visible)
 
 
-func _request_playlists() -> void:
-	if browsing:
-		_send("list", "/playlists")
-		return
-	if _current_chartset.is_empty() or _current_chartset_id() <= 0:
-		_set_status("Select a community map first.")
-		_show_playlists([])
-		return
-	if not _send("list", "/playlists?chartset_id=%d" % _current_chartset_id()):
-		return
+func _on_playlists_changed() -> void:
+	if is_open():
+		_show_playlists()
 
 
-func _send(
-	operation: String,
-	path: String,
-	method: HTTPClient.Method = HTTPClient.METHOD_GET,
-	body: Dictionary = {}
-) -> bool:
-	if _busy or request == null:
-		return false
-	_operation = operation
-	_busy = true
-	var headers := Auth.authorization_headers()
-	var content := ""
-	if not body.is_empty():
-		headers.append("Content-Type: application/json")
-		content = JSON.stringify(body)
-	var error := request.request(ServerURLs.api(path), headers, method, content)
-	if error != OK:
-		_operation = ""
-		_busy = false
-		_set_status("Could not start the request.")
-		return false
-	_update_item_disabled_state()
-	_set_status("")
-	return true
-
-
-func _on_request_completed(
-	result: int,
-	code: int,
-	_headers: PackedStringArray,
-	body: PackedByteArray
-) -> void:
-	var operation := _operation
-	_operation = ""
-	_busy = false
-	var data = JSON.parse_string(body.get_string_from_utf8()) if not body.is_empty() else null
-	if result != HTTPRequest.RESULT_SUCCESS or code < 200 or code >= 300:
-		_set_status("Request failed.")
-		_update_item_disabled_state()
-		return
-	var op_name := operation.get_slice(":", 0)
-	var op_index := int(operation.get_slice(":", 1)) if operation.contains(":") else -1
-	match op_name:
-		"list":
-			_show_playlists(data if data is Array else [])
-			if _items_appear:
-				_items_appear.kill()
-			item_list.modulate.a = 0.0
-			_items_appear = create_tween()
-			_items_appear.tween_property(item_list, "modulate:a", 1.0, 0.18)
-		"add":
-			_update_playlist_membership(op_index, true)
-			_set_status("")
-			membership_changed.emit()
-		"remove":
-			_update_playlist_membership(op_index, false)
-			_set_status("")
-			membership_changed.emit()
-	_update_item_disabled_state()
-
-
-func _show_playlists(data: Array) -> void:
+func _show_playlists() -> void:
 	_playlists.clear()
-	for child in item_list.get_children():
-		item_list.remove_child(child)
-		child.queue_free()
 	if browsing:
-		_playlists.append({"id": 0, "name": "All Beatmaps"})
-
-	for entry in data:
-		if not entry is Dictionary:
+		_playlists.append(Playlist.new())
+	for playlist in CM.playlists:
+		if not browsing and playlist.kind in ["recent", "loved"]:
 			continue
-		if int(entry.get("id", 0)) <= 0:
-			continue
-		var kind := str(entry.get("kind", ""))
-		if kind == "recent" or (kind == "loved" and not browsing):
-			continue
-		_playlists.append(entry)
-
-	if _playlists.is_empty():
-		_set_status("No playlists yet.")
-		return
-
-	_set_status("")
+		_playlists.append(playlist)
 	_render_playlists()
-
+	_update_item_disabled_state()
+	if CM.playlist_loader.loading:
+		_set_status("Loading playlists…")
+	elif not CM.playlist_loader.error.is_empty():
+		_set_status(CM.playlist_loader.error)
+	else:
+		_set_status("No playlists yet." if _playlists.is_empty() else "")
 	var visible_items := mini(_playlists.size(), MAX_VISIBLE_ITEMS)
 	scroll.custom_minimum_size.y = ITEM_HEIGHT * float(visible_items) + 4.0 * float(maxi(0, visible_items - 1))
 	panel.reset_size()
@@ -212,18 +120,18 @@ func _render_playlists() -> void:
 		item_list.add_child(_create_playlist_item(index, _playlists[index]))
 
 
-func _create_playlist_item(index: int, playlist: Dictionary) -> Control:
+func _create_playlist_item(index: int, playlist: Playlist) -> Control:
 	var row := HBoxContainer.new()
 	row.custom_minimum_size = Vector2(0.0, ITEM_HEIGHT)
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_theme_constant_override("separation", 8)
 
-	var added := int(playlist.get("id", -1)) == selected_id if browsing else _playlist_contains_current(playlist)
+	var added := playlist.id == selected_id if browsing else _playlist_contains_current(playlist)
 	var button := Button.new()
 	button.custom_minimum_size = Vector2(0.0, ITEM_HEIGHT)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.text = str(playlist.get("name", "Playlist"))
+	button.text = playlist.name
 	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	button.add_theme_constant_override("outline_size", 0)
 	button.flat = false
@@ -232,7 +140,7 @@ func _create_playlist_item(index: int, playlist: Dictionary) -> Control:
 	button.tooltip_text = button.text if browsing else ("Remove from this playlist" if added else "Add to this playlist")
 	if browsing:
 		button.pressed.connect(func():
-			playlist_selected.emit(int(playlist.get("id", 0)), str(playlist.get("name", "Playlist")))
+			playlist_selected.emit(playlist.id, playlist.name)
 			close()
 		)
 	else:
@@ -246,42 +154,19 @@ func _create_playlist_item(index: int, playlist: Dictionary) -> Control:
 	return row
 
 
-func _playlist_contains_current(playlist: Dictionary) -> bool:
-	return bool(playlist.get("contains_chartset", false))
+func _playlist_contains_current(playlist: Playlist) -> bool:
+	return _current_chartset != null and playlist.contains(int(_current_chartset.online_metadata.get("id", 0)))
 
 
 func _toggle_playlist(index: int) -> void:
-	if _busy or index < 0 or index >= _playlists.size():
+	if index < 0 or index >= _playlists.size() or _current_chartset == null:
 		return
-	var playlist_id := int(_playlists[index].get("id", 0))
-	var chartset_id := _current_chartset_id()
-	if playlist_id <= 0 or chartset_id <= 0:
-		_set_status("This map cannot be updated.")
+	var playlist := _playlists[index]
+	if playlist.busy:
 		return
-	var added := _playlist_contains_current(_playlists[index])
-	var method := HTTPClient.METHOD_DELETE if added else HTTPClient.METHOD_PUT
-	var operation := ("remove:" if added else "add:") + str(index)
-	if _send(operation, "/playlists/%d/chartsets/%d" % [playlist_id, chartset_id], method):
-		_set_status("")
-
-
-func _update_playlist_membership(index: int, added: bool) -> void:
-	if index < 0 or index >= _playlists.size():
-		return
-	var playlist := _playlists[index].duplicate(true)
-	var count := int(playlist.get("item_count", 0))
-	var was_added := _playlist_contains_current(playlist)
-	playlist["contains_chartset"] = added
-	if added and not was_added:
-		playlist["item_count"] = count + 1
-	elif not added and was_added:
-		playlist["item_count"] = maxi(0, count - 1)
-	_playlists[index] = playlist
-	_render_playlists()
-
-
-func _current_chartset_id() -> int:
-	return int(_current_chartset.get("id", _current_chartset.get("chartset_id", 0)))
+	var added := _playlist_contains_current(playlist)
+	if not await playlist.set_chartset(_current_chartset, not added) and is_open():
+		_set_status("Request failed.")
 
 
 func _set_status(text: String) -> void:
@@ -292,10 +177,11 @@ func _set_status(text: String) -> void:
 
 
 func _update_item_disabled_state() -> void:
-	for row in item_list.get_children():
+	for index in range(item_list.get_child_count()):
+		var row := item_list.get_child(index)
 		for child in row.get_children():
 			if child is Button:
-				child.disabled = _busy
+				child.disabled = not browsing and _playlists[index].busy
 
 
 func _position_panel() -> void:
@@ -398,8 +284,3 @@ func _input(event: InputEvent) -> void:
 		if not panel.get_global_rect().has_point(mouse) and not _target_rect.has_point(mouse):
 			close()
 			get_viewport().set_input_as_handled()
-
-
-func _exit_tree() -> void:
-	if request != null:
-		request.cancel_request()

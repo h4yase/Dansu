@@ -206,7 +206,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_d7iuo"]
 resource_name = "out"
-length = 1.2666667
+length = 0.76666665
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -214,8 +214,8 @@ tracks/0/path = NodePath("../CharacterPivot/Character:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.1666666),
-"transitions": PackedFloat32Array(0.1435874, 0.21763767),
+"times": PackedFloat32Array(0, 0.6333333),
+"transitions": PackedFloat32Array(0.42044866, 0.21763767),
 "update": 0,
 "values": [Vector2(1400, 1100), Vector2(1400, 1200)]
 }
@@ -226,7 +226,7 @@ tracks/1/path = NodePath("../CharacterPivot/Character:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.26666668, 0.8333333),
+"times": PackedFloat32Array(0.03333333, 0.43333334),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -242,7 +242,7 @@ tracks/0/path = NodePath("../CharacterPivot/Character:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.26666668),
+"times": PackedFloat32Array(0, 0.56666666),
 "transitions": PackedFloat32Array(0.40612614, 0.03982999),
 "update": 0,
 "values": [Vector2(900, 1000), Vector2(1400, 1100)]
@@ -607,6 +607,18 @@ shadow_size = 10
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xujh8"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_playlist_selector"]
+content_margin_left = 24.0
+content_margin_top = 8.0
+content_margin_right = 48.0
+content_margin_bottom = 8.0
+bg_color = Color(0.09571748, 0.08987478, 0.13360095, 1)
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.26646146, 0.21616292, 0.51329076, 1)
+corner_radius_bottom_right = 20
+expand_margin_left = 40.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4nl7"]
 content_margin_left = 50.0
 content_margin_top = 5.0
@@ -649,19 +661,6 @@ border_color = Color(0, 0, 0, 1)
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 corner_detail = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_playlist_selector"]
-content_margin_left = 24.0
-content_margin_top = 8.0
-content_margin_right = 48.0
-content_margin_bottom = 8.0
-bg_color = Color(0.14901961, 0.14117648, 0.2, 1)
-border_width_left = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.6117647, 0.58431375, 0.89411765, 1)
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_da4vi"]
 shader = ExtResource("6_da4vi")
@@ -946,9 +945,9 @@ anchor_left = 1.33
 anchor_top = 0.007
 anchor_right = 1.33
 anchor_bottom = 1.0370001
-offset_left = -1000.16003
+offset_left = -970.16003
 offset_top = -7.5600004
-offset_right = -264.16003
+offset_right = -234.16003
 offset_bottom = -7.960083
 offset_transform_enabled = true
 offset_transform_position = Vector2(-1000, 0)
@@ -1112,7 +1111,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 offset_transform_enabled = true
 offset_transform_position = Vector2(-1000, 0)
-theme_override_constants/separation = 5
+theme_override_constants/separation = 0
 
 [node name="Search" type="PanelContainer" parent="Charts/VBoxContainer" unique_id=226043883]
 self_modulate = Color(1, 1, 1, 0.78431374)
@@ -1142,26 +1141,15 @@ theme_override_font_sizes/font_size = 25
 text = "Filter"
 flat = true
 
-[node name="TabBar" type="Button" parent="Charts/VBoxContainer" unique_id=1739606260]
-custom_minimum_size = Vector2(0, 48)
+[node name="Control" type="Control" parent="Charts/VBoxContainer" unique_id=283087208]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 3
-focus_mode = 0
-theme_override_fonts/font = ExtResource("4_ridl2")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_i4nl7")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_exxu0")
-theme_override_styles/hover = SubResource("StyleBoxFlat_i4nl7")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_pkird")
-text = "Official"
-script = ExtResource("98_source_switch")
 
-[node name="PlaylistSelector" type="Button" parent="Charts/VBoxContainer/TabBar" unique_id=1993014343]
+[node name="PlaylistSelector" type="Button" parent="Charts/VBoxContainer/Control" unique_id=1993014343]
 layout_mode = 0
-offset_left = 224.0
-offset_right = 576.0
-offset_bottom = 48.0
+offset_left = 190.0
+offset_top = 5.0
+offset_right = 542.0
+offset_bottom = 53.0
 mouse_default_cursor_shape = 2
 theme_override_constants/outline_size = 0
 theme_override_fonts/font = ExtResource("12_a8qj1")
@@ -1174,6 +1162,23 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_playlist_selector")
 text = "All Beatmaps"
 alignment = 0
 text_overrun_behavior = 1
+
+[node name="TabBar" type="Button" parent="Charts/VBoxContainer" unique_id=1739606260]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 5)
+focus_mode = 0
+theme_override_fonts/font = ExtResource("4_ridl2")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_i4nl7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_exxu0")
+theme_override_styles/hover = SubResource("StyleBoxFlat_i4nl7")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_pkird")
+text = "Official"
+script = ExtResource("98_source_switch")
 
 [node name="WaveFront" type="ColorRect" parent="." unique_id=468223081]
 material = SubResource("ShaderMaterial_da4vi")
@@ -1828,6 +1833,7 @@ dialog_hide_on_ok = false
 dialog_autowrap = true
 
 [node name="SongFilterPopup" parent="." unique_id=2065368171 instance=ExtResource("31_filter")]
+visible = false
 layout_mode = 1
 
 [node name="ExitOverlay" type="ColorRect" parent="." unique_id=985512643]

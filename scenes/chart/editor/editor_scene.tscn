@@ -19,10 +19,6 @@
 [ext_resource type="Script" uid="uid://bgdadwghe6gtx" path="res://chart/editor/overlay_frame_view.gd" id="13_frame_view"]
 [ext_resource type="PackedScene" uid="uid://d0gsgs0n6371q" path="res://scenes/gameplay/gameplay.tscn" id="14_gameplay_preview"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_game_preview"]
-resource_local_to_scene = true
-viewport_path = NodePath("PreviewColumn/GameFrame/GamePreview/SubViewport")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ysqcj"]
 shader = ExtResource("2_37swi")
 shader_parameter/bg_color = Color(0.0627451, 0.0627451, 0.078431375, 1)
@@ -79,6 +75,9 @@ content_margin_bottom = 14.0
 bg_color = Color(0.47058824, 0.40392157, 0.8784314, 0.9490196)
 border_width_right = 10
 border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_game_preview"]
+viewport_path = NodePath("PreviewColumn/GameFrame/GamePreview/SubViewport")
 
 [node name="EditorScene" type="Control" unique_id=317898238 node_paths=PackedStringArray("chart_root", "chart_panel", "note_pivot", "bpm_lines", "song_slider", "current_time_label", "back_button", "playtest_button", "save_button", "delete_button", "hit_button", "trace_button", "left_button", "right_button", "spike_button", "title_line_edit", "artist_line_edit", "creator_line_edit", "difficulty_line_edit", "source_line_edit", "tags_line_edit", "beat_division_slider", "beat_division_label", "add_timing_button", "timing_list_container", "timing_template", "skin_file_label", "skin_browser_button", "open_skin_editor_button", "open_event_editor_button", "view_controller", "inspector_controller", "edit_controller", "unsaved_exit_dialog", "fps_label")]
 layout_mode = 3
@@ -895,8 +894,9 @@ text = "note count:  9999999"
 layout_mode = 2
 text = "rail count: 9999999"
 
-[node name="PreviewColumn" type="VBoxContainer" parent="."]
+[node name="PreviewColumn" type="VBoxContainer" parent="." unique_id=784737339]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.39
 anchor_right = 0.73
 anchor_bottom = 1.0
@@ -904,55 +904,56 @@ offset_top = 70.0
 offset_bottom = -84.0
 theme_override_constants/separation = 12
 
-[node name="GameFrame" type="AspectRatioContainer" parent="PreviewColumn"]
+[node name="GameFrame" type="AspectRatioContainer" parent="PreviewColumn" unique_id=1610961566]
 layout_mode = 2
 ratio = 1.7777778
-stretch_mode = 2
 
-[node name="GamePreview" type="TextureRect" parent="PreviewColumn/GameFrame" node_paths=PackedStringArray("editor")]
+[node name="GamePreview" type="TextureRect" parent="PreviewColumn/GameFrame" unique_id=141232309 node_paths=PackedStringArray("editor")]
 layout_mode = 2
 mouse_filter = 2
+texture = SubResource("ViewportTexture_game_preview")
 expand_mode = 1
 stretch_mode = 5
-texture = SubResource("ViewportTexture_game_preview")
 script = ExtResource("12_game_preview")
 editor = NodePath("../../..")
 
-[node name="SubViewport" type="SubViewport" parent="PreviewColumn/GameFrame/GamePreview"]
+[node name="SubViewport" type="SubViewport" parent="PreviewColumn/GameFrame/GamePreview" unique_id=82211782]
+own_world_3d = true
 handle_input_locally = false
 gui_disable_input = true
-own_world_3d = true
 size = Vector2i(1920, 1080)
 render_target_update_mode = 4
 
-[node name="Gameplay" parent="PreviewColumn/GameFrame/GamePreview/SubViewport" instance=ExtResource("14_gameplay_preview")]
+[node name="Gameplay" parent="PreviewColumn/GameFrame/GamePreview/SubViewport" unique_id=1405112581 instance=ExtResource("14_gameplay_preview")]
 editor_preview = true
 
-[node name="Toolbar" type="HBoxContainer" parent="PreviewColumn"]
+[node name="Toolbar" type="HBoxContainer" parent="PreviewColumn" unique_id=1231895210]
 layout_mode = 2
 
-[node name="Spacer" type="Control" parent="PreviewColumn/Toolbar"]
+[node name="Spacer" type="Control" parent="PreviewColumn/Toolbar" unique_id=304185289]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PlayTest" type="Button" parent="PreviewColumn/Toolbar"]
+[node name="PlayTest" type="Button" parent="PreviewColumn/Toolbar" unique_id=1266397735]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Play test"
 
-[node name="OverlayFrameView" type="Control" parent="PreviewColumn" node_paths=PackedStringArray("event_editor")]
+[node name="OverlayFrameView" type="Control" parent="PreviewColumn" unique_id=1443994331 node_paths=PackedStringArray("event_editor")]
+clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
-clip_contents = true
 script = ExtResource("13_frame_view")
 event_editor = NodePath("../..")
 
-[node name="FrameBackground" type="ColorRect" parent="PreviewColumn/OverlayFrameView"]
+[node name="FrameBackground" type="ColorRect" parent="PreviewColumn/OverlayFrameView" unique_id=1290490721]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 color = Color(0.063, 0.063, 0.094, 1)
 

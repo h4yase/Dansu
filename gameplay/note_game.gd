@@ -2,7 +2,7 @@ extends Node3D
 class_name GameNote
 
 const VISUAL_SURFACE_OFFSET := 0.025
-const VISUAL_RENDER_PRIORITY := 1
+const VISUAL_RENDER_PRIORITY := 2
 
 var move_texture : Texture2D = preload("res://resources/textures/gameplay/move_note.png")
 var spike_texture : Texture2D = preload("res://resources/textures/gameplay/spike_note.png")

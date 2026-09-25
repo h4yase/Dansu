@@ -45,6 +45,8 @@ func is_playing_animation(anim: PlayerAnimation) -> bool:
 func play_animation(anim: PlayerAnimation,play_effect:bool = true):
 	if not anim:
 		anim = get_hit_animation() 
+	if anim == null:
+		return
 	_animation = anim
 	_animation_time= 0.0
 	_frame_index = -1

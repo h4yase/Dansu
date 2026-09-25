@@ -59,7 +59,7 @@ func record_play_start(chart: Chart) -> void:
 	var chart_id := int(chart.online_metadata.get("id", 0))
 	var revision := int(chart.online_metadata.get("chart_revision", 0))
 	if chart_id > 0 and revision > 0:
-		_post_play_start(chart_id, revision)
+		_post_play_start(chart_id, revision, chart.chart_set)
 		return
 	if chart.uuid.is_empty() or chart.chart_set == null or chart.chart_set.uuid.is_empty():
 		return
@@ -76,7 +76,7 @@ func record_play_start(chart: Chart) -> void:
 		_dispose_play_start_request(request)
 
 
-func _post_play_start(chart_id: int, revision: int) -> void:
+func _post_play_start(chart_id: int, revision: int, chartset: ChartSet) -> void:
 	if chart_id <= 0 or revision <= 0:
 		return
 	var request := HTTPRequest.new()
@@ -84,7 +84,12 @@ func _post_play_start(chart_id: int, revision: int) -> void:
 	request.body_size_limit = 64 * 1024
 	add_child(request)
 	_play_start_requests.append(request)
-	request.request_completed.connect(_on_play_start_recorded.bind(request))
+	var recent: Playlist = null
+	for playlist in CM.playlists:
+		if playlist.kind == "recent":
+			recent = playlist
+			break
+	request.request_completed.connect(_on_play_start_recorded.bind(request, chartset, recent))
 	var headers := Auth.authorization_headers()
 	headers.append("Content-Type: application/json")
 	if request.request(
@@ -117,18 +122,38 @@ func _on_play_metadata_resolved(
 		if entry is Dictionary and str(entry.get("chart_uuid", "")).to_lower() == chart.uuid.to_lower():
 			chart.online_metadata = entry.duplicate(true)
 			chart.chart_set.online_metadata = data.duplicate(true)
-			_post_play_start(int(entry.get("id", 0)), int(entry.get("chart_revision", 0)))
+			_post_play_start(int(entry.get("id", 0)), int(entry.get("chart_revision", 0)), chart.chart_set)
 			return
 
 
 func _on_play_start_recorded(
-	_result: int,
-	_code: int,
+	result: int,
+	code: int,
 	_headers: PackedStringArray,
-	_body: PackedByteArray,
-	request: HTTPRequest
+	body: PackedByteArray,
+	request: HTTPRequest,
+	chartset: ChartSet,
+	recent: Playlist
 ) -> void:
 	_dispose_play_start_request(request)
+	if result != HTTPRequest.RESULT_SUCCESS or code != 201:
+		return
+	if recent == null or not CM.playlists.has(recent) or not Auth.is_authenticated():
+		return
+	if chartset == null or chartset.online_metadata.get("origin") != "community":
+		return
+	var data = JSON.parse_string(body.get_string_from_utf8())
+	var chartset_id := int(chartset.online_metadata.get("id", 0))
+	if not data is Dictionary or int(data.get("chartset_id", 0)) != chartset_id:
+		return
+	var online_chartset := OnlineChartMapper.from_metadata(chartset.online_metadata)
+	if online_chartset == null:
+		return
+	recent.record_recent(online_chartset)
+	for playlist in CM.playlists:
+		if playlist.contains(chartset_id) and not playlist.played_chartset_ids.has(chartset_id):
+			playlist.played_chartset_ids.append(chartset_id)
+	CM.playlists_changed.emit()
 
 
 func _dispose_play_start_request(request: HTTPRequest) -> void:

@@ -8,6 +8,8 @@ signal chart_update(chart_set)
 signal editor_chart_update(chart_set)
 signal chart_selected(chart: Chart)
 signal chartset_selected(chart_set: ChartSet)
+signal playlists_changed
+signal playlist_state_changed
 
 const SONG_PATH := FileSystem.official_chart_path
 
@@ -16,6 +18,8 @@ var selected_chartset: ChartSet = null
 var chartsets: Array[ChartSet] = []
 var editor_chartsets: Array[ChartSet] = []
 var parsed_chart: ParsedChart = null
+var playlists: Array[Playlist] = []
+var playlist_loader := PlaylistLoader.new()
 
 var chartsets_by_db_id: Dictionary = {}
 var charts_by_db_id: Dictionary = {}
@@ -24,6 +28,10 @@ var charts_by_uuid: Dictionary = {}
 
 var _database = null
 var _scanner := ChartLibraryScanner.new()
+
+
+func _ready() -> void:
+	add_child(playlist_loader)
 
 
 func _exit_tree() -> void:

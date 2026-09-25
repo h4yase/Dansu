@@ -23,7 +23,6 @@ var _list: HTTPRequest
 var _audio: HTTPRequest
 var _detail_cover: HTTPRequest
 var _download: HTTPRequest
-var _loved_request: HTTPRequest
 @export var preview_player: AudioStreamPlayer
 @export var search_debounce: Timer
 var _generation := 0
@@ -51,6 +50,8 @@ func _ready() -> void:
 	search_debounce.timeout.connect(refresh)
 	CM.chart_selected.connect(_on_selected)
 	Auth.state_changed.connect(_on_auth_changed)
+	CM.playlists_changed.connect(_on_playlists_changed)
+	CM.playlist_state_changed.connect(_on_playlist_state_changed)
 
 func set_active(value: bool) -> void:
 	if active == value:
@@ -67,7 +68,6 @@ func set_active(value: bool) -> void:
 	else:
 		if loading_more:
 			page = maxi(page - 1, 1)
-		_cancel_loved_request()
 		loved_state_changed.emit(false, false)
 		search_debounce.stop()
 		_generation += 1
@@ -106,7 +106,7 @@ func set_playlist(id: int) -> void:
 	refresh()
 
 func load_next_page() -> void:
-	if not active or loading or page >= total_pages:
+	if not active or loading or playlist_id != 0 or page >= total_pages:
 		return
 	page += 1
 	_request_page(true)
@@ -117,6 +117,7 @@ func refresh() -> void:
 	search_debounce.stop()
 	_generation += 1
 	_cancel(_list)
+	_list = null
 	_clear_covers()
 	loading = true
 	loading_more = false
@@ -126,7 +127,39 @@ func refresh() -> void:
 	if filters.has_play_history() and not Auth.is_authenticated():
 		_list_failed("Sign in to use the play history filter.")
 		return
-	_request_page(false)
+	if playlist_id != 0:
+		_show_cached_playlist()
+	else:
+		_request_page(false)
+
+func _show_cached_playlist() -> void:
+	if CM.playlist_loader.loading:
+		status = "Loading playlists…"
+		state_changed.emit()
+		return
+	if not CM.playlist_loader.loaded:
+		_list_failed(CM.playlist_loader.error)
+		return
+	var playlist: Playlist = null
+	for entry in CM.playlists:
+		if entry.id == playlist_id:
+			playlist = entry
+			break
+	if playlist == null:
+		_list_failed("Playlist not found.")
+		return
+	_results = playlist.filtered_chartsets(filters, search_text)
+	total = _results.size()
+	total_pages = 1
+	loading = false
+	loading_more = false
+	_has_result_snapshot = true
+	status = "No songs match these filters." if _results.is_empty() else "%d songs" % total
+	results_changed.emit(_results)
+	state_changed.emit()
+	_cover_queue.append_array(_results)
+	_pump_covers()
+
 
 func _request_page(append: bool) -> void:
 	loading = true
@@ -135,11 +168,9 @@ func _request_page(append: bool) -> void:
 	state_changed.emit()
 	var query := filters.to_query()
 	query.merge({"q": search_text, "p": page, "limit": 20, "origin": "community"}, true)
-	if playlist_id > 0:
-		query["playlist_id"] = playlist_id
 	_list = _request_node(4 * 1024 * 1024)
 	_list.request_completed.connect(_on_list.bind(_generation, append))
-	var headers := Auth.authorization_headers() if filters.has_play_history() or playlist_id > 0 else PackedStringArray()
+	var headers := Auth.authorization_headers() if filters.has_play_history() else PackedStringArray()
 	if _list.request(_api_url("/chartset/?") + ServerURLs.query(query), headers) != OK:
 		_list_failed("Could not start the search. Retry.")
 
@@ -237,6 +268,9 @@ func _chartset_key(chartset: ChartSet) -> String:
 func _pump_covers() -> void:
 	while active and not _cover_queue.is_empty() and _cover_requests.size() < 3:
 		var chartset: ChartSet = _cover_queue.pop_front()
+		var primary := OnlineChartMapper.primary(chartset)
+		if primary != null and primary.cover_image != null:
+			continue
 		var url := _resource_url(str(chartset.online_metadata.get("preview_cover_url", "")))
 		if url.is_empty():
 			continue
@@ -282,7 +316,6 @@ func _on_selected(chart: Chart) -> void:
 	)
 	state_changed.emit()
 	if chart == null or chart.chart_set == null or chart.online_metadata.is_empty():
-		_cancel_loved_request()
 		loved_state_changed.emit(false, false)
 		_cancel_detail_cover()
 		stop_preview()
@@ -586,7 +619,7 @@ func _download_failed(text: String) -> void:
 func _on_auth_changed() -> void:
 	if not is_inside_tree():
 		return
-	var had_playlist := playlist_id > 0
+	var had_playlist := playlist_id != 0
 	if not Auth.is_authenticated():
 		playlist_id = 0
 		_has_result_snapshot = false
@@ -597,84 +630,45 @@ func _on_auth_changed() -> void:
 	state_changed.emit()
 
 
+func _on_playlists_changed() -> void:
+	_on_playlist_state_changed()
+	if playlist_id != 0:
+		_has_result_snapshot = false
+		if active:
+			refresh()
+
+
+func _on_playlist_state_changed() -> void:
+	if active and CM.selected_chartset != null:
+		_check_loved(CM.selected_chartset)
+
+
 func toggle_loved() -> void:
-	if not active or not Auth.is_authenticated() or is_instance_valid(_loved_request):
+	if not active or not Auth.is_authenticated() or CM.selected_chartset == null:
 		return
-	var chartset_id := int(CM.selected_chartset.online_metadata.get("id", 0))
-	if chartset_id <= 0:
+	for playlist in CM.playlists:
+		if playlist.kind != "loved":
+			continue
+		if playlist.busy:
+			return
+		var chartset := CM.selected_chartset
+		var added := playlist.contains(int(chartset.online_metadata.get("id", 0)))
+		if not await playlist.set_chartset(chartset, not added):
+			Notification.notice("Could not update Loved.", Notification.Type.WARNING)
 		return
-	_loved_request = _request_node(64 * 1024)
-	_loved_request.request_completed.connect(_on_loved_toggled.bind(chartset_id))
-	var method := HTTPClient.METHOD_DELETE if _selected_loved else HTTPClient.METHOD_PUT
-	if _loved_request.request(
-		_api_url("/playlists/loved/" + str(chartset_id)),
-		Auth.authorization_headers(),
-		method
-	) != OK:
-		_cancel_loved_request()
-		Notification.notice("Could not update Loved.", Notification.Type.WARNING)
-		loved_state_changed.emit(_selected_loved, false)
-		return
-	loved_state_changed.emit(_selected_loved, true)
 
 
 func _check_loved(chartset: ChartSet) -> void:
-	_cancel_loved_request()
-	if not active or not Auth.is_authenticated() or chartset == null:
-		_selected_loved = false
-		loved_state_changed.emit(false, false)
-		return
-	var chartset_id := int(chartset.online_metadata.get("id", 0))
-	if chartset_id <= 0:
-		return
-	_loved_request = _request_node(64 * 1024)
-	_loved_request.request_completed.connect(_on_loved_checked.bind(chartset_id))
-	if _loved_request.request(
-		_api_url("/playlists/loved/" + str(chartset_id)),
-		Auth.authorization_headers()
-	) != OK:
-		_cancel_loved_request()
-		loved_state_changed.emit(false, false)
-		return
-	loved_state_changed.emit(_selected_loved, true)
+	_selected_loved = false
+	if active and Auth.is_authenticated() and chartset != null:
+		var chartset_id := int(chartset.online_metadata.get("id", 0))
+		for playlist in CM.playlists:
+			if playlist.kind == "loved":
+				_selected_loved = playlist.contains(chartset_id)
+				loved_state_changed.emit(_selected_loved, playlist.busy)
+				return
+	loved_state_changed.emit(false, not CM.playlist_loader.loaded)
 
-
-func _on_loved_checked(
-	result: int,
-	code: int,
-	_headers: PackedStringArray,
-	body: PackedByteArray,
-	chartset_id: int
-) -> void:
-	_cancel_loved_request()
-	if result != HTTPRequest.RESULT_SUCCESS or code != 200:
-		loved_state_changed.emit(false, false)
-		return
-	var data = JSON.parse_string(body.get_string_from_utf8())
-	if not data is Dictionary or int(data.get("chartset_id", 0)) != chartset_id:
-		return
-	_selected_loved = bool(data.get("loved", false))
-	loved_state_changed.emit(_selected_loved, false)
-
-
-func _on_loved_toggled(
-	result: int,
-	code: int,
-	_headers: PackedStringArray,
-	_body: PackedByteArray,
-	chartset_id: int
-) -> void:
-	_cancel_loved_request()
-	if result == HTTPRequest.RESULT_SUCCESS and code == 204:
-		_selected_loved = not _selected_loved
-	elif CM.selected_chartset != null and int(CM.selected_chartset.online_metadata.get("id", 0)) == chartset_id:
-		Notification.notice("Could not update Loved.", Notification.Type.WARNING)
-	loved_state_changed.emit(_selected_loved, false)
-
-
-func _cancel_loved_request() -> void:
-	_cancel(_loved_request)
-	_loved_request = null
 
 func _remove_archive() -> void:
 	if not _archive_path.is_empty():
@@ -719,7 +713,6 @@ func _exit_tree() -> void:
 	_cancel(_audio)
 	_cancel_detail_cover()
 	_cancel(_download)
-	_cancel_loved_request()
 	_clear_covers()
 	if _installer_thread != null:
 		_installer_thread.wait_to_finish()
