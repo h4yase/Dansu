@@ -166,7 +166,7 @@ func can_place_overlay(event: OverlayEvent, start: int, duration: int, slot: int
 
 func place(kind: String, raw_time: int, slot: int) -> void:
 	_placement_kind = kind
-	var time: int = editor.timeline.snap_time(raw_time)
+	var time: int = maxi(editor.timeline.get_min_time(), editor.timeline.snap_time(raw_time))
 	if kind == "camera" or kind == "theme":
 		var stream: ChartEvent = null
 		for event in get_events():
@@ -223,7 +223,7 @@ func place(kind: String, raw_time: int, slot: int) -> void:
 	refresh_timeline()
 
 func move_placement(event: ChartEvent, frame: ChartEventFrame, time: int, slot: int, resize: bool = false) -> bool:
-	time = editor.timeline.snap_time(time)
+	time = maxi(editor.timeline.get_min_time(), time)
 	if event is OverlayEvent and frame == null:
 		var start := event.time if resize else time
 		var duration := time - event.time if resize else event.duration

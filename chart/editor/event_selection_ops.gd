@@ -85,6 +85,18 @@ func capture() -> EventEditState:
 	return state
 
 func move(state: EventEditState, dt: int, dx: int, resize: ChartEvent = null) -> bool:
+	var min_time: int = workspace.editor.timeline.get_min_time()
+	for item in state.items:
+		var original: EventEditState.Placement = state.events[item.event]
+		var time := original.time
+		if item.frame != null:
+			time += int(state.frames[item.frame])
+		elif item.event == resize:
+			time += original.duration
+		elif item.event is ThemeEvent or item.event is CameraEvent:
+			for frame in workspace.get_frames(item.event):
+				time = mini(time, original.time + int(state.frames[frame]))
+		dt = maxi(dt, min_time - time)
 	var events: Dictionary[ChartEvent, EventEditState.Placement] = {}
 	for event in state.events:
 		events[event] = state.events[event].copy()
@@ -132,7 +144,11 @@ func validate(values: Dictionary[ChartEvent, EventEditState.Placement], frame_ti
 		for frame: ChartEventFrame in event_frames:
 			var time := int(frame_times.get(frame, frame.time))
 			if value.time + time < workspace.editor.timeline.get_min_time():
-				return false
+				# Existing out-of-range frames must not block edits to other frames.
+				if not workspace.get_events().has(event) or not workspace.get_frames(event).has(frame):
+					return false
+				if value.time + time != event.time + frame.time:
+					return false
 			if event is OverlayEvent and (time < 0 or time > value.duration):
 				return false
 			times.append(time)
