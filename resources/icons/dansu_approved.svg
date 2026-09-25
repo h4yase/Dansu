@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 256 256"
+   version="1.1"
+   id="svg11"
+   sodipodi:docname="dansu_approved.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview11"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="2.2290436"
+     inkscape:cx="18.61785"
+     inkscape:cy="123.14698"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg11" />
+  <defs
+     id="defs5">
+    <linearGradient
+       id="swatch22"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#705bde;stop-opacity:1;"
+         offset="0"
+         id="stop22" />
+    </linearGradient>
+    <linearGradient
+       id="g"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#7CFF9A"
+         id="stop1" />
+      <stop
+         offset="1"
+         stop-color="#25C56A"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       id="shine"
+       x1="50.058651"
+       y1="87.747737"
+       x2="174.3422"
+       y2="212.03128"
+       gradientTransform="matrix(1.1586409,0,0,0.86308019,3.1722429,-21.571252)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#FFFFFF"
+         stop-opacity=".9"
+         id="stop3" />
+      <stop
+         offset=".65"
+         stop-color="#DFFFF0"
+         stop-opacity=".35"
+         id="stop4" />
+      <stop
+         offset="1"
+         stop-color="#FFFFFF"
+         stop-opacity="0"
+         id="stop5" />
+    </linearGradient>
+  </defs>
+  <!-- tilted badge base -->
+  <!-- inner dark plate -->
+  <!-- dynamic check -->
+  <!-- speed cut accents -->
+  <path
+     style="fill:#4bb44b;fill-opacity:1;stroke:#705bde;stroke-width:6.95505;stroke-miterlimit:2;stroke-opacity:1;paint-order:stroke fill markers"
+     d="M 73.925146,97.6494 50.53827,116.18239 111.65303,167.81001 210.93691,87.27975 180.04859,68.967389 108.12293,138.90737 Z"
+     id="path13" />
+</svg>

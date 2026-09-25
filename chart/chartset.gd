@@ -7,6 +7,7 @@ var uuid := ""
 var folder_name: String
 var online_metadata: Dictionary = {}
 var pack_id: String = ""
+var status: String = ""
 
 func build_uuid() -> void:
 	uuid = ChartIdentity.generate_uuid()

@@ -27,6 +27,8 @@
 [ext_resource type="Texture2D" uid="uid://4mpob6r0inkq" path="res://resources/icons/arrow-big-left.svg" id="23_c5bhb"]
 [ext_resource type="Script" uid="uid://c0rooft00opwr" path="res://scenes/mainmenu/bottom_buttons.gd" id="24_nnql3"]
 [ext_resource type="PackedScene" uid="uid://cxlaaf6kud3lx" path="res://scenes/mainmenu/settings_popup.tscn" id="25_settings"]
+[ext_resource type="Texture2D" uid="uid://bimu87uxxg781" path="res://resources/icons/dansu_approved.svg" id="26_su352"]
+[ext_resource type="Texture2D" uid="uid://dwgjnl7qkm2w4" path="res://resources/icons/dansu_ranked.svg" id="27_35dlf"]
 [ext_resource type="AudioStream" uid="uid://bgbdj8rtca6ja" path="res://resources/audio/bye.wav" id="28_vhubh"]
 [ext_resource type="AudioStream" uid="uid://bg45soaehb2b" path="res://resources/audio/buttons/switch7.ogg" id="29_ckwsv"]
 [ext_resource type="PackedScene" uid="uid://v4bxpkucqi2h" path="res://scenes/common/account_panel.tscn" id="30_account"]
@@ -189,7 +191,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(900, 1000)]
+"values": [Vector2(900, 1200)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -206,7 +208,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_d7iuo"]
 resource_name = "out"
-length = 0.76666665
+length = 0.53333336
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -214,8 +216,8 @@ tracks/0/path = NodePath("../CharacterPivot/Character:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6333333),
-"transitions": PackedFloat32Array(0.42044866, 0.21763767),
+"times": PackedFloat32Array(0.03333334, 0.43333334),
+"transitions": PackedFloat32Array(0.24148452, 0.36602166),
 "update": 0,
 "values": [Vector2(1400, 1100), Vector2(1400, 1200)]
 }
@@ -226,7 +228,7 @@ tracks/1/path = NodePath("../CharacterPivot/Character:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.03333333, 0.43333334),
+"times": PackedFloat32Array(0.1, 0.33333334),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -245,7 +247,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.56666666),
 "transitions": PackedFloat32Array(0.40612614, 0.03982999),
 "update": 0,
-"values": [Vector2(900, 1000), Vector2(1400, 1100)]
+"values": [Vector2(900, 1200), Vector2(1400, 1100)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_d7iuo"]
@@ -559,6 +561,42 @@ _data = {
 &"fade": SubResource("Animation_1w8yq")
 }
 
+[sub_resource type="Animation" id="Animation_su352"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../LoadingOverlay:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_apyk3"]
+resource_name = "fade"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../LoadingOverlay:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.96666664),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_su352"]
+_data = {
+&"RESET": SubResource("Animation_su352"),
+&"fade": SubResource("Animation_apyk3")
+}
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jyltf"]
 shader = ExtResource("1_br2e8")
 shader_parameter/bg_color = Color(0.0627451, 0.0627451, 0.078431375, 1)
@@ -778,7 +816,7 @@ switch_player = NodePath("Switch7")
 bye_player = NodePath("Bye")
 metadata/_edit_lock_ = true
 
-[node name="Animations" type="Node" parent="." unique_id=1265180024 node_paths=PackedStringArray("menu_buttons_animation", "loading_animation", "character_animation", "logo_animation", "charts_animation", "search_animation", "bottom_buttons_animation", "song_info_animation")]
+[node name="Animations" type="Node" parent="." unique_id=1265180024 node_paths=PackedStringArray("menu_buttons_animation", "loading_animation", "character_animation", "logo_animation", "charts_animation", "search_animation", "bottom_buttons_animation", "song_info_animation", "loading_start_animation")]
 script = ExtResource("2_rhsxn")
 menu_buttons_animation = NodePath("MenuButtons")
 loading_animation = NodePath("Loading")
@@ -788,6 +826,7 @@ charts_animation = NodePath("Charts")
 search_animation = NodePath("Search")
 bottom_buttons_animation = NodePath("BottomButtons")
 song_info_animation = NodePath("SongInfo_Play")
+loading_start_animation = NodePath("LoadingStart")
 
 [node name="Wave" type="AnimationPlayer" parent="Animations" unique_id=1844949376]
 root_node = NodePath("../..")
@@ -820,6 +859,9 @@ libraries/ = SubResource("AnimationLibrary_xujh8")
 
 [node name="SongInfo_Play" type="AnimationPlayer" parent="Animations" unique_id=1974451297]
 libraries/ = SubResource("AnimationLibrary_nnql3")
+
+[node name="LoadingStart" type="AnimationPlayer" parent="Animations" unique_id=645149361]
+libraries/ = SubResource("AnimationLibrary_su352")
 
 [node name="MenuAudioSwitcher" type="Node" parent="." unique_id=1391026644 node_paths=PackedStringArray("current_audio", "next_audio")]
 script = ExtResource("9_x46xa")
@@ -922,9 +964,9 @@ script = ExtResource("10_6yf2l")
 
 [node name="Character" type="Sprite2D" parent="CharacterPivot" unique_id=187869448]
 modulate = Color(0.8058232, 0.7965808, 0.97266215, 1)
-position = Vector2(900, 1000)
+position = Vector2(900, 1200)
 rotation = -0.06981315
-scale = Vector2(1.3, 1.3)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("10_apyk3")
 
 [node name="Charts" type="Control" parent="." unique_id=836592076 node_paths=PackedStringArray("content")]
@@ -1257,7 +1299,7 @@ size_flags_horizontal = 3
 mouse_filter = 1
 text = "Upload"
 
-[node name="Panel" type="Panel" parent="ChartInfo" unique_id=34224441 node_paths=PackedStringArray("thumb", "previous_thumb", "cover_layer", "content", "shine_rect", "title_label", "artist_label", "desc_label", "rank_label", "full_combo_label", "all_just_label", "perfect_label", "never_played_label", "score_label", "ranked_label")]
+[node name="Panel" type="Panel" parent="ChartInfo" unique_id=34224441 node_paths=PackedStringArray("thumb", "previous_thumb", "cover_layer", "content", "shine_rect", "title_label", "artist_label", "desc_label", "rank_label", "full_combo_label", "all_just_label", "perfect_label", "never_played_label", "score_label", "ranked_badge")]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.028455287
@@ -1283,7 +1325,7 @@ all_just_label = NodePath("Content/AllJust")
 perfect_label = NodePath("Content/Perfect")
 never_played_label = NodePath("Content/NeverPlayed")
 score_label = NodePath("Content/Score")
-ranked_label = NodePath("Content/Ranked")
+ranked_badge = NodePath("Content/Ranked")
 
 [node name="CoverLayer" type="Panel" parent="ChartInfo/Panel" unique_id=232816774]
 clip_children = 2
@@ -1393,25 +1435,6 @@ theme_override_constants/outline_size = 30
 theme_override_fonts/font = ExtResource("4_ridl2")
 theme_override_font_sizes/font_size = 54
 text = "impeccable"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Ranked" type="Label" parent="ChartInfo/Panel/Content" unique_id=2112130810]
-visible = false
-layout_mode = 0
-offset_left = 328.0
-offset_top = -33.0
-offset_right = 483.1538
-offset_bottom = 4.13501
-rotation = 0.26918906
-theme_override_colors/font_color = Color(0.9031105, 0.9098936, 0.976659, 1)
-theme_override_colors/font_outline_color = Color(0.4392157, 0.35686275, 0.87058824, 1)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_constants/outline_size = 15
-theme_override_fonts/font = ExtResource("4_ridl2")
-theme_override_font_sizes/font_size = 24
-text = "ranked"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -1622,6 +1645,26 @@ chart_scroll = NodePath("../../../../Charts")
 
 [node name="StartButton" parent="ChartInfo/Panel/Content/HBoxContainer" unique_id=939246191 instance=ExtResource("21_p4mk8")]
 layout_mode = 2
+
+[node name="Approved" type="TextureRect" parent="ChartInfo/Panel/Content" unique_id=349842024]
+visible = false
+layout_mode = 0
+offset_left = -15.0
+offset_top = 252.0
+offset_right = 105.0
+offset_bottom = 372.0
+texture = ExtResource("26_su352")
+expand_mode = 1
+
+[node name="Ranked" type="TextureRect" parent="ChartInfo/Panel/Content" unique_id=1197764538]
+visible = false
+layout_mode = 0
+offset_left = -15.0
+offset_top = 252.0
+offset_right = 105.0
+offset_bottom = 372.0
+texture = ExtResource("27_35dlf")
+expand_mode = 1
 
 [node name="MenuButtons" type="VBoxContainer" parent="." unique_id=175635342 node_paths=PackedStringArray("play_button", "edit_button", "options_button", "exit_button", "settings_popup", "menu")]
 visible = false
@@ -1908,3 +1951,14 @@ bus = &"SFX"
 [node name="Switch7" type="AudioStreamPlayer" parent="." unique_id=1039771558]
 stream = ExtResource("29_ckwsv")
 bus = &"SFX"
+
+[node name="LoadingOverlay" type="ColorRect" parent="." unique_id=143322900]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

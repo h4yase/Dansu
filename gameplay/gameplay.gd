@@ -1,7 +1,7 @@
 extends Node3D
 
 const GAMEPLAY_SCENE_PATH := "res://scenes/gameplay/gameplay.tscn"
-const RESULT_SCENE_PATH := "res://scenes/result_scene.tscn"
+const RESULT_SCENE_PATH := "res://scenes/mainmenu/result_scene.tscn"
 const CHART_EDITOR_SCENE_PATH := "res://scenes/chart/editor/editor_scene.tscn"
 const JUDGE_POPUP_SCENE := preload("res://scenes/gameplay/judge_popup.tscn")
 const COMBOBRAKE_SOUND := preload("res://resources/audio/combobreak2.wav")
@@ -50,6 +50,7 @@ var _pause_tween: Tween
 
 func _enter_tree() -> void:
 	if not editor_preview:
+		DisplayServer.window_set_vsync_mode(Config.vsync_mode)
 		return
 	var environment_node := get_node("WorldEnvironment") as WorldEnvironment
 	environment_node.environment = environment_node.environment.duplicate(true)
@@ -59,7 +60,6 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	_visuals.setup(player, gameplay_camera, hud_root, world_environment, stage_visualizer)
 	_spawner.setup(CM.parsed_chart, rail_container)
-
 	if editor_preview:
 		set_process(false)
 		_visuals.hide_gameplay_hud_for_preview()
@@ -76,6 +76,7 @@ func _ready() -> void:
 	reset()
 
 func _exit_tree() -> void:
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
 	if not editor_preview:
 		_input.stop()
 

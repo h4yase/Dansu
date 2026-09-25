@@ -81,6 +81,8 @@ func _enter_tree() -> void:
 		call_deferred("_refresh_chart_browser")
 
 func _ready() -> void:
+	$LoadingOverlay.visible = true
+	animations.start_loading()
 	current_chartset_label.hide()
 	_loading_started_msec = Time.get_ticks_msec()
 	_loading_completion_started = Game.stage != Game.GameStage.Loading
@@ -542,7 +544,7 @@ func _restore_source_selection(community: bool) -> void:
 func _update_playlist_button_visibility() -> void:
 	playlist_selector.visible = is_community_mode and not is_editor_mode and Auth.is_authenticated()
 	if not Auth.is_authenticated():
-		playlist_selector.text = "All Beatmaps"
+		playlist_selector.text = "ALL CHARTS"
 	var has_online_chartset := _selected_online_chartset_id() > 0
 	playlist_button.visible = is_community_mode and not is_editor_mode and Auth.is_authenticated() and has_online_chartset
 	if not playlist_button.visible:

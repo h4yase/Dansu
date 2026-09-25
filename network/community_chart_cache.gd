@@ -12,6 +12,7 @@ static func load_chartset(metadata: Dictionary) -> ChartSet:
 
 	var chartset := ChartSet.new()
 	chartset.uuid = str(metadata.get("chartset_uuid", ""))
+	chartset.status = str(metadata.get("status"),"")
 	chartset.folder_name = folder_name
 	chartset.online_metadata = metadata.duplicate(true)
 	for entry in metadata.charts:

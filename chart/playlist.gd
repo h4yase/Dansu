@@ -5,7 +5,7 @@ const RECENT_ID := -1
 const RECENT_LIMIT := 1000
 
 var id := 0
-var name := "All Beatmaps"
+var name := "ALL CHARTS"
 var kind := ""
 var chartsets: Array[ChartSet] = []
 var played_chartset_ids: Array[int] = []

@@ -129,7 +129,7 @@ func _refresh() -> void:
 
 	if primary_chart != null:
 		title_label.text = primary_chart.title
-		description_label.text = "%s (%s)" % [primary_chart.artist, primary_chart.creator]
+		description_label.text = primary_chart.artist
 	else:
 		title_label.text = ""
 		description_label.text = ""

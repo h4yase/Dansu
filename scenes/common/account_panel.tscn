@@ -31,7 +31,7 @@ avatar = NodePath("Layer/Margin/Content/AvatarFrame/Avatar")
 avatar_placeholder = NodePath("Layer/Margin/Content/AvatarFrame/Placeholder")
 name_label = NodePath("Layer/Margin/Content/Details/Name")
 rating_label = NodePath("Layer/Margin/Content/Details/Metrics/Rating/Value")
-rank_label = NodePath("Layer/Margin/Content/Details/Metrics/Rank/Value")
+rank_label = NodePath("Layer/Margin/Rank/Value")
 avatar_request = NodePath("AvatarRequest")
 
 [node name="Layer" type="Control" parent="." unique_id=1644740277]
@@ -56,6 +56,28 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="Rank" type="Control" parent="Layer/Margin" unique_id=78670699]
+layout_mode = 2
+
+[node name="Value" type="Label" parent="Layer/Margin/Rank" unique_id=405587020]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -167.0
+offset_top = -26.0
+offset_right = 7.0
+offset_bottom = 4.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.6745098)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 32
+text = "not placed"
+horizontal_alignment = 2
+
 [node name="Content" type="HBoxContainer" parent="Layer/Margin" unique_id=1907065363]
 layout_mode = 2
 mouse_filter = 2
@@ -63,7 +85,6 @@ theme_override_constants/separation = 14
 
 [node name="AvatarFrame" type="PanelContainer" parent="Layer/Margin/Content" unique_id=2090042657]
 custom_minimum_size = Vector2(82, 82)
-clip_contents = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleAvatar")
@@ -99,19 +120,10 @@ text = "PLAYER"
 vertical_alignment = 1
 text_overrun_behavior = 3
 
-[node name="Metrics" type="HBoxContainer" parent="Layer/Margin/Content/Details" unique_id=1913390468]
+[node name="Metrics" type="VBoxContainer" parent="Layer/Margin/Content/Details" unique_id=2074814204]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 18
-
-[node name="Rank" type="VBoxContainer" parent="Layer/Margin/Content/Details/Metrics" unique_id=882735863]
-layout_mode = 2
-
-[node name="Value" type="Label" parent="Layer/Margin/Content/Details/Metrics/Rank" unique_id=405587020]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("3_body")
-theme_override_font_sizes/font_size = 24
-text = "not placed"
+theme_override_constants/separation = -5
 
 [node name="Rating" type="VBoxContainer" parent="Layer/Margin/Content/Details/Metrics" unique_id=721522958]
 layout_mode = 2

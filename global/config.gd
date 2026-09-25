@@ -127,7 +127,6 @@ var vsync_mode: DisplayServer.VSyncMode:
 		if value > 4:
 			value = DisplayServer.VSYNC_ADAPTIVE
 		config.set_value(SECTION_GRAPHICS,"vsync_mode",value)
-		DisplayServer.window_set_vsync_mode(value)
 
 var msaa: Viewport.MSAA:
 	get:

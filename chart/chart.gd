@@ -35,6 +35,7 @@ var file_name: String = ""
 var online_metadata: Dictionary = {}
 var chart_set: ChartSet = null
 
+
 var skin_path: String:
 	get:
 		if file_skin == "":

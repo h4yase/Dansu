@@ -29,7 +29,7 @@ const THUMB_CROSSFADE_DURATION := 0.24
 @export var perfect_label: Label
 @export var never_played_label: Label
 @export var score_label: Label
-@export var ranked_label: Label
+@export var ranked_badge: Control
 
 var score_ui_bound := true
 var click_tween: Tween
@@ -137,6 +137,7 @@ func _refresh(chart: Chart) -> void:
 	title_label.text = chart.title
 	artist_label.text = _build_artist_text(chart)
 	desc_label.text = _build_desc_text(chart)
+	ranked_badge.visible = (chart.chart_set.status == "ranked")
 
 	if _is_builtin_chart(chart):
 		if chart.cover_image != null:
@@ -208,9 +209,9 @@ func _hide_score_ui() -> void:
 		perfect_label,
 		never_played_label,
 		score_label,
-		ranked_label,
 	]:
 		label.visible = false
+		ranked_badge.visible = false
 
 
 func _on_mouse_entered() -> void:
