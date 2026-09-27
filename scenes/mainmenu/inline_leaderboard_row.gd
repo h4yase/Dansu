@@ -295,6 +295,10 @@ func _on_detail_loaded(result: int, code: int, _headers: PackedStringArray, body
 		count.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		count.text = "%s\n%d" % [judgement[0], int(data[judgement[1]])]
+	var sr := _label(_judgements, 23)
+	sr.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	sr.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	sr.text = "SR\n%.2f" % float(data.score_sr) if data.get("score_sr") != null else "SR\n--"
 	_judgements.show()
 	_judgements.modulate.a = 0.0
 	if _detail_appear:
