@@ -248,7 +248,7 @@ func _submit(as_builtin: bool = false) -> void:
 	_update_dialog()
 	state_changed.emit()
 
-func _on_uploaded(result: int, code: int, _headers: PackedStringArray, bytes: PackedByteArray) -> void:
+func _on_uploaded(result: int, code: int, headers: PackedStringArray, bytes: PackedByteArray) -> void:
 	if is_instance_valid(_upload):
 		_upload.queue_free()
 	_upload = null
@@ -258,7 +258,13 @@ func _on_uploaded(result: int, code: int, _headers: PackedStringArray, bytes: Pa
 	)
 	if upload_succeeded:
 		var builtin_result := ChartPackageInstaller.InstallResult.new()
-		if _publish_as_builtin:
+		var is_zip := false
+		for header in headers:
+			if header.get_slice(":", 0).strip_edges().to_lower() == "content-type":
+				is_zip = header.get_slice(":", 1).get_slice(";", 0).strip_edges().to_lower() == "application/zip"
+		if _publish_as_builtin and not is_zip:
+			builtin_result = ChartPackageInstaller.InstallResult.failure("The server did not return a ZIP package. Update the server to support built-in publishing, then retry.")
+		elif _publish_as_builtin:
 			var package_file := FileAccess.open(_package.path, FileAccess.WRITE)
 			if package_file == null:
 				builtin_result = ChartPackageInstaller.InstallResult.failure("Could not save the server chart package.")
