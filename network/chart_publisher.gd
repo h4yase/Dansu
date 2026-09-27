@@ -99,6 +99,8 @@ func _on_lookup(result: int, code: int, _headers: PackedStringArray, bytes: Pack
 func restriction(as_builtin: bool = false) -> String:
 	if not Auth.is_authenticated():
 		return "Sign in with Steam to publish chartsets."
+	if Auth.is_admin():
+		return ""
 	if not remote.is_empty():
 		if remote.owner_id != Auth.user.get("id"):
 			return "Only the original uploader can update this chartset."
@@ -166,7 +168,12 @@ func _update_dialog() -> void:
 		if not restriction().is_empty():
 			text += "The regular update is locked. The built-in action will replace it as an official ranked chartset."
 		else:
-			text += "Publish this chartset to the online catalogue?" if remote.is_empty() else "Replace your published chartset with this package?\nDifficulties absent from this package are removed from the server."
+			if remote.is_empty():
+				text += "Publish this chartset to the online catalogue?"
+			elif remote.status in ["approved", "ranked"]:
+				text += "Replace this published chartset with this package?\nInclude all existing difficulties. Leaderboards and earned SR are kept."
+			else:
+				text += "Replace this published chartset with this package?\nDifficulties absent from this package are removed from the server."
 		text += "\n\nIncludes charts, audio, images and skin files from this folder."
 	dialog.dialog_text = text
 	dialog.get_ok_button().text = "Upload" if remote.is_empty() else "Update"
