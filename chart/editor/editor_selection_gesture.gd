@@ -6,6 +6,7 @@ var active := false
 var dragging := false
 var box_mode := false
 var origin := Vector2.ZERO
+var origin_time := 0.0
 var anchor_time := 0
 var range_anchor: Note
 var range_rail: Rail
@@ -59,6 +60,7 @@ func begin(position: Vector2, box: bool) -> void:
 	dragging = false
 	box_mode = box
 	origin = local_position(position)
+	origin_time = Game.current_time - (origin.y - editor.get_judge_y()) / editor.get_pixels_per_ms()
 	delta_time = 0
 	delta_x = 0.0
 	snapshot = null
@@ -95,12 +97,14 @@ func motion(position: Vector2) -> void:
 	if not active:
 		return
 	var local := local_position(position)
+	origin.y = editor.get_judge_y() + (Game.current_time - origin_time) * editor.get_pixels_per_ms()
 	if not dragging and local.distance_to(origin) < DRAG_THRESHOLD:
 		return
 	if not dragging:
 		editor.transport.pause()
 		dragging = true
 	if box_mode:
+		local = local.clamp(Vector2.ZERO, editor.chart_panel.size)
 		update_box(Rect2(origin, local - origin).abs())
 	else:
 		var proposed := 0
@@ -130,10 +134,10 @@ func update_box(rect: Rect2) -> void:
 	var points := initial_points.duplicate()
 	for rail: Rail in CM.parsed_chart.rails:
 		for note: Note in rail.notes:
-			if clipped.has_point(element_position(note.time, rail._get_rail_x_at_time(note.time))):
+			if rect.has_point(element_position(note.time, rail._get_rail_x_at_time(note.time))):
 				notes[note] = rail
 		for point: RailPoint in rail.points:
-			if clipped.has_point(element_position(point.time, point.x)):
+			if rect.has_point(element_position(point.time, point.x)):
 				points[point] = rail
 	set_selection(notes, points)
 

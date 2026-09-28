@@ -39,6 +39,7 @@ var target_scroll := 0.0
 
 var smooth_speed := 12.0
 var search_text := ""
+var pack_id := ""
 var sort_mode: SortMode = SortMode.TITLE
 var editor_mode := false
 var online_mode := false
@@ -108,6 +109,11 @@ func _on_chart_update(_chartsets) -> void:
 
 func set_search_text(value: String) -> void:
 	search_text = value
+	rebuild_items(true)
+
+
+func set_pack(value: String) -> void:
+	pack_id = value
 	rebuild_items(true)
 
 
@@ -330,6 +336,8 @@ func _build_visible_items() -> Array[SongListItem]:
 
 	var source_chartsets := CM.editor_chartsets if editor_mode else CM.chartsets
 	for chartset in source_chartsets:
+		if not editor_mode and not pack_id.is_empty() and chartset.pack_id != pack_id:
+			continue
 		var matched_charts: Array[Chart] = []
 		for chart in chartset.charts:
 			if not filters.matches_local(chart):

@@ -48,6 +48,16 @@ static func plan_note_rail_move(rails: Array[Rail], notes: Dictionary, direction
 		moves[note] = target
 	return moves
 
+static func sync_new_bpm(chart: Chart, old_timings: Array[Timing], new_timings: Array[Timing]):
+	for rail in chart.rail:
+		for note in chart.notes:
+			# get beat division per note from timing
+			# 1/1 , 1/2 , 1/3 , 1/4 , 1/6 ...
+			# move to new timing
+			pass
+
+static func move_all_notes_ms(chart:Chart, ms: int):
+	pass
 
 static func discard_editor_difficulty(chart: Chart, saved_file_path: String) -> Error:
 	if chart == null:

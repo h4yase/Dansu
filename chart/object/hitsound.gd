@@ -29,11 +29,15 @@ func load_from_chart(chart: Chart) -> void:
 	else:
 		file_path = ""
 
-	if file_path.is_empty() or not ResourceLoader.exists(file_path):
+	if is_builtin():
+		stream = load(file_path) as AudioStream if ResourceLoader.exists(file_path) else null
+		return
+
+	if file_path.is_empty() or not FileAccess.file_exists(file_path):
 		stream = null
 		return
 
-	stream = load(file_path) as AudioStream
+	stream = AudioStreamWAV.load_from_file(file_path)
 
 func is_builtin() -> bool:
 	return file_name.begins_with("res/")

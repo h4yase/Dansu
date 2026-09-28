@@ -14,6 +14,7 @@ var _frame: ChartEventFrame
 func setup(dialog: FileDialog) -> void:
 	_dialog = dialog
 	if _dialog != null:
+		_dialog.use_native_dialog = true
 		_dialog.file_selected.connect(_on_file_selected)
 
 func open(chart: Chart, kind: String, event: ChartEvent, frame: ChartEventFrame) -> void:

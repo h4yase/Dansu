@@ -17,6 +17,7 @@ var gesture_active := false
 var _dragging := false
 var _box := false
 var _origin := Vector2.ZERO
+var _origin_time := 0.0
 var _cursor := Vector2.ZERO
 var _anchor_time := 0
 var _initial_items: Array[EditorEventItem] = []
@@ -24,7 +25,7 @@ var _state: EventEditState
 var _snapshot: EditorSnapshot
 var _range_anchor: Hit
 
-func _time_y(time: int) -> float:
+func _time_y(time: float) -> float:
 	return workspace.editor.get_judge_y() - (time - Game.current_time) * workspace.editor.get_pixels_per_ms()
 
 func _mouse_time() -> int:
@@ -110,13 +111,15 @@ func handle_mouse(event: InputEvent) -> void:
 		var direction := 1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else -1
 		if event.ctrl_pressed:
 			workspace.editor.adjust_editor_zoom(direction > 0)
-		elif event.shift_pressed and workspace._get_selected_event() is OverlayEvent:
+		elif event.shift_pressed and not gesture_active and workspace._get_selected_event() is OverlayEvent:
 			var selected: OverlayEvent = workspace._get_selected_event()
 			workspace.editor._push_history_snapshot()
 			workspace.move_placement(selected, null, workspace.editor.timeline.step_time(selected.end_time, direction), selected.x, true)
 			workspace.refresh_inspector()
 		else:
 			workspace.editor._set_current_time(workspace.editor.timeline.step_time(int(Game.current_time), direction))
+		if gesture_active:
+			_motion(point)
 	elif event.button_index == MOUSE_BUTTON_RIGHT:
 		var x := point.x / maxf(size.x, 1)
 		var kind := "theme" if x < 0.16 else "camera" if x < 0.28 else "skin" if x < 0.40 else "overlay"
@@ -149,6 +152,7 @@ func _press(point: Vector2, ctrl: bool, shift: bool) -> void:
 	_dragging = false
 	_box = hit == null
 	_origin = point
+	_origin_time = Game.current_time - (point.y - workspace.editor.get_judge_y()) / workspace.editor.get_pixels_per_ms()
 	_cursor = point
 	_initial_items.clear()
 	if ctrl or not _box:
@@ -173,6 +177,9 @@ func _select_range(hit: Hit) -> bool:
 	return true
 
 func _motion(point: Vector2) -> void:
+	_origin.y = _time_y(_origin_time)
+	if _box:
+		point = point.clamp(Vector2.ZERO, size)
 	_cursor = point
 	if not _dragging and point.distance_to(_origin) < DRAG_THRESHOLD:
 		return
@@ -192,7 +199,6 @@ func _motion(point: Vector2) -> void:
 	workspace.selection_ops.move(_state, dt, dx, resize)
 
 func _select_box(rect: Rect2) -> void:
-	rect = rect.intersection(Rect2(Vector2.ZERO, size))
 	var selected: Array[EditorEventItem] = _initial_items.duplicate()
 	for event in workspace.get_events():
 		if event is OverlayEvent:

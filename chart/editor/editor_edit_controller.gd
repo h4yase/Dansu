@@ -16,13 +16,15 @@ func handle_mouse_button(event: InputEventMouseButton) -> void:
 	if event.button_index == MOUSE_BUTTON_WHEEL_UP or event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 		if not editor._is_mouse_inside_chart():
 			return
-		if event.shift_pressed:
+		if event.shift_pressed and not gesture.active:
 			adjust_selected_object(event.button_index == MOUSE_BUTTON_WHEEL_UP)
 		elif event.ctrl_pressed:
 			editor.adjust_editor_zoom(event.button_index == MOUSE_BUTTON_WHEEL_UP)
 		else:
 			var direction := 1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else -1
 			set_current_time(editor.timeline.step_time(int(round(Game.current_time)), direction))
+		if gesture.active:
+			gesture.motion(event.position)
 		editor.get_viewport().set_input_as_handled()
 		return
 
@@ -145,8 +147,18 @@ func delete_selected() -> void:
 	for note: Note in editor.selection.selected_notes:
 		EditorChartOps.remove_note(editor.selection.selected_notes[note], note)
 	if not editor.selection.selected_points.is_empty():
+		var removed_rails: Array[Rail] = []
+		for point: RailPoint in editor.selection.selected_points:
+			var rail: Rail = editor.selection.selected_points[point]
+			if rail == null or rail.points.is_empty() or removed_rails.has(rail):
+				continue
+			if editor.selection.selected_points.has(rail.points.front()) and editor.selection.selected_points.has(rail.points.back()):
+				EditorChartOps.remove_rail(rail)
+				removed_rails.append(rail)
 		for point: RailPoint in editor.selection.selected_points:
 			var _owner: Rail = editor.selection.selected_points[point]
+			if _owner == null or removed_rails.has(_owner):
+				continue
 			EditorChartOps.remove_point(_owner, _owner.points.find(point))
 	elif not had_notes and editor.selection.selected_rail != null:
 		EditorChartOps.remove_rail(editor.selection.selected_rail)

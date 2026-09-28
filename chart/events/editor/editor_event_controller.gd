@@ -515,8 +515,8 @@ func sync_zoom_control(value: float) -> void:
 func _build_camera_frame_inspector(event: CameraEvent, frame: CameraEventFrame) -> void:
 	_add_separator("CAMERA")
 	_add_check_row("Follow character", frame.follow_character, _on_camera_follow_changed.bind(event, frame))
-	_add_number_row("Position X", frame.position.x, -10000.0, 10000.0, 1.0, _on_camera_vector_changed.bind(event, frame, true))
-	_add_number_row("Position Y", frame.position.y, -10000.0, 10000.0, 1.0, _on_camera_vector_changed.bind(event, frame, false))
+	_add_number_row("Position X", frame.position.x, -10000.0, 10000.0, 0.01, _on_camera_vector_changed.bind(event, frame, true))
+	_add_number_row("Position Y", frame.position.y, -10000.0, 10000.0, 0.01, _on_camera_vector_changed.bind(event, frame, false))
 	_add_number_row("Zoom", frame.zoom, 0.01, 20.0, 0.01, _on_camera_zoom_changed.bind(event, frame))
 	_add_ease_row(frame.ease, _on_frame_ease_changed.bind(event, frame))
 

@@ -51,11 +51,11 @@ func get_max_time() -> int:
 func clamp_time(value: float) -> float:
 	return clamp(value, float(_min_time_ms), float(get_max_time()))
 
-func get_active_timing(time_ms: int) -> Timing:
+func get_active_timing(time_ms: int, timings = chart.timings) -> Timing:
 	ensure_timings()
 
-	var active: Timing = chart.timings[0]
-	for timing in chart.timings:
+	var active: Timing = timings[0]
+	for timing in timings:
 		if timing.time > time_ms:
 			break
 		active = timing
@@ -80,6 +80,15 @@ func get_previous_timing_before(time_ms: int) -> Timing:
 func get_snap_interval_ms(time_ms: int) -> float:
 	var timing := get_active_timing(time_ms)
 	return 60000.0 / timing.bpm / float(beat_division)
+
+# time = 60000.0 / timing.bpm / float(beat_division)
+# float(beat_division) = 60000.0 / timing.bpm / time
+# ok im suck at math
+
+func get_beat_division_from_ms(note: Note) -> float:
+	var timing := get_active_timing(note.time)
+	var _beat_division = 60000.0 / timing.bpm / note.time
+	return int(_beat_division)
 
 func snap_time(time_ms: int) -> int:
 	var timing := get_active_timing(time_ms)

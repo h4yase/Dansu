@@ -7,7 +7,7 @@ signal hitsounds_changed()
 const EVENT_EDITOR_SCENE_PATH := "res://scenes/chart/events/editor/event_editor_scene.tscn"
 const GAMEPLAY_SCENE_PATH := "res://scenes/gameplay/gameplay.tscn"
 const DEFAULT_PIXELS_PER_MS := 1.0
-const MIN_PIXELS_PER_MS := 0.2
+const MIN_PIXELS_PER_MS := 0.05
 const MAX_PIXELS_PER_MS := 4.0
 const TRANSPORT_UI_UPDATE_USEC := 33333
 const EventWorkspace := preload("res://chart/editor/event_workspace.gd")
@@ -122,6 +122,8 @@ func _input(event: InputEvent) -> void:
 	if edit_controller != null and edit_controller.gesture.active:
 		if event is InputEventMouseMotion:
 			edit_controller.gesture.motion(event.position)
+		elif event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
+			edit_controller.handle_mouse_button(event)
 		elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 			edit_controller.gesture.finish(event.position)
 		elif event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
@@ -550,7 +552,7 @@ func get_judge_y() -> float:
 	return note_pivot.position.y - chart_panel.position.y
 
 func _get_supported_beat_divisions() -> Array[int]:
-	return [1, 2, 3, 4, 6, 8, 12, 16]
+	return [1, 2, 3, 4, 6, 8, 12, 16, 24, 32]
 
 func _is_mouse_inside_chart() -> bool:
 	return chart_panel != null and chart_panel.get_global_rect().has_point(get_global_mouse_position())
