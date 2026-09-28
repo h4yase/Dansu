@@ -134,7 +134,7 @@ func _populate_result_details() -> void:
 	nah_count_label.text = str(score.bad)
 	miss_count_label.text = str(score.miss)
 	combo_value_label.text = "%d/%d" % [score.high_combo, max(score.notes, 1)]
-	avg_value_label.text = str(score.avg_signed_timings)
+	avg_value_label.text = str(snapped(score.avg_signed_timings, 0.01)) + "ms"
 
 func _populate_chart_metadata() -> void:
 	var chart := CM.selected_chart

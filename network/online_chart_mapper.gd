@@ -6,6 +6,7 @@ static func from_metadata(data: Dictionary) -> ChartSet:
 		return null
 	var chartset := ChartSet.new()
 	chartset.uuid = data.chartset_uuid
+	chartset.status = str(data.get("status", ""))
 	chartset.online_metadata = data.duplicate(true)
 	for entry in data.charts:
 		if not entry is Dictionary or not entry.get("chart_uuid") is String:

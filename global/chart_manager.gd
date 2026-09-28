@@ -289,6 +289,7 @@ func _refresh_library_from_database(filesystem_validated: bool) -> bool:
 		var chart_set := chartset_value as ChartSet
 		if chart_set == null:
 			continue
+		chart_set.pack_id = chart_set.folder_name.get_slice("/", 0).to_lower()
 		active_set_ids[chart_set.db_id] = true
 		chartsets_by_uuid[chart_set.uuid] = chart_set
 		next_chartsets.append(chart_set)

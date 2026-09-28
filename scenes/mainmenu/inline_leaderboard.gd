@@ -5,6 +5,7 @@ const PAGE_SIZE := 20
 @export var above_panel: Control
 @onready var _scroll: ScrollContainer = $Scroll
 @onready var _entries: VBoxContainer = $Scroll/Entries
+@onready var _status: Label = $Status
 
 var _chart: Chart
 var _request: HTTPRequest
@@ -75,6 +76,7 @@ func _select_chart(chart: Chart, force_refresh: bool = false) -> void:
 	for child in _entries.get_children():
 		_entries.remove_child(child)
 		child.queue_free()
+	_show_status("")
 	if chart != null and is_visible_in_tree():
 		_debounce.start()
 
@@ -93,6 +95,8 @@ func _load_selected() -> void:
 		_load_page()
 	elif _chart.chart_set != null and not _chart.chart_set.uuid.is_empty():
 		_request_json("/chartsets/by-uuid/" + _chart.chart_set.uuid.uri_encode(), _on_resolved)
+	else:
+		_show_status("No leaderboard for this chart.")
 
 
 func _load_page() -> void:
@@ -111,20 +115,22 @@ func _request_json(path: String, callback: Callable) -> void:
 	headers.append("Accept: application/json")
 	if _request.request(ServerURLs.api(path), headers) != OK:
 		_cancel_request()
-		Notification.notice("Could not load leaderboard.", Notification.Type.WARNING)
+		_show_status("Could not connect to the server.")
 
 
 func _on_response(result: int, code: int, _headers: PackedStringArray, body: PackedByteArray, callback: Callable, generation: int) -> void:
 	if generation != _generation:
 		return
 	_cancel_request()
-	if result != HTTPRequest.RESULT_SUCCESS or code != 200:
-		if code != 404:
-			Notification.notice("Could not load leaderboard.", Notification.Type.WARNING)
+	if result != HTTPRequest.RESULT_SUCCESS:
+		_show_status("Could not connect to the server.")
+		return
+	if code != 200:
+		_show_status("No leaderboard for this chart." if code == 404 else "Could not load leaderboard.")
 		return
 	var data = JSON.parse_string(body.get_string_from_utf8())
 	if not data is Dictionary:
-		Notification.notice("Could not read leaderboard.", Notification.Type.WARNING)
+		_show_status("Could not read leaderboard.")
 		return
 	callback.call(data)
 
@@ -137,11 +143,12 @@ func _on_resolved(data: Dictionary) -> void:
 			if _chart_id > 0:
 				_load_page()
 				return
+	_show_status("No leaderboard for this chart.")
 
 
 func _on_page(data: Dictionary) -> void:
 	if not data.get("items") is Array or int(data.get("chart_id", -1)) != _chart_id:
-		Notification.notice("Could not read leaderboard.", Notification.Type.WARNING)
+		_show_status("Could not read leaderboard.")
 		return
 	_page = int(data.get("page", _page + 1))
 	_total_pages = int(data.get("total_pages", _page))
@@ -155,6 +162,16 @@ func _on_page(data: Dictionary) -> void:
 		row.action_pressed.connect(_on_row_action.bind(row))
 		row.play_appear(minf(index * 0.035, 0.35))
 		index += 1
+	_show_status("No scores yet." if _entries.get_child_count() == 0 else "")
+
+
+func _show_status(text: String) -> void:
+	var has_entries := _entries.get_child_count() > 0
+	_status.text = text
+	_status.visible = not text.is_empty() and not has_entries
+	_scroll.visible = not _status.visible
+	if has_entries and not text.is_empty():
+		Notification.notice(text, Notification.Type.WARNING)
 
 
 func _on_scroll(value: float) -> void:

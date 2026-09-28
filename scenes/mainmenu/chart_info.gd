@@ -20,6 +20,7 @@ const THUMB_CROSSFADE_DURATION := 0.24
 @export var cover_layer: Control
 @export var content: Control
 @export var shine_rect: ColorRect
+@export var title_row: HBoxContainer
 @export var title_label: Label
 @export var artist_label: Label
 @export var desc_label: Label
@@ -30,6 +31,7 @@ const THUMB_CROSSFADE_DURATION := 0.24
 @export var never_played_label: Label
 @export var score_label: Label
 @export var ranked_badge: Control
+@export var approved_badge: Control
 
 var score_ui_bound := true
 var click_tween: Tween
@@ -50,6 +52,8 @@ func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 	gui_input.connect(_on_gui_input)
 	resized.connect(_on_resized)
+	title_row.resized.connect(_update_title_layout)
+	title_label.theme_changed.connect(_update_title_layout)
 	CM.chart_selected.connect(_refresh)
 	CoverLoader.cover_loaded.connect(_on_cover_loaded)
 	CoverLoader.cover_failed.connect(_on_cover_failed)
@@ -126,18 +130,20 @@ func _process(delta: float) -> void:
 func _refresh(chart: Chart) -> void:
 	current_cover_chart = chart
 	_refresh_best_play(chart)
+	var status := chart.chart_set.status if chart != null and chart.chart_set != null else ""
+	ranked_badge.visible = status == "ranked"
+	approved_badge.visible = status == "approved"
+	title_label.text = chart.title if chart != null else ""
+	_update_title_layout()
 
 	if chart == null:
-		title_label.text = ""
 		artist_label.text = ""
 		desc_label.text = ""
 		_crossfade_thumb(null)
 		return
 
-	title_label.text = chart.title
 	artist_label.text = _build_artist_text(chart)
 	desc_label.text = _build_desc_text(chart)
-	ranked_badge.visible = (chart.chart_set.status == "ranked")
 
 	if _is_builtin_chart(chart):
 		if chart.cover_image != null:
@@ -158,6 +164,19 @@ func _refresh(chart: Chart) -> void:
 		_crossfade_thumb(null)
 	else:
 		CoverLoader.request_cover(chart)
+
+
+func _update_title_layout() -> void:
+	var font_size := title_label.get_theme_font_size("font_size")
+	var available_width := title_row.size.x
+	for badge in [ranked_badge, approved_badge]:
+		badge.custom_minimum_size = Vector2(font_size, font_size)
+		if badge.visible:
+			available_width -= font_size + title_row.get_theme_constant("separation")
+	var text_width := title_label.get_theme_font("font").get_string_size(
+		title_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size
+	).x
+	title_label.custom_minimum_size.x = minf(ceilf(text_width), maxf(available_width, 0.0))
 
 
 func refresh_selected_chart() -> void:
@@ -211,7 +230,6 @@ func _hide_score_ui() -> void:
 		score_label,
 	]:
 		label.visible = false
-		ranked_badge.visible = false
 
 
 func _on_mouse_entered() -> void:

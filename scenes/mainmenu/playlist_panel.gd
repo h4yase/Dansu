@@ -4,6 +4,7 @@ class_name PlaylistPanel
 signal visibility_set(blocked: bool)
 signal chartset_chosen(metadata: Dictionary)
 signal playlist_selected(id: int, title: String)
+signal pack_selected(pack_id: String)
 
 const OPEN_OFFSET := Vector2(-336.0, 14.0)
 const OPEN_DURATION := 0.12
@@ -31,6 +32,8 @@ var _target_rect := Rect2()
 var _tween: Tween = null
 var browsing := false
 var selected_id := 0
+var _browsing_packs := false
+var _selected_pack_id := ""
 
 
 func _ready() -> void:
@@ -48,6 +51,7 @@ func _ready() -> void:
 	panel.resized.connect(_position_panel)
 	CM.playlists_changed.connect(_on_playlists_changed)
 	CM.playlist_state_changed.connect(_update_item_disabled_state)
+	CM.chart_update.connect(_on_chart_update)
 
 
 func open_browser(target_rect: Rect2, playlist_id: int) -> void:
@@ -56,14 +60,29 @@ func open_browser(target_rect: Rect2, playlist_id: int) -> void:
 	open(null, target_rect)
 
 
+func open_pack_browser(target_rect: Rect2, pack_id: String) -> void:
+	browsing = true
+	_browsing_packs = true
+	_selected_pack_id = pack_id
+	_current_chartset = null
+	_open_panel(target_rect)
+	_show_packs()
+
+
 func open(chartset: ChartSet = null, target_rect: Rect2 = Rect2()) -> void:
 	if not Auth.is_authenticated():
 		Notification.notice("Sign in to use playlists.", Notification.Type.WARNING)
 		return
 	_current_chartset = chartset
-	item_list.modulate.a = 1.0
+	_browsing_packs = false
 	if chartset != null:
 		browsing = false
+	_open_panel(target_rect)
+	_show_playlists()
+
+
+func _open_panel(target_rect: Rect2) -> void:
+	item_list.modulate.a = 1.0
 	_target_rect = target_rect
 	visible = true
 	modulate.a = 1.0
@@ -73,7 +92,6 @@ func open(chartset: ChartSet = null, target_rect: Rect2 = Rect2()) -> void:
 		panel.offset_transform_scale = Vector2(0.96, 0.96)
 	_position_panel()
 	_play_open_animation()
-	_show_playlists()
 
 
 func close() -> void:
@@ -87,8 +105,41 @@ func is_open() -> bool:
 
 
 func _on_playlists_changed() -> void:
-	if is_open():
+	if is_open() and not _browsing_packs:
 		_show_playlists()
+
+
+func _on_chart_update(_chartsets) -> void:
+	if is_open() and _browsing_packs:
+		_show_packs()
+
+
+static func pack_title(pack_id: String) -> String:
+	match pack_id:
+		"": return "All Charts"
+		"dansu": return "Dansu"
+		"extended": return "Extended"
+	return pack_id.to_upper() if pack_id.begins_with("dlc") else pack_id.capitalize()
+
+
+func _show_packs() -> void:
+	var pack_ids: Array[String] = ["", "dansu", "extended"]
+	var extra_packs: Array[String] = []
+	for chartset in CM.chartsets:
+		if not pack_ids.has(chartset.pack_id) and not extra_packs.has(chartset.pack_id):
+			extra_packs.append(chartset.pack_id)
+	extra_packs.sort_custom(func(a: String, b: String): return a.naturalnocasecmp_to(b) < 0)
+	pack_ids.append_array(extra_packs)
+	_clear_items()
+	for pack_id in pack_ids:
+		var title := pack_title(pack_id)
+		var row := _create_item(title, title, pack_id == _selected_pack_id, func():
+			pack_selected.emit(pack_id)
+			close()
+		)
+		item_list.add_child(row)
+	_set_status("")
+	_resize_list(pack_ids.size())
 
 
 func _show_playlists() -> void:
@@ -107,45 +158,57 @@ func _show_playlists() -> void:
 		_set_status(CM.playlist_loader.error)
 	else:
 		_set_status("No playlists yet." if _playlists.is_empty() else "")
-	var visible_items := mini(_playlists.size(), MAX_VISIBLE_ITEMS)
+	_resize_list(_playlists.size())
+
+
+func _resize_list(count: int) -> void:
+	var visible_items := mini(count, MAX_VISIBLE_ITEMS)
 	scroll.custom_minimum_size.y = ITEM_HEIGHT * float(visible_items) + 4.0 * float(maxi(0, visible_items - 1))
 	panel.reset_size()
 
 
-func _render_playlists() -> void:
+func _clear_items() -> void:
 	for child in item_list.get_children():
 		item_list.remove_child(child)
 		child.queue_free()
+
+
+func _render_playlists() -> void:
+	_clear_items()
 	for index in range(_playlists.size()):
 		item_list.add_child(_create_playlist_item(index, _playlists[index]))
 
 
 func _create_playlist_item(index: int, playlist: Playlist) -> Control:
+	var added := playlist.id == selected_id if browsing else _playlist_contains_current(playlist)
+	var tooltip := playlist.name if browsing else ("Remove from this playlist" if added else "Add to this playlist")
+	var on_pressed := _toggle_playlist.bind(index)
+	if browsing:
+		on_pressed = func():
+			playlist_selected.emit(playlist.id, playlist.name)
+			close()
+	return _create_item(playlist.name, tooltip, added, on_pressed)
+
+
+func _create_item(title: String, tooltip: String, selected: bool, on_pressed: Callable) -> Control:
 	var row := HBoxContainer.new()
 	row.custom_minimum_size = Vector2(0.0, ITEM_HEIGHT)
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_theme_constant_override("separation", 8)
 
-	var added := playlist.id == selected_id if browsing else _playlist_contains_current(playlist)
 	var button := Button.new()
 	button.custom_minimum_size = Vector2(0.0, ITEM_HEIGHT)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.text = playlist.name
+	button.text = title
 	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	button.add_theme_constant_override("outline_size", 0)
 	button.flat = false
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	button.theme = _build_item_theme(added)
-	button.tooltip_text = button.text if browsing else ("Remove from this playlist" if added else "Add to this playlist")
-	if browsing:
-		button.pressed.connect(func():
-			playlist_selected.emit(playlist.id, playlist.name)
-			close()
-		)
-	else:
-		button.pressed.connect(_toggle_playlist.bind(index))
-	if added:
+	button.theme = _build_item_theme(selected)
+	button.tooltip_text = tooltip
+	button.pressed.connect(on_pressed)
+	if selected:
 		button.icon = preload("res://resources/icons/checkbox-checked.svg")
 		button.expand_icon = true
 		button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -177,6 +240,8 @@ func _set_status(text: String) -> void:
 
 
 func _update_item_disabled_state() -> void:
+	if _browsing_packs:
+		return
 	for index in range(item_list.get_child_count()):
 		var row := item_list.get_child(index)
 		for child in row.get_children():

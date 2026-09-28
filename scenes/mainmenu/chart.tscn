@@ -7,11 +7,12 @@
 [ext_resource type="AudioStream" uid="uid://c2jir4psytu6t" path="res://resources/audio/buttons/switch37.ogg" id="5_es5n0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3yoln"]
-bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+bg_color = Color(0.10980392, 0.101960786, 0.1764706, 0.92941177)
+border_width_left = 10
+border_color = Color(0.34901962, 0.2784314, 0.73333335, 1)
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+expand_margin_left = 5.0
 
 [node name="Chart" type="Control" unique_id=1752993019 node_paths=PackedStringArray("panel", "rating_hbox", "hover_player", "click_player", "thumb", "title_label", "description_label")]
 custom_minimum_size = Vector2(0, 148)

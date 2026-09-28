@@ -5,8 +5,10 @@
 [ext_resource type="Script" uid="uid://gw4u2exwyrwf" path="res://scenes/mainmenu/menu_animations.gd" id="2_rhsxn"]
 [ext_resource type="PackedScene" uid="uid://c51ndn5ftq4wo" path="res://scenes/mainmenu/menubutton.tscn" id="4_da4vi"]
 [ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="4_ridl2"]
+[ext_resource type="Texture2D" uid="uid://qh4ulioaehul" path="res://resources/background.png" id="5_u1ft4"]
 [ext_resource type="Texture2D" uid="uid://cw8cihgunxcv6" path="res://icon.svg" id="5_x46xa"]
 [ext_resource type="Shader" uid="uid://cnchsob31pe3k" path="res://resources/shaders/liquid.gdshader" id="6_da4vi"]
+[ext_resource type="Texture2D" uid="uid://dtm0h04533rhr" path="res://resources/textures/decals.png" id="6_olbpu"]
 [ext_resource type="Script" uid="uid://kieefq7irimy" path="res://scenes/mainmenu/menu_buttons.gd" id="6_xnw7g"]
 [ext_resource type="Script" uid="uid://by3ih1cu6lh5s" path="res://scenes/mainmenu/visualizer.gd" id="7_wnqqh"]
 [ext_resource type="Script" uid="uid://djhm3b0hsswb5" path="res://scenes/mainmenu/menu_audio.gd" id="9_x46xa"]
@@ -191,7 +193,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(900, 1200)]
+"values": [Vector2(950, 1200)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -599,12 +601,12 @@ _data = {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jyltf"]
 shader = ExtResource("1_br2e8")
-shader_parameter/bg_color = Color(0.0627451, 0.0627451, 0.078431375, 1)
-shader_parameter/shape_color = Color(0.080000006, 0.080000006, 0.1, 1)
+shader_parameter/bg_color = Color(0.0627451, 0.0627451, 0.078431375, 0)
+shader_parameter/shape_color = Color(0.11764706, 0.06666667, 0.22352941, 0.11372549)
 shader_parameter/rect_size = Vector2(1920, 1080)
 shader_parameter/cell_size = 180.0
-shader_parameter/move_speed = 0.5
-shader_parameter/cycle_speed = 0.2
+shader_parameter/move_speed = 0.25
+shader_parameter/cycle_speed = 0.1
 shader_parameter/transition_ratio = 0.12
 shader_parameter/softness = 0.0
 shader_parameter/circle_size = 0.3
@@ -621,7 +623,7 @@ mesh = SubResource("PlaceholderMesh_x46xa")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wnqqh"]
 shader = ExtResource("6_da4vi")
-shader_parameter/water_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
+shader_parameter/water_color = Color(0.10980392, 0.101960786, 0.1764706, 0.4745098)
 shader_parameter/water_height = 0.3
 shader_parameter/amplitude = 0.1
 shader_parameter/speed = 1.5
@@ -702,7 +704,7 @@ corner_detail = 20
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_da4vi"]
 shader = ExtResource("6_da4vi")
-shader_parameter/water_color = Color(0.4392157, 0.35686275, 0.87058824, 1)
+shader_parameter/water_color = Color(0.4392157, 0.35686275, 0.87058824, 0.7647059)
 shader_parameter/water_height = 0.3
 shader_parameter/amplitude = 0.1
 shader_parameter/speed = 0.9
@@ -878,6 +880,37 @@ volume_db = -10.0
 bus = &"Music"
 playback_type = 1
 
+[node name="Background2" type="TextureRect" parent="." unique_id=875096649]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1460.0
+offset_top = -790.0
+offset_right = 1460.0
+offset_bottom = 790.0
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(2420, 1330)
+texture = ExtResource("5_u1ft4")
+expand_mode = 1
+
+[node name="Decals" type="TextureRect" parent="." unique_id=1592863623]
+self_modulate = Color(1, 1, 1, 0.56078434)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1460.0
+offset_top = -790.0
+offset_right = 1460.0
+offset_bottom = 790.0
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(2420, 1330)
+texture = ExtResource("6_olbpu")
+expand_mode = 1
+script = ExtResource("10_6yf2l")
+power = -10.0
+
 [node name="Background" type="ColorRect" parent="." unique_id=1725445189]
 material = SubResource("ShaderMaterial_jyltf")
 layout_mode = 1
@@ -961,12 +994,13 @@ offset_top = -964.44006
 offset_right = -733.44006
 offset_bottom = -964.44006
 script = ExtResource("10_6yf2l")
+power = -25.0
 
 [node name="Character" type="Sprite2D" parent="CharacterPivot" unique_id=187869448]
 modulate = Color(0.8058232, 0.7965808, 0.97266215, 1)
-position = Vector2(900, 1200)
+position = Vector2(950, 1200)
 rotation = -0.06981315
-scale = Vector2(1.5, 1.5)
+scale = Vector2(1.3, 1.3)
 texture = ExtResource("10_apyk3")
 
 [node name="Charts" type="Control" parent="." unique_id=836592076 node_paths=PackedStringArray("content")]
@@ -987,9 +1021,9 @@ anchor_left = 1.33
 anchor_top = 0.007
 anchor_right = 1.33
 anchor_bottom = 1.0370001
-offset_left = -970.16003
+offset_left = -980.16003
 offset_top = -7.5600004
-offset_right = -234.16003
+offset_right = -244.16003
 offset_bottom = -7.960083
 offset_transform_enabled = true
 offset_transform_position = Vector2(-1000, 0)
@@ -1201,7 +1235,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_playlist_selector")
 theme_override_styles/hover = SubResource("StyleBoxFlat_playlist_selector")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_playlist_selector")
 theme_override_styles/focus = SubResource("StyleBoxFlat_playlist_selector")
-text = "All Beatmaps"
+text = "All Charts"
 alignment = 0
 text_overrun_behavior = 1
 
@@ -1231,7 +1265,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 7.6800003
-offset_top = -192.0
+offset_top = -165.0
 
 [node name="ChartInfo" type="Control" parent="." unique_id=403222565]
 layout_mode = 1
@@ -1299,7 +1333,7 @@ size_flags_horizontal = 3
 mouse_filter = 1
 text = "Upload"
 
-[node name="Panel" type="Panel" parent="ChartInfo" unique_id=34224441 node_paths=PackedStringArray("thumb", "previous_thumb", "cover_layer", "content", "shine_rect", "title_label", "artist_label", "desc_label", "rank_label", "full_combo_label", "all_just_label", "perfect_label", "never_played_label", "score_label", "ranked_badge")]
+[node name="Panel" type="Panel" parent="ChartInfo" unique_id=34224441 node_paths=PackedStringArray("thumb", "previous_thumb", "cover_layer", "content", "shine_rect", "title_row", "title_label", "artist_label", "desc_label", "rank_label", "full_combo_label", "all_just_label", "perfect_label", "never_played_label", "score_label", "ranked_badge", "approved_badge")]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.028455287
@@ -1316,7 +1350,8 @@ previous_thumb = NodePath("CoverLayer/PreviousThumb")
 cover_layer = NodePath("CoverLayer")
 content = NodePath("Content")
 shine_rect = NodePath("CoverLayer/Shine")
-title_label = NodePath("Content/Title")
+title_row = NodePath("Content/TitleRow")
+title_label = NodePath("Content/TitleRow/Title")
 artist_label = NodePath("Content/Artist")
 desc_label = NodePath("Content/Desc")
 rank_label = NodePath("Content/Rank")
@@ -1325,7 +1360,8 @@ all_just_label = NodePath("Content/AllJust")
 perfect_label = NodePath("Content/Perfect")
 never_played_label = NodePath("Content/NeverPlayed")
 score_label = NodePath("Content/Score")
-ranked_badge = NodePath("Content/Ranked")
+ranked_badge = NodePath("Content/TitleRow/Ranked")
+approved_badge = NodePath("Content/TitleRow/Approved")
 
 [node name="CoverLayer" type="Panel" parent="ChartInfo/Panel" unique_id=232816774]
 clip_children = 2
@@ -1438,8 +1474,7 @@ text = "impeccable"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Title" type="Label" parent="ChartInfo/Panel/Content" unique_id=1309542252]
-unique_name_in_owner = true
+[node name="TitleRow" type="HBoxContainer" parent="ChartInfo/Panel/Content" unique_id=1880972010]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 1
 anchors_preset = -1
@@ -1451,6 +1486,34 @@ offset_left = -440.5
 offset_top = -152.69014
 offset_right = 439.5
 offset_bottom = -88.69014
+mouse_filter = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Ranked" type="TextureRect" parent="ChartInfo/Panel/Content/TitleRow" unique_id=1197764538]
+visible = false
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("27_35dlf")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Approved" type="TextureRect" parent="ChartInfo/Panel/Content/TitleRow" unique_id=349842024]
+visible = false
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("26_su352")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="ChartInfo/Panel/Content/TitleRow" unique_id=1309542252]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 0.80784315, 1)
 theme_override_colors/font_outline_color = Color(0.4392157, 0.35686275, 0.87058824, 1)
 theme_override_constants/outline_size = 20
@@ -1523,6 +1586,7 @@ expand_icon = true
 script = ExtResource("99_loved")
 
 [node name="Playlists" type="Button" parent="ChartInfo/Panel/Content" unique_id=148872323]
+visible = false
 custom_minimum_size = Vector2(52, 52)
 layout_mode = 1
 anchors_preset = -1
@@ -1645,26 +1709,6 @@ chart_scroll = NodePath("../../../../Charts")
 
 [node name="StartButton" parent="ChartInfo/Panel/Content/HBoxContainer" unique_id=939246191 instance=ExtResource("21_p4mk8")]
 layout_mode = 2
-
-[node name="Approved" type="TextureRect" parent="ChartInfo/Panel/Content" unique_id=349842024]
-visible = false
-layout_mode = 0
-offset_left = -15.0
-offset_top = 252.0
-offset_right = 105.0
-offset_bottom = 372.0
-texture = ExtResource("26_su352")
-expand_mode = 1
-
-[node name="Ranked" type="TextureRect" parent="ChartInfo/Panel/Content" unique_id=1197764538]
-visible = false
-layout_mode = 0
-offset_left = -15.0
-offset_top = 252.0
-offset_right = 105.0
-offset_bottom = 372.0
-texture = ExtResource("27_35dlf")
-expand_mode = 1
 
 [node name="MenuButtons" type="VBoxContainer" parent="." unique_id=175635342 node_paths=PackedStringArray("play_button", "edit_button", "options_button", "exit_button", "settings_popup", "menu")]
 visible = false

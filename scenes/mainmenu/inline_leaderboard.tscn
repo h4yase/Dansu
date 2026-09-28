@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dwxl2qt32v5ch"]
 
 [ext_resource type="Script" uid="uid://bra16y2jran65" path="res://scenes/mainmenu/inline_leaderboard.gd" id="1"]
+[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="2_yb1yx"]
 
 [node name="InlineLeaderboard" type="VBoxContainer" unique_id=943854186]
 theme_override_constants/separation = 6
@@ -16,5 +17,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 5
 
-[node name="Label" type="Label" parent="." unique_id=1428715182]
+[node name="Status" type="Label" parent="." unique_id=1428715182]
+visible = false
+modulate = Color(1, 1, 1, 0.7)
 layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 0.4862745)
+theme_override_fonts/font = ExtResource("2_yb1yx")
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

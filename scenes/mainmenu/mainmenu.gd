@@ -129,10 +129,13 @@ func _ready() -> void:
 	dropdown_icon.size = Vector2(20.0, 20.0)
 	dropdown_icon.pivot_offset = Vector2(10.0, 10.0)
 	dropdown_icon.rotation = -PI / 2.0
-	playlist_panel.playlist_selected.connect(func(id: int, title: String):
-		playlist_selector.text = title
-		playlist_selector.tooltip_text = title
+	playlist_panel.playlist_selected.connect(func(id: int, _title: String):
 		_catalogue.set_playlist(id)
+		_update_playlist_button_visibility()
+	)
+	playlist_panel.pack_selected.connect(func(pack_id: String):
+		chart_scroll.set_pack(pack_id)
+		_update_playlist_button_visibility()
 	)
 	playlist_panel.visibility_set.connect(func(blocked: bool): chart_scroll.input_blocked = blocked)
 	playlist_panel.chartset_chosen.connect(_on_playlist_chartset_chosen)
@@ -473,6 +476,8 @@ func _select_source_tab(tab: int) -> void:
 		tab = 0
 
 	var source_changed := is_community_mode != (tab == 1)
+	if source_changed:
+		playlist_panel.close()
 	is_community_mode = tab == 1
 	_community_selection_restore_pending = is_community_mode
 	loved_button.visible = is_community_mode
@@ -542,12 +547,20 @@ func _restore_source_selection(community: bool) -> void:
 
 
 func _update_playlist_button_visibility() -> void:
-	playlist_selector.visible = is_community_mode and not is_editor_mode and Auth.is_authenticated()
-	if not Auth.is_authenticated():
-		playlist_selector.text = "ALL CHARTS"
+	playlist_selector.visible = not is_editor_mode and (not is_community_mode or Auth.is_authenticated())
+	var title := "All Charts"
+	if is_community_mode:
+		for playlist in CM.playlists:
+			if playlist.id == _catalogue.playlist_id:
+				title = playlist.name
+				break
+	else:
+		title = PlaylistPanel.pack_title(chart_scroll.pack_id)
+	playlist_selector.text = title
+	playlist_selector.tooltip_text = title
 	var has_online_chartset := _selected_online_chartset_id() > 0
 	playlist_button.visible = is_community_mode and not is_editor_mode and Auth.is_authenticated() and has_online_chartset
-	if not playlist_button.visible:
+	if (playlist_panel.browsing and not playlist_selector.visible) or (not playlist_panel.browsing and not playlist_button.visible):
 		playlist_panel.close()
 
 
@@ -579,7 +592,10 @@ func _open_playlist_selector() -> void:
 	if playlist_panel.is_open():
 		playlist_panel.close()
 		return
-	playlist_panel.open_browser(playlist_selector.get_global_rect(), _catalogue.playlist_id)
+	if is_community_mode:
+		playlist_panel.open_browser(playlist_selector.get_global_rect(), _catalogue.playlist_id)
+	else:
+		playlist_panel.open_pack_browser(playlist_selector.get_global_rect(), chart_scroll.pack_id)
 
 
 func _on_playlist_chartset_chosen(metadata: Dictionary) -> void:
