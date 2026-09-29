@@ -419,8 +419,6 @@ func _set_hover(hovered: bool) -> void:
 
 
 func _on_mouse_exited() -> void:
-	# Control 사이를 이동할 때 mouse_exited가 순간적으로 발생할 수 있어서
-	# 한 프레임 뒤 실제 마우스 위치를 검사함.
 	call_deferred("_check_hover_state")
 
 

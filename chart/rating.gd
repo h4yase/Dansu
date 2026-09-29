@@ -27,18 +27,38 @@ const MOVE_NOTE_INPUT_WEIGHT := 1.1
 const TRACE_NOTE_INPUT_WEIGHT := 0.3
 const HIDDEN_MOVE_INPUT_WEIGHT := 1.2
 
-static func get_color_from_rating(value: float,fade: bool = false) -> Color:
+static func get_color_from_rating(value: float,fade: bool = false,user: bool = false) -> Color:
 
 	var color_map = {
-		0: Color("9ca3eb"),
-		5: Color("374cd0"),
-		10: Color("91cc53"),
-		15: Color("d1bd28"),
-		20: Color("ee5c3c"),
-		25: Color("ad232d"),
-		30: Color("845696"), 
-		35: Color("483f7d"),
+		0: Color("9ca3eb"), # baby
+		5: Color("425ae0ff"), # easy
+		10: Color("91cc53"), # normal
+		15: Color("d1bd28"), # hard
+		20: Color("ee5c3c"), # advanced
+		25: Color("ad232d"), # expert
+		30: Color("c262bbff"), # master
+		35: Color("734ab3ff"), # beyond
+		40: Color("38091dff"), # zenith
+		50: Color("282423ff") # omega
 	}
+	if user:
+		color_map = {
+			# noob era
+			0: Color("9ca3eb"), # sky
+			500: Color("425ae0ff"), # blue
+			1000: Color("91cc53"), # green
+			1500: Color("d1bd28"), # yellow
+			# pro era
+			2000: Color("ee5c3c"), # orange
+			2500: Color("ad232d"), # red
+			3000: Color("c262bbff"), # pink
+			3300: Color("a585e3ff"), # lavender
+			3500: Color("734ab3ff"), # purple
+			# god era
+			3800: Color("38091dff"), # ruby
+			4000: Color("e0115fff"), # ruby-ex
+			5000: Color("aba6baff") # Bro How
+		}
 	var keys = color_map.keys()
 	keys.sort()
 
