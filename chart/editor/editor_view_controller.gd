@@ -246,7 +246,7 @@ func finalize_selected_point_drag(global_mouse_pos: Vector2) -> void:
 	var target_rail := target_hit.rail as Rail
 	var target_point_index := int(target_hit.point_index)
 	if not EditorChartOps.can_merge_rails(source_rail, source_point_index, target_rail, target_point_index):
-		Notification.notice("rails can only merge when their time ranges do not overlap", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.ERROR_RAIL_MERGE_OVERLAP), Notification.Type.WARNING)
 		return
 
 	if editor._point_drag_history_pending:

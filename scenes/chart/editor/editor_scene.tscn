@@ -282,7 +282,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Failed to load cover file"
+text = "ERROR_COVER_LOAD"
 clip_text = true
 text_overrun_behavior = 5
 
@@ -296,7 +296,7 @@ from browser"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Failed to load audio file"
+text = "ERROR_AUDIO_LOAD"
 clip_text = true
 text_overrun_behavior = 5
 
@@ -369,7 +369,7 @@ horizontal_alignment = 1
 [node name="tags" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=177184767]
 unique_name_in_owner = true
 layout_mode = 2
-placeholder_text = "ost game tech peak tricky stemina long"
+placeholder_text = "ost game tech peak tricky steaina long"
 alignment = 1
 
 [node name="label6" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=605982539]
@@ -988,4 +988,4 @@ use_native_dialog = true
 
 [node name="UnsavedChangesDialog" parent="Dialogs" unique_id=171144 instance=ExtResource("10_unsaved")]
 visible = false
-message = "Save chart changes before leaving?"
+message = "CONFIRM_SAVE_CHART"

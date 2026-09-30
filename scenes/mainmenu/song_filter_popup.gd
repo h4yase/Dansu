@@ -93,7 +93,7 @@ func _apply() -> void:
 			continue
 		var text_value := field.text.strip_edges()
 		if not text_value.is_empty() and (not text_value.is_valid_float() or not is_finite(float(text_value)) or float(text_value) < 0):
-			_error.text = "Enter a non-negative number, or leave the field empty."
+			_error.text = GameText.text(GameText.Key.HINT_FILTER_NUMBER)
 			return
 	var values := SongFilters.new(_online)
 	values.sort = _sort.get_selected_metadata()
@@ -107,7 +107,7 @@ func _apply() -> void:
 		values.max_size_bytes = int(_read_bound(max_size, 1048576.0))
 	if (values.min_rating >= 0 and values.max_rating >= 0 and values.min_rating > values.max_rating) \
 			or (values.min_length_ms >= 0 and values.max_length_ms >= 0 and values.min_length_ms > values.max_length_ms):
-		_error.text = "The minimum must not exceed the maximum."
+		_error.text = GameText.text(GameText.Key.HINT_FILTER_RANGE)
 		return
 	if _online and _status.selected > 0:
 		values.status = ["", "ranked", "approved", "unranked"][_status.selected]

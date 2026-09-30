@@ -71,7 +71,7 @@ func open_pack_browser(target_rect: Rect2, pack_id: String) -> void:
 
 func open(chartset: ChartSet = null, target_rect: Rect2 = Rect2()) -> void:
 	if not Auth.is_authenticated():
-		Notification.notice("Sign in to use playlists.", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.HINT_SIGN_IN_PLAYLISTS), Notification.Type.WARNING)
 		return
 	_current_chartset = chartset
 	_browsing_packs = false
@@ -157,7 +157,7 @@ func _show_playlists() -> void:
 	elif not CM.playlist_loader.error.is_empty():
 		_set_status(CM.playlist_loader.error)
 	else:
-		_set_status("No playlists yet." if _playlists.is_empty() else "")
+		_set_status(GameText.text(GameText.Key.NOTICE_PLAYLISTS_EMPTY) if _playlists.is_empty() else "")
 	_resize_list(_playlists.size())
 
 
@@ -229,7 +229,7 @@ func _toggle_playlist(index: int) -> void:
 		return
 	var added := _playlist_contains_current(playlist)
 	if not await playlist.set_chartset(_current_chartset, not added) and is_open():
-		_set_status("Request failed.")
+		_set_status(GameText.text(GameText.Key.ERROR_REQUEST_FAILED))
 
 
 func _set_status(text: String) -> void:

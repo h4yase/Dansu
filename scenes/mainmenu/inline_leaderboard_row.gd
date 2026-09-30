@@ -135,7 +135,7 @@ func _setup_actions() -> void:
 	_replay_button = replay
 	_detail_button = more
 	profile.disabled = true
-	profile.tooltip_text = "Profile is not available yet"
+	profile.tooltip_text = GameText.text(GameText.Key.HINT_PROFILE_UNAVAILABLE)
 
 	profile.pressed.connect(
 		func():
@@ -252,7 +252,7 @@ func toggle_details(chart_id: int) -> void:
 	_detail_status.hide()
 	var score_id := int(_item.get("score_id", -1))
 	if chart_id <= 0 or score_id <= 0:
-		_detail_error("Score details unavailable")
+		_detail_error(GameText.text(GameText.Key.ERROR_SCORE_DETAILS_MISSING))
 		return
 	_detail_request = HTTPRequest.new()
 	_detail_request.timeout = 15.0
@@ -264,7 +264,7 @@ func toggle_details(chart_id: int) -> void:
 	if _detail_request.request(url, Auth.authorization_headers()) != OK:
 		_detail_request.queue_free()
 		_detail_request = null
-		_detail_error("Could not load details. Close and retry.")
+		_detail_error(GameText.text(GameText.Key.ERROR_SCORE_DETAILS_LOAD))
 
 
 func _set_detail_height(height: float) -> void:
@@ -278,15 +278,15 @@ func _on_detail_loaded(result: int, code: int, _headers: PackedStringArray, body
 		_detail_request.queue_free()
 	_detail_request = null
 	if result != HTTPRequest.RESULT_SUCCESS or code != 200:
-		_detail_error("Could not load details. Close and retry.")
+		_detail_error(GameText.text(GameText.Key.ERROR_SCORE_DETAILS_LOAD))
 		return
 	var data = JSON.parse_string(body.get_string_from_utf8())
 	if not data is Dictionary or int(data.get("chart_id", -1)) != chart_id or int(data.get("score_id", -1)) != score_id:
-		_detail_error("Invalid score details")
+		_detail_error(GameText.text(GameText.Key.ERROR_SCORE_DETAILS_INVALID))
 		return
 	for judgement in JUDGEMENTS:
 		if not data.has(judgement[1]):
-			_detail_error("Judgement counts unavailable")
+			_detail_error(GameText.text(GameText.Key.ERROR_JUDGEMENT_COUNTS))
 			return
 	_detail_data = data
 	_detail_status.hide()

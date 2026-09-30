@@ -32,6 +32,7 @@ driver/output_latency=2
 [autoload]
 
 Config="*res://global/config.gd"
+Localization="*res://global/localization.gd"
 Auth="*res://global/steam_auth.gd"
 DB="*res://global/database_manager.gd"
 CM="*res://global/chart_manager.gd"

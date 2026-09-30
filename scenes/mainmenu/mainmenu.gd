@@ -357,7 +357,7 @@ func _on_auth_state_changed() -> void:
 	if username_pending:
 		username_status.text = (
 			""
-			if Auth.status_message == "Choose a username to continue."
+			if Auth.status_message == GameText.text(GameText.Key.HINT_USERNAME_SETUP)
 			else Auth.status_message
 		)
 		if not was_visible:
@@ -378,7 +378,7 @@ func _submit_username() -> void:
 	var pattern := RegEx.new()
 	pattern.compile("^[A-Za-z][A-Za-z0-9_]{2,23}$")
 	if pattern.search(username) == null:
-		username_status.text = "Use 3–24 English letters, numbers, or underscores, starting with a letter."
+		username_status.text = GameText.text(GameText.Key.HINT_USERNAME_RULES)
 		username_input.grab_focus()
 		return
 	username_status.text = ""
@@ -460,7 +460,7 @@ func _setup_catalogue() -> void:
 func _update_publish_state() -> void:
 	_publish_button.text = _publisher.button_text()
 	var builtin_available := _publisher.can_publish_builtin() and _publisher.restriction(true).is_empty()
-	_publish_button.tooltip_text = "Built-in upload is available for this chartset." if builtin_available and not _publisher.restriction().is_empty() else _publisher.restriction()
+	_publish_button.tooltip_text = GameText.text(GameText.Key.HINT_PUBLISH_BUILTIN) if builtin_available and not _publisher.restriction().is_empty() else _publisher.restriction()
 	_publish_button.disabled = _publisher.busy or _publisher.checking or _publisher.selection == null or (Auth.is_authenticated() and not _publisher.restriction().is_empty() and not builtin_available)
 
 
@@ -469,7 +469,7 @@ func _select_source_tab(tab: int) -> void:
 		return
 	_remember_source_selection()
 	if tab == 1 and not Auth.is_authenticated():
-		Notification.notice("Sign in to access Community charts.", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.HINT_SIGN_IN_COMMUNITY), Notification.Type.WARNING)
 		source_tabs.set_block_signals(true)
 		source_tabs.current_tab = 0
 		source_tabs.set_block_signals(false)
@@ -613,7 +613,7 @@ func _on_playlist_chartset_chosen(metadata: Dictionary) -> void:
 					local = candidate
 					break
 		if local == null:
-			Notification.notice("This official chart is not installed.", Notification.Type.WARNING)
+			Notification.notice(GameText.text(GameText.Key.ERROR_OFFICIAL_CHART_MISSING), Notification.Type.WARNING)
 			return
 		CM.select_chartset(local)
 		CM.select_chart(local.charts[0] if not local.charts.is_empty() else null)
@@ -713,7 +713,7 @@ func _update_editor_chart_actions() -> void:
 	delete_chartset_button.disabled = not has_chart
 	delete_difficulty_button.disabled = not has_chart or CM.selected_chartset.charts.size() <= 1
 	delete_difficulty_button.tooltip_text = (
-		"Use Delete Chartset for the last difficulty."
+		GameText.text(GameText.Key.HINT_DELETE_CHARTSET)
 		if has_chart and CM.selected_chartset.charts.size() <= 1
 		else ""
 	)
@@ -726,14 +726,14 @@ func _request_delete_difficulty() -> void:
 		return
 	if selected_chartset.charts.size() <= 1:
 		Notification.notice(
-			"This is the last difficulty. Use Delete Chartset instead.",
+			GameText.text(GameText.Key.HINT_DELETE_LAST_DIFFICULTY),
 			Notification.Type.WARNING
 		)
 		return
 	_pending_delete_scope = "difficulty"
 	_open_delete_dialog(
 		"Delete Difficulty",
-		"Move difficulty '%s' to the Recycle Bin?" % selected_chart.difficulty
+		GameText.text(GameText.Key.CONFIRM_DELETE_DIFFICULTY) % selected_chart.difficulty
 	)
 
 
@@ -743,7 +743,7 @@ func _request_delete_chartset() -> void:
 	_pending_delete_scope = "chartset"
 	_open_delete_dialog(
 		"Delete Chartset",
-		"Move chartset '%s' and all of its difficulties and resources to the Recycle Bin?"
+		GameText.text(GameText.Key.CONFIRM_DELETE_CHARTSET)
 			% CM.selected_chart.title
 	)
 
@@ -778,7 +778,7 @@ func _confirm_chart_delete() -> void:
 			return
 
 	if error != OK:
-		Notification.notice("Failed to delete %s." % scope, Notification.Type.ERROR)
+		Notification.notice(GameText.text(GameText.Key.ERROR_DELETE_CHART) % scope, Notification.Type.ERROR)
 		return
 
 	CM.parsed_chart = null
@@ -788,7 +788,7 @@ func _confirm_chart_delete() -> void:
 	if scope == "difficulty":
 		_restore_editor_chartset_selection(restore_folder)
 	chart_scroll.rebuild_items()
-	Notification.notice("%s moved to the Recycle Bin." % scope.capitalize())
+	Notification.notice(GameText.text(GameText.Key.NOTICE_CHART_DELETED) % scope.capitalize())
 	_update_editor_chart_actions()
 
 

@@ -121,7 +121,7 @@ func create_note(note_type: Note.NoteType, dir: int) -> void:
 		return
 	var note_time := editor.timeline.snap_time(int(round(Game.current_time)))
 	if not EditorChartOps.is_note_time_inside_rail(editor.selection.selected_rail, note_time):
-		Notification.notice("You cannot place notes outside the rails.", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.ERROR_NOTE_OUTSIDE_RAIL), Notification.Type.WARNING)
 		return
 	editor._push_history_snapshot()
 	var parsed_chart := CM.ensure_parsed_chart()

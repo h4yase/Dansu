@@ -366,10 +366,10 @@ func _open_event_editor() -> void:
 
 func _start_playtest() -> void:
 	if chart == null or CM.parsed_chart == null:
-		Notification.notice("no chart available for playtest", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.ERROR_CHART_PLAYTEST), Notification.Type.WARNING)
 		return
 	if chart.get_stream() == null:
-		Notification.notice("audio file is required for playtest", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.ERROR_PLAYTEST_AUDIO), Notification.Type.WARNING)
 		return
 
 	if transport.playing:

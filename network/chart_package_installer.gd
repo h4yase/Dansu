@@ -83,22 +83,22 @@ static func install(archive_path: String, metadata: Dictionary) -> InstallResult
 	var transfer_root := archive_path.get_base_dir()
 	if not _bounded_zip(archive_path):
 		ChartTransfer.cleanup(transfer_root)
-		return InstallResult.failure("The ZIP is invalid or exceeds the 100 MiB extraction limit.")
+		return InstallResult.failure(GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_ZIP))
 	var zip := ZIPReader.new()
 	if zip.open(archive_path) != OK:
 		ChartTransfer.cleanup(transfer_root)
-		return InstallResult.failure("The downloaded file is not a valid chart package.")
+		return InstallResult.failure(GameText.text(GameText.Key.ERROR_DOWNLOAD_PACKAGE))
 	var names := zip.get_files()
 	var seen := {}
 	if names.is_empty() or names.size() > MAX_FILES:
 		zip.close()
 		ChartTransfer.cleanup(transfer_root)
-		return InstallResult.failure("The chart package has an invalid file count.")
+		return InstallResult.failure(GameText.text(GameText.Key.ERROR_PACKAGE_FILE_COUNT))
 	for path in names:
 		if not safe_relative(path) or seen.has(path.to_lower()):
 			zip.close()
 			ChartTransfer.cleanup(transfer_root)
-			return InstallResult.failure("The chart package contains an unsafe or duplicate path.")
+			return InstallResult.failure(GameText.text(GameText.Key.ERROR_PACKAGE_PATH))
 		seen[path.to_lower()] = true
 	var staging := transfer_root.path_join("staging")
 	var backup_root := transfer_root.path_join("backup")
@@ -106,7 +106,7 @@ static func install(archive_path: String, metadata: Dictionary) -> InstallResult
 	if DirAccess.make_dir_recursive_absolute(staging) != OK:
 		zip.close()
 		ChartTransfer.cleanup(transfer_root)
-		return InstallResult.failure("Could not create the download staging folder.")
+		return InstallResult.failure(GameText.text(GameText.Key.ERROR_DOWNLOAD_STAGING))
 	var expanded := 0
 	var error := ""
 	for path in names:
@@ -115,20 +115,20 @@ static func install(archive_path: String, metadata: Dictionary) -> InstallResult
 		var bytes := zip.read_file(path, true)
 		expanded += bytes.size()
 		if expanded > MAX_EXPANDED_BYTES:
-			error = "The expanded package exceeds the size limit."
+			error = GameText.text(GameText.Key.ERROR_PACKAGE_SIZE)
 			break
 		var target := staging.path_join(path)
 		if DirAccess.make_dir_recursive_absolute(target.get_base_dir()) != OK:
-			error = "Could not create a chart resource folder."
+			error = GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_FOLDER)
 			break
 		var file := FileAccess.open(target, FileAccess.WRITE)
 		if file == null:
-			error = "Could not write the chart package. Check disk space."
+			error = GameText.text(GameText.Key.ERROR_PACKAGE_WRITE)
 			break
 		file.store_buffer(bytes)
 		file.flush()
 		if file.get_error() != OK:
-			error = "Could not finish writing the chart package. Check disk space."
+			error = GameText.text(GameText.Key.ERROR_PACKAGE_WRITE_FINISH)
 		file.close()
 		if not error.is_empty():
 			break
@@ -149,13 +149,13 @@ static func install(archive_path: String, metadata: Dictionary) -> InstallResult
 			var backup := backup_root.path_join(str(folder))
 			DirAccess.make_dir_recursive_absolute(backup.get_base_dir())
 			if DirAccess.rename_absolute(original, backup) != OK:
-				error = "Could not back up the existing chartset. Close any files and retry."
+				error = GameText.text(GameText.Key.ERROR_CHARTSET_BACKUP)
 				break
 			backups[original] = backup
 	if error.is_empty():
 		DirAccess.make_dir_recursive_absolute(CACHE_ROOT)
 		if DirAccess.rename_absolute(staging, destination) != OK:
-			error = "Could not move the installed charts into the library."
+			error = GameText.text(GameText.Key.ERROR_CHARTSET_INSTALL)
 	if not error.is_empty():
 		for original in backups:
 			DirAccess.rename_absolute(backups[original], original)
@@ -184,12 +184,12 @@ static func _write_revision_manifest(staging: String, metadata: Dictionary) -> S
 	}
 	var file := FileAccess.open(staging.path_join(REVISION_MANIFEST_NAME), FileAccess.WRITE)
 	if file == null:
-		return "Could not save the installed chart revision."
+		return GameText.text(GameText.Key.ERROR_CHART_REVISION_SAVE)
 	file.store_string(JSON.stringify(snapshot))
 	file.flush()
 	var write_error := file.get_error()
 	file.close()
-	return "" if write_error == OK else "Could not save the installed chart revision."
+	return "" if write_error == OK else GameText.text(GameText.Key.ERROR_CHART_REVISION_SAVE)
 
 
 static func prune_cache(keep_folder: String = "") -> void:
@@ -264,13 +264,13 @@ static func _verify(staging: String, metadata: Dictionary) -> String:
 	for chart in metadata.charts:
 		var path := str(chart.get("relative_chart_path", ""))
 		if not safe_relative(path) or path.get_extension().to_lower() != "dansu":
-			return "The package contains an invalid chart path."
+			return GameText.text(GameText.Key.ERROR_PACKAGE_CHART_PATH)
 		var full_path := staging.path_join(path)
 		if not FileAccess.file_exists(full_path) or FileAccess.get_sha256(full_path) != chart.get("checksum_sha256", ""):
-			return "The package changed since this search. Refresh the list and retry."
+			return GameText.text(GameText.Key.ERROR_PACKAGE_CHANGED)
 		for key in ["relative_audio_path", "relative_cover_art_path", "relative_skin_path"]:
 			var resource = chart.get(key)
 			if resource != null and not str(resource).is_empty():
 				if not safe_relative(str(resource)) or not FileAccess.file_exists(staging.path_join(resource)):
-					return "A required chart resource is missing."
+					return GameText.text(GameText.Key.ERROR_PACKAGE_RESOURCE_MISSING)
 	return ""

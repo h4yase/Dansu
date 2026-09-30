@@ -113,6 +113,9 @@ static func load_selected_chart() -> Chart:
 	var chart: Chart = CM.selected_chart
 	if chart == null:
 		return null
+	if chart.file_name.is_empty():
+		CM.ensure_parsed_chart()
+		return chart
 
 	var parser := Parser.new()
 	var result := parser.parse_object(chart)
@@ -425,7 +428,7 @@ static func save_chart(chart: Chart, previous_file_path: String) -> bool:
 
 	var safe_difficulty := chart.difficulty.strip_edges().validate_filename()
 	if safe_difficulty.is_empty():
-		Notification.notice("difficulty cannot be used as a file name", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.ERROR_DIFFICULTY_FILENAME), Notification.Type.WARNING)
 		return false
 	chart.file_name = safe_difficulty + Config.FILE_EXTENSION
 	_preserve_unsaved_chartset_folder(previous_folder_path, chart.folder_path)
@@ -481,12 +484,12 @@ static func prepare_new_chartset_chart() -> Chart:
 static func prepare_new_difficulty_chart() -> Chart:
 	var source_chart := CM.selected_chart
 	if source_chart == null:
-		Notification.notice("no chart selected", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.ERROR_CHART_NOT_SELECTED), Notification.Type.WARNING)
 		return null
 
 	var chart_set: ChartSet = source_chart.chart_set if source_chart.chart_set != null else CM.selected_chartset
 	if chart_set == null:
-		Notification.notice("no chartset selected", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.ERROR_CHARTSET_NOT_SELECTED), Notification.Type.WARNING)
 		return null
 
 	var chart := Chart.new()

@@ -208,7 +208,7 @@ func place(kind: String, raw_time: int, slot: int) -> void:
 	else:
 		var duration := maxi(1, int(editor.timeline.get_snap_interval_ms(time) * 4))
 		if not can_place_overlay(null, time, duration, slot):
-			Notification.notice("Overlay position is occupied", Notification.Type.WARNING)
+			Notification.notice(GameText.text(GameText.Key.ERROR_OVERLAY_OCCUPIED), Notification.Type.WARNING)
 			return
 		editor._push_history_snapshot()
 		var overlay := OverlayEvent.new()

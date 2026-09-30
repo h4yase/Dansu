@@ -216,6 +216,6 @@ use_native_dialog = true
 
 [node name="UnsavedChangesDialog" parent="Dialogs" unique_id=383484489 instance=ExtResource("7_unsaved")]
 visible = false
-message = "Save event changes before returning?"
-save_button_text = "Save and return"
-discard_button_text = "Return without saving"
+message = "CONFIRM_SAVE_EVENTS"
+save_button_text = "ACTION_SAVE_AND_RETURN"
+discard_button_text = "ACTION_RETURN_UNSAVED"

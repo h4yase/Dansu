@@ -288,7 +288,7 @@ func paste() -> bool:
 			valid = true
 			break
 	if not valid:
-		Notification.notice("No room for the selected events", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.ERROR_EVENT_NO_SPACE), Notification.Type.WARNING)
 		return false
 	workspace.editor._push_history_snapshot()
 	for event in new_events:

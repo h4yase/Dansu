@@ -1852,7 +1852,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.78, 0.75, 0.9, 1)
 theme_override_fonts/font = ExtResource("12_a8qj1")
 theme_override_font_sizes/font_size = 18
-text = "This is how other players will see you."
+text = "HINT_USERNAME_VISIBLE"
 horizontal_alignment = 1
 
 [node name="Username" type="LineEdit" parent="UsernameSetupOverlay/Center/Panel/Margin/Content" unique_id=296323205]
@@ -1891,7 +1891,7 @@ oversampling_override = 1.0
 title = "Delete Chart"
 position = Vector2i(0, 36)
 size = Vector2i(200, 106)
-dialog_text = "Move this chart to the Recycle Bin?"
+dialog_text = "CONFIRM_DELETE_CHART"
 dialog_autowrap = true
 
 [node name="Catalogue" type="Node" parent="." unique_id=994594202 node_paths=PackedStringArray("preview_player", "search_debounce")]

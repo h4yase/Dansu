@@ -420,4 +420,4 @@ use_native_dialog = true
 
 [node name="UnsavedChangesDialog" parent="Dialogs" unique_id=1239745447 instance=ExtResource("8_unsaved")]
 visible = false
-message = "Save skin changes before leaving?"
+message = "CONFIRM_SAVE_SKIN"

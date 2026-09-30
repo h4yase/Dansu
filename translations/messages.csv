@@ -1,0 +1,230 @@
+keys,en,ko,notes
+HINT_USERNAME_SETUP,Choose a username to continue.,사용할 플레이어명을 입력하여 계속,scenes/mainmenu/mainmenu.gd; global/steam_auth.gd
+HINT_USERNAME_RULES,"Use 3–24 English letters, numbers, or underscores, starting with a letter.","3-24자의 영문, 숫자, _ 를 허용합니다. 영문으로 시작해야합니다.",scenes/mainmenu/mainmenu.gd; global/steam_auth.gd
+HINT_USERNAME_VISIBLE,This is how other players will see you.,다른사람들이 보게 될 유저명 입니다.,scenes/mainmenu/mainmenu.tscn
+HINT_LANGUAGE_RESTART,Restart the game to apply language changes.,언어 변경엔 재시작이 필요합니다.,scenes/mainmenu/settings_popup.gd; scenes/mainmenu/settings_popup.tscn
+HINT_TRANSLATION_IMPORTED,Translation imported. Select its language and restart the game.,,scenes/mainmenu/settings_popup.gd
+NOTICE_TRANSLATION_EXPORTED,Translation template saved.,,scenes/mainmenu/settings_popup.gd
+ERROR_TRANSLATION_OPEN,Could not open the translation CSV.,CSV 번역파일을 불러 올 수 없습니다.,global/translation_csv.gd
+ERROR_TRANSLATION_HEADER,"The CSV must begin with keys,en and use UTF-8 encoding.",,global/translation_csv.gd
+ERROR_TRANSLATION_LOCALE,The CSV contains an invalid or duplicate language code.,,global/translation_csv.gd
+ERROR_TRANSLATION_ROW,Invalid or duplicate translation at CSV row %d.,,global/translation_csv.gd; Keep placeholders in order: %d
+ERROR_TRANSLATION_FORMAT,Keep the original placeholders at CSV row %d.,,global/translation_csv.gd; Keep placeholders in order: %d
+ERROR_TRANSLATION_FOLDER,Could not create the translation folder.,,global/localization.gd
+ERROR_TRANSLATION_SAVE,Could not save the translation CSV.,,global/localization.gd
+ERROR_TRANSLATION_EXPORT,Could not save the translation template.,,global/localization.gd
+ERROR_USERNAME_TAKEN,That username is already taken.,이미 사용중인 플레이어명입니다.,global/steam_auth.gd
+ERROR_USERNAME_SAVE,Could not save the username. Please retry.,플레이어명 저장에 실패했습니다. 다시 시도해주세요.,global/steam_auth.gd
+ERROR_USERNAME_RESPONSE,Invalid username response from the server.,알 수 없는,global/steam_auth.gd
+HINT_SIGN_IN_COMMUNITY,Sign in to access Community charts.,커뮤니티 채보는 로그인이 필요합니다.,scenes/mainmenu/mainmenu.gd
+HINT_SIGN_IN_PLAYLISTS,Sign in to use playlists.,재생목록은 로그인이 필요합니다.,scenes/mainmenu/playlist_panel.gd
+HINT_SIGN_IN_HISTORY,Sign in to use the play history filter.,,network/chart_catalogue.gd
+HINT_SIGN_IN_PUBLISH,Sign in with Steam to publish chartsets.,,network/chart_publisher.gd
+HINT_SIGN_IN_DOWNLOAD,"Sign in with Steam, then press play again.",로그인후 플레이 버튼을 다시 눌러주세요.,network/chart_catalogue.gd
+HINT_SIGN_IN_STEAM,"Sign in to the Steam client, then retry.",스팀 로그인 후 다시 시도해주세요.,global/steam_auth.gd
+ERROR_SESSION_EXPIRED,Session expired.,로그인 정보가 만료되었습니다.,global/steam_auth.gd
+ERROR_SESSION_RETRY,Sign in with Steam and retry.,스팀으로 재접속합니다.,network/chart_catalogue.gd
+ERROR_SERVER_CHANGED,Server changed. Sign in again.,서버가 변경되었으니 다시 로그인해 주십시오.,global/steam_auth.gd
+ERROR_SERVER_URL,Use an HTTPS API URL.,HTTPS API 주소를 사용해주세요.,global/steam_auth.gd
+ERROR_SIGN_IN_TIMEOUT,Steam sign-in timed out. Please retry.,"
+Steam 로그인 시간이 초과되었습니다. 다시 시도해 주세요.",global/steam_auth.gd
+ERROR_SIGN_IN_START,Could not start the sign-in request. Please retry.,"
+로그인 요청을 시작할 수 없습니다. 다시 시도해 주세요.",global/steam_auth.gd
+ERROR_SIGN_IN_HTTP,Sign-in failed (HTTP %d). Please retry.,"
+로그인에 실패했습니다(HTTP %d). 다시 시도해 주세요.",global/steam_auth.gd; Keep placeholders in order: %d
+ERROR_SIGN_IN_FORBIDDEN,This account cannot sign in.,"
+이 계정으로는 로그인할 수 없습니다.",global/steam_auth.gd
+ERROR_SIGN_IN_RESPONSE,Invalid sign-in response from the server.,"
+서버로부터 유효하지 않은 로그인 응답을 받았습니다.",global/steam_auth.gd
+ERROR_SIGN_IN_SESSION,Sign-in did not return a usable session.,"
+로그인 결과 유효한 세션이 반환되지 않았습니다.",global/steam_auth.gd
+ERROR_STEAM_EXTENSION,GodotSteam could not load. Check the Steam extension and DLLs.,"
+GodotSteam을 로드할 수 없습니다. Steam 확장 기능과 DLL을 확인하십시오.",global/steam_auth.gd
+ERROR_STEAM_INIT,Steam initialization failed.,"
+Steam 초기화에 실패했습니다.",global/steam_auth.gd
+ERROR_STEAM_TICKET_CREATE,Steam could not issue an authentication ticket.,"
+Steam이 인증 티켓을 발급할 수 없었습니다.",global/steam_auth.gd
+ERROR_STEAM_TICKET_REJECTED,Steam rejected the request. Please retry.,"
+Steam이 요청을 거부했습니다. 다시 시도해 주세요.",global/steam_auth.gd
+ERROR_STEAM_TICKET_EXPIRED,Steam ticket expired or was rejected. Please retry.,Steam 티켓이 만료되었거나 거부되었습니다. 다시 시도해 주세요.,global/steam_auth.gd
+ERROR_STEAM_SERVER,Steam sign-in is unavailable on the server. Please retry later.,"
+서버에서 Steam 로그인을 이용할 수 없습니다. 나중에 다시 시도해 주세요.",global/steam_auth.gd
+CONFIRM_SAVE_CHANGES,Save changes before leaving?,나가기 전에 변경 사항을 저장하시겠습니까?,scenes/common/unsaved_changes_dialog.gd; scenes/common/unsaved_changes_dialog.tscn
+CONFIRM_SAVE_CHART,Save chart changes before leaving?,"
+나가기 전에 채보 변경 사항을 저장하시겠습니까?",scenes/chart/editor/editor_scene.tscn
+CONFIRM_SAVE_EVENTS,Save event changes before returning?,"
+돌아가기 전에 이벤트 변경 사항을 저장하시겠습니까?",scenes/chart/events/editor/event_editor_scene.tscn
+CONFIRM_SAVE_SKIN,Save skin changes before leaving?,"
+나가기 전에 스킨 변경 사항을 저장하시겠습니까?",scenes/skin/editor/skin_editor.tscn
+ACTION_SAVE_AND_LEAVE,Save and leave,저장 후 나가기,scenes/common/unsaved_changes_dialog.gd; scenes/common/unsaved_changes_dialog.tscn
+ACTION_SAVE_AND_RETURN,Save and return,저장 후 돌아가기,scenes/chart/events/editor/event_editor_scene.tscn
+ACTION_LEAVE_UNSAVED,Leave without saving,저장하지 않고 나가기,scenes/common/unsaved_changes_dialog.gd; scenes/common/unsaved_changes_dialog.tscn
+ACTION_RETURN_UNSAVED,Return without saving,저장하지 않고 돌아가기,scenes/chart/events/editor/event_editor_scene.tscn
+CONFIRM_DELETE_CHART,Move this chart to the Recycle Bin?,해당 채보를 휴지통으로 옮기겠습니까?,scenes/mainmenu/mainmenu.tscn
+CONFIRM_DELETE_DIFFICULTY,Move difficulty '%s' to the Recycle Bin?,해당 난이도(%s)를 휴지통으로 옮기겠습니까?,scenes/mainmenu/mainmenu.gd; Keep placeholders in order: %s
+CONFIRM_DELETE_CHARTSET,Move chartset '%s' and all of its difficulties and resources to the Recycle Bin?,"
+채보 '%s'의 모든 난이도 및 리소스를 휴지통으로 옮기겠습니까?",scenes/mainmenu/mainmenu.gd; Keep placeholders in order: %s
+HINT_DELETE_LAST_DIFFICULTY,This is the last difficulty. Use Delete Chartset instead.,마지막 난이도입니다. 대신 채보 삭제를 해주세요.,scenes/mainmenu/mainmenu.gd
+HINT_DELETE_CHARTSET,Use Delete Chartset for the last difficulty.,마지막 난이도엔 채보 삭제를 이용해주세요.,scenes/mainmenu/mainmenu.gd
+ERROR_DELETE_CHART,Failed to delete %s.,파일 삭제에 실패했습니다. %s,scenes/mainmenu/mainmenu.gd; Keep placeholders in order: %s
+NOTICE_CHART_DELETED,%s moved to the Recycle Bin.,다음 파일이 휴지통으로 옮겨졌습니다: %s,scenes/mainmenu/mainmenu.gd; Keep placeholders in order: %s
+ERROR_CHART_NOT_SELECTED,no chart selected,선택된 난이도가 없습니다.,chart/editor/editor_chart_ops.gd; global/chart_manager.gd
+ERROR_CHARTSET_NOT_SELECTED,no chartset selected,선택된 채보가 없습니다.,chart/editor/editor_chart_ops.gd
+ERROR_CHART_MISSING,chart file is missing,채보 파일을 찾을 수 없습니다.,global/chart_manager.gd
+ERROR_CHART_OPEN_FAILED,Failed to open chart file: %s,채보 파일 열람에 실패했습니다: %s,chart/parsers/parser.gd; Keep placeholders in order: %s
+ERROR_CHART_VERSION,Unsupported chart version ! : %s,지원하지 않는 채보 파일 버전입니다: %s,chart/parsers/parser.gd; Keep placeholders in order: %s
+ERROR_CHART_PLAYTEST,no chart available for playtest,테스트 플레이를 위한 차트가 없습니다.,chart/editor/chart_editor.gd
+ERROR_PLAYTEST_AUDIO,audio file is required for playtest,테스트 플레이엔 오디오 파일이 필요합니다.,chart/editor/chart_editor.gd
+ERROR_DIFFICULTY_FILENAME,difficulty cannot be used as a file name,난이도명으로 파일 저장에 실패했습니다.,chart/editor/editor_chart_ops.gd
+ERROR_AUDIO_LOAD,Failed to load audio file,오디오 파일을 불러오는것에 실패했습니다.,scenes/chart/editor/editor_scene.tscn
+ERROR_COVER_LOAD,Failed to load cover file,이미지 파일을 불러오는것에 실패했습니다.,scenes/chart/editor/editor_scene.tscn
+ERROR_NOTE_OUTSIDE_RAIL,You cannot place notes outside the rails.,레일 밖에 노트를 배치 할 수 없습니다.,chart/editor/editor_edit_controller.gd
+ERROR_RAIL_MERGE_OVERLAP,rails can only merge when their time ranges do not overlap,레일은 범위가 겹치지 않을때 병합이 가능합니다.,chart/editor/editor_view_controller.gd
+ERROR_EVENT_NO_SPACE,No space for the selected events,이벤트를 배치할 공간이 없습니다.,chart/editor/event_selection_ops.gd
+ERROR_OVERLAY_OCCUPIED,Overlay position is occupied,오버레이의 위치가 겹칩니다.,chart/editor/event_workspace.gd
+HINT_FILTER_NUMBER,"Enter a non-negative number, or leave the field empty.",양수를 입력하거나 빈 칸으로 유지해주십시오.,scenes/mainmenu/song_filter_popup.gd
+HINT_FILTER_RANGE,The minimum must not exceed the maximum.,최솟값은 최댓값을 초과해서는 안 됩니다.,scenes/mainmenu/song_filter_popup.gd
+NOTICE_SEARCH_EMPTY,No charts match these filters.,"
+이 필터에 일치하는 채보가 없습니다.",network/chart_catalogue.gd
+ERROR_SEARCH_START,Could not start the search. Retry.,검색을 할 수 없습니다. 재시도 해주세요.,network/chart_catalogue.gd
+ERROR_SEARCH_FILTERS,The server rejected these filters. Check the ranges.,지원하지 않는 검색 범위입니다.,network/chart_catalogue.gd
+ERROR_SEARCH_RESPONSE,The server returned an invalid song list.,지원하지 않는 검색결과입니다.,network/chart_catalogue.gd
+ERROR_SONG_METADATA,The server returned invalid song metadata.,지원하지 않는 채보 형식입니다.,network/chart_catalogue.gd
+ERROR_CHART_METADATA,The server returned invalid chart metadata.,지원하지 않는 채보 형식입니다.,global/score_manager.gd
+ERROR_CHARTSET_METADATA,The server returned invalid chartset metadata.,지원하지 않는 채보 형식입니다.,network/chart_publisher.gd
+ERROR_SERVER_CONNECT,Could not connect to the server.,서버에 접속 할 수 없습니다.,scenes/mainmenu/inline_leaderboard.gd
+ERROR_SERVER_RETRY,Could not reach the server. Retry.,서버를 찾을 수 없습니다.,network/chart_publisher.gd
+ERROR_SERVER_CONNECTION,Cannot reach the server. Check your connection and retry.,서버를 찾을 수 없습니다. 기기의 연결상태를 확인 해주세요.,global/steam_auth.gd
+ERROR_REQUEST_FAILED,Request failed.,요청을 실패했습니다.,scenes/mainmenu/playlist_panel.gd
+ERROR_ACTION_CONNECTION,%s failed. Check your connection and retry.,%s failed. 기기의 연결상태를 확인 해주세요.,network/chart_catalogue.gd; Keep placeholders in order: %s
+ERROR_ACTION_NOT_FOUND,%s is unavailable on the server (404).,%s failed. 알 수 없는 요청입니다. (404),network/chart_catalogue.gd; Keep placeholders in order: %s
+ERROR_ACTION_HTTP,%s failed (HTTP %d). Retry.,%s failed (HTTP %d). 재시도 해주세요.,network/chart_catalogue.gd; Keep placeholders in order: %s %d
+ERROR_CONTENT_FORBIDDEN,This account cannot access this content.,"
+이 계정으로는 해당 콘텐츠에 액세스할 수 없습니다.",network/chart_catalogue.gd
+NOTICE_PLAYLISTS_EMPTY,No playlists yet.,아직 플레이리스트가 없습니다.,scenes/mainmenu/playlist_panel.gd
+ERROR_PLAYLIST_LOAD,Could not load playlists. Restart the game to sync again.,재생목록을 불러 올 수 없습니다. 게임을 재시작하여 재생 목록 동기화 해주세요.,network/playlist_loader.gd
+ERROR_PLAYLIST_NOT_FOUND,Playlist not found.,재생목록을 찾을 수 없습니다.,network/chart_catalogue.gd
+ERROR_PLAYLIST_METADATA,The playlist contains invalid chart metadata.,해당 재생목록이 지원하지 않는 형식의 채보정보를 포함하고있습니다.,network/chart_catalogue.gd
+ERROR_LOVED_UPDATE,Could not update Loved.,즐겨찾기 갱신에 실패했습니다.,network/chart_catalogue.gd
+HINT_PROFILE_UNAVAILABLE,Profile is not available yet,아직 등록되지 않은 유저입니다.,scenes/mainmenu/inline_leaderboard_row.gd
+NOTICE_LEADERBOARD_EMPTY,No scores yet.,등록된 점수가 없습니다.,scenes/mainmenu/inline_leaderboard.gd
+NOTICE_LEADERBOARD_MISSING,No leaderboard for this chart.,리더보드를 지원하지 않는 채보입니다.,scenes/mainmenu/inline_leaderboard.gd
+ERROR_LEADERBOARD_LOAD,Could not load leaderboard.,리더보드를 불러 올 수 없습니다.,scenes/mainmenu/inline_leaderboard.gd
+ERROR_LEADERBOARD_READ,Could not read leaderboard.,리더보드를 읽을 수 없습니다.,scenes/mainmenu/inline_leaderboard.gd
+ERROR_SCORE_DETAILS_LOAD,Could not load details. Close and retry.,자세한 정보를 불러오는것에 실패했습니다. 재시도 해주세요.,scenes/mainmenu/inline_leaderboard_row.gd
+ERROR_SCORE_DETAILS_INVALID,Invalid score details,,scenes/mainmenu/inline_leaderboard_row.gd
+ERROR_SCORE_DETAILS_MISSING,Score details unavailable,,scenes/mainmenu/inline_leaderboard_row.gd
+ERROR_JUDGEMENT_COUNTS,Judgement counts unavailable,,scenes/mainmenu/inline_leaderboard_row.gd
+ERROR_REPLAY_DOWNLOAD,Could not download replay. Try again.,,scenes/mainmenu/inline_leaderboard.gd
+ERROR_REPLAY_PLAY,Could not play replay. Check the installed chart version.,,scenes/mainmenu/inline_leaderboard.gd
+ERROR_REPLAY_VERSION,Replay does not match the installed chart version.,,scenes/mainmenu/inline_leaderboard.gd
+ERROR_REPLAY_REMOVED,Replay is no longer available.,,scenes/mainmenu/inline_leaderboard.gd
+ERROR_REPLAY_SAVE,Failed to save replay.,,global/score_manager.gd
+HINT_REPLAY_DOWNLOAD_CHART,Download or update this chart before watching the replay.,,scenes/mainmenu/inline_leaderboard.gd
+ERROR_SCORE_RECORD,failed to record play: %s,,global/score_manager.gd; Keep placeholders in order: %s
+ERROR_SCORE_SUBMIT_START,Could not start the score submission.,,global/score_manager.gd
+ERROR_SCORE_SUBMIT_HTTP,Score submission failed (HTTP %d).,,global/score_manager.gd; Keep placeholders in order: %d
+ERROR_SCORE_SUBMIT_DETAIL,Score submission failed: %s,,global/score_manager.gd; Keep placeholders in order: %s
+ERROR_SCORE_RESPONSE,The server returned an invalid score response.,,global/score_manager.gd
+ERROR_SCORE_METADATA,The completed score does not match the chart metadata.,,global/score_manager.gd
+ERROR_SCORE_REVISION,This score belongs to a different chart revision. Update the chart and retry.,,global/score_manager.gd
+NOTICE_SCORE_SAVED_OFFLINE,Score was saved locally because the session is offline.,,global/score_manager.gd
+ERROR_OFFICIAL_CHART_MISSING,This official chart is not installed.,,scenes/mainmenu/mainmenu.gd
+ERROR_CACHED_CHART_MISSING,The cached chart is unavailable. Download it again.,,network/chart_catalogue.gd
+ERROR_INSTALLED_CHART_OPEN,The installed chart could not be opened.,,network/chart_catalogue.gd
+ERROR_CHART_REVISION_LOOKUP,Could not resolve the online chart version.,,global/score_manager.gd
+HINT_CHART_AUTO_UPDATE,A newer chart revision was found. Updating automatically…,,network/chart_catalogue.gd
+NOTICE_CHART_UPDATED,Chart updated. Ready to play.,,network/chart_catalogue.gd
+ERROR_PREVIEW_START,Could not start the audio preview.,,network/chart_catalogue.gd
+ERROR_PREVIEW_DECODE,The audio preview could not be decoded.,,network/chart_catalogue.gd
+ERROR_DOWNLOAD_START,Could not start the download.,,network/chart_catalogue.gd
+ERROR_DOWNLOAD_URL,The server returned an invalid download URL.,,network/chart_catalogue.gd
+ERROR_DOWNLOAD_FOLDER,Could not create the download folder.,,network/chart_catalogue.gd
+ERROR_DOWNLOAD_STAGING,Could not create the download staging folder.,,network/chart_package_installer.gd
+ERROR_DOWNLOAD_PACKAGE,The downloaded file is not a valid chart package.,,network/chart_package_installer.gd
+ERROR_DOWNLOAD_RESPONSE,The server returned an invalid or oversized chart package.,,global/file_system.gd
+ERROR_PACKAGE_CHANGED,The package changed since this search. Refresh the list and retry.,,network/chart_package_installer.gd
+ERROR_INSTALLER_START,Could not start the chart installer.,,network/chart_catalogue.gd
+ERROR_CHARTSET_BACKUP,Could not back up the existing chartset. Close any files and retry.,,network/chart_package_installer.gd
+ERROR_CHARTSET_INSTALL,Could not move the installed charts into the library.,,network/chart_package_installer.gd
+ERROR_CHART_REVISION_SAVE,Could not save the installed chart revision.,,network/chart_package_installer.gd
+ERROR_PACKAGE_WRITE,Could not write the chart package. Check disk space.,,network/chart_package_installer.gd
+ERROR_PACKAGE_WRITE_FINISH,Could not finish writing the chart package. Check disk space.,,network/chart_package_installer.gd
+ERROR_PACKAGE_FILE_COUNT,The chart package has an invalid file count.,,network/chart_package_installer.gd
+ERROR_PACKAGE_PATH,The chart package contains an unsafe or duplicate path.,,network/chart_package_installer.gd
+ERROR_PACKAGE_SIZE,The expanded package exceeds the size limit.,,network/chart_package_installer.gd
+ERROR_PACKAGE_CHART_PATH,The package contains an invalid chart path.,,network/chart_package_installer.gd
+ERROR_PACKAGE_CHARTSET,A chart in the server package belongs to another chartset.,,global/file_system.gd
+ERROR_PACKAGE_CHART_REVISION_MISSING,A chart in the server package is missing revision metadata.,,global/file_system.gd
+ERROR_PACKAGE_CHART_REVISION,A chart revision does not match the server manifest.,,global/file_system.gd
+ERROR_PACKAGE_CHART_CHECKSUM,A chart checksum does not match the server manifest.,,global/file_system.gd
+ERROR_PACKAGE_RESOURCE_MISSING,A required chart resource is missing.,,network/chart_package_installer.gd
+CONFIRM_PUBLISH_CHARTSET,Publish this chartset to the online catalogue?,,network/chart_publisher.gd
+CONFIRM_REPLACE_RANKED_CHARTSET,"Replace this published chartset with this package?
+Include all existing difficulties. Leaderboards and earned SR are kept.",,network/chart_publisher.gd
+CONFIRM_REPLACE_CHARTSET,"Replace this published chartset with this package?
+Difficulties absent from this package are removed from the server.",,network/chart_publisher.gd
+HINT_PUBLISH_CONTENTS,"
+
+Includes charts, audio, images and skin files from this folder.",,network/chart_publisher.gd
+HINT_PUBLISH_BUILTIN,Built-in upload is available for this chartset.,,scenes/mainmenu/mainmenu.gd
+HINT_PUBLISH_BUILTIN_REPLACE,The regular update is locked. The built-in action will replace it as an official ranked chartset.,,network/chart_publisher.gd
+NOTICE_PUBLISH_PREPARING,Checking the published version and preparing files…,,network/chart_publisher.gd
+NOTICE_PUBLISH_UPLOADING,Uploading and validating the package…,패키지 업로드 및 유효성 검사 중…,network/chart_publisher.gd
+NOTICE_PUBLISHED,Chartset published successfully.,채보가 성공적으로 업로드 되었습니다.,network/chart_publisher.gd
+NOTICE_PUBLISHED_BUILTIN,Chartset published and added as a built-in map.,채보가 내장 컨텐츠로 업데이트 되었습니다.,network/chart_publisher.gd
+ERROR_PUBLISH_OWNER,Only the original uploader can update this chartset.,업로더만 채보를 업데이트 할 수 있습니다.,network/chart_publisher.gd
+ERROR_PUBLISH_LOCKED,Approved and ranked chartsets cannot be updated.,승인됐거나 랭크된 채보는 업데이트 할 수 없습니다.,network/chart_publisher.gd
+ERROR_PUBLISH_UNSUPPORTED,Chart publishing support is not deployed on the server yet.,,network/chart_publisher.gd
+ERROR_PUBLISH_LOOKUP,Could not check the published version. Retry.,,network/chart_publisher.gd
+ERROR_PUBLISH_LOOKUP_HTTP,Could not check the published version (HTTP %d).,,network/chart_publisher.gd; Keep placeholders in order: %d
+ERROR_UPLOAD_START,Could not start the package builder.,패키지 빌더를 시작 할 수 없습니다.,network/chart_publisher.gd
+ERROR_UPLOAD_FOLDER,Could not create the upload folder.,업로드 폴더 생성에 실패했습니다.,network/chart_package_builder.gd
+ERROR_UPLOAD_PACKAGE,Could not create the upload package.,,network/chart_package_builder.gd
+ERROR_UPLOAD_WRITE,Could not write the upload package. Check disk space.,,network/chart_package_builder.gd
+ERROR_UPLOAD_FINISH,Could not finish the upload package.,,network/chart_package_builder.gd
+ERROR_UPLOAD_HTTP,Upload failed (HTTP %d).,,network/chart_publisher.gd; Keep placeholders in order: %d
+ERROR_UPLOAD_CONNECTION,Upload failed. Check your connection and retry.,,network/chart_publisher.gd
+ERROR_UPLOAD_SOURCE,Could not read the chartset folder.,,network/chart_package_builder.gd
+ERROR_UPLOAD_EMPTY,The chartset folder is empty.,,network/chart_package_builder.gd
+ERROR_UPLOAD_FOLDERS,The chartset contains too many folders.,,network/chart_package_builder.gd
+ERROR_UPLOAD_LIMIT,"A chartset may contain up to 100 MiB and 5,000 files.",,network/chart_package_builder.gd
+ERROR_UPLOAD_FILENAME,A chart resource has an unsupported filename: %s,,network/chart_package_builder.gd; Keep placeholders in order: %s
+ERROR_UPLOAD_FILE_READ,Could not read: %s,,network/chart_package_builder.gd; Keep placeholders in order: %s
+ERROR_UPLOAD_RESOURCE_CHANGED,A resource changed while preparing the package. Retry.,,network/chart_package_builder.gd
+ERROR_UPLOAD_PACKAGE_MISSING,The prepared package is missing. Close and retry.,,network/chart_publisher.gd
+ERROR_UPLOAD_RESOURCE_LIMIT,The resources exceed 100 MiB. Close and prepare the package again.,,network/chart_package_builder.gd
+ERROR_UPLOAD_ZIP_LIMIT,The ZIP exceeds the 100 MiB upload limit.,,network/chart_package_builder.gd
+ERROR_PACK_ID,Invalid pack ID.,,network/chart_publisher.gd
+ERROR_BUILTIN_PACK_ID,The pack ID is invalid.,,global/file_system.gd
+ERROR_BUILTIN_CHARTSET_ID,The chartset UUID is invalid.,,global/file_system.gd
+ERROR_BUILTIN_EDITOR_REQUIRED,Built-in chartsets can only be installed while running from the editor.,,global/file_system.gd
+ERROR_BUILTIN_MANIFEST_MISSING,The built-in chartset JSON is missing.,,global/file_system.gd
+ERROR_BUILTIN_MANIFEST_INVALID,The built-in chartset JSON is invalid.,,global/file_system.gd
+ERROR_BUILTIN_MANIFEST_ENTRIES,The built-in chartset JSON contains invalid entries.,,global/file_system.gd
+ERROR_BUILTIN_MANIFEST_SAVE,Could not update the built-in chartset JSON.,,global/file_system.gd
+ERROR_BUILTIN_FOLDER_NAME,Could not choose a built-in chartset folder name.,,global/file_system.gd
+ERROR_BUILTIN_STAGING,Could not create the built-in chart staging folder.,,global/file_system.gd
+ERROR_BUILTIN_RESOURCE_FOLDER,Could not create a built-in chart resource folder.,,global/file_system.gd
+ERROR_BUILTIN_RESOURCE_IMPORT,Could not mark a built-in resource as Keep File.,,global/file_system.gd
+ERROR_BUILTIN_COPY,Could not finish copying the built-in chartset folder.,,global/file_system.gd
+ERROR_BUILTIN_REPLACE,Could not replace the existing built-in chartset folder.,,global/file_system.gd
+ERROR_BUILTIN_PUBLISHED_INSTALL,"Published to the server, but built-in installation failed: %s",,network/chart_publisher.gd; Keep placeholders in order: %s
+ERROR_SERVER_PACKAGE_MISSING,The server chart package is missing.,,global/file_system.gd
+ERROR_SERVER_PACKAGE_RESPONSE,The server response is not a valid chart package.,,global/file_system.gd
+ERROR_SERVER_PACKAGE_SAVE,Could not save the server chart package.,,network/chart_publisher.gd
+ERROR_SERVER_PACKAGE_SAVE_FINISH,Could not finish saving the server chart package.,,network/chart_publisher.gd
+ERROR_SERVER_PACKAGE_WRITE,Could not finish writing the server chart package.,,global/file_system.gd
+ERROR_SERVER_PACKAGE_PATH,The server chart package contains an unsafe or duplicate path.,,global/file_system.gd
+ERROR_SERVER_PACKAGE_RESOURCE,The server chart package contains an unsupported resource: %s,,global/file_system.gd; Keep placeholders in order: %s
+ERROR_SERVER_PACKAGE_FILES,The server chart package has an invalid file count.,,global/file_system.gd
+ERROR_SERVER_PACKAGE_EMPTY,The server chart package contains no charts.,,global/file_system.gd
+ERROR_SERVER_PACKAGE_SIZE,The expanded server chart package exceeds 100 MiB.,,global/file_system.gd
+ERROR_SERVER_PACKAGE_MANIFEST,The server chart package is missing its revision manifest.,,global/file_system.gd
+ERROR_SERVER_PACKAGE_METADATA,The server chart package has invalid chartset metadata.,,global/file_system.gd
+ERROR_SERVER_PACKAGE_REVISION,The server chart package has invalid chart revision metadata.,,global/file_system.gd
+ERROR_SERVER_PACKAGE_REVISION_MISSING,The server chart package has incomplete chart revision metadata.,,global/file_system.gd
+ERROR_SERVER_PACKAGE_REVISION_DUPLICATE,The server chart package has duplicate chart revision metadata.,,global/file_system.gd
+ERROR_SERVER_PACKAGE_FOLDER,Could not create a chart resource folder.,,network/chart_package_installer.gd
+ERROR_SERVER_PACKAGE_ZIP,The ZIP is invalid or exceeds the 100 MiB extraction limit.,,network/chart_package_installer.gd
+ERROR_SERVER_PACKAGE_FORMAT,"The server did not return a ZIP package. Update the server to support built-in publishing, then retry.",,network/chart_publisher.gd

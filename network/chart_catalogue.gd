@@ -125,7 +125,7 @@ func refresh() -> void:
 	page = 1
 	_has_result_snapshot = false
 	if filters.has_play_history() and not Auth.is_authenticated():
-		_list_failed("Sign in to use the play history filter.")
+		_list_failed(GameText.text(GameText.Key.HINT_SIGN_IN_HISTORY))
 		return
 	if playlist_id != 0:
 		_show_cached_playlist()
@@ -146,7 +146,7 @@ func _show_cached_playlist() -> void:
 			playlist = entry
 			break
 	if playlist == null:
-		_list_failed("Playlist not found.")
+		_list_failed(GameText.text(GameText.Key.ERROR_PLAYLIST_NOT_FOUND))
 		return
 	_results = playlist.filtered_chartsets(filters, search_text)
 	total = _results.size()
@@ -154,7 +154,7 @@ func _show_cached_playlist() -> void:
 	loading = false
 	loading_more = false
 	_has_result_snapshot = true
-	status = "No songs match these filters." if _results.is_empty() else "%d songs" % total
+	status = GameText.text(GameText.Key.NOTICE_SEARCH_EMPTY) if _results.is_empty() else "%d songs" % total
 	results_changed.emit(_results)
 	state_changed.emit()
 	_cover_queue.append_array(_results)
@@ -172,7 +172,7 @@ func _request_page(append: bool) -> void:
 	_list.request_completed.connect(_on_list.bind(_generation, append))
 	var headers := Auth.authorization_headers() if filters.has_play_history() else PackedStringArray()
 	if _list.request(_api_url("/chartset/?") + ServerURLs.query(query), headers) != OK:
-		_list_failed("Could not start the search. Retry.")
+		_list_failed(GameText.text(GameText.Key.ERROR_SEARCH_START))
 
 func _on_list(result: int, code: int, _headers: PackedStringArray, body: PackedByteArray, generation: int, append: bool) -> void:
 	if not active or generation != _generation:
@@ -184,16 +184,16 @@ func _on_list(result: int, code: int, _headers: PackedStringArray, body: PackedB
 		return
 	var data = JSON.parse_string(body.get_string_from_utf8())
 	if not data is Dictionary or not data.get("items") is Array or not data.get("total_pages") is float or not data.get("total") is float:
-		_list_failed("The server returned an invalid song list.")
+		_list_failed(GameText.text(GameText.Key.ERROR_SEARCH_RESPONSE))
 		return
 	var added: Array[ChartSet] = []
 	for item in data.items:
 		if not item is Dictionary:
-			_list_failed("The server returned invalid song metadata.")
+			_list_failed(GameText.text(GameText.Key.ERROR_SONG_METADATA))
 			return
 		var mapped := OnlineChartMapper.from_metadata(item)
 		if mapped == null:
-			_list_failed("The server returned invalid song metadata.")
+			_list_failed(GameText.text(GameText.Key.ERROR_SONG_METADATA))
 			return
 		var key := _chartset_key(mapped)
 		if _seen_chartsets.has(key):
@@ -207,7 +207,7 @@ func _on_list(result: int, code: int, _headers: PackedStringArray, body: PackedB
 	loading = false
 	loading_more = false
 	var visible_total := maxi(total, _results.size())
-	status = "No songs match these filters." if _results.is_empty() else "%d of %d songs" % [_results.size(), visible_total]
+	status = GameText.text(GameText.Key.NOTICE_SEARCH_EMPTY) if _results.is_empty() else "%d of %d songs" % [_results.size(), visible_total]
 	results_changed.emit(_results)
 	state_changed.emit()
 	_cover_queue.append_array(added)
@@ -235,7 +235,7 @@ func _clear_results() -> void:
 func show_chartset(metadata: Dictionary) -> void:
 	var mapped := OnlineChartMapper.from_metadata(metadata)
 	if mapped == null:
-		Notification.notice("The playlist contains invalid chart metadata.", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.ERROR_PLAYLIST_METADATA), Notification.Type.WARNING)
 		return
 	search_debounce.stop()
 	_generation += 1
@@ -322,7 +322,7 @@ func _on_selected(chart: Chart) -> void:
 		return
 	_check_loved(chart.chart_set)
 	if should_auto_update and _begin_download(chart.chart_set, true):
-		message.emit("A newer chart revision was found. Updating automatically…")
+		message.emit(GameText.text(GameText.Key.HINT_CHART_AUTO_UPDATE))
 	_request_detail_cover(chart)
 	var metadata := chart.chart_set.online_metadata
 	var id := int(metadata.get("id", -1))
@@ -337,7 +337,7 @@ func _on_selected(chart: Chart) -> void:
 	_audio.request_completed.connect(_on_audio.bind(_preview_generation))
 	if _audio.request(url) != OK:
 		stop_preview()
-		message.emit("Could not start the audio preview.")
+		message.emit(GameText.text(GameText.Key.ERROR_PREVIEW_START))
 
 func _request_detail_cover(chart: Chart) -> void:
 	_cancel_detail_cover()
@@ -395,7 +395,7 @@ func _on_audio(result: int, code: int, _headers: PackedStringArray, bytes: Packe
 	var stream := AudioStreamMP3.new()
 	stream.data = bytes
 	if stream.get_length() <= 0:
-		message.emit("The audio preview could not be decoded.")
+		message.emit(GameText.text(GameText.Key.ERROR_PREVIEW_DECODE))
 		return
 	preview_player.stream = stream
 	preview_player.volume_db = -30
@@ -487,7 +487,7 @@ func activate_selection(autoplay: bool = false) -> void:
 		_play_cached_selection()
 		return
 	if not Auth.is_authenticated():
-		message.emit("Sign in with Steam, then press Download again.")
+		message.emit(GameText.text(GameText.Key.HINT_SIGN_IN_DOWNLOAD))
 		Auth.login()
 		return
 	_begin_download(CM.selected_chartset)
@@ -501,12 +501,12 @@ func _begin_download(chartset: ChartSet, automatic_update: bool = false) -> bool
 	var url := _resource_url(str(_download_metadata.get("download_url", "")))
 	if not url.begins_with(_api_url("/chartsets/")):
 		_automatic_update = false
-		message.emit("The server returned an invalid download URL.")
+		message.emit(GameText.text(GameText.Key.ERROR_DOWNLOAD_URL))
 		return false
 	var transfer_directory := ChartTransfer.create()
 	if transfer_directory.is_empty():
 		_automatic_update = false
-		message.emit("Could not create the download folder.")
+		message.emit(GameText.text(GameText.Key.ERROR_DOWNLOAD_FOLDER))
 		return false
 	_archive_path = transfer_directory.path_join("download.part")
 	downloading = true
@@ -521,7 +521,7 @@ func _start_download(url: String, headers: PackedStringArray) -> void:
 	_download.download_file = _archive_path
 	_download.request_completed.connect(_on_download)
 	if _download.request(url, headers) != OK:
-		_download_failed("Could not start the download.")
+		_download_failed(GameText.text(GameText.Key.ERROR_DOWNLOAD_START))
 
 func _on_download(result: int, code: int, headers: PackedStringArray, _body: PackedByteArray) -> void:
 	_cancel(_download)
@@ -544,7 +544,7 @@ func _on_download(result: int, code: int, headers: PackedStringArray, _body: Pac
 	_installer_thread = Thread.new()
 	if _installer_thread.start(ChartPackageInstaller.install.bind(_archive_path, _download_metadata)) != OK:
 		_installer_thread = null
-		_download_failed("Could not start the chart installer.")
+		_download_failed(GameText.text(GameText.Key.ERROR_INSTALLER_START))
 	state_changed.emit()
 
 func _process(delta: float) -> void:
@@ -559,12 +559,12 @@ func _process(delta: float) -> void:
 		else:
 			var installed := CommunityChartCache.load_chartset(_download_metadata)
 			if installed == null:
-				_download_failed("The installed chart could not be opened.")
+				_download_failed(GameText.text(GameText.Key.ERROR_INSTALLED_CHART_OPEN))
 			else:
 				_cached_chartsets[installed.uuid.to_lower()] = installed
 				ChartPackageInstaller.prune_cache(installed.folder_name)
 				downloading = false
-				message.emit("Chart updated. Ready to play." if _automatic_update else "Download complete.")
+				message.emit(GameText.text(GameText.Key.NOTICE_CHART_UPDATED) if _automatic_update else "Download complete.")
 				if _pending_play:
 					call_deferred("_play_cached_selection")
 				_pending_play = false
@@ -589,7 +589,7 @@ func _play_cached_selection() -> void:
 	var remote := CM.selected_chart
 	var local := local_chart(remote)
 	if local == null:
-		message.emit("The cached chart is unavailable. Download it again.")
+		message.emit(GameText.text(GameText.Key.ERROR_CACHED_CHART_MISSING))
 		return
 	# Menu previews belong to the remote chart; gameplay uses the cached chart.
 	if remote.cover_image != null:
@@ -654,7 +654,7 @@ func toggle_loved() -> void:
 		var chartset := CM.selected_chartset
 		var added := playlist.contains(int(chartset.online_metadata.get("id", 0)))
 		if not await playlist.set_chartset(chartset, not added):
-			Notification.notice("Could not update Loved.", Notification.Type.WARNING)
+			Notification.notice(GameText.text(GameText.Key.ERROR_LOVED_UPDATE), Notification.Type.WARNING)
 		return
 
 
@@ -696,15 +696,15 @@ func _cancel(node: HTTPRequest) -> void:
 
 func _http_error(result: int, code: int, action: String) -> String:
 	if result != HTTPRequest.RESULT_SUCCESS:
-		return action + " failed. Check your connection and retry."
+		return GameText.text(GameText.Key.ERROR_ACTION_CONNECTION) % action
 	match code:
 		401:
 			Auth.logout()
-			return "Session expired. Sign in with Steam and retry."
-		403: return "This account cannot access this content."
-		404: return action + " is unavailable on the server (404)."
-		422: return "The server rejected these filters. Check the ranges."
-		_: return "%s failed (HTTP %d). Retry." % [action, code]
+			return GameText.text(GameText.Key.ERROR_SESSION_RETRY)
+		403: return GameText.text(GameText.Key.ERROR_CONTENT_FORBIDDEN)
+		404: return GameText.text(GameText.Key.ERROR_ACTION_NOT_FOUND) % action
+		422: return GameText.text(GameText.Key.ERROR_SEARCH_FILTERS)
+		_: return GameText.text(GameText.Key.ERROR_ACTION_HTTP) % [action, code]
 
 func _exit_tree() -> void:
 	_generation += 1

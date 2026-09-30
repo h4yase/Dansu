@@ -31,11 +31,11 @@ static func build(folder: String) -> BuildResult:
 	while not pending.is_empty():
 		directories += 1
 		if directories > MAX_FILES:
-			return BuildResult.failure("The chartset contains too many folders.")
+			return BuildResult.failure(GameText.text(GameText.Key.ERROR_UPLOAD_FOLDERS))
 		var relative: String = pending.pop_back()
 		var directory := DirAccess.open(folder.path_join(relative))
 		if directory == null:
-			return BuildResult.failure("Could not read the chartset folder.")
+			return BuildResult.failure(GameText.text(GameText.Key.ERROR_UPLOAD_SOURCE))
 		for child in directory.get_directories():
 			if not child.begins_with(".") and not directory.is_link(child):
 				pending.append(relative.path_join(child))
@@ -44,41 +44,41 @@ static func build(folder: String) -> BuildResult:
 				continue
 			var path := relative.path_join(name)
 			if not ChartPackageInstaller.safe_relative(path):
-				return BuildResult.failure("A chart resource has an unsupported filename: " + path)
+				return BuildResult.failure(GameText.text(GameText.Key.ERROR_UPLOAD_FILENAME) % path)
 			var file := FileAccess.open(folder.path_join(path), FileAccess.READ)
 			if file == null:
-				return BuildResult.failure("Could not read: " + path)
+				return BuildResult.failure(GameText.text(GameText.Key.ERROR_UPLOAD_FILE_READ) % path)
 			total += file.get_length()
 			files.append(path)
 			if total > MAX_BYTES or files.size() > MAX_FILES:
-				return BuildResult.failure("A chartset may contain up to 100 MiB and 5,000 files.")
+				return BuildResult.failure(GameText.text(GameText.Key.ERROR_UPLOAD_LIMIT))
 	if files.is_empty():
-		return BuildResult.failure("The chartset folder is empty.")
+		return BuildResult.failure(GameText.text(GameText.Key.ERROR_UPLOAD_EMPTY))
 	files.sort()
 	var transfer_directory := ChartTransfer.create()
 	if transfer_directory.is_empty():
-		return BuildResult.failure("Could not create the upload folder.")
+		return BuildResult.failure(GameText.text(GameText.Key.ERROR_UPLOAD_FOLDER))
 	var archive := transfer_directory.path_join("upload.zip")
 	var zip := ZIPPacker.new()
 	if zip.open(archive) != OK:
 		ChartTransfer.cleanup(transfer_directory)
-		return BuildResult.failure("Could not create the upload package.")
+		return BuildResult.failure(GameText.text(GameText.Key.ERROR_UPLOAD_PACKAGE))
 	var error := ""
 	var written := 0
 	for path in files:
 		var file := FileAccess.open(folder.path_join(path), FileAccess.READ)
 		if file == null or file.get_length() > MAX_BYTES:
-			error = "A resource changed while preparing the package. Retry."
+			error = GameText.text(GameText.Key.ERROR_UPLOAD_RESOURCE_CHANGED)
 			break
 		written += file.get_length()
 		if written > MAX_BYTES:
-			error = "The resources exceed 100 MiB. Close and prepare the package again."
+			error = GameText.text(GameText.Key.ERROR_UPLOAD_RESOURCE_LIMIT)
 			break
 		if zip.start_file(path) != OK or zip.write_file(file.get_buffer(file.get_length())) != OK or zip.close_file() != OK:
-			error = "Could not write the upload package. Check disk space."
+			error = GameText.text(GameText.Key.ERROR_UPLOAD_WRITE)
 			break
 	if zip.close() != OK:
-		error = "Could not finish the upload package."
+		error = GameText.text(GameText.Key.ERROR_UPLOAD_FINISH)
 	if not error.is_empty():
 		ChartTransfer.cleanup(transfer_directory)
 		return BuildResult.failure(error)
@@ -86,5 +86,5 @@ static func build(folder: String) -> BuildResult:
 	if packed == null or packed.get_length() > MAX_BYTES:
 		packed = null
 		ChartTransfer.cleanup(transfer_directory)
-		return BuildResult.failure("The ZIP exceeds the 100 MiB upload limit.")
+		return BuildResult.failure(GameText.text(GameText.Key.ERROR_UPLOAD_ZIP_LIMIT))
 	return BuildResult.completed(archive, packed.get_length(), files.size())

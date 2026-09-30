@@ -4,9 +4,9 @@ class_name EditorUnsavedChangesDialog
 signal save_requested
 signal discard_requested
 
-@export_multiline var message := "Save changes before leaving?"
-@export var save_button_text := "Save and leave"
-@export var discard_button_text := "Leave without saving"
+@export_multiline var message := GameText.text(GameText.Key.CONFIRM_SAVE_CHANGES)
+@export var save_button_text := GameText.text(GameText.Key.ACTION_SAVE_AND_LEAVE)
+@export var discard_button_text := GameText.text(GameText.Key.ACTION_LEAVE_UNSAVED)
 @export var message_label: Label
 @export var save_button: Button
 @export var discard_button: Button

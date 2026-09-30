@@ -153,7 +153,7 @@ func _load_recent(data: Variant) -> bool:
 
 func _fail() -> void:
 	loading = false
-	error = "Could not load playlists. Restart the game to sync again."
+	error = GameText.text(GameText.Key.ERROR_PLAYLIST_LOAD)
 	_pending.clear()
 	_request.queue_free()
 	_request = null

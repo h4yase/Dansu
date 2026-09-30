@@ -96,7 +96,7 @@ func _load_selected() -> void:
 	elif _chart.chart_set != null and not _chart.chart_set.uuid.is_empty():
 		_request_json("/chartsets/by-uuid/" + _chart.chart_set.uuid.uri_encode(), _on_resolved)
 	else:
-		_show_status("No leaderboard for this chart.")
+		_show_status(GameText.text(GameText.Key.NOTICE_LEADERBOARD_MISSING))
 
 
 func _load_page() -> void:
@@ -115,7 +115,7 @@ func _request_json(path: String, callback: Callable) -> void:
 	headers.append("Accept: application/json")
 	if _request.request(ServerURLs.api(path), headers) != OK:
 		_cancel_request()
-		_show_status("Could not connect to the server.")
+		_show_status(GameText.text(GameText.Key.ERROR_SERVER_CONNECT))
 
 
 func _on_response(result: int, code: int, _headers: PackedStringArray, body: PackedByteArray, callback: Callable, generation: int) -> void:
@@ -123,14 +123,14 @@ func _on_response(result: int, code: int, _headers: PackedStringArray, body: Pac
 		return
 	_cancel_request()
 	if result != HTTPRequest.RESULT_SUCCESS:
-		_show_status("Could not connect to the server.")
+		_show_status(GameText.text(GameText.Key.ERROR_SERVER_CONNECT))
 		return
 	if code != 200:
-		_show_status("No leaderboard for this chart." if code == 404 else "Could not load leaderboard.")
+		_show_status(GameText.text(GameText.Key.NOTICE_LEADERBOARD_MISSING) if code == 404 else GameText.text(GameText.Key.ERROR_LEADERBOARD_LOAD))
 		return
 	var data = JSON.parse_string(body.get_string_from_utf8())
 	if not data is Dictionary:
-		_show_status("Could not read leaderboard.")
+		_show_status(GameText.text(GameText.Key.ERROR_LEADERBOARD_READ))
 		return
 	callback.call(data)
 
@@ -143,12 +143,12 @@ func _on_resolved(data: Dictionary) -> void:
 			if _chart_id > 0:
 				_load_page()
 				return
-	_show_status("No leaderboard for this chart.")
+	_show_status(GameText.text(GameText.Key.NOTICE_LEADERBOARD_MISSING))
 
 
 func _on_page(data: Dictionary) -> void:
 	if not data.get("items") is Array or int(data.get("chart_id", -1)) != _chart_id:
-		_show_status("Could not read leaderboard.")
+		_show_status(GameText.text(GameText.Key.ERROR_LEADERBOARD_READ))
 		return
 	_page = int(data.get("page", _page + 1))
 	_total_pages = int(data.get("total_pages", _page))
@@ -162,7 +162,7 @@ func _on_page(data: Dictionary) -> void:
 		row.action_pressed.connect(_on_row_action.bind(row))
 		row.play_appear(minf(index * 0.035, 0.35))
 		index += 1
-	_show_status("No scores yet." if _entries.get_child_count() == 0 else "")
+	_show_status(GameText.text(GameText.Key.NOTICE_LEADERBOARD_EMPTY) if _entries.get_child_count() == 0 else "")
 
 
 func _show_status(text: String) -> void:
@@ -208,7 +208,7 @@ func _download_replay(item: Dictionary, row: InlineLeaderboardRow) -> void:
 		return
 	var local := _resolve_replay_chart()
 	if local == null:
-		Notification.notice("Download or update this chart before watching the replay.", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.HINT_REPLAY_DOWNLOAD_CHART), Notification.Type.WARNING)
 		return
 	if _chart.cover_image != null:
 		local.cover_image = _chart.cover_image
@@ -226,7 +226,7 @@ func _download_replay(item: Dictionary, row: InlineLeaderboardRow) -> void:
 	var url := ServerURLs.api("/leaderboards/charts/%d/scores/%d/replay" % [_chart_id, score_id])
 	if _replay_request.request(url, Auth.authorization_headers()) != OK:
 		_cancel_replay()
-		Notification.notice("Could not download replay. Try again.", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.ERROR_REPLAY_DOWNLOAD), Notification.Type.WARNING)
 
 
 func _resolve_replay_chart() -> Chart:
@@ -250,20 +250,20 @@ func _on_replay_loaded(result: int, code: int, _headers: PackedStringArray, body
 	_cancel_replay()
 	if result != HTTPRequest.RESULT_SUCCESS or code != 200:
 		if code == 404:
-			Notification.notice("Replay is no longer available.",
+			Notification.notice(GameText.text(GameText.Key.ERROR_REPLAY_REMOVED),
 			Notification.Type.WARNING)
 		else:
-			Notification.notice("Could not download replay. Try again.",
+			Notification.notice(GameText.text(GameText.Key.ERROR_REPLAY_DOWNLOAD),
 			Notification.Type.WARNING)
 		return
 	chart.filehash = FileAccess.get_sha256(chart.file_path)
 	var replay := Replay.from_bytes(body, chart)
 	if replay == null:
-		Notification.notice("Replay does not match the installed chart version.",
+		Notification.notice(GameText.text(GameText.Key.ERROR_REPLAY_VERSION),
 		Notification.Type.WARNING)
 		return
 	if not Game.play_replay(replay):
-		Notification.notice("Could not play replay. Check the installed chart version.",
+		Notification.notice(GameText.text(GameText.Key.ERROR_REPLAY_PLAY),
 		Notification.Type.WARNING)
 		return
 

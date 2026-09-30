@@ -55,29 +55,29 @@ static func install_packaged_chartset(
 	pack_id: String,
 ) -> ChartPackageInstaller.InstallResult:
 	if not OS.has_feature("editor"):
-		return ChartPackageInstaller.InstallResult.failure("Built-in chartsets can only be installed while running from the editor.")
+		return ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_BUILTIN_EDITOR_REQUIRED))
 
 	var uuid := chartset_uuid.strip_edges().to_lower()
 	if not _is_chartset_uuid(uuid):
-		return ChartPackageInstaller.InstallResult.failure("The chartset UUID is invalid.")
+		return ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_BUILTIN_CHARTSET_ID))
 
 	var normalized_pack_id := pack_id.strip_edges().to_lower()
 	if not is_valid_pack_id(normalized_pack_id):
-		return ChartPackageInstaller.InstallResult.failure("The pack ID is invalid.")
+		return ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_BUILTIN_PACK_ID))
 
 	var archive_absolute := ProjectSettings.globalize_path(archive_path)
 	if not FileAccess.file_exists(archive_absolute):
-		return ChartPackageInstaller.InstallResult.failure("The server chart package is missing.")
+		return ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_MISSING))
 
 	if not FileAccess.file_exists(packaged_chartsets_manifest_path):
-		return ChartPackageInstaller.InstallResult.failure("The built-in chartset JSON is missing.")
+		return ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_BUILTIN_MANIFEST_MISSING))
 	var raw_manifest = JSON.parse_string(FileAccess.get_file_as_string(packaged_chartsets_manifest_path))
 	if not raw_manifest is Dictionary:
-		return ChartPackageInstaller.InstallResult.failure("The built-in chartset JSON is invalid.")
+		return ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_BUILTIN_MANIFEST_INVALID))
 
 	var manifest := packaged_chartsets()
 	if manifest.size() != raw_manifest.size():
-		return ChartPackageInstaller.InstallResult.failure("The built-in chartset JSON contains invalid entries.")
+		return ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_BUILTIN_MANIFEST_ENTRIES))
 
 	var old_relative_path := str(manifest.get(uuid, ""))
 	var relative_path := ""
@@ -94,7 +94,7 @@ static func install_packaged_chartset(
 			manifest,
 		)
 		if folder_name.is_empty():
-			return ChartPackageInstaller.InstallResult.failure("Could not choose a built-in chartset folder name.")
+			return ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_BUILTIN_FOLDER_NAME))
 		relative_path = normalized_pack_id.path_join(folder_name).replace("\\", "/")
 
 	var root_absolute := ProjectSettings.globalize_path(official_chart_path)
@@ -120,12 +120,12 @@ static func install_packaged_chartset(
 	var had_target := DirAccess.dir_exists_absolute(target_absolute)
 	if had_target and DirAccess.rename_absolute(target_absolute, backup_absolute) != OK:
 		_remove_directory_tree(staging_absolute)
-		return ChartPackageInstaller.InstallResult.failure("Could not replace the existing built-in chartset folder.")
+		return ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_BUILTIN_REPLACE))
 
 	if DirAccess.rename_absolute(staging_absolute, target_absolute) != OK:
 		if had_target:
 			DirAccess.rename_absolute(backup_absolute, target_absolute)
-		return ChartPackageInstaller.InstallResult.failure("Could not finish copying the built-in chartset folder.")
+		return ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_BUILTIN_COPY))
 
 	manifest[uuid] = relative_path
 	if not write_text_atomic(packaged_chartsets_manifest_path, JSON.stringify(manifest, "	") + "
@@ -133,7 +133,7 @@ static func install_packaged_chartset(
 		_remove_directory_tree(target_absolute)
 		if had_target:
 			DirAccess.rename_absolute(backup_absolute, target_absolute)
-		return ChartPackageInstaller.InstallResult.failure("Could not update the built-in chartset JSON.")
+		return ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_BUILTIN_MANIFEST_SAVE))
 
 	_remove_directory_tree(backup_absolute)
 
@@ -208,23 +208,23 @@ static func _is_chartset_uuid(value: String) -> bool:
 
 static func _extract_packaged_chartset_archive(archive_path: String, target_path: String, expected_uuid: String) -> String:
 	if not _bounded_chartset_zip(archive_path):
-		return "The server returned an invalid or oversized chart package."
+		return GameText.text(GameText.Key.ERROR_DOWNLOAD_RESPONSE)
 	var zip := ZIPReader.new()
 	if zip.open(archive_path) != OK:
-		return "The server response is not a valid chart package."
+		return GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_RESPONSE)
 	var names := zip.get_files()
 	var seen := {}
 	if names.is_empty() or names.size() > 5000:
 		zip.close()
-		return "The server chart package has an invalid file count."
+		return GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_FILES)
 	for path in names:
 		if not _safe_chartset_archive_path(path) or seen.has(path.to_lower()):
 			zip.close()
-			return "The server chart package contains an unsafe or duplicate path."
+			return GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_PATH)
 		seen[path.to_lower()] = true
 	if DirAccess.make_dir_recursive_absolute(target_path) != OK:
 		zip.close()
-		return "Could not create the built-in chart staging folder."
+		return GameText.text(GameText.Key.ERROR_BUILTIN_STAGING)
 
 	var expanded_bytes := 0
 	var chart_paths: Array[String] = []
@@ -234,16 +234,16 @@ static func _extract_packaged_chartset_archive(archive_path: String, target_path
 			continue
 		var extension := path.get_extension().to_lower()
 		if extension not in chart_package_extensions:
-			error = "The server chart package contains an unsupported resource: %s" % path
+			error = GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_RESOURCE) % path
 			break
 		var bytes := zip.read_file(path, true)
 		expanded_bytes += bytes.size()
 		if expanded_bytes > 100 * 1024 * 1024:
-			error = "The expanded server chart package exceeds 100 MiB."
+			error = GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_SIZE)
 			break
 		var output_path := target_path.path_join(path)
 		if DirAccess.make_dir_recursive_absolute(output_path.get_base_dir()) != OK:
-			error = "Could not create a built-in chart resource folder."
+			error = GameText.text(GameText.Key.ERROR_BUILTIN_RESOURCE_FOLDER)
 			break
 		var file := FileAccess.open(output_path, FileAccess.WRITE)
 		if file == null:
@@ -254,12 +254,12 @@ static func _extract_packaged_chartset_archive(archive_path: String, target_path
 		var write_error := file.get_error()
 		file.close()
 		if write_error != OK:
-			error = "Could not finish writing the server chart package."
+			error = GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_WRITE)
 			break
 		if extension == "dansu":
 			chart_paths.append(output_path)
 		elif extension in keep_file_extensions and not _write_keep_file_import(output_path):
-			error = "Could not mark a built-in resource as Keep File."
+			error = GameText.text(GameText.Key.ERROR_BUILTIN_RESOURCE_IMPORT)
 			break
 	zip.close()
 	if not error.is_empty():
@@ -269,36 +269,36 @@ static func _extract_packaged_chartset_archive(archive_path: String, target_path
 
 static func _verify_server_chartset(target_path: String, chart_paths: Array[String], expected_uuid: String) -> String:
 	if chart_paths.is_empty():
-		return "The server chart package contains no charts."
+		return GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_EMPTY)
 	var manifest_path := target_path.path_join(".dansu-online.json")
 	if not FileAccess.file_exists(manifest_path):
-		return "The server chart package is missing its revision manifest."
+		return GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_MANIFEST)
 	var manifest = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
 	if not manifest is Dictionary or str(manifest.get("chartset_uuid", "")).to_lower() != expected_uuid:
-		return "The server chart package has invalid chartset metadata."
+		return GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_METADATA)
 	var entries = manifest.get("charts")
 	if not entries is Array or entries.size() != chart_paths.size():
-		return "The server chart package has incomplete chart revision metadata."
+		return GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_REVISION_MISSING)
 	var entries_by_uuid := {}
 	for entry in entries:
 		if not entry is Dictionary:
-			return "The server chart package has invalid chart revision metadata."
+			return GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_REVISION)
 		var chart_uuid := str(entry.get("chart_uuid", "")).to_lower()
 		if not _is_chartset_uuid(chart_uuid) or entries_by_uuid.has(chart_uuid):
-			return "The server chart package has duplicate chart revision metadata."
+			return GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_REVISION_DUPLICATE)
 		entries_by_uuid[chart_uuid] = entry
 	for chart_path in chart_paths:
 		var identity := _read_chart_identity(chart_path)
 		if identity.get("chartset_uuid", "") != expected_uuid:
-			return "A chart in the server package belongs to another chartset."
+			return GameText.text(GameText.Key.ERROR_PACKAGE_CHARTSET)
 		var chart_uuid := str(identity.get("uuid", ""))
 		var entry = entries_by_uuid.get(chart_uuid)
 		if not entry is Dictionary:
-			return "A chart in the server package is missing revision metadata."
+			return GameText.text(GameText.Key.ERROR_PACKAGE_CHART_REVISION_MISSING)
 		if int(identity.get("version", 0)) != int(entry.get("chart_revision", 0)):
-			return "A chart revision does not match the server manifest."
+			return GameText.text(GameText.Key.ERROR_PACKAGE_CHART_REVISION)
 		if FileAccess.get_sha256(chart_path).to_lower() != str(entry.get("checksum_sha256", "")).to_lower():
-			return "A chart checksum does not match the server manifest."
+			return GameText.text(GameText.Key.ERROR_PACKAGE_CHART_CHECKSUM)
 	return ""
 
 

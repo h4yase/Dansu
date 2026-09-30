@@ -913,6 +913,36 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
+[node name="LanguageRow" type="PanelContainer" parent="Panel/Margin/VBox/Pages/System/Margin/Rows"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_row")
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin/VBox/Pages/System/Margin/Rows/LanguageRow"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Row" type="HBoxContainer" parent="Panel/Margin/VBox/Pages/System/Margin/Rows/LanguageRow/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Title" type="Label" parent="Panel/Margin/VBox/Pages/System/Margin/Rows/LanguageRow/VBox/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3")
+theme_override_font_sizes/font_size = 30
+text = "Language"
+
+[node name="LanguageOption" type="OptionButton" parent="Panel/Margin/VBox/Pages/System/Margin/Rows/LanguageRow/VBox/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 44)
+layout_mode = 2
+auto_translate_mode = 2
+
+[node name="Note" type="Label" parent="Panel/Margin/VBox/Pages/System/Margin/Rows/LanguageRow/VBox"]
+layout_mode = 2
+text = "HINT_LANGUAGE_RESTART"
+autowrap_mode = 3
+
 [node name="ThreadsRow" type="PanelContainer" parent="Panel/Margin/VBox/Pages/System/Margin/Rows" unique_id=1767643768]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_row")

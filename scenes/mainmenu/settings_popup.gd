@@ -42,6 +42,7 @@ const INFINITE_FPS_TEXT := "Infinite"
 @export var api_url_edit: LineEdit
 
 var max_fps_line_edit: LineEdit
+@onready var language_option: OptionButton = %LanguageOption
 
 var _is_open := false
 var _is_syncing := false
@@ -171,6 +172,7 @@ func _connect_signals() -> void:
 	ignore_chart_skin_check.toggled.connect(_on_ignore_chart_skin_toggled)
 
 	chart_load_threads_spin.value_changed.connect(_on_chart_threads_changed)
+	language_option.item_selected.connect(_on_language_selected)
 	api_url_edit.editable = false
 
 
@@ -199,7 +201,23 @@ func _sync_from_config() -> void:
 	api_url_edit.text = Config.SERVER_URL
 
 	_refresh_value_labels()
+	_refresh_language_options()
 	_is_syncing = false
+
+func _refresh_language_options() -> void:
+	language_option.clear()
+	for locale in Localization.available_locales:
+		language_option.add_item(TranslationServer.get_locale_name(locale))
+		language_option.set_item_metadata(language_option.item_count - 1, locale)
+		if locale == Config.language:
+			language_option.select(language_option.item_count - 1)
+
+func _on_language_selected(index: int) -> void:
+	if _is_syncing:
+		return
+	Config.language = str(language_option.get_item_metadata(index))
+	_persist()
+	Notification.notice(GameText.text(GameText.Key.HINT_LANGUAGE_RESTART))
 
 
 func _play_tween(opening: bool) -> void:

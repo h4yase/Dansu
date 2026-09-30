@@ -6,7 +6,7 @@ const PARSER_V1 = "FILE_VERSION_1"
 static func parse_meta(chart: Chart) -> bool:
 	var file := FileAccess.open(chart.file_path, FileAccess.READ)
 	if file == null:
-		Notification.notice("Failed to open chart file: %s" % chart.file_path, Notification.Type.ERROR)
+		Notification.notice(GameText.text(GameText.Key.ERROR_CHART_OPEN_FAILED) % chart.file_path, Notification.Type.ERROR)
 		return false
 
 	var parser: MetaParser = null
@@ -19,7 +19,7 @@ static func parse_meta(chart: Chart) -> bool:
 		chart.build_search_string()
 		return true
 
-	Notification.notice("Unsupported chart version ! : %s" % version, Notification.Type.ERROR)
+	Notification.notice(GameText.text(GameText.Key.ERROR_CHART_VERSION) % version, Notification.Type.ERROR)
 	return false
 
 func parse_object(chart: Chart) -> ParseResult:
@@ -27,7 +27,7 @@ func parse_object(chart: Chart) -> ParseResult:
 	var file := FileAccess.open(chart.file_path, FileAccess.READ)
 	var message: String
 	if file == null:
-		message = "Failed to open chart file: %s" % chart.file_path
+		message = GameText.text(GameText.Key.ERROR_CHART_OPEN_FAILED) % chart.file_path
 		Notification.notice(message, Notification.Type.ERROR)
 		return result.set_error(message)
 
@@ -42,6 +42,6 @@ func parse_object(chart: Chart) -> ParseResult:
 			chart.play_time_ms = parsed_chart.get_play_time_ms()
 		return result.set_success(parsed_chart)
 
-	message = "Unsupported chart version ! : %s" % version
+	message = GameText.text(GameText.Key.ERROR_CHART_VERSION) % version
 	Notification.notice(message, Notification.Type.ERROR)
 	return result.set_error(message)

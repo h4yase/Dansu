@@ -47,7 +47,7 @@ theme_override_constants/separation = 22
 [node name="Message" type="Label" parent="Panel/Margin/Content" unique_id=832863892]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Save changes before leaving?"
+text = "CONFIRM_SAVE_CHANGES"
 vertical_alignment = 1
 
 [node name="Actions" type="HBoxContainer" parent="Panel/Margin/Content" unique_id=1186073934]
@@ -61,7 +61,7 @@ size_flags_horizontal = 3
 [node name="Discard" type="Button" parent="Panel/Margin/Content/Actions" unique_id=1865422616]
 custom_minimum_size = Vector2(150, 38)
 layout_mode = 2
-text = "Leave without saving"
+text = "ACTION_LEAVE_UNSAVED"
 
 [node name="Cancel" type="Button" parent="Panel/Margin/Content/Actions" unique_id=1552528499]
 custom_minimum_size = Vector2(90, 38)
@@ -71,4 +71,4 @@ text = "Cancel"
 [node name="Save" type="Button" parent="Panel/Margin/Content/Actions" unique_id=328998681]
 custom_minimum_size = Vector2(130, 38)
 layout_mode = 2
-text = "Save and leave"
+text = "ACTION_SAVE_AND_LEAVE"

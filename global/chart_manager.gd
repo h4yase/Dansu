@@ -40,10 +40,10 @@ func _exit_tree() -> void:
 
 func parse_selected_chart() -> bool:
 	if selected_chart == null:
-		Notification.notice("no chart selected", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.ERROR_CHART_NOT_SELECTED), Notification.Type.WARNING)
 		return false
 	if not validate_chart_file(selected_chart):
-		Notification.notice("chart file is missing", Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.ERROR_CHART_MISSING), Notification.Type.WARNING)
 		parsed_chart = null
 		return false
 

@@ -69,7 +69,7 @@ func _lookup() -> void:
 	_request.request_completed.connect(_on_lookup.bind(_generation))
 	if _request.request(_api_url("/chartsets/by-uuid/") + selection.uuid.uri_encode()) != OK:
 		checking = false
-		lookup_error = "Could not check the published version. Retry."
+		lookup_error = GameText.text(GameText.Key.ERROR_PUBLISH_LOOKUP)
 	state_changed.emit()
 
 func _on_lookup(result: int, code: int, _headers: PackedStringArray, bytes: PackedByteArray, generation: int) -> void:
@@ -80,32 +80,32 @@ func _on_lookup(result: int, code: int, _headers: PackedStringArray, bytes: Pack
 	remote.clear()
 	lookup_error = ""
 	if result != HTTPRequest.RESULT_SUCCESS:
-		lookup_error = "Could not reach the server. Retry."
+		lookup_error = GameText.text(GameText.Key.ERROR_SERVER_RETRY)
 	elif code == 200:
 		var data = JSON.parse_string(bytes.get_string_from_utf8())
 		if data is Dictionary and data.get("chartset_uuid") == selection.uuid and data.has("status") and data.has("owner_id"):
 			remote = data
 		else:
-			lookup_error = "The server returned invalid chartset metadata."
+			lookup_error = GameText.text(GameText.Key.ERROR_CHARTSET_METADATA)
 	elif code == 404:
 		var data = JSON.parse_string(bytes.get_string_from_utf8())
 		if not data is Dictionary or data.get("detail") != "Chartset not found":
-			lookup_error = "Chart publishing support is not deployed on the server yet."
+			lookup_error = GameText.text(GameText.Key.ERROR_PUBLISH_UNSUPPORTED)
 	else:
-		lookup_error = "Could not check the published version (HTTP %d)." % code
+		lookup_error = GameText.text(GameText.Key.ERROR_PUBLISH_LOOKUP_HTTP) % code
 	_update_dialog()
 	state_changed.emit()
 
 func restriction(as_builtin: bool = false) -> String:
 	if not Auth.is_authenticated():
-		return "Sign in with Steam to publish chartsets."
+		return GameText.text(GameText.Key.HINT_SIGN_IN_PUBLISH)
 	if Auth.is_admin():
 		return ""
 	if not remote.is_empty():
 		if remote.owner_id != Auth.user.get("id"):
-			return "Only the original uploader can update this chartset."
+			return GameText.text(GameText.Key.ERROR_PUBLISH_OWNER)
 		if not as_builtin and (remote.get("origin") == "official" or remote.status in ["approved", "ranked"]):
-			return "Approved and ranked chartsets cannot be updated."
+			return GameText.text(GameText.Key.ERROR_PUBLISH_LOCKED)
 	return ""
 
 func button_text() -> String:
@@ -134,7 +134,7 @@ func show_publish(theme_value: Theme) -> void:
 	_thread = Thread.new()
 	if _thread.start(ChartPackageBuilder.build.bind(_target.charts[0].folder_path)) != OK:
 		_thread = null
-		_package = ChartPackageBuilder.BuildResult.failure("Could not start the package builder.")
+		_package = ChartPackageBuilder.BuildResult.failure(GameText.text(GameText.Key.ERROR_UPLOAD_START))
 	_update_dialog()
 	state_changed.emit()
 
@@ -154,9 +154,9 @@ func _update_dialog() -> void:
 	var text := "%s\n%d difficulties\n\n" % [_target.charts[0].title, _target.charts.size()]
 	var builtin_available := can_publish_builtin() and restriction(true).is_empty()
 	if _upload != null:
-		text += "Uploading and validating the package…"
+		text += GameText.text(GameText.Key.NOTICE_PUBLISH_UPLOADING)
 	elif checking or _thread != null:
-		text += "Checking the published version and preparing files…"
+		text += GameText.text(GameText.Key.NOTICE_PUBLISH_PREPARING)
 	elif not lookup_error.is_empty():
 		text += lookup_error
 	elif not _package.error.is_empty():
@@ -166,15 +166,15 @@ func _update_dialog() -> void:
 	else:
 		text += "%d files · %.2f MiB\n\n" % [int(_package.files), float(_package.bytes) / 1048576.0]
 		if not restriction().is_empty():
-			text += "The regular update is locked. The built-in action will replace it as an official ranked chartset."
+			text += GameText.text(GameText.Key.HINT_PUBLISH_BUILTIN_REPLACE)
 		else:
 			if remote.is_empty():
-				text += "Publish this chartset to the online catalogue?"
+				text += GameText.text(GameText.Key.CONFIRM_PUBLISH_CHARTSET)
 			elif remote.status in ["approved", "ranked"]:
-				text += "Replace this published chartset with this package?\nInclude all existing difficulties. Leaderboards and earned SR are kept."
+				text += GameText.text(GameText.Key.CONFIRM_REPLACE_RANKED_CHARTSET)
 			else:
-				text += "Replace this published chartset with this package?\nDifficulties absent from this package are removed from the server."
-		text += "\n\nIncludes charts, audio, images and skin files from this folder."
+				text += GameText.text(GameText.Key.CONFIRM_REPLACE_CHARTSET)
+		text += GameText.text(GameText.Key.HINT_PUBLISH_CONTENTS)
 	dialog.dialog_text = text
 	dialog.get_ok_button().text = "Upload" if remote.is_empty() else "Update"
 	var common_disabled := checking or _thread != null or _upload != null or not lookup_error.is_empty() or not _package.error.is_empty() or _package.path.is_empty()
@@ -217,7 +217,7 @@ func _submit(as_builtin: bool = false) -> void:
 	if as_builtin:
 		_publish_pack_id = _get_pack_id()
 		if not FileSystem.is_valid_pack_id(_publish_pack_id):
-			Notification.notice("Invalid pack ID.", Notification.Type.WARNING)
+			Notification.notice(GameText.text(GameText.Key.ERROR_PACK_ID), Notification.Type.WARNING)
 			return
 	else:
 		_publish_pack_id = DEFAULT_BUILTIN_PACK_ID
@@ -225,7 +225,7 @@ func _submit(as_builtin: bool = false) -> void:
 	_publish_as_builtin = as_builtin
 	var file := FileAccess.open(_package.path, FileAccess.READ)
 	if file == null:
-		_package.error = "The prepared package is missing. Close and retry."
+		_package.error = GameText.text(GameText.Key.ERROR_UPLOAD_PACKAGE_MISSING)
 		_update_dialog()
 		return
 	var boundary := "Dansu" + Crypto.new().generate_random_bytes(16).hex_encode()
@@ -263,18 +263,18 @@ func _on_uploaded(result: int, code: int, headers: PackedStringArray, bytes: Pac
 			if header.get_slice(":", 0).strip_edges().to_lower() == "content-type":
 				is_zip = header.get_slice(":", 1).get_slice(";", 0).strip_edges().to_lower() == "application/zip"
 		if _publish_as_builtin and not is_zip:
-			builtin_result = ChartPackageInstaller.InstallResult.failure("The server did not return a ZIP package. Update the server to support built-in publishing, then retry.")
+			builtin_result = ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_FORMAT))
 		elif _publish_as_builtin:
 			var package_file := FileAccess.open(_package.path, FileAccess.WRITE)
 			if package_file == null:
-				builtin_result = ChartPackageInstaller.InstallResult.failure("Could not save the server chart package.")
+				builtin_result = ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_SAVE))
 			else:
 				package_file.store_buffer(bytes)
 				package_file.flush()
 				var write_error := package_file.get_error()
 				package_file.close()
 				if write_error != OK:
-					builtin_result = ChartPackageInstaller.InstallResult.failure("Could not finish saving the server chart package.")
+					builtin_result = ChartPackageInstaller.InstallResult.failure(GameText.text(GameText.Key.ERROR_SERVER_PACKAGE_SAVE_FINISH))
 				else:
 					builtin_result = FileSystem.install_packaged_chartset(
 						_package.path,
@@ -286,9 +286,9 @@ func _on_uploaded(result: int, code: int, headers: PackedStringArray, bytes: Pac
 		busy = false
 		_remove_package()
 		if not builtin_result.error.is_empty():
-			Notification.notice("Published to the server, but built-in installation failed: " + str(builtin_result.error), Notification.Type.WARNING)
+			Notification.notice(GameText.text(GameText.Key.ERROR_BUILTIN_PUBLISHED_INSTALL) % str(builtin_result.error), Notification.Type.WARNING)
 		else:
-			Notification.notice("Chartset published and added as a built-in map." if _publish_as_builtin else "Chartset published successfully.", Notification.Type.NOTICE)
+			Notification.notice(GameText.text(GameText.Key.NOTICE_PUBLISHED_BUILTIN) if _publish_as_builtin else GameText.text(GameText.Key.NOTICE_PUBLISHED), Notification.Type.NOTICE)
 		if _publish_as_builtin and builtin_result.error.is_empty():
 			CM.rescan_library()
 		_publish_as_builtin = false
@@ -296,9 +296,9 @@ func _on_uploaded(result: int, code: int, headers: PackedStringArray, bytes: Pac
 		_lookup()
 		published.emit()
 	else:
-		var error := "Upload failed. Check your connection and retry."
+		var error := GameText.text(GameText.Key.ERROR_UPLOAD_CONNECTION)
 		if result == HTTPRequest.RESULT_SUCCESS:
-			error = "Upload failed (HTTP %d)." % code
+			error = GameText.text(GameText.Key.ERROR_UPLOAD_HTTP) % code
 			if data == null and not bytes.is_empty():
 				data = JSON.parse_string(bytes.get_string_from_utf8())
 			if data is Dictionary and data.get("detail") is String:
