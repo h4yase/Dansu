@@ -10,6 +10,7 @@ var status: String = ""
 var played: PlayHistory = PlayHistory.ANY
 ## Negative bounds mean that the filter is unset; zero is a valid bound.
 var min_rating: float = -1.0
+## Inclusive rating bucket: 40 includes every rating below 41.
 var max_rating: float = -1.0
 var min_length_ms: int = -1
 var max_length_ms: int = -1
@@ -38,7 +39,7 @@ func has_play_history() -> bool:
 func matches_local(chart: Chart) -> bool:
 	if min_rating >= 0 and chart.rating < min_rating:
 		return false
-	if max_rating >= 0 and chart.rating > max_rating:
+	if max_rating >= 0 and chart.rating >= floor(max_rating) + 1.0:
 		return false
 	if min_length_ms >= 0 and chart.play_time_ms < min_length_ms:
 		return false
@@ -55,13 +56,14 @@ func active_count() -> int:
 func to_query() -> Dictionary:
 	var query := {"sort": sort, "reverse": reverse, "nsfl": nsfl}
 	if not status.is_empty():
-		query.status = status
+		query.status = "published" if status == "unranked" else status
 	if has_play_history():
 		query.played = played == PlayHistory.PLAYED
 	if min_rating >= 0:
 		query.min_rating = min_rating
 	if max_rating >= 0:
-		query.max_rating = max_rating
+		# The API stores ratings to four decimal places and uses an inclusive upper bound.
+		query.max_rating = floor(max_rating) + 0.9999
 	if min_length_ms >= 0:
 		query.min_length_ms = min_length_ms
 	if max_length_ms >= 0:

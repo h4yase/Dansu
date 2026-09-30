@@ -44,7 +44,7 @@ func _connect_signals() -> void:
 
 	note_animation_option.disabled = true
 	if note_animation_option.item_count == 0:
-		note_animation_option.add_item("Deferred", 0)
+		note_animation_option.add_item(GameText.text(GameText.Key.EDITOR_DEFERRED_ANIMATION), 0)
 
 func _refresh() -> void:
 	if editor == null:
@@ -207,7 +207,7 @@ func _select_option_by_id(option_button: OptionButton, item_id: int) -> void:
 
 func _refresh_note_hitsound_options() -> void:
 	note_hitsound_option.clear()
-	note_hitsound_option.add_item("Default")
+	note_hitsound_option.add_item(GameText.text(GameText.Key.EDITOR_DEFAULT))
 	note_hitsound_option.set_item_id(note_hitsound_option.item_count - 1, -1)
 	for hitsound in editor.get_all_hitsounds():
 		note_hitsound_option.add_item(hitsound.get_display_name(), hitsound.id)

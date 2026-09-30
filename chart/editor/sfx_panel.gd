@@ -14,6 +14,8 @@ class_name EditorSFXPanel
 
 var _syncing := false
 func _ready() -> void:
+	file_dialog.title = GameText.text(GameText.Key.EDITOR_OPEN_FILE)
+	file_dialog.filters = PackedStringArray(["*.wav ; " + GameText.text(GameText.Key.EDITOR_WAV_AUDIO)])
 	_connect_signals()
 	_refresh()
 
@@ -43,7 +45,7 @@ func _refresh() -> void:
 
 func _populate_default_option(option_button: OptionButton, slot: int) -> void:
 	option_button.clear()
-	option_button.add_item("None")
+	option_button.add_item(GameText.text(GameText.Key.EDITOR_NONE))
 	option_button.set_item_id(option_button.item_count - 1, -1)
 	for hitsound in editor.get_all_hitsounds():
 		option_button.add_item(hitsound.get_display_name(), hitsound.id)

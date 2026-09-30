@@ -4,7 +4,7 @@ class_name SourceSwitch
 signal tab_changed(tab: int)
 
 const SLIDE_DURATION := 0.22
-const TITLES := ["Official", "Community"]
+const TITLES := ["MENU_TAB_OFFICIAL", "MENU_TAB_COMMUNITY"]
 const ICONS := [preload("res://resources/icons/checkbox-checked.svg"), preload("res://resources/icons/map.svg")]
 const ICON_SIZE := 24.0
 const ICON_GAP := 8.0
@@ -65,7 +65,6 @@ func _ready() -> void:
 		_clip.add_child(source_icon)
 		_icons.append(source_icon)
 		content_width = maxf(content_width, label.get_combined_minimum_size().x + ICON_SIZE + ICON_GAP)
-	custom_minimum_size.x = ceilf(content_width + SIDE_PADDING * 2.0)
 	resized.connect(_layout_labels)
 	_clip.resized.connect(_layout_labels)
 	mouse_entered.connect(_on_enter)

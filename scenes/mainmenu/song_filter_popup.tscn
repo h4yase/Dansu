@@ -3,25 +3,84 @@
 [ext_resource type="Script" uid="uid://jkk21oi4ker1" path="res://scenes/mainmenu/song_filter_popup.gd" id="1_filter"]
 [ext_resource type="Theme" uid="uid://d3ctsqw4vkokp" path="res://resources/themes/editor_mainmenu_theme.tres" id="1_qdnxl"]
 [ext_resource type="Theme" uid="uid://bqwa4bxpqfagm" path="res://resources/themes/dansu.tres" id="3_7524n"]
-[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="4_7524n"]
+[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/bold/Next Bravo.ttf" id="4_7524n"]
+[ext_resource type="Script" uid="uid://4eqtb8r7s1cv" path="res://scenes/mainmenu/filter_range_slider.gd" id="5_range"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_filter_panel"]
 content_margin_left = 30.0
 content_margin_top = 24.0
 content_margin_right = 30.0
 content_margin_bottom = 24.0
-bg_color = Color(0.09019608, 0.08235294, 0.14901961, 1)
+bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.44313726, 0.3764706, 0.7411765, 1)
+border_color = Color(0.44313726, 0.3764706, 0.7411765, 0)
 corner_radius_top_left = 24
 corner_radius_top_right = 24
 corner_radius_bottom_right = 24
 corner_radius_bottom_left = 24
 
-[node name="SongFilterPopup" type="Control" unique_id=494650392 node_paths=PackedStringArray("_sort", "_status", "_played", "_reverse", "_nsfl", "_error", "_panel", "_overlay", "min_length", "max_length", "min_rating", "max_rating", "max_size", "rank_status_row", "content_row", "max_download_row", "close_button", "reset_button", "cancel_button", "apply_button")]
+[sub_resource type="StyleBoxFlat" id="StyleBox_status_selected"]
+content_margin_left = 20.0
+content_margin_top = 5.0
+content_margin_right = 20.0
+content_margin_bottom = 5.0
+bg_color = Color(0.35, 0.26, 0.56, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.64, 0.96, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_status_hover"]
+content_margin_left = 20.0
+content_margin_top = 5.0
+content_margin_right = 20.0
+content_margin_bottom = 5.0
+bg_color = Color(0.18, 0.16, 0.26, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_status_selected_hover"]
+content_margin_left = 20.0
+content_margin_top = 5.0
+content_margin_right = 20.0
+content_margin_bottom = 5.0
+bg_color = Color(0.42, 0.32, 0.65, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.82, 0.75, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_status_focus"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.93, 0.93, 0.99, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_status"]
+allow_unpress = true
+
+[node name="SongFilterPopup" type="Control" unique_id=494650392 node_paths=PackedStringArray("_sort", "ranked_button", "approved_button", "unranked_button", "_played", "_reverse", "_nsfl", "_error", "_panel", "_overlay", "length_range", "rating_range", "max_size", "rank_status_row", "content_row", "max_download_row", "reset_button", "bottom_close_button")]
 z_index = 50
 layout_mode = 3
 anchors_preset = 15
@@ -32,25 +91,23 @@ grow_vertical = 2
 theme = ExtResource("1_qdnxl")
 script = ExtResource("1_filter")
 _sort = NodePath("Panel/Layout/Scroll/Body/SortRow/Sort")
-_status = NodePath("Panel/Layout/Scroll/Body/RankStatusRow/Status")
+ranked_button = NodePath("Panel/Layout/Scroll/Body/RankStatusRow/Ranked")
+approved_button = NodePath("Panel/Layout/Scroll/Body/RankStatusRow/Approved")
+unranked_button = NodePath("Panel/Layout/Scroll/Body/RankStatusRow/Unranked")
 _played = NodePath("Panel/Layout/Scroll/Body/PlayHistoryRow/Played")
-_reverse = NodePath("Panel/Layout/Scroll/Body/DirectionRow/Reverse")
+_reverse = NodePath("Panel/Layout/Scroll/Body/SortRow/Reverse")
 _nsfl = NodePath("Panel/Layout/Scroll/Body/ContentRow/NSFL")
 _error = NodePath("Panel/Layout/Error")
 _panel = NodePath("Panel")
 _overlay = NodePath("Overlay")
-min_length = NodePath("Panel/Layout/Scroll/Body/DurationRow/MinLength")
-max_length = NodePath("Panel/Layout/Scroll/Body/DurationRow/MaxLength")
-min_rating = NodePath("Panel/Layout/Scroll/Body/DifficultyRow/MinRating")
-max_rating = NodePath("Panel/Layout/Scroll/Body/DifficultyRow/MaxRating")
+length_range = NodePath("Panel/Layout/Scroll/Body/DurationRow/Range")
+rating_range = NodePath("Panel/Layout/Scroll/Body/DifficultyRow/Range")
 max_size = NodePath("Panel/Layout/Scroll/Body/MaxDownloadRow/MaxSize")
 rank_status_row = NodePath("Panel/Layout/Scroll/Body/RankStatusRow")
 content_row = NodePath("Panel/Layout/Scroll/Body/ContentRow")
 max_download_row = NodePath("Panel/Layout/Scroll/Body/MaxDownloadRow")
-close_button = NodePath("Panel/Layout/Heading/Close")
 reset_button = NodePath("Panel/Layout/Actions/Reset")
-cancel_button = NodePath("Panel/Layout/Actions/Cancel")
-apply_button = NodePath("Panel/Layout/Actions/Apply")
+bottom_close_button = NodePath("Panel/Layout/Actions/Close")
 
 [node name="Overlay" type="ColorRect" parent="." unique_id=1524443800]
 unique_name_in_owner = true
@@ -60,7 +117,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.02, 0.02, 0.04, 0.78)
+color = Color(0.019607844, 0.019607844, 0.039215688, 0.90588236)
 
 [node name="Panel" type="PanelContainer" parent="." unique_id=867405457]
 unique_name_in_owner = true
@@ -91,13 +148,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("4_7524n")
 theme_override_font_sizes/font_size = 32
-text = "Search options"
-
-[node name="Close" type="Button" parent="Panel/Layout/Heading" unique_id=1857254918]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 44)
-layout_mode = 2
-text = "Close"
+text = "FILTER_TITLE"
 
 [node name="Scroll" type="ScrollContainer" parent="Panel/Layout" unique_id=1897390181]
 layout_mode = 2
@@ -114,31 +165,26 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/SortRow" unique_id=1618840815]
-custom_minimum_size = Vector2(265, 0)
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
-text = "Sort by"
+text = "FILTER_SORT_BY"
 horizontal_alignment = 1
 
 [node name="Sort" type="OptionButton" parent="Panel/Layout/Scroll/Body/SortRow" unique_id=702403405]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 32)
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Reverse" type="CheckBox" parent="Panel/Layout/Scroll/Body/SortRow" unique_id=653113743]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "FILTER_REVERSE_ORDER"
 
 [node name="DirectionRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=1210636680]
 layout_mode = 2
 theme_override_constants/separation = 12
-
-[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/DirectionRow" unique_id=122858907]
-custom_minimum_size = Vector2(265, 0)
-layout_mode = 2
-text = "Direction"
-horizontal_alignment = 1
-
-[node name="Reverse" type="CheckBox" parent="Panel/Layout/Scroll/Body/DirectionRow" unique_id=653113743]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Reverse order"
 
 [node name="RankStatusRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=2100843490]
 unique_name_in_owner = true
@@ -146,105 +192,100 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/RankStatusRow" unique_id=833465232]
-custom_minimum_size = Vector2(265, 0)
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
-text = "status"
+text = "FILTER_STATUS"
 horizontal_alignment = 1
 
-[node name="Status" type="OptionButton" parent="Panel/Layout/Scroll/Body/RankStatusRow" unique_id=594070854]
-unique_name_in_owner = true
+[node name="Ranked" type="Button" parent="Panel/Layout/Scroll/Body/RankStatusRow" unique_id=2137771053]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-item_count = 4
-popup/item_0/text = "Any status"
-popup/item_0/id = 0
-popup/item_1/text = "Ranked"
-popup/item_1/id = 1
-popup/item_2/text = "Approved"
-popup/item_2/id = 2
-popup/item_3/text = "Unranked"
-popup/item_3/id = 3
+theme_override_styles/pressed = SubResource("StyleBox_status_selected")
+theme_override_styles/hover = SubResource("StyleBox_status_hover")
+theme_override_styles/hover_pressed = SubResource("StyleBox_status_selected_hover")
+theme_override_styles/focus = SubResource("StyleBox_status_focus")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_status")
+text = "FILTER_RANKED"
 
-[node name="DurationRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=1704275615]
+[node name="Approved" type="Button" parent="Panel/Layout/Scroll/Body/RankStatusRow" unique_id=1117853548]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-theme_override_constants/separation = 12
+size_flags_horizontal = 3
+theme_override_styles/pressed = SubResource("StyleBox_status_selected")
+theme_override_styles/hover = SubResource("StyleBox_status_hover")
+theme_override_styles/hover_pressed = SubResource("StyleBox_status_selected_hover")
+theme_override_styles/focus = SubResource("StyleBox_status_focus")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_status")
+text = "FILTER_APPROVED"
 
-[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/DurationRow" unique_id=164259409]
-custom_minimum_size = Vector2(265, 0)
+[node name="Unranked" type="Button" parent="Panel/Layout/Scroll/Body/RankStatusRow" unique_id=910396933]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-text = "Duration (seconds)"
+size_flags_horizontal = 3
+theme_override_styles/pressed = SubResource("StyleBox_status_selected")
+theme_override_styles/hover = SubResource("StyleBox_status_hover")
+theme_override_styles/hover_pressed = SubResource("StyleBox_status_selected_hover")
+theme_override_styles/focus = SubResource("StyleBox_status_focus")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_status")
+text = "FILTER_UNRANKED"
+
+[node name="DifficultyRow" type="VBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=1955496445]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/DifficultyRow" unique_id=420839133]
+layout_mode = 2
+text = "FILTER_RATING"
 horizontal_alignment = 1
 
-[node name="MinLength" type="LineEdit" parent="Panel/Layout/Scroll/Body/DurationRow" unique_id=874020249]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 0)
+[node name="Range" type="Control" parent="Panel/Layout/Scroll/Body/DifficultyRow" unique_id=1170188152]
+custom_minimum_size = Vector2(320, 76)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Min"
-max_length = 12
+script = ExtResource("5_range")
 
-[node name="Dash" type="Label" parent="Panel/Layout/Scroll/Body/DurationRow" unique_id=335375944]
+[node name="DurationRow" type="VBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=1979974699]
 layout_mode = 2
-text = "–"
+theme_override_constants/separation = 0
 
-[node name="MaxLength" type="LineEdit" parent="Panel/Layout/Scroll/Body/DurationRow" unique_id=236113760]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 0)
+[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/DurationRow" unique_id=1732908166]
 layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Max"
-max_length = 12
-
-[node name="DifficultyRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=1301470583]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/DifficultyRow" unique_id=1709141561]
-custom_minimum_size = Vector2(265, 0)
-layout_mode = 2
-text = "rating"
+text = "FILTER_DURATION"
 horizontal_alignment = 1
 
-[node name="MinRating" type="LineEdit" parent="Panel/Layout/Scroll/Body/DifficultyRow" unique_id=1706228933]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 0)
+[node name="Range" type="Control" parent="Panel/Layout/Scroll/Body/DurationRow" unique_id=539961202]
+custom_minimum_size = Vector2(320, 76)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Min"
-max_length = 12
-
-[node name="Dash" type="Label" parent="Panel/Layout/Scroll/Body/DifficultyRow" unique_id=539619541]
-layout_mode = 2
-text = "–"
-
-[node name="MaxRating" type="LineEdit" parent="Panel/Layout/Scroll/Body/DifficultyRow" unique_id=1370276704]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Max"
-max_length = 12
+script = ExtResource("5_range")
+finite_steps = 10
+time_range = true
 
 [node name="PlayHistoryRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=202846105]
 layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/PlayHistoryRow" unique_id=1083312021]
-custom_minimum_size = Vector2(265, 0)
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
-text = "Play history"
+text = "FILTER_PLAY_HISTORY"
 horizontal_alignment = 1
 
 [node name="Played" type="OptionButton" parent="Panel/Layout/Scroll/Body/PlayHistoryRow" unique_id=1057701044]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 item_count = 3
-popup/item_0/text = "Any"
+popup/item_0/text = "FILTER_ANY_HISTORY"
 popup/item_0/id = 0
-popup/item_1/text = "Played"
+popup/item_1/text = "FILTER_PLAYED"
 popup/item_1/id = 1
-popup/item_2/text = "Not played"
+popup/item_2/text = "FILTER_NOT_PLAYED"
 popup/item_2/id = 2
 
 [node name="ContentRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=125481164]
@@ -254,15 +295,15 @@ theme_override_constants/separation = 12
 
 [node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/ContentRow" unique_id=1915083840]
 visible = false
-custom_minimum_size = Vector2(265, 0)
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
-text = "Content"
+text = "FILTER_CONTENT"
 
 [node name="NSFL" type="CheckBox" parent="Panel/Layout/Scroll/Body/ContentRow" unique_id=1635890208]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-text = "Include NSFL"
+text = "FILTER_INCLUDE_NSFL"
 
 [node name="MaxDownloadRow" type="HBoxContainer" parent="Panel/Layout/Scroll/Body" unique_id=1569934807]
 unique_name_in_owner = true
@@ -271,9 +312,9 @@ theme_override_constants/separation = 12
 
 [node name="Label" type="Label" parent="Panel/Layout/Scroll/Body/MaxDownloadRow" unique_id=871139673]
 visible = false
-custom_minimum_size = Vector2(265, 0)
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
-text = "Max download (MiB)"
+text = "FILTER_MAX_DOWNLOAD"
 
 [node name="MaxSize" type="LineEdit" parent="Panel/Layout/Scroll/Body/MaxDownloadRow" unique_id=1219696718]
 unique_name_in_owner = true
@@ -281,7 +322,7 @@ visible = false
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "No limit"
+placeholder_text = "FILTER_NO_LIMIT"
 max_length = 12
 
 [node name="Error" type="Label" parent="Panel/Layout" unique_id=132289593]
@@ -298,20 +339,14 @@ theme_override_constants/separation = 12
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
-text = "Reset"
+text = "FILTER_RESET"
 
 [node name="Spacer" type="Control" parent="Panel/Layout/Actions" unique_id=1810700578]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Cancel" type="Button" parent="Panel/Layout/Actions" unique_id=1994364086]
+[node name="Close" type="Button" parent="Panel/Layout/Actions" unique_id=1994364086]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
-text = "Cancel"
-
-[node name="Apply" type="Button" parent="Panel/Layout/Actions" unique_id=781171190]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 44)
-layout_mode = 2
-text = "Apply"
+text = "FILTER_APPLY"

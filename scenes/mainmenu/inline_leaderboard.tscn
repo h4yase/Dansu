@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dwxl2qt32v5ch"]
 
 [ext_resource type="Script" uid="uid://bra16y2jran65" path="res://scenes/mainmenu/inline_leaderboard.gd" id="1"]
-[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="2_yb1yx"]
+[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/bold/Next Bravo.ttf" id="2_yb1yx"]
 
 [node name="InlineLeaderboard" type="VBoxContainer" unique_id=943854186]
 theme_override_constants/separation = 6

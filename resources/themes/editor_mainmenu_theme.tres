@@ -1,17 +1,13 @@
 [gd_resource type="Theme" format=3 uid="uid://d3ctsqw4vkokp"]
 
-[ext_resource type="FontFile" uid="uid://cay31gip2omwr" path="res://resources/fonts/BebasNeue-Regular.ttf" id="2_bebas"]
+[ext_resource type="FontFile" uid="uid://ya4cljl4y7jr" path="res://resources/fonts/thin/BebasNeue-Regular.ttf" id="1_c4vcu"]
 [ext_resource type="Texture2D" uid="uid://c2uou5wxlsrtf" path="res://resources/icons/chevron-left.svg" id="3_chevron"]
 [ext_resource type="Texture2D" uid="uid://carktd8pd048o" path="res://resources/icons/checkbox-checked.svg" id="4_checkbox_checked"]
 [ext_resource type="Texture2D" uid="uid://cxpljh46m1aii" path="res://resources/icons/checkbox-unchecked.svg" id="5_checkbox_unchecked"]
 [ext_resource type="Texture2D" uid="uid://s10h37holudd" path="res://resources/icons/empty.svg" id="6_slider_grabber"]
 
-[sub_resource type="SystemFont" id="SystemFont_ui"]
-font_names = PackedStringArray("Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans CJK KR", "Noto Sans KR", "NanumGothic", "Arial Unicode MS")
-
 [sub_resource type="FontVariation" id="FontVariation_ui"]
-fallbacks = Array[Font]([SubResource("SystemFont_ui")])
-base_font = ExtResource("2_bebas")
+base_font = ExtResource("1_c4vcu")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
 content_margin_left = 20.0

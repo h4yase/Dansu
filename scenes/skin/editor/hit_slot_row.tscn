@@ -22,4 +22,4 @@ text_overrun_behavior = 5
 
 [node name="Remove" type="Button" parent="."]
 layout_mode = 2
-text = "Remove"
+text = "EDITOR_REMOVE"

@@ -63,13 +63,13 @@ func _build_tools() -> void:
 	event_tools.add_theme_constant_override("separation", 6)
 	tools.add_child(event_tools)
 	tools.move_child(event_tools, 0)
-	for item in [["Theme (T)", "theme"], ["Camera (C)", "camera"], ["Skin (S)", "skin"], ["Overlay (O)", "overlay"]]:
+	for item in [[GameText.text(GameText.Key.EDITOR_TOOL_THEME), "theme"], [GameText.text(GameText.Key.EDITOR_TOOL_CAMERA), "camera"], [GameText.text(GameText.Key.EDITOR_TOOL_SKIN), "skin"], [GameText.text(GameText.Key.EDITOR_TOOL_OVERLAY), "overlay"]]:
 		var button := Button.new()
 		button.text = item[0]
 		button.pressed.connect(func(): place(item[1], int(Game.current_time), 5))
 		event_tools.add_child(button)
 	var frame_button := Button.new()
-	frame_button.text = "Frame (F)"
+	frame_button.text = GameText.text(GameText.Key.EDITOR_TOOL_FRAME)
 	frame_button.pressed.connect(add_frame)
 	event_tools.add_child(frame_button)
 	event_tools.hide()
@@ -314,15 +314,15 @@ func refresh_inspector() -> void:
 	var event := _get_selected_event()
 	var frame := _get_selected_frame()
 	if event != null:
-		_add_title(_get_event_type_name(event).to_upper())
+		_add_title(get_lane_name(get_event_lane(event)))
 		if event is OverlayEvent:
-			_add_time_row("Start (ms)", event.time, _change_start.bind(event))
-			_add_number_row("Duration", event.duration, 1, editor.timeline.get_max_time(), 1, _change_duration.bind(event))
-			_add_number_row("X order", event.x, 0, SLOT_COUNT - 1, 1, _change_slot.bind(event))
+			_add_time_row(GameText.text(GameText.Key.EDITOR_START_MS), event.time, _change_start.bind(event))
+			_add_number_row(GameText.text(GameText.Key.EDITOR_DURATION), event.duration, 1, editor.timeline.get_max_time(), 1, _change_duration.bind(event))
+			_add_number_row(GameText.text(GameText.Key.EDITOR_X_ORDER), event.x, 0, SLOT_COUNT - 1, 1, _change_slot.bind(event))
 			_add_overlay_anchor_row(event.anchor, _on_overlay_anchor_changed.bind(event))
 			_add_frame_toolbar(event)
 		if frame != null:
-			_add_time_row("Time (ms)", event.time + frame.time, _change_frame_time.bind(event, frame))
+			_add_time_row(GameText.text(GameText.Key.EDITOR_TIME_MS), event.time + frame.time, _change_frame_time.bind(event, frame))
 			if frame is ThemeEventFrame:
 				_build_theme_frame_inspector(event, frame)
 			elif frame is CameraEventFrame:
@@ -330,8 +330,8 @@ func refresh_inspector() -> void:
 			elif frame is OverlayEventFrame:
 				_build_overlay_frame_inspector(event, frame)
 		if event is SkinEvent:
-			_add_time_row("Time (ms)", event.time, _change_start.bind(event))
-			_add_resource_row("Skin JSON", event.skin_json, "skin", event, null)
+			_add_time_row(GameText.text(GameText.Key.EDITOR_TIME_MS), event.time, _change_start.bind(event))
+			_add_resource_row(GameText.text(GameText.Key.EDITOR_SKIN_JSON), event.skin_json, "skin", event, null)
 	UIFocusUtils.disable_focus_recursive(inspector_content)
 	_syncing = false
 

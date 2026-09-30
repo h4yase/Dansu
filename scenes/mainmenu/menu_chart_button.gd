@@ -32,6 +32,7 @@ var primary_chart: Chart = null
 var selected: bool = false
 var current_cover_chart: Chart = null
 var hovered := false
+var panel_style: StyleBoxFlat
 
 func _ready() -> void:
 	panel.offset_transform_enabled = true
@@ -117,6 +118,7 @@ func _refresh() -> void:
 		target_chart = charts[0]
 
 	current_cover_chart = target_chart
+	_update_border(target_chart)
 
 	var new_texture: Texture2D = null
 	if current_cover_chart != null:
@@ -146,6 +148,23 @@ func _refresh() -> void:
 	rating_hbox.queue_sort()
 	
 	check_is_selected()
+
+func _update_border(chart: Chart) -> void:
+	if panel_style == null:
+		panel_style = panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+		panel.add_theme_stylebox_override("panel", panel_style)
+
+	panel_style.border_color = Color("808080")
+	if chartset != null and chartset.online_metadata.get("origin") == "official":
+		panel_style.border_color = Color("705bde")
+	elif chart != null and not chart.file_name.is_empty() and chart.storage_root == FileSystem.official_chart_path:
+		panel_style.border_color = Color("705bde")
+	elif chartset != null:
+		match chartset.status:
+			"ranked":
+				panel_style.border_color = Color("ffffd1")
+			"approved":
+				panel_style.border_color = Color("c6fba6")
 
 func check_is_selected():
 	selected = charts.has(CM.selected_chart)

@@ -12,7 +12,7 @@ expand_margin_bottom = 5.0
 
 [node name="UnsavedChangesDialog" type="Window" unique_id=1331416570 node_paths=PackedStringArray("message_label", "save_button", "discard_button", "cancel_button")]
 oversampling_override = 1.0
-title = "Unsaved changes"
+title = "EDITOR_UNSAVED_CHANGES"
 initial_position = 2
 size = Vector2i(520, 180)
 transient = true
@@ -59,6 +59,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Discard" type="Button" parent="Panel/Margin/Content/Actions" unique_id=1865422616]
+self_modulate = Color(0.9946268, 0.51445585, 0.44888955, 1)
 custom_minimum_size = Vector2(150, 38)
 layout_mode = 2
 text = "ACTION_LEAVE_UNSAVED"
@@ -66,9 +67,10 @@ text = "ACTION_LEAVE_UNSAVED"
 [node name="Cancel" type="Button" parent="Panel/Margin/Content/Actions" unique_id=1552528499]
 custom_minimum_size = Vector2(90, 38)
 layout_mode = 2
-text = "Cancel"
+text = "EDITOR_CANCEL"
 
 [node name="Save" type="Button" parent="Panel/Margin/Content/Actions" unique_id=328998681]
+modulate = Color(0.7807989, 1, 0.6942075, 1)
 custom_minimum_size = Vector2(130, 38)
 layout_mode = 2
 text = "ACTION_SAVE_AND_LEAVE"

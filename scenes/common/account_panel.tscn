@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://dxgkudjnbinxa" path="res://scenes/mainmenu/account_panel.gd" id="1_account"]
 [ext_resource type="Texture2D" uid="uid://1n7idyv4tpvm" path="res://resources/textures/gameplay/stage_decal_cross.svg" id="2_d65th"]
-[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="2_title"]
-[ext_resource type="FontFile" uid="uid://cay31gip2omwr" path="res://resources/fonts/BebasNeue-Regular.ttf" id="3_body"]
+[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/bold/Next Bravo.ttf" id="2_title"]
+[ext_resource type="FontFile" uid="uid://cay31gip2omwr" path="res://resources/fonts/thin/BebasNeue-Regular.ttf" id="3_body"]
 
 [sub_resource type="StyleBoxFlat" id="StylePanel"]
 bg_color = Color(0.05565999, 0.0473, 0.11, 0.92156863)

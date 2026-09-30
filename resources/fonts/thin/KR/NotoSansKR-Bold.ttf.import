@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cay31gip2omwr"
-path="res://.godot/imported/BebasNeue-Regular.ttf-5cf885bbbafeee96f871a12d950c0ad2.fontdata"
+uid="uid://co0msma3gbyqt"
+path="res://.godot/imported/NotoSansKR-Bold.ttf-d7caafa4b1732cf01632b5dda432ee53.fontdata"
 
 [deps]
 
-source_file="res://resources/fonts/BebasNeue-Regular.ttf"
-dest_files=["res://.godot/imported/BebasNeue-Regular.ttf-5cf885bbbafeee96f871a12d950c0ad2.fontdata"]
+source_file="res://resources/fonts/thin/KR/NotoSansKR-Bold.ttf"
+dest_files=["res://.godot/imported/NotoSansKR-Bold.ttf-d7caafa4b1732cf01632b5dda432ee53.fontdata"]
 
 [params]
 
@@ -22,7 +22,7 @@ msdf_size=48
 allow_system_fallback=true
 force_autohinter=false
 modulate_color_glyphs=false
-hinting=1
+hinting=3
 subpixel_positioning=4
 keep_rounding_remainders=true
 oversampling=0.0

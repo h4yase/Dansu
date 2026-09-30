@@ -548,11 +548,11 @@ func _restore_source_selection(community: bool) -> void:
 
 func _update_playlist_button_visibility() -> void:
 	playlist_selector.visible = not is_editor_mode and (not is_community_mode or Auth.is_authenticated())
-	var title := "All Charts"
+	var title := TranslationServer.translate("PLAYLIST_ALL_CHARTS")
 	if is_community_mode:
 		for playlist in CM.playlists:
 			if playlist.id == _catalogue.playlist_id:
-				title = playlist.name
+				title = PlaylistPanel.playlist_title(playlist.name)
 				break
 	else:
 		title = PlaylistPanel.pack_title(chart_scroll.pack_id)

@@ -50,4 +50,4 @@ offset_left = -160.0
 offset_top = -40.0
 offset_right = -9.0
 offset_bottom = -9.0
-text = "remove animation"
+text = "EDITOR_REMOVE_ANIMATION"

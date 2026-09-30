@@ -122,12 +122,12 @@ theme_override_constants/separation = 10
 [node name="BackToMenu" type="Button" parent="TopBar/Margin/Row" unique_id=1651710621]
 visible = false
 layout_mode = 2
-text = "Back to menu"
+text = "EDITOR_BACK_MENU"
 
 [node name="BackToChart" type="Button" parent="TopBar/Margin/Row" unique_id=879595120]
 visible = false
 layout_mode = 2
-text = "Back to chart"
+text = "EDITOR_BACK_CHART"
 
 [node name="Spacer" type="Control" parent="TopBar/Margin/Row" unique_id=1778590122]
 layout_mode = 2
@@ -136,7 +136,7 @@ size_flags_horizontal = 3
 [node name="Save" type="Button" parent="TopBar/Margin/Row" unique_id=2016360290]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Save skin file"
+text = "EDITOR_SAVE_SKIN"
 
 [node name="Inspector" type="PanelContainer" parent="." unique_id=1602893852]
 layout_mode = 1
@@ -170,7 +170,7 @@ size_flags_horizontal = 3
 
 [node name="label" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=9864851]
 layout_mode = 2
-text = "name"
+text = "EDITOR_NAME"
 horizontal_alignment = 1
 
 [node name="name" type="LineEdit" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=2030152571]
@@ -181,7 +181,7 @@ alignment = 1
 
 [node name="label2" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=619402232]
 layout_mode = 2
-text = "idle animation"
+text = "EDITOR_IDLE_ANIMATION"
 horizontal_alignment = 1
 
 [node name="idle" type="OptionButton" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=244902117]
@@ -189,7 +189,7 @@ layout_mode = 2
 
 [node name="label4" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=415920648]
 layout_mode = 2
-text = "move left animation"
+text = "EDITOR_LEFT_ANIMATION"
 horizontal_alignment = 1
 
 [node name="left" type="OptionButton" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=1343311813]
@@ -197,7 +197,7 @@ layout_mode = 2
 
 [node name="label3" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=1939916250]
 layout_mode = 2
-text = "move right animation"
+text = "EDITOR_RIGHT_ANIMATION"
 horizontal_alignment = 1
 
 [node name="right2" type="OptionButton" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=2072640537]
@@ -205,7 +205,7 @@ layout_mode = 2
 
 [node name="label6" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=851556867]
 layout_mode = 2
-text = "scale"
+text = "EDITOR_SCALE"
 horizontal_alignment = 1
 
 [node name="Scale" type="SpinBox" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=820968436]
@@ -219,7 +219,7 @@ suffix = "x"
 
 [node name="label5" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=684326436]
 layout_mode = 2
-text = "note hit animations"
+text = "EDITOR_HIT_ANIMATIONS"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents" unique_id=1120306511]
@@ -227,7 +227,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents/HBoxContainer" unique_id=644629935]
 layout_mode = 2
-text = "hit 1"
+text = "EDITOR_HIT_SLOT_FIRST"
 
 [node name="hits_option" type="OptionButton" parent="Inspector/TabContainer/Skin/ScrollContainer/Contents/HBoxContainer" unique_id=2038547040]
 layout_mode = 2
@@ -255,7 +255,7 @@ size_flags_horizontal = 3
 
 [node name="Button" type="Button" parent="Inspector/TabContainer/Animations/ScrollContainer/Contents" unique_id=1257861288]
 layout_mode = 2
-text = "new animation"
+text = "EDITOR_NEW_ANIMATION"
 
 [node name="animation" parent="Inspector/TabContainer/Animations/ScrollContainer/Contents" unique_id=382686474 instance=ExtResource("1_xwaek")]
 layout_mode = 2
@@ -286,24 +286,24 @@ layout_mode = 2
 
 [node name="DeleteFrame" type="Button" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1511105545]
 layout_mode = 2
-text = "remove current frame"
+text = "EDITOR_REMOVE_FRAME"
 
 [node name="CalculateScale" type="Button" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=563814713]
 layout_mode = 2
-text = "calculate scale value"
+text = "EDITOR_CALCULATE_SCALE"
 
 [node name="OnionSkin" type="Button" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1324408407]
 layout_mode = 2
-text = "toggle onion skin"
+text = "EDITOR_ONION_SKIN"
 
 [node name="PlayPreview" type="Button" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=165551658]
 layout_mode = 2
 toggle_mode = true
-text = "play preview"
+text = "EDITOR_PLAY_PREVIEW"
 
 [node name="Label" type="Label" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1760615125]
 layout_mode = 2
-text = "animation fps"
+text = "EDITOR_ANIMATION_FPS"
 
 [node name="fps" type="LineEdit" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=474481636]
 layout_mode = 2
@@ -311,7 +311,7 @@ placeholder_text = "12.0"
 
 [node name="Label3" type="Label" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=771486672]
 layout_mode = 2
-text = "animation effect"
+text = "EDITOR_ANIMATION_EFFECT"
 
 [node name="effect" type="OptionButton" parent="FramesPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=181024848]
 layout_mode = 2
@@ -355,7 +355,7 @@ layout_mode = 2
 
 [node name="ImportSpriteImage" type="Button" parent="SpritesPanel/MarginContainer/VBoxContainer" unique_id=1399224635]
 layout_mode = 2
-text = "Import Sprite Images"
+text = "EDITOR_IMPORT_SPRITES"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="SpritesPanel/MarginContainer/VBoxContainer" unique_id=1982852125]
 layout_mode = 2
@@ -412,7 +412,7 @@ stretch_mode = 5
 [node name="Dialogs" type="Node" parent="." unique_id=319213067]
 
 [node name="ImportDialog" type="FileDialog" parent="Dialogs" unique_id=98028452]
-title = "Open File(s)"
+title = "EDITOR_OPEN_FILES"
 file_mode = 1
 access = 2
 filters = PackedStringArray("*.png ; PNG Image")

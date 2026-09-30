@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dsuq2l4s6g0ku" path="res://resources/icons/star.svg" id="1_gol86"]
 [ext_resource type="Script" uid="uid://co8sjsrhea7lh" path="res://scenes/mainmenu/star_button.gd" id="2_el5pr"]
-[ext_resource type="FontFile" uid="uid://cay31gip2omwr" path="res://resources/fonts/BebasNeue-Regular.ttf" id="3_iorlk"]
+[ext_resource type="FontFile" uid="uid://cay31gip2omwr" path="res://resources/fonts/thin/BebasNeue-Regular.ttf" id="3_iorlk"]
 
 [node name="StarButton" type="TextureRect" unique_id=939246191 node_paths=PackedStringArray("rating_label", "selection_glow")]
 self_modulate = Color(0.49019608, 0.5058824, 0.78039217, 1)

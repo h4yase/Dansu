@@ -31,7 +31,7 @@ func setup(
 	_add_callback = add_callback
 	_duplicate_callback = duplicate_callback
 	_remove_callback = remove_callback
-	selector.add_item("No frame selected", -1)
+	selector.add_item(GameText.text(GameText.Key.EDITOR_NO_FRAME), -1)
 	for index in range(frames.size()):
 		selector.add_item("%02d  +%d ms" % [index + 1, int(frames[index].time)], index)
 	selector.select(selected_frame_index + 1)

@@ -1,10 +1,9 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://45i45hklhl1v"]
 
-[ext_resource type="Script" path="res://scenes/mainmenu/playlist_panel.gd" id="1_script"]
-[ext_resource type="FontFile" path="res://resources/fonts/BebasNeue-Regular.ttf" id="3_body"]
+[ext_resource type="Script" uid="uid://thy5e8o0rsmq" path="res://scenes/mainmenu/playlist_panel.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://c4jpym2g4ea1n" path="res://resources/fonts/thin/BebasNeue-Regular.ttf" id="3_body"]
 
-[node name="PlaylistPanel" type="Control" node_paths=PackedStringArray("panel", "status_label", "item_list", "scroll")]
-visible = false
+[node name="PlaylistPanel" type="Control" unique_id=1466178610 node_paths=PackedStringArray("panel", "status_label", "item_list", "scroll")]
 z_index = 72
 layout_mode = 3
 anchors_preset = 15
@@ -20,7 +19,7 @@ item_list = NodePath("Panel/Margin/Layout/Scroll/Items")
 scroll = NodePath("Panel/Margin/Layout/Scroll")
 item_font = ExtResource("3_body")
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="Panel" type="PanelContainer" parent="." unique_id=2007723120]
 custom_minimum_size = Vector2(360, 0)
 layout_mode = 0
 offset_left = 210.0
@@ -28,32 +27,31 @@ offset_top = 62.0
 offset_right = 570.0
 offset_bottom = 398.0
 
-[node name="Margin" type="MarginContainer" parent="Panel"]
+[node name="Margin" type="MarginContainer" parent="Panel" unique_id=1643878684]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="Layout" type="VBoxContainer" parent="Panel/Margin"]
+[node name="Layout" type="VBoxContainer" parent="Panel/Margin" unique_id=1929711983]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="Status" type="Label" parent="Panel/Margin/Layout"]
+[node name="Status" type="Label" parent="Panel/Margin/Layout" unique_id=202004743]
 custom_minimum_size = Vector2(0, 21)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_body")
 theme_override_font_sizes/font_size = 17
-text = ""
 vertical_alignment = 1
 text_overrun_behavior = 3
 
-[node name="Scroll" type="ScrollContainer" parent="Panel/Margin/Layout"]
+[node name="Scroll" type="ScrollContainer" parent="Panel/Margin/Layout" unique_id=389335230]
 custom_minimum_size = Vector2(0, 306)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="Items" type="VBoxContainer" parent="Panel/Margin/Layout/Scroll"]
+[node name="Items" type="VBoxContainer" parent="Panel/Margin/Layout/Scroll" unique_id=839001710]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4

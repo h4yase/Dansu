@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://c3oh0iofhcct7" path="res://scenes/mainmenu/mainmenu.gd" id="1_jyltf"]
 [ext_resource type="Script" uid="uid://gw4u2exwyrwf" path="res://scenes/mainmenu/menu_animations.gd" id="2_rhsxn"]
 [ext_resource type="PackedScene" uid="uid://c51ndn5ftq4wo" path="res://scenes/mainmenu/menubutton.tscn" id="4_da4vi"]
-[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/Next Bravo.ttf" id="4_ridl2"]
+[ext_resource type="FontFile" uid="uid://drcicje7q2t7x" path="res://resources/fonts/bold/Next Bravo.ttf" id="4_ridl2"]
 [ext_resource type="Texture2D" uid="uid://qh4ulioaehul" path="res://resources/background.png" id="5_u1ft4"]
 [ext_resource type="Texture2D" uid="uid://cw8cihgunxcv6" path="res://icon.svg" id="5_x46xa"]
 [ext_resource type="Shader" uid="uid://cnchsob31pe3k" path="res://resources/shaders/liquid.gdshader" id="6_da4vi"]
@@ -17,7 +17,7 @@
 [ext_resource type="Shader" uid="uid://qbfnricvyktb" path="res://resources/shaders/wave.gdshader" id="10_jyltf"]
 [ext_resource type="Script" uid="uid://dvjmrd7igbpip" path="res://scenes/mainmenu/difficulty_select.gd" id="11_1w8yq"]
 [ext_resource type="Script" uid="uid://n4yyyajfnst0" path="res://scenes/mainmenu/chart_info.gd" id="11_ll1i1"]
-[ext_resource type="FontFile" uid="uid://cay31gip2omwr" path="res://resources/fonts/BebasNeue-Regular.ttf" id="12_a8qj1"]
+[ext_resource type="FontFile" uid="uid://c4jpym2g4ea1n" path="res://resources/fonts/thin/BebasNeue-Regular.ttf" id="12_a8qj1"]
 [ext_resource type="Texture2D" uid="uid://g4w7jxdx88sv" path="res://resources/icons/play.svg" id="13_hqrtg"]
 [ext_resource type="Texture2D" uid="uid://yxtyt10rngs0" path="res://resources/icons/log-out.svg" id="13_ne1f7"]
 [ext_resource type="PackedScene" uid="uid://cij7mo4rkb3uj" path="res://scenes/mainmenu/chart.tscn" id="13_xnw7g"]
@@ -39,7 +39,7 @@
 [ext_resource type="Script" uid="uid://cy4ck1y7mk4gu" path="res://network/chart_publisher.gd" id="33_publisher"]
 [ext_resource type="Shader" uid="uid://lyl0i1warddt" path="res://resources/shaders/card_shine.gdshader" id="34_shine"]
 [ext_resource type="Texture2D" uid="uid://dggi6xmwgmp00" path="res://resources/icons/drum.svg" id="35_xuiok"]
-[ext_resource type="PackedScene" path="res://scenes/mainmenu/playlist_panel.tscn" id="36_playlists"]
+[ext_resource type="PackedScene" uid="uid://45i45hklhl1v" path="res://scenes/mainmenu/playlist_panel.tscn" id="36_playlists"]
 [ext_resource type="PackedScene" uid="uid://dwxl2qt32v5ch" path="res://scenes/mainmenu/inline_leaderboard.tscn" id="97_inline_leaderboard"]
 [ext_resource type="Script" uid="uid://b2rueyimmbuu1" path="res://scenes/mainmenu/source_switch.gd" id="98_source_switch"]
 [ext_resource type="Script" uid="uid://baq4h3x3wbdqw" path="res://scenes/mainmenu/loved_button.gd" id="99_loved"]
@@ -657,7 +657,8 @@ border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.26646146, 0.21616292, 0.51329076, 1)
 corner_radius_bottom_right = 20
-expand_margin_left = 40.0
+corner_radius_bottom_left = 20
+expand_margin_left = 100.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4nl7"]
 content_margin_left = 50.0
@@ -1207,14 +1208,14 @@ theme_override_fonts/font = ExtResource("12_a8qj1")
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = SubResource("StyleBoxEmpty_nh018")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_xujh8")
-placeholder_text = "search"
+placeholder_text = "COMMON_SEARCH"
 
 [node name="FilterButton" type="Button" parent="Charts/VBoxContainer/Search/SearchArea" unique_id=1058871006]
 layout_mode = 2
 focus_mode = 0
 theme_override_fonts/font = ExtResource("4_ridl2")
 theme_override_font_sizes/font_size = 25
-text = "Filter"
+text = "COMMON_FILTER"
 flat = true
 
 [node name="Control" type="Control" parent="Charts/VBoxContainer" unique_id=283087208]
@@ -1228,19 +1229,19 @@ offset_right = 542.0
 offset_bottom = 53.0
 mouse_default_cursor_shape = 2
 theme_override_constants/outline_size = 0
-theme_override_fonts/font = ExtResource("12_a8qj1")
-theme_override_font_sizes/font_size = 26
+theme_override_fonts/font = ExtResource("4_ridl2")
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_playlist_selector")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_playlist_selector")
 theme_override_styles/hover = SubResource("StyleBoxFlat_playlist_selector")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_playlist_selector")
 theme_override_styles/focus = SubResource("StyleBoxFlat_playlist_selector")
-text = "All Charts"
+text = "PLAYLIST_ALL_CHARTS"
 alignment = 0
 text_overrun_behavior = 1
 
 [node name="TabBar" type="Button" parent="Charts/VBoxContainer" unique_id=1739606260]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(200, 48)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
@@ -1310,28 +1311,32 @@ theme_override_constants/separation = 9
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-text = "new difficulty"
+theme_override_font_sizes/font_size = 16
+text = "MENU_EDIT_NEW_CHART"
 
 [node name="DeleteDifficulty" type="Button" parent="ChartInfo/EditActions" unique_id=1721194332]
 modulate = Color(1, 0.45999998, 0.45999998, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-text = "delete difficulty"
+theme_override_font_sizes/font_size = 16
+text = "MENU_EDIT_DELETE_CHART"
 
 [node name="DeleteChartset" type="Button" parent="ChartInfo/EditActions" unique_id=1734575970]
 self_modulate = Color(1, 0.45882353, 0.45882353, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-text = "delete chartset"
+theme_override_font_sizes/font_size = 16
+text = "MENU_EDIT_DELETE_CHARTSET"
 
 [node name="Upload" type="Button" parent="ChartInfo/EditActions" unique_id=1880901865]
 self_modulate = Color(0.64, 1, 0.93399996, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-text = "Upload"
+theme_override_font_sizes/font_size = 16
+text = "MENU_EDIT_UPLOAD"
 
 [node name="Panel" type="Panel" parent="ChartInfo" unique_id=34224441 node_paths=PackedStringArray("thumb", "previous_thumb", "cover_layer", "content", "shine_rect", "title_row", "title_label", "artist_label", "desc_label", "rank_label", "full_combo_label", "all_just_label", "perfect_label", "never_played_label", "score_label", "ranked_badge", "approved_badge")]
 layout_mode = 1
@@ -1732,26 +1737,26 @@ menu = NodePath("..")
 
 [node name="Play" parent="MenuButtons" unique_id=869280924 instance=ExtResource("4_da4vi")]
 layout_mode = 2
-button_text = "play"
+button_text = "MENU_PLAY"
 icon_texture = ExtResource("13_hqrtg")
 hover_scale = 1.04
 
 [node name="Edit" parent="MenuButtons" unique_id=1229603769 instance=ExtResource("4_da4vi")]
 layout_mode = 2
-button_text = "Edit"
+button_text = "MENU_EDIT"
 icon_texture = ExtResource("15_dx8qc")
 hover_scale = 1.04
 
 [node name="Options" parent="MenuButtons" unique_id=1579782365 instance=ExtResource("4_da4vi")]
 layout_mode = 2
-button_text = "Options"
+button_text = "MENU_SETTINGS"
 icon_texture = ExtResource("14_hqrtg")
 hover_scale = 1.04
 
 [node name="Exit" parent="MenuButtons" unique_id=1189508582 instance=ExtResource("4_da4vi")]
 layout_mode = 2
 bg_color = Color(0.6911973, 0.12315311, 0.320819, 1)
-button_text = "Exit"
+button_text = "MENU_EXIT"
 icon_texture = ExtResource("13_ne1f7")
 hover_scale = 1.04
 
@@ -1956,7 +1961,7 @@ menu = NodePath("..")
 custom_minimum_size = Vector2(300, 64)
 layout_mode = 2
 bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
-button_text = "back"
+button_text = "MENU_BACK"
 icon_texture = ExtResource("23_c5bhb")
 hover_scale = 1.0
 
@@ -1968,7 +1973,7 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(450, 64)
 layout_mode = 2
 bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
-button_text = "New chart"
+button_text = "MENU_NEW_CHART"
 icon_texture = ExtResource("15_dx8qc")
 hover_scale = 1.0
 
@@ -1976,7 +1981,7 @@ hover_scale = 1.0
 custom_minimum_size = Vector2(240, 64)
 layout_mode = 2
 bg_color = Color(0.105882354, 0.09019608, 0.16470589, 1)
-button_text = "EDIT"
+button_text = "MENU_EDIT"
 icon_texture = ExtResource("15_dx8qc")
 hover_scale = 1.0
 
@@ -1984,6 +1989,7 @@ hover_scale = 1.0
 custom_minimum_size = Vector2(240, 64)
 layout_mode = 2
 bg_color = Color(0.105882354, 0.09019608, 0.16470589, 1)
+button_text = "MENU_CHART_PLAY"
 icon_texture = ExtResource("35_xuiok")
 hover_scale = 1.0
 

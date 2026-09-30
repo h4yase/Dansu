@@ -29,12 +29,17 @@ const TEXT_SIDE_SPACE := 70.0
 @export var pivot: Control
 @export var background: ColorRect
 @export var button: Button
-@export var icon: Sprite2D
+@export var icon: TextureRect
 @export var hover_player: AudioStreamPlayer
 @export var click_player: AudioStreamPlayer
 
 var tween: Tween
 var _interaction_enabled := true
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED:
+		if is_node_ready():
+			call_deferred("_update_background_size")
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -94,16 +99,6 @@ func _update_button() -> void:
 	button.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
 	_update_background_size()
 
-
-func _update_background_size() -> void:
-	if not is_node_ready():
-		return
-	var font := button.get_theme_font("font")
-	var font_size := button.get_theme_font_size("font_size")
-	var text_width := font.get_string_size(button_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
-	background.size = Vector2(text_width + TEXT_SIDE_SPACE, button.get_combined_minimum_size().y + 10.0)
-
-
 func _hover_enter() -> void:
 	if not _interaction_enabled:
 		return
@@ -135,6 +130,27 @@ func _pressed() -> void:
 		0.12
 	)
 	activated.emit()
+
+func _update_background_size() -> void:
+	if not is_node_ready():
+		return
+
+	var font := button.get_theme_font("font")
+	var font_size := button.get_theme_font_size("font_size")
+
+	var translated_text := tr(button_text)
+
+	var text_width := font.get_string_size(
+		translated_text,
+		HORIZONTAL_ALIGNMENT_LEFT,
+		-1,
+		font_size
+	).x
+
+	background.size = Vector2(
+		text_width + TEXT_SIDE_SPACE,
+		button.get_combined_minimum_size().y + 10.0
+	)
 
 
 func _play_hover(state: bool) -> void:

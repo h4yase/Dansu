@@ -10,7 +10,6 @@ const OPEN_BOUNCE_DURATION := 0.11
 const OPEN_SETTLE_DURATION := 0.06
 const OPEN_FINISH_DURATION := 0.04
 const CLOSE_DURATION := 0.14
-const INFINITE_FPS_TEXT := "Infinite"
 
 @export_group("Node References")
 @export var overlay: ColorRect
@@ -127,19 +126,25 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _setup_options() -> void:
+	tab_container.set_tab_title(0, GameText.text(GameText.Key.SETTINGS_GRAPHICS))
+	tab_container.set_tab_title(1, GameText.text(GameText.Key.SETTINGS_AUDIO))
+	tab_container.set_tab_title(2, GameText.text(GameText.Key.SETTINGS_GAMEPLAY))
+	tab_container.set_tab_title(3, GameText.text(GameText.Key.SETTINGS_KEYBINDS))
+	tab_container.set_tab_title(4, GameText.text(GameText.Key.SETTINGS_SYSTEM))
+
 	window_mode_option.clear()
-	window_mode_option.add_item("Fullscreen", DisplayServer.WINDOW_MODE_FULLSCREEN)
-	window_mode_option.add_item("Windowed", DisplayServer.WINDOW_MODE_WINDOWED)
-	window_mode_option.add_item("Exclusive", DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+	window_mode_option.add_item(GameText.text(GameText.Key.SETTINGS_FULLSCREEN), DisplayServer.WINDOW_MODE_FULLSCREEN)
+	window_mode_option.add_item(GameText.text(GameText.Key.SETTINGS_WINDOWED), DisplayServer.WINDOW_MODE_WINDOWED)
+	window_mode_option.add_item(GameText.text(GameText.Key.SETTINGS_EXCLUSIVE_FULLSCREEN), DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 
 	vsync_option.clear()
-	vsync_option.add_item("Disabled", DisplayServer.VSYNC_DISABLED)
-	vsync_option.add_item("Enabled", DisplayServer.VSYNC_ENABLED)
-	vsync_option.add_item("Adaptive", DisplayServer.VSYNC_ADAPTIVE)
-	vsync_option.add_item("Mailbox", DisplayServer.VSYNC_MAILBOX)
+	vsync_option.add_item(GameText.text(GameText.Key.SETTINGS_DISABLED), DisplayServer.VSYNC_DISABLED)
+	vsync_option.add_item(GameText.text(GameText.Key.SETTINGS_ENABLED), DisplayServer.VSYNC_ENABLED)
+	vsync_option.add_item(GameText.text(GameText.Key.SETTINGS_VSYNC_ADAPTIVE), DisplayServer.VSYNC_ADAPTIVE)
+	vsync_option.add_item(GameText.text(GameText.Key.SETTINGS_VSYNC_MAILBOX), DisplayServer.VSYNC_MAILBOX)
 
 	msaa_option.clear()
-	msaa_option.add_item("Off", Viewport.MSAA_DISABLED)
+	msaa_option.add_item(GameText.text(GameText.Key.SETTINGS_AA_OFF), Viewport.MSAA_DISABLED)
 	msaa_option.add_item("2x", Viewport.MSAA_2X)
 	msaa_option.add_item("4x", Viewport.MSAA_4X)
 	msaa_option.add_item("8x", Viewport.MSAA_8X)
@@ -274,7 +279,7 @@ func _refresh_keybind_labels() -> void:
 
 func _get_keybind_button_text(action_name: String, keycode: Key) -> String:
 	if _pending_keybind_action == action_name:
-		return "Press key..."
+		return GameText.text(GameText.Key.SETTINGS_PRESS_KEY)
 	return OS.get_keycode_string(keycode)
 
 
@@ -309,7 +314,7 @@ func _refresh_max_fps_display() -> void:
 	if max_fps_line_edit == null:
 		return
 	if int(max_fps_spin.value) == 0:
-		max_fps_line_edit.text = INFINITE_FPS_TEXT
+		max_fps_line_edit.text = GameText.text(GameText.Key.SETTINGS_FPS_UNLIMITED)
 
 
 func _on_window_mode_selected(index: int) -> void:

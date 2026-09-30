@@ -160,7 +160,7 @@ func _save_chart() -> bool:
 	CM.parsed_chart.chart = chart
 	var success := EditorChartOps.save_chart(chart, chart.file_path)
 	if status_label != null:
-		status_label.text = "Chart saved" if success else "Save failed"
+		status_label.text = GameText.text(GameText.Key.EDITOR_CHART_SAVED) if success else GameText.text(GameText.Key.EDITOR_SAVE_FAILED)
 		status_label.add_theme_color_override("font_color", Color("75d5a4") if success else Color("ff7c86"))
 	if success:
 		mark_saved_state()
@@ -204,6 +204,6 @@ func _on_exit_save_requested() -> void:
 
 func _update_toolbar() -> void:
 	if play_button != null:
-		play_button.text = "Pause" if transport.playing else "Play"
+		play_button.text = GameText.text(GameText.Key.EDITOR_PAUSE) if transport.playing else GameText.text(GameText.Key.EDITOR_PLAY)
 	if time_label != null and timeline != null:
 		time_label.text = timeline.format_time_label(Game.current_time)

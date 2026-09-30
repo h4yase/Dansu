@@ -154,16 +154,16 @@ theme_override_constants/separation = 20
 
 [node name="Back" type="Button" parent="TopBar/Margin/Row" unique_id=2033992967]
 layout_mode = 2
-text = "Back to menu"
+text = "EDITOR_BACK_MENU"
 
 [node name="SkinEditor" type="Button" parent="TopBar/Margin/Row" unique_id=882752776]
 layout_mode = 2
-text = "Skin Editor"
+text = "EDITOR_SKIN_EDITOR"
 
 [node name="EventEditor" type="Button" parent="TopBar/Margin/Row" unique_id=1179785375]
 visible = false
 layout_mode = 2
-text = "Event Editor"
+text = "EDITOR_EVENT_EDITOR"
 
 [node name="Spacer" type="Control" parent="TopBar/Margin/Row" unique_id=142528898]
 layout_mode = 2
@@ -171,7 +171,7 @@ size_flags_horizontal = 3
 
 [node name="BeatDivisionLabel" type="Label" parent="TopBar/Margin/Row" unique_id=1602701495]
 layout_mode = 2
-text = "Beat Division"
+text = "EDITOR_BEAT_DIVISION"
 vertical_alignment = 1
 
 [node name="BeatDivisionValue" type="Label" parent="TopBar/Margin/Row" unique_id=1347535791]
@@ -289,8 +289,7 @@ text_overrun_behavior = 5
 [node name="CoverBrowserButton" type="Button" parent="Inspector/Chart/ScrollContainer/Contents/Header/Detail" unique_id=479850018]
 unique_name_in_owner = true
 layout_mode = 2
-text = "select cover
-from browser"
+text = "EDITOR_SELECT_COVER"
 
 [node name="file_audio" type="Label" parent="Inspector/Chart/ScrollContainer/Contents/Header/Detail" unique_id=1865292649]
 unique_name_in_owner = true
@@ -303,12 +302,11 @@ text_overrun_behavior = 5
 [node name="AudioBrowserButton" type="Button" parent="Inspector/Chart/ScrollContainer/Contents/Header/Detail" unique_id=36270786]
 unique_name_in_owner = true
 layout_mode = 2
-text = "select audio
-from file browser"
+text = "EDITOR_SELECT_AUDIO"
 
 [node name="label" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1915322027]
 layout_mode = 2
-text = "*title"
+text = "EDITOR_SONG_TITLE"
 horizontal_alignment = 1
 
 [node name="title" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1474887788]
@@ -319,7 +317,7 @@ alignment = 1
 
 [node name="label4" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1570904117]
 layout_mode = 2
-text = "artist"
+text = "EDITOR_ARTIST"
 horizontal_alignment = 1
 
 [node name="artist" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=748049689]
@@ -330,7 +328,7 @@ alignment = 1
 
 [node name="CreatorLabel" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=302793973]
 layout_mode = 2
-text = "creator"
+text = "EDITOR_CREATOR"
 horizontal_alignment = 1
 
 [node name="creator" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1734135703]
@@ -341,7 +339,7 @@ alignment = 1
 
 [node name="label2" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=498360221]
 layout_mode = 2
-text = "*difficulty"
+text = "EDITOR_DIFFICULTY"
 horizontal_alignment = 1
 
 [node name="difficulty" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1577139298]
@@ -352,7 +350,7 @@ alignment = 1
 
 [node name="label3" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1438855725]
 layout_mode = 2
-text = "source"
+text = "EDITOR_SOURCE"
 horizontal_alignment = 1
 
 [node name="source" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=234651857]
@@ -363,7 +361,7 @@ alignment = 1
 
 [node name="label5" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1640637456]
 layout_mode = 2
-text = "tags"
+text = "EDITOR_TAGS"
 horizontal_alignment = 1
 
 [node name="tags" type="LineEdit" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=177184767]
@@ -374,20 +372,20 @@ alignment = 1
 
 [node name="label6" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=605982539]
 layout_mode = 2
-text = "skin file"
+text = "EDITOR_SKIN_FILE"
 horizontal_alignment = 1
 
 [node name="skin_file_name" type="Label" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1827001061]
 visible = false
 layout_mode = 2
-text = "(no linked skin file)"
+text = "EDITOR_NO_SKIN"
 horizontal_alignment = 1
 clip_text = true
 text_overrun_behavior = 5
 
 [node name="SkinBrowserButton" type="Button" parent="Inspector/Chart/ScrollContainer/Contents" unique_id=1963833186]
 layout_mode = 2
-text = "Select Skin"
+text = "EDITOR_SELECT_SKIN"
 
 [node name="Property" type="TabBar" parent="Inspector" unique_id=826723775 node_paths=PackedStringArray("editor", "note_tab", "rail_tab", "note_time_lineedit", "note_type_option", "note_length_lineedit", "note_animation_option", "note_hitsound_option", "note_dir_option", "point_position_slider", "point_curve_slider", "point_time_lineedit")]
 visible = false
@@ -435,7 +433,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=80382324]
 layout_mode = 2
-text = "Note"
+text = "EDITOR_NOTE"
 
 [node name="HSeparator" type="HSeparator" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=594055940]
 layout_mode = 2
@@ -445,7 +443,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/time" unique_id=1318776239]
 layout_mode = 2
-text = "time"
+text = "EDITOR_TIME"
 
 [node name="LineEdit" type="LineEdit" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/time" unique_id=725895020]
 layout_mode = 2
@@ -458,19 +456,19 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/type" unique_id=1778811650]
 layout_mode = 2
-text = "type"
+text = "EDITOR_NOTE_TYPE"
 
 [node name="OptionButton" type="OptionButton" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/type" unique_id=475769546]
 layout_mode = 2
 selected = 1
 item_count = 4
-popup/item_0/text = "Hit"
+popup/item_0/text = "EDITOR_HIT"
 popup/item_0/id = 1
-popup/item_1/text = "Move"
+popup/item_1/text = "EDITOR_MOVE"
 popup/item_1/id = 2
-popup/item_2/text = "Trace"
+popup/item_2/text = "EDITOR_TRACE"
 popup/item_2/id = 3
-popup/item_3/text = "Spike"
+popup/item_3/text = "EDITOR_SPIKE"
 popup/item_3/id = 4
 
 [node name="dir" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=610865530]
@@ -478,15 +476,15 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/dir" unique_id=1959779201]
 layout_mode = 2
-text = "dir"
+text = "EDITOR_DIRECTION"
 
 [node name="OptionButton" type="OptionButton" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/dir" unique_id=611654619]
 layout_mode = 2
 selected = 1
 item_count = 2
-popup/item_0/text = "LEFT"
+popup/item_0/text = "EDITOR_LEFT"
 popup/item_0/id = 0
-popup/item_1/text = "RIGHT"
+popup/item_1/text = "EDITOR_RIGHT"
 popup/item_1/id = 1
 
 [node name="length" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=1638812228]
@@ -494,7 +492,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/length" unique_id=948612822]
 layout_mode = 2
-text = "length"
+text = "EDITOR_LENGTH"
 
 [node name="LineEdit" type="LineEdit" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/length" unique_id=128109492]
 layout_mode = 2
@@ -507,7 +505,7 @@ layout_mode = 2
 
 [node name="animation" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/animation" unique_id=546716715]
 layout_mode = 2
-text = "animation"
+text = "EDITOR_ANIMATION"
 
 [node name="OptionButton" type="OptionButton" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/animation" unique_id=992438532]
 layout_mode = 2
@@ -521,7 +519,7 @@ layout_mode = 2
 
 [node name="sfx" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/SFX" unique_id=1233933479]
 layout_mode = 2
-text = "sfx"
+text = "EDITOR_SFX"
 
 [node name="OptionButton" type="OptionButton" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/SFX" unique_id=836315521]
 layout_mode = 2
@@ -536,7 +534,7 @@ theme_override_constants/separation = 10
 
 [node name="Rail" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Rail" unique_id=1785285807]
 layout_mode = 2
-text = "Rail"
+text = "EDITOR_RAIL"
 
 [node name="HSeparator" type="HSeparator" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Rail" unique_id=1703293512]
 layout_mode = 2
@@ -580,7 +578,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-text = "Add new timing"
+text = "EDITOR_ADD_TIMING"
 
 [node name="Timing" parent="Inspector/Timing/ScrollContainer/HBoxContainer" unique_id=2110964154 instance=ExtResource("4_8or05")]
 layout_mode = 2
@@ -624,7 +622,7 @@ layout_mode = 2
 
 [node name="label" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1646588012]
 layout_mode = 2
-text = "Hit Note"
+text = "EDITOR_HIT_NOTE"
 
 [node name="Hit" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1066772196]
 layout_mode = 2
@@ -638,7 +636,7 @@ layout_mode = 2
 
 [node name="hit" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=64586634]
 layout_mode = 2
-text = "Move Note"
+text = "EDITOR_MOVE_NOTE"
 
 [node name="Move" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1080815256]
 layout_mode = 2
@@ -652,7 +650,7 @@ layout_mode = 2
 
 [node name="hit" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1052878308]
 layout_mode = 2
-text = "Trace Note"
+text = "EDITOR_TRACE_NOTE"
 
 [node name="Trace" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1082399630]
 layout_mode = 2
@@ -666,7 +664,7 @@ layout_mode = 2
 
 [node name="spike" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=12234412]
 layout_mode = 2
-text = "Spike Note"
+text = "EDITOR_SPIKE_NOTE"
 
 [node name="Spike" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=12234413]
 layout_mode = 2
@@ -680,7 +678,7 @@ layout_mode = 2
 
 [node name="release" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer5" unique_id=12234415]
 layout_mode = 2
-text = "Long Release"
+text = "EDITOR_LONG_RELEASE"
 
 [node name="Release" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer5" unique_id=12234416]
 layout_mode = 2
@@ -692,7 +690,7 @@ fit_to_longest_item = false
 [node name="Add new sfx" type="Button" parent="Inspector/SFX/ScrollContainer/VBoxContainer" unique_id=1874760297]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-text = "Add new sfx"
+text = "EDITOR_ADD_SFX"
 
 [node name="HitSound" parent="Inspector/SFX/ScrollContainer/VBoxContainer" unique_id=1481942741 instance=ExtResource("5_7qxkj")]
 layout_mode = 2
@@ -777,63 +775,75 @@ alignment = 1
 
 [node name="Label" type="Label" parent="Object" unique_id=1191092861]
 layout_mode = 2
-text = "Notes"
+text = "EDITOR_NOTES"
 
 [node name="Hit2" type="Button" parent="Object" unique_id=66446060]
 layout_mode = 2
-text = "Rail (R)"
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_TOOL_RAIL"
 
 [node name="Hit" type="Button" parent="Object" unique_id=823023364]
 layout_mode = 2
-text = "Hit (Z)"
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_TOOL_HIT"
 
 [node name="Trace" type="Button" parent="Object" unique_id=53886401]
 layout_mode = 2
-text = "Trace (X)"
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_TOOL_TRACE"
 
 [node name="Left" type="Button" parent="Object" unique_id=653754946]
 layout_mode = 2
-text = "Left (A)"
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_TOOL_LEFT"
 
 [node name="Right" type="Button" parent="Object" unique_id=711043301]
 layout_mode = 2
-text = "Right (D)"
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_TOOL_RIGHT"
 
 [node name="Spike" type="Button" parent="Object" unique_id=469186168]
 layout_mode = 2
-text = "Spike (C)"
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_TOOL_SPIKE"
 
 [node name="Label2" type="Label" parent="Object" unique_id=1482789204]
 layout_mode = 2
-text = "Controls"
+text = "EDITOR_CONTROLS"
 
 [node name="Delete" type="Button" parent="Object" unique_id=1709305272]
 layout_mode = 2
-text = "Delete"
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_DELETE"
 
 [node name="Copy" type="Button" parent="Object" unique_id=2126726355]
 layout_mode = 2
-text = "Copy"
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_COPY"
 
 [node name="Paste" type="Button" parent="Object" unique_id=650479365]
 layout_mode = 2
-text = "Paste"
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_PASTE"
 
 [node name="Undo" type="Button" parent="Object" unique_id=1200218470]
 layout_mode = 2
-text = "Undo"
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_UNDO"
 
 [node name="Redo" type="Button" parent="Object" unique_id=1009727530]
 layout_mode = 2
-text = "Redo"
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_REDO"
 
 [node name="Label3" type="Label" parent="Object" unique_id=81705010]
 layout_mode = 2
-text = "chart"
+text = "EDITOR_CHART"
 
 [node name="Save" type="Button" parent="Object" unique_id=1739146947]
 layout_mode = 2
-text = "Save chart"
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_SAVE_CHART"
 
 [node name="SongSlider" type="HSlider" parent="." unique_id=1825726041]
 layout_mode = 1
@@ -937,7 +947,7 @@ size_flags_horizontal = 3
 [node name="PlayTest" type="Button" parent="PreviewColumn/Toolbar" unique_id=1266397735]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Play test"
+text = "EDITOR_PLAY_TEST"
 
 [node name="OverlayFrameView" type="Control" parent="PreviewColumn" unique_id=1443994331 node_paths=PackedStringArray("event_editor")]
 clip_contents = true

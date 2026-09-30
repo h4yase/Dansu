@@ -3,8 +3,6 @@ class_name EditorEventResourceImporter
 
 signal imported(event: ChartEvent, frame: ChartEventFrame, kind: String, reference: String)
 
-const SPRITE_FILTERS: Array[String] = ["*.png,*.jpg,*.jpeg,*.webp,*.svg ; Image Files"]
-
 var _dialog: FileDialog
 var _chart: Chart
 var _kind := ""
@@ -26,7 +24,8 @@ func open(chart: Chart, kind: String, event: ChartEvent, frame: ChartEventFrame)
 	_frame = frame
 	var target_directory := chart.folder_path.path_join(EventResourceRef.CHART_DIRECTORY_NAME)
 	FileSystem.ensure_dir(target_directory)
-	_dialog.filters = PackedStringArray(SPRITE_FILTERS)
+	_dialog.title = GameText.text(GameText.Key.EDITOR_OPEN_FILE)
+	_dialog.filters = PackedStringArray(["*.png,*.jpg,*.jpeg,*.webp,*.svg ; " + GameText.text(GameText.Key.EDITOR_IMAGE_FILES)])
 	_dialog.current_dir = ProjectSettings.globalize_path(target_directory)
 	_dialog.popup_centered_ratio(0.7)
 

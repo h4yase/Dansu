@@ -86,7 +86,7 @@ text_overrun_behavior = 5
 [node name="Import" type="Button" parent="Field"]
 visible = false
 layout_mode = 2
-text = "Import"
+text = "EDITOR_IMPORT"
 
 [node name="Action" type="Button" parent="."]
 visible = false

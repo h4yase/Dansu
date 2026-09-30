@@ -3,8 +3,8 @@ class_name InlineLeaderboardRow
 
 signal action_pressed(action: String, item: Dictionary)
 
-const BODY_FONT := preload("res://resources/fonts/BebasNeue-Regular.ttf")
-const RANK_FONT := preload("res://resources/fonts/Next Bravo.ttf")
+const BODY_FONT := preload("res://resources/fonts/thin/BebasNeue-Regular.ttf")
+const RANK_FONT := preload("res://resources/fonts/bold/Next Bravo.ttf")
 const PLACEHOLDER := preload("res://icon.svg")
 
 static var _avatar_cache: Dictionary = {}

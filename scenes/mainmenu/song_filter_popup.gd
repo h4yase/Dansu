@@ -10,50 +10,51 @@ var _open := false
 var _saved: SongFilters
 @export_group("Node References")
 @export var _sort: OptionButton
-@export var _status: OptionButton
+@export var ranked_button: Button
+@export var approved_button: Button
+@export var unranked_button: Button
 @export var _played: OptionButton
 @export var _reverse: CheckBox
 @export var _nsfl: CheckBox
 @export var _error: Label
 @export var _panel: PanelContainer
 @export var _overlay: ColorRect
-@export var min_length: LineEdit
-@export var max_length: LineEdit
-@export var min_rating: LineEdit
-@export var max_rating: LineEdit
+@export var length_range: FilterRangeSlider
+@export var rating_range: FilterRangeSlider
 @export var max_size: LineEdit
 @export var rank_status_row: Control
 @export var content_row: Control
 @export var max_download_row: Control
-@export var close_button: Button
 @export var reset_button: Button
-@export var cancel_button: Button
-@export var apply_button: Button
-var _fields: Array[LineEdit]
+@export var bottom_close_button: Button
 var _server_rows: Array[Control]
 var _tween: Tween
 var _previous_focus: Control
 
 func _ready() -> void:
-	_fields = [min_length, max_length, min_rating, max_rating, max_size]
 	_server_rows = [rank_status_row, content_row, max_download_row]
 	_overlay.gui_input.connect(func(event: InputEvent):
 		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			close_popup()
+			_apply()
 	)
-	close_button.pressed.connect(close_popup)
 	reset_button.pressed.connect(func(): _sync(SongFilters.new(_online)))
-	cancel_button.pressed.connect(close_popup)
-	apply_button.pressed.connect(_apply)
+	bottom_close_button.pressed.connect(_apply)
 
 func show_popup(online: bool, values: SongFilters, authenticated: bool = false) -> void:
 	_online = online
 	_saved = values.copy()
 	_sort.clear()
-	var options := {"Newest": "newest", "Length": "length", "Farming": "farming", "Popularity": "popularity"} if online else {"Title": "title", "Artist": "artist", "Difficulty": "rating", "Recently played": "recent", "Length": "length"}
-	for caption in options:
-		_sort.add_item(caption)
-		_sort.set_item_metadata(_sort.item_count - 1, options[caption])
+	if online:
+		_add_sort_option(GameText.Key.FILTER_SORT_NEWEST, "newest")
+		_add_sort_option(GameText.Key.FILTER_SORT_LENGTH, "length")
+		_add_sort_option(GameText.Key.FILTER_SORT_FARMING, "farming")
+		_add_sort_option(GameText.Key.FILTER_SORT_POPULARITY, "popularity")
+	else:
+		_add_sort_option(GameText.Key.FILTER_SORT_TITLE, "title")
+		_add_sort_option(GameText.Key.FILTER_SORT_ARTIST, "artist")
+		_add_sort_option(GameText.Key.FILTER_SORT_DIFFICULTY, "rating")
+		_add_sort_option(GameText.Key.FILTER_SORT_RECENT, "recent")
+		_add_sort_option(GameText.Key.FILTER_SORT_LENGTH, "length")
 	for row in _server_rows:
 		row.visible = online
 	_played.disabled = online and not authenticated
@@ -65,18 +66,22 @@ func show_popup(online: bool, values: SongFilters, authenticated: bool = false) 
 	_animate(true)
 	_sort.grab_focus()
 
+func _add_sort_option(caption: GameText.Key, value: String) -> void:
+	_sort.add_item(GameText.text(caption))
+	_sort.set_item_metadata(_sort.item_count - 1, value)
+
 func _sync(values: SongFilters) -> void:
 	for i in range(_sort.item_count):
 		if _sort.get_item_metadata(i) == values.sort:
 			_sort.select(i)
 	_reverse.button_pressed = values.reverse
 	_nsfl.button_pressed = values.nsfl
-	_status.select(maxi(0, ["", "ranked", "approved", "unranked"].find(values.status)))
+	ranked_button.set_pressed_no_signal(values.status == "ranked")
+	approved_button.set_pressed_no_signal(values.status == "approved")
+	unranked_button.set_pressed_no_signal(values.status == "unranked")
 	_played.select(values.played)
-	min_length.text = _format_bound(values.min_length_ms, 1000.0)
-	max_length.text = _format_bound(values.max_length_ms, 1000.0)
-	min_rating.text = _format_bound(values.min_rating)
-	max_rating.text = _format_bound(values.max_rating)
+	length_range.set_values(maxi(0, values.min_length_ms / 30000), length_range.finite_steps + 1 if values.max_length_ms < 0 else ceili(values.max_length_ms / 30000.0))
+	rating_range.set_values(maxi(0, floori(values.min_rating)), rating_range.finite_steps + 1 if values.max_rating < 0 else floori(values.max_rating))
 	max_size.text = _format_bound(values.max_size_bytes, 1048576.0)
 	_error.text = ""
 
@@ -88,29 +93,28 @@ func _read_bound(field: LineEdit, multiplier: float = 1.0) -> float:
 	return -1.0 if text_value.is_empty() else float(text_value) * multiplier
 
 func _apply() -> void:
-	for field in _fields:
-		if not _online and field == max_size:
-			continue
-		var text_value := field.text.strip_edges()
-		if not text_value.is_empty() and (not text_value.is_valid_float() or not is_finite(float(text_value)) or float(text_value) < 0):
-			_error.text = GameText.text(GameText.Key.HINT_FILTER_NUMBER)
-			return
+	if not _open:
+		return
+	var size_text := max_size.text.strip_edges()
+	if _online and not size_text.is_empty() and (not size_text.is_valid_float() or not is_finite(float(size_text)) or float(size_text) < 0):
+		_error.text = GameText.text(GameText.Key.HINT_FILTER_NUMBER)
+		return
 	var values := SongFilters.new(_online)
 	values.sort = _sort.get_selected_metadata()
 	values.reverse = _reverse.button_pressed
 	values.nsfl = _online and _nsfl.button_pressed
-	values.min_rating = _read_bound(min_rating)
-	values.max_rating = _read_bound(max_rating)
-	values.min_length_ms = int(_read_bound(min_length, 1000.0))
-	values.max_length_ms = int(_read_bound(max_length, 1000.0))
+	values.min_rating = rating_range.lower if rating_range.lower > 0 else -1.0
+	values.max_rating = rating_range.upper if rating_range.upper <= rating_range.finite_steps else -1.0
+	values.min_length_ms = length_range.lower * 30000 if length_range.lower > 0 else -1
+	values.max_length_ms = length_range.upper * 30000 if length_range.upper <= length_range.finite_steps else -1
 	if _online:
 		values.max_size_bytes = int(_read_bound(max_size, 1048576.0))
-	if (values.min_rating >= 0 and values.max_rating >= 0 and values.min_rating > values.max_rating) \
-			or (values.min_length_ms >= 0 and values.max_length_ms >= 0 and values.min_length_ms > values.max_length_ms):
-		_error.text = GameText.text(GameText.Key.HINT_FILTER_RANGE)
-		return
-	if _online and _status.selected > 0:
-		values.status = ["", "ranked", "approved", "unranked"][_status.selected]
+		if ranked_button.button_pressed:
+			values.status = "ranked"
+		elif approved_button.button_pressed:
+			values.status = "approved"
+		elif unranked_button.button_pressed:
+			values.status = "unranked"
 	if not _played.disabled:
 		values.played = _played.selected as SongFilters.PlayHistory
 	applied.emit(values)
@@ -127,7 +131,7 @@ func close_popup() -> void:
 
 func _input(event: InputEvent) -> void:
 	if visible and event.is_action_pressed("ui_cancel"):
-		close_popup()
+		_apply()
 		get_viewport().set_input_as_handled()
 
 func _animate(opening: bool) -> void:

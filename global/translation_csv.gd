@@ -19,8 +19,6 @@ func read(path: String) -> bool:
 	var known_locales := TranslationServer.get_all_languages()
 	var locales: PackedStringArray = []
 	for column in range(1, header.size()):
-		if header[column] == "notes":
-			continue
 		var locale := TranslationServer.standardize_locale(header[column].strip_edges())
 		if not known_locales.has(locale.get_slice("_", 0)) or locales.has(locale):
 			error = "The CSV contains an invalid or duplicate language code."

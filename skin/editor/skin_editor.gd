@@ -3,6 +3,7 @@ class_name SkinEditor
 
 const EDITOR_SCENE_PATH := "res://scenes/chart/editor/editor_scene.tscn"
 const EFFECT_OPTIONS := ["none", "groove", "spin"]
+const EFFECT_KEYS: Array[GameText.Key] = [GameText.Key.EDITOR_EFFECT_NONE, GameText.Key.EDITOR_EFFECT_GROOVE, GameText.Key.EDITOR_EFFECT_SPIN]
 const PREVIEW_SCALE_DIVISOR := 4.0
 const CALCULATED_SPRITE_HEIGHT := 2000.0
 const HIT_SLOT_ROW_SCENE := preload("res://scenes/skin/editor/hit_slot_row.tscn")
@@ -87,12 +88,16 @@ func _configure_templates() -> void:
 
 func _connect_dialogs() -> void:
 	if import_dialog != null:
+		import_dialog.filters = PackedStringArray(["*.png ; " + GameText.text(GameText.Key.EDITOR_PNG_IMAGE)])
 		import_dialog.files_selected.connect(_on_sprite_files_selected)
 	if unsaved_exit_dialog != null:
 		unsaved_exit_dialog.save_requested.connect(_on_unsaved_exit_save_requested)
 		unsaved_exit_dialog.discard_requested.connect(_return_to_pending_target)
 
 func _configure_static_options() -> void:
+	var tabs: TabContainer = $Inspector/TabContainer
+	tabs.set_tab_title(0, GameText.text(GameText.Key.EDITOR_TAB_SKIN))
+	tabs.set_tab_title(1, GameText.text(GameText.Key.EDITOR_TAB_ANIMATIONS))
 	if scale_spinbox != null:
 		scale_spinbox.min_value = 0.000001
 		scale_spinbox.max_value = 1000.0
@@ -101,8 +106,9 @@ func _configure_static_options() -> void:
 
 	if effect_option != null:
 		effect_option.clear()
-		for effect_name in EFFECT_OPTIONS:
-			effect_option.add_item(effect_name)
+		for index in range(EFFECT_OPTIONS.size()):
+			effect_option.add_item(GameText.text(EFFECT_KEYS[index]))
+			effect_option.set_item_metadata(index, EFFECT_OPTIONS[index])
 
 func _connect_ui() -> void:
 	name_line_edit.text_changed.connect(_on_name_changed)
@@ -182,7 +188,7 @@ func _refresh_metadata_ui() -> void:
 	var selected_animation = document.get_selected_animation()
 	fps_line_edit.text = str(selected_animation.fps) if selected_animation != null else ""
 	_select_effect_option(selected_animation.effect if selected_animation != null else "none")
-	onion_skin_button.text = "toggle onion skin (%s)" % ("on" if _onion_enabled else "off")
+	onion_skin_button.text = GameText.text(GameText.Key.EDITOR_ONION_STATE) % (GameText.text(GameText.Key.EDITOR_ON) if _onion_enabled else GameText.text(GameText.Key.EDITOR_OFF))
 	_update_preview_play_button(selected_animation)
 
 func _populate_animation_option(option_button: OptionButton, allow_none: bool, selected_animation) -> void:
@@ -190,7 +196,7 @@ func _populate_animation_option(option_button: OptionButton, allow_none: bool, s
 		return
 	option_button.clear()
 	if allow_none:
-		option_button.add_item("None", -1)
+		option_button.add_item(GameText.text(GameText.Key.EDITOR_NONE), -1)
 	for animation in document.skin_data.animations:
 		if animation == null:
 			continue
@@ -211,7 +217,7 @@ func _select_effect_option(effect_name: String) -> void:
 		return
 	var index := 0
 	for item_index in range(effect_option.item_count):
-		if effect_option.get_item_text(item_index) == effect_name:
+		if effect_option.get_item_metadata(item_index) == effect_name:
 			index = item_index
 			break
 	effect_option.select(index)
@@ -230,7 +236,7 @@ func _rebuild_hit_slot_rows() -> void:
 		var row := HIT_SLOT_ROW_SCENE.instantiate() as SkinHitSlotRow
 		skin_contents.add_child(row)
 		skin_contents.move_child(row, hits_add_new_button.get_index())
-		row.setup("hit %d" % (hit_index + 1))
+		row.setup(GameText.text(GameText.Key.EDITOR_HIT_SLOT) % (hit_index + 1))
 		row.option_selected.connect(_on_hit_slot_option_selected.bind(hit_index))
 		row.remove_requested.connect(_on_remove_hit_slot_pressed.bind(hit_index))
 		_populate_animation_option(row.option_button, false, _get_hit_animation(hit_index))
@@ -624,7 +630,7 @@ func _on_effect_selected(index: int) -> void:
 	var animation = document.get_selected_animation()
 	if animation == null:
 		return
-	animation.effect = effect_option.get_item_text(index)
+	animation.effect = effect_option.get_item_metadata(index)
 	document.mark_dirty()
 
 func _on_import_pressed() -> void:
@@ -694,7 +700,7 @@ func _update_preview_play_button(animation) -> void:
 		_preview_playing = false
 	preview_play_button.disabled = not can_play
 	preview_play_button.set_pressed_no_signal(_preview_playing)
-	preview_play_button.text = "stop preview" if _preview_playing else "play preview"
+	preview_play_button.text = GameText.text(GameText.Key.EDITOR_STOP_PREVIEW) if _preview_playing else GameText.text(GameText.Key.EDITOR_PLAY_PREVIEW)
 
 func _update_preview_drop_state() -> void:
 	preview_sprite.modulate = Color(0.7, 1.0, 0.75, 1.0) if _preview_replace_hovered else Color.WHITE

@@ -22,7 +22,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer" unique_id=788005833]
 layout_mode = 2
-text = "BPM : "
+text = "EDITOR_TIMING_BPM"
 
 [node name="BPM" type="LineEdit" parent="MarginContainer/HBoxContainer" unique_id=823514799]
 layout_mode = 2
@@ -30,7 +30,7 @@ placeholder_text = "100.0"
 
 [node name="Label2" type="Label" parent="MarginContainer/HBoxContainer" unique_id=678686071]
 layout_mode = 2
-text = "Time : "
+text = "EDITOR_TIMING_TIME"
 
 [node name="Time" type="LineEdit" parent="MarginContainer/HBoxContainer" unique_id=686243392]
 layout_mode = 2
@@ -43,4 +43,4 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_ryhys")
 
 [node name="Button" type="Button" parent="MarginContainer/HBoxContainer" unique_id=592617524]
 layout_mode = 2
-text = "REMOVE"
+text = "EDITOR_REMOVE"

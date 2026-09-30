@@ -36,8 +36,12 @@ func connect_dialogs() -> void:
 	if skin_picker_menu != null:
 		skin_picker_menu.id_pressed.connect(_on_skin_picker_id_pressed)
 	if cover_file_dialog != null:
+		cover_file_dialog.title = GameText.text(GameText.Key.EDITOR_OPEN_FILE)
+		cover_file_dialog.filters = PackedStringArray(["*.png,*.jpg,*.jpeg,*.webp ; " + GameText.text(GameText.Key.EDITOR_COVER_IMAGE)])
 		cover_file_dialog.file_selected.connect(_on_cover_file_selected)
 	if audio_file_dialog != null:
+		audio_file_dialog.title = GameText.text(GameText.Key.EDITOR_OPEN_FILE)
+		audio_file_dialog.filters = PackedStringArray(["*.mp3,*.ogg,*.wav ; " + GameText.text(GameText.Key.EDITOR_AUDIO_FILE)])
 		audio_file_dialog.file_selected.connect(_on_audio_file_selected)
 
 	if cover_browser_button != null:
@@ -69,17 +73,17 @@ func refresh_metadata_fields() -> void:
 func update_skin_file_ui() -> void:
 	if skin_file_label == null or editor == null or editor.chart == null:
 		return
-	skin_file_label.text = editor.chart.file_skin if editor.chart.file_skin != "" else "(no linked skin file)"
+	skin_file_label.text = editor.chart.file_skin if editor.chart.file_skin != "" else GameText.text(GameText.Key.EDITOR_NO_SKIN)
 	skin_file_label.tooltip_text = skin_file_label.text
 
 func update_media_ui() -> void:
 	if editor == null or editor.chart == null:
 		return
 	if cover_file_label != null:
-		cover_file_label.text = editor.chart.file_cover_art if not editor.chart.file_cover_art.is_empty() else "(no linked cover art)"
+		cover_file_label.text = editor.chart.file_cover_art if not editor.chart.file_cover_art.is_empty() else GameText.text(GameText.Key.EDITOR_NO_COVER)
 		cover_file_label.tooltip_text = cover_file_label.text
 	if audio_file_label != null:
-		audio_file_label.text = editor.chart.file_audio if not editor.chart.file_audio.is_empty() else "(no linked audio file)"
+		audio_file_label.text = editor.chart.file_audio if not editor.chart.file_audio.is_empty() else GameText.text(GameText.Key.EDITOR_NO_AUDIO)
 		audio_file_label.tooltip_text = audio_file_label.text
 	_update_cover_preview()
 
@@ -233,12 +237,12 @@ func open_skin_browser() -> void:
 		_skin_picker_items.append(folder_name)
 		var label := folder_name
 		if folder_name == editor.chart.file_skin:
-			label = "%s (current)" % folder_name
+			label = GameText.text(GameText.Key.EDITOR_CURRENT_SKIN) % folder_name
 		skin_picker_menu.add_item(label, id)
 
 	if not _skin_picker_items.is_empty():
 		skin_picker_menu.add_separator()
-	skin_picker_menu.add_item("Create New One", CREATE_NEW_SKIN_ID)
+	skin_picker_menu.add_item(GameText.text(GameText.Key.EDITOR_CREATE_SKIN), CREATE_NEW_SKIN_ID)
 
 	var button_rect := skin_browser_button.get_global_rect() if skin_browser_button != null else Rect2(Vector2.ZERO, Vector2.ZERO)
 	var popup_position := Vector2i(int(button_rect.position.x), int(button_rect.position.y + button_rect.size.y))

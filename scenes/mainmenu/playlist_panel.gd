@@ -114,9 +114,16 @@ func _on_chart_update(_chartsets) -> void:
 		_show_packs()
 
 
+static func playlist_title(title: String) -> String:
+	match title.to_lower():
+		"loved": return TranslationServer.translate("PLAYLIST_LOVED")
+		"recent": return TranslationServer.translate("PLAYLIST_RECENT")
+	return TranslationServer.translate(title)
+
+
 static func pack_title(pack_id: String) -> String:
 	match pack_id:
-		"": return "All Charts"
+		"": return TranslationServer.translate("PLAYLIST_ALL_CHARTS")
 		"dansu": return "Dansu"
 		"extended": return "Extended"
 	return pack_id.to_upper() if pack_id.begins_with("dlc") else pack_id.capitalize()
@@ -181,13 +188,14 @@ func _render_playlists() -> void:
 
 func _create_playlist_item(index: int, playlist: Playlist) -> Control:
 	var added := playlist.id == selected_id if browsing else _playlist_contains_current(playlist)
-	var tooltip := playlist.name if browsing else ("Remove from this playlist" if added else "Add to this playlist")
+	var title := playlist_title(playlist.name)
+	var tooltip := title if browsing else ("Remove from this playlist" if added else "Add to this playlist")
 	var on_pressed := _toggle_playlist.bind(index)
 	if browsing:
 		on_pressed = func():
 			playlist_selected.emit(playlist.id, playlist.name)
 			close()
-	return _create_item(playlist.name, tooltip, added, on_pressed)
+	return _create_item(title, tooltip, added, on_pressed)
 
 
 func _create_item(title: String, tooltip: String, selected: bool, on_pressed: Callable) -> Control:
@@ -314,7 +322,7 @@ func _build_item_theme(added: bool = false) -> Theme:
 	var theme := Theme.new()
 	if item_font != null:
 		theme.set_font("font", "Button", item_font)
-	theme.set_font_size("font_size", "Button", 24)
+	theme.set_font_size("font_size", "Button", 18)
 	theme.set_color("font_color", "Button", COLOR_ADDED_TEXT if added else COLOR_TEXT)
 	theme.set_color("font_hover_color", "Button", Color.WHITE)
 	theme.set_color("font_pressed_color", "Button", Color.WHITE)
@@ -332,8 +340,8 @@ func _style(color: Color) -> StyleBoxFlat:
 	style.bg_color = color
 	style.content_margin_left = 18.0
 	style.content_margin_right = 18.0
-	style.content_margin_top = 8.0
-	style.content_margin_bottom = 8.0
+	style.content_margin_top = 5.0
+	style.content_margin_bottom = 5.0
 	style.set_corner_radius_all(4)
 	return style
 

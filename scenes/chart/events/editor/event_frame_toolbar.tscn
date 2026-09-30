@@ -23,7 +23,7 @@ text = "+"
 
 [node name="Duplicate" type="Button" parent="."]
 layout_mode = 2
-text = "Duplicate"
+text = "EDITOR_DUPLICATE"
 
 [node name="Remove" type="Button" parent="."]
 layout_mode = 2

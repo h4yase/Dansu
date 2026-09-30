@@ -9,8 +9,35 @@ const EASE_OPTIONS := [
 	"in_cubic", "out_cubic", "in_out_cubic",
 	"in_back", "out_back", "in_out_back",
 ]
+const EASE_KEYS: Array[GameText.Key] = [
+	GameText.Key.EDITOR_EASE_DEFAULT,
+	GameText.Key.EDITOR_EASE_LINEAR,
+	GameText.Key.EDITOR_EASE_IN_SINE,
+	GameText.Key.EDITOR_EASE_OUT_SINE,
+	GameText.Key.EDITOR_EASE_IN_OUT_SINE,
+	GameText.Key.EDITOR_EASE_IN_QUAD,
+	GameText.Key.EDITOR_EASE_OUT_QUAD,
+	GameText.Key.EDITOR_EASE_IN_OUT_QUAD,
+	GameText.Key.EDITOR_EASE_IN_CUBIC,
+	GameText.Key.EDITOR_EASE_OUT_CUBIC,
+	GameText.Key.EDITOR_EASE_IN_OUT_CUBIC,
+	GameText.Key.EDITOR_EASE_IN_BACK,
+	GameText.Key.EDITOR_EASE_OUT_BACK,
+	GameText.Key.EDITOR_EASE_IN_OUT_BACK,
+]
+const ANCHOR_KEYS: Array[GameText.Key] = [
+	GameText.Key.EDITOR_ANCHOR_TOP_LEFT,
+	GameText.Key.EDITOR_ANCHOR_TOP_CENTER,
+	GameText.Key.EDITOR_ANCHOR_TOP_RIGHT,
+	GameText.Key.EDITOR_ANCHOR_CENTER_LEFT,
+	GameText.Key.EDITOR_ANCHOR_CENTER,
+	GameText.Key.EDITOR_ANCHOR_CENTER_RIGHT,
+	GameText.Key.EDITOR_ANCHOR_BOTTOM_LEFT,
+	GameText.Key.EDITOR_ANCHOR_BOTTOM_CENTER,
+	GameText.Key.EDITOR_ANCHOR_BOTTOM_RIGHT,
+]
 const OVERLAY_LANE_START := 3
-const FIXED_LANE_NAMES := ["CAMERA", "THEME", "SKIN"]
+const FIXED_LANE_KEYS: Array[GameText.Key] = [GameText.Key.EDITOR_CAMERA, GameText.Key.EDITOR_THEME, GameText.Key.EDITOR_SKIN]
 const CAMERA_COLOR := Color("46b8ff")
 const THEME_COLOR := Color("5ed39a")
 const SKIN_COLOR := Color("ef6f8f")
@@ -133,10 +160,10 @@ func get_lane_count() -> int:
 	return OVERLAY_LANE_START + _overlay_layer_count
 
 func get_lane_name(lane: int) -> String:
-	if lane >= 0 and lane < FIXED_LANE_NAMES.size():
-		return FIXED_LANE_NAMES[lane]
+	if lane >= 0 and lane < FIXED_LANE_KEYS.size():
+		return GameText.text(FIXED_LANE_KEYS[lane])
 	if lane >= OVERLAY_LANE_START:
-		return "OVERLAY %d" % (lane - OVERLAY_LANE_START + 1)
+		return GameText.text(GameText.Key.EDITOR_OVERLAY_LANE) % (lane - OVERLAY_LANE_START + 1)
 	return ""
 
 func get_lane_color(lane: int) -> Color:
@@ -455,44 +482,44 @@ func refresh_inspector() -> void:
 
 	var event := _get_selected_event()
 	if event == null:
-		_add_title("EVENTS")
+		_add_title(GameText.text(GameText.Key.EDITOR_EVENTS))
 		UIFocusUtils.disable_focus_recursive(inspector_content)
 		_syncing = false
 		return
 
 	var lane := get_event_lane(event)
-	_add_title("%s EVENT" % _get_event_type_name(event).to_upper())
-	_add_readonly_badge("CLIP" if not event is SkinEvent else "TRIGGER", get_lane_color(lane))
-	_add_line_row("ID", event.id, _on_event_id_committed.bind(event))
-	_add_number_row("Start (ms)", event.time, editor.timeline.get_min_time(), editor.timeline.get_max_time(), 1.0, _on_event_time_changed.bind(event))
+	_add_title(GameText.text(GameText.Key.EDITOR_EVENT_TITLE) % (GameText.text(GameText.Key.EDITOR_OVERLAY) if event is OverlayEvent else get_lane_name(lane)))
+	_add_readonly_badge(GameText.text(GameText.Key.EDITOR_CLIP) if not event is SkinEvent else GameText.text(GameText.Key.EDITOR_TRIGGER), get_lane_color(lane))
+	_add_line_row(GameText.text(GameText.Key.EDITOR_EVENT_ID), event.id, _on_event_id_committed.bind(event))
+	_add_number_row(GameText.text(GameText.Key.EDITOR_START_MS), event.time, editor.timeline.get_min_time(), editor.timeline.get_max_time(), 1.0, _on_event_time_changed.bind(event))
 	if not event is SkinEvent:
-		_add_number_row("Duration", event.duration, 0.0, editor.timeline.get_max_time(), 1.0, _on_event_duration_changed.bind(event))
+		_add_number_row(GameText.text(GameText.Key.EDITOR_DURATION), event.duration, 0.0, editor.timeline.get_max_time(), 1.0, _on_event_duration_changed.bind(event))
 	if event is OverlayEvent:
-		_add_number_row("Layer", (event as OverlayEvent).x, 0.0, 1000.0, 1.0, _on_overlay_layer_changed.bind(event as OverlayEvent))
+		_add_number_row(GameText.text(GameText.Key.EDITOR_LAYER), (event as OverlayEvent).x, 0.0, 1000.0, 1.0, _on_overlay_layer_changed.bind(event as OverlayEvent))
 		_add_overlay_anchor_row((event as OverlayEvent).anchor, _on_overlay_anchor_changed.bind(event as OverlayEvent))
 
 	if event is SkinEvent:
-		_add_separator("RESOURCE")
-		_add_resource_row("Skin JSON", (event as SkinEvent).skin_json, "skin", event, null)
+		_add_separator(GameText.text(GameText.Key.EDITOR_RESOURCE))
+		_add_resource_row(GameText.text(GameText.Key.EDITOR_SKIN_JSON), (event as SkinEvent).skin_json, "skin", event, null)
 		_add_resource_folder_button()
-		_add_destructive_button("Delete skin trigger", _delete_event.bind(event))
+		_add_destructive_button(GameText.text(GameText.Key.EDITOR_DELETE_SKIN_TRIGGER), _delete_event.bind(event))
 		UIFocusUtils.disable_focus_recursive(inspector_content)
 		_syncing = false
 		return
 
-	_add_separator("KEYFRAMES")
+	_add_separator(GameText.text(GameText.Key.EDITOR_KEYFRAMES))
 	_add_frame_toolbar(event)
 	var frame := _get_selected_frame()
 	if frame != null:
-		_add_number_row("Offset (ms)", frame.time, 0.0, event.duration, 1.0, _on_frame_time_changed.bind(event, frame))
+		_add_number_row(GameText.text(GameText.Key.EDITOR_OFFSET_MS), frame.time, 0.0, event.duration, 1.0, _on_frame_time_changed.bind(event, frame))
 		if frame is CameraEventFrame:
 			_build_camera_frame_inspector(event as CameraEvent, frame as CameraEventFrame)
 		elif frame is OverlayEventFrame:
 			_build_overlay_frame_inspector(event as OverlayEvent, frame as OverlayEventFrame)
 		elif frame is ThemeEventFrame:
 			_build_theme_frame_inspector(event as ThemeEvent, frame as ThemeEventFrame)
-	_add_separator("CLIP")
-	_add_destructive_button("Delete event", _delete_event.bind(event))
+	_add_separator(GameText.text(GameText.Key.EDITOR_CLIP))
+	_add_destructive_button(GameText.text(GameText.Key.EDITOR_DELETE_EVENT), _delete_event.bind(event))
 	UIFocusUtils.disable_focus_recursive(inspector_content)
 	_syncing = false
 
@@ -513,32 +540,32 @@ func sync_zoom_control(value: float) -> void:
 	_syncing = false
 
 func _build_camera_frame_inspector(event: CameraEvent, frame: CameraEventFrame) -> void:
-	_add_separator("CAMERA")
-	_add_check_row("Follow character", frame.follow_character, _on_camera_follow_changed.bind(event, frame))
-	_add_number_row("Position X", frame.position.x, -10000.0, 10000.0, 0.01, _on_camera_vector_changed.bind(event, frame, true))
-	_add_number_row("Position Y", frame.position.y, -10000.0, 10000.0, 0.01, _on_camera_vector_changed.bind(event, frame, false))
-	_add_number_row("Zoom", frame.zoom, 0.01, 20.0, 0.01, _on_camera_zoom_changed.bind(event, frame))
+	_add_separator(GameText.text(GameText.Key.EDITOR_CAMERA))
+	_add_check_row(GameText.text(GameText.Key.EDITOR_FOLLOW_CHARACTER), frame.follow_character, _on_camera_follow_changed.bind(event, frame))
+	_add_number_row(GameText.text(GameText.Key.EDITOR_POSITION_X), frame.position.x, -10000.0, 10000.0, 0.01, _on_camera_vector_changed.bind(event, frame, true))
+	_add_number_row(GameText.text(GameText.Key.EDITOR_POSITION_Y), frame.position.y, -10000.0, 10000.0, 0.01, _on_camera_vector_changed.bind(event, frame, false))
+	_add_number_row(GameText.text(GameText.Key.EDITOR_ZOOM), frame.zoom, 0.01, 20.0, 0.01, _on_camera_zoom_changed.bind(event, frame))
 	_add_ease_row(frame.ease, _on_frame_ease_changed.bind(event, frame))
 
 func _build_overlay_frame_inspector(event: OverlayEvent, frame: OverlayEventFrame) -> void:
-	_add_separator("OVERLAY")
-	_add_resource_row("Sprite", frame.sprite, "sprite", event, frame)
-	_add_number_row("Position X", frame.position.x, -10000.0, 10000.0, 1.0, _on_overlay_position_changed.bind(event, frame, true))
-	_add_number_row("Position Y", frame.position.y, -10000.0, 10000.0, 1.0, _on_overlay_position_changed.bind(event, frame, false))
-	_add_number_row("Scale X", frame.scale.x, -20.0, 20.0, 0.01, _on_overlay_scale_changed.bind(event, frame, true))
-	_add_number_row("Scale Y", frame.scale.y, -20.0, 20.0, 0.01, _on_overlay_scale_changed.bind(event, frame, false))
-	_add_number_row("Rotation", frame.rotation, -3600.0, 3600.0, 0.1, _on_overlay_rotation_changed.bind(event, frame))
-	_add_check_row("Override opacity", frame.has_opacity, _on_overlay_opacity_enabled.bind(event, frame))
+	_add_separator(GameText.text(GameText.Key.EDITOR_OVERLAY))
+	_add_resource_row(GameText.text(GameText.Key.EDITOR_SPRITE), frame.sprite, "sprite", event, frame)
+	_add_number_row(GameText.text(GameText.Key.EDITOR_POSITION_X), frame.position.x, -10000.0, 10000.0, 1.0, _on_overlay_position_changed.bind(event, frame, true))
+	_add_number_row(GameText.text(GameText.Key.EDITOR_POSITION_Y), frame.position.y, -10000.0, 10000.0, 1.0, _on_overlay_position_changed.bind(event, frame, false))
+	_add_number_row(GameText.text(GameText.Key.EDITOR_SCALE_X), frame.scale.x, -20.0, 20.0, 0.01, _on_overlay_scale_changed.bind(event, frame, true))
+	_add_number_row(GameText.text(GameText.Key.EDITOR_SCALE_Y), frame.scale.y, -20.0, 20.0, 0.01, _on_overlay_scale_changed.bind(event, frame, false))
+	_add_number_row(GameText.text(GameText.Key.EDITOR_ROTATION), frame.rotation, -3600.0, 3600.0, 0.1, _on_overlay_rotation_changed.bind(event, frame))
+	_add_check_row(GameText.text(GameText.Key.EDITOR_OVERRIDE_OPACITY), frame.has_opacity, _on_overlay_opacity_enabled.bind(event, frame))
 	if frame.has_opacity:
-		_add_number_row("Opacity", frame.opacity, 0.0, 1.0, 0.01, _on_overlay_opacity_changed.bind(event, frame))
+		_add_number_row(GameText.text(GameText.Key.EDITOR_OPACITY), frame.opacity, 0.0, 1.0, 0.01, _on_overlay_opacity_changed.bind(event, frame))
 	_add_ease_row(frame.ease, _on_frame_ease_changed.bind(event, frame))
 	_add_resource_folder_button()
 
 func _build_theme_frame_inspector(event: ThemeEvent, frame: ThemeEventFrame) -> void:
-	_add_separator("THEME")
-	_add_color_row("Background A", frame.bg_color, _on_theme_color_changed.bind(event, frame, 0))
-	_add_color_row("Background B", frame.bg_color_2, _on_theme_color_changed.bind(event, frame, 1))
-	_add_color_row("Rail", frame.rail_color, _on_theme_color_changed.bind(event, frame, 2))
+	_add_separator(GameText.text(GameText.Key.EDITOR_THEME))
+	_add_color_row(GameText.text(GameText.Key.EDITOR_BACKGROUND_A), frame.bg_color, _on_theme_color_changed.bind(event, frame, 0))
+	_add_color_row(GameText.text(GameText.Key.EDITOR_BACKGROUND_B), frame.bg_color_2, _on_theme_color_changed.bind(event, frame, 1))
+	_add_color_row(GameText.text(GameText.Key.EDITOR_RAIL), frame.rail_color, _on_theme_color_changed.bind(event, frame, 2))
 	_add_ease_row(frame.ease, _on_frame_ease_changed.bind(event, frame))
 
 func _add_frame_toolbar(event: ChartEvent) -> void:
@@ -580,10 +607,10 @@ func _add_ease_row(value: String, callback: Callable) -> void:
 	if not value.is_empty() and not values.has(value):
 		values.append(value)
 	var labels: Array[String] = []
-	for ease_name in values:
-		labels.append("Default (linear)" if ease_name.is_empty() else ease_name)
+	for index in range(values.size()):
+		labels.append(GameText.text(EASE_KEYS[index]) if index < EASE_KEYS.size() else values[index])
 	_add_inspector_item().setup_option(
-		"Ease",
+		GameText.text(GameText.Key.EDITOR_EASE),
 		labels,
 		maxi(0, values.find(value)),
 		func(index: int) -> void: callback.call(values[index])
@@ -591,10 +618,10 @@ func _add_ease_row(value: String, callback: Callable) -> void:
 
 func _add_overlay_anchor_row(value: String, callback: Callable) -> void:
 	var labels: Array[String] = []
-	for preset in OverlayEventFrame.ANCHOR_PRESETS:
-		labels.append(preset.replace("_", " ").capitalize())
+	for key in ANCHOR_KEYS:
+		labels.append(GameText.text(key))
 	_add_inspector_item().setup_option(
-		"Anchor",
+		GameText.text(GameText.Key.EDITOR_ANCHOR),
 		labels,
 		maxi(0, OverlayEventFrame.ANCHOR_PRESETS.find(value)),
 		func(index: int) -> void: callback.call(OverlayEventFrame.ANCHOR_PRESETS[index])
@@ -608,7 +635,7 @@ func _add_resource_row(label_text: String, current: String, kind: String, event:
 		references.insert(0, current)
 	var labels: Array[String] = []
 	for reference in references:
-		labels.append("<none>" if reference.is_empty() else reference)
+		labels.append(GameText.text(GameText.Key.EDITOR_NONE) if reference.is_empty() else reference)
 	var import_callback := (
 		_resource_importer.open.bind(editor.chart, kind, event, frame)
 		if EditorEventResourceImporter.can_import(kind)
@@ -624,7 +651,7 @@ func _add_resource_row(label_text: String, current: String, kind: String, event:
 
 func _add_resource_folder_button() -> void:
 	_add_inspector_item().setup_button(
-		"Open eventres folder",
+		GameText.text(GameText.Key.EDITOR_OPEN_RESOURCES),
 		EditorEventResourceImporter.open_folder.bind(editor.chart)
 	)
 
@@ -717,7 +744,7 @@ func _apply_dock_layout() -> void:
 	event_dock.anchor_top = collapsed_dock_top if _collapsed else expanded_dock_top
 	editor.chart_root.anchor_bottom = collapsed_stage_bottom if _collapsed else expanded_stage_bottom
 	if collapse_button != null:
-		collapse_button.text = "Expand" if _collapsed else "Collapse"
+		collapse_button.text = GameText.text(GameText.Key.EDITOR_EXPAND) if _collapsed else GameText.text(GameText.Key.EDITOR_COLLAPSE)
 
 func _mark_changed(event: ChartEvent, frame: ChartEventFrame = null) -> void:
 	if event != null:

@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://drcicje7q2t7x"
-path="res://.godot/imported/Next Bravo.ttf-d05691773a4e48b2ada0d3cf18323ea4.fontdata"
+path="res://.godot/imported/Next Bravo.ttf-27c4989af5fb448b7f08f20efed820b2.fontdata"
 
 [deps]
 
-source_file="res://resources/fonts/Next Bravo.ttf"
-dest_files=["res://.godot/imported/Next Bravo.ttf-d05691773a4e48b2ada0d3cf18323ea4.fontdata"]
+source_file="res://resources/fonts/bold/Next Bravo.ttf"
+dest_files=["res://.godot/imported/Next Bravo.ttf-27c4989af5fb448b7f08f20efed820b2.fontdata"]
 
 [params]
 
@@ -27,10 +27,15 @@ subpixel_positioning=4
 keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null
-fallbacks=[]
+fallbacks=[Resource("uid://pcwei8261gww", "res://resources/fonts/bold/KR/BlackHanSans-Regular.ttf")]
 Compress=null
 compress=true
-preload=[]
+preload=[{
+"chars": [],
+"glyphs": [],
+"name": "새 구성",
+"size": Vector2i(16, 0)
+}]
 language_support={}
 script_support={}
 opentype_features={}
