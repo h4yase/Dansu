@@ -27,8 +27,8 @@ func _refresh() -> void:
 		var stats = profile.get("stats", {})
 		name_label.text = str(profile.get("username", profile.get("steam_persona_name", "PLAYER")))
 		var sr = float(stats.get("sr_total", 0.0)) if stats is Dictionary else 0.00
-		rating_label.text = "%.2f SR" % (sr * 5)
-		rating_label.self_modulate = Rating.get_color_from_rating(sr / 20)
+		rating_label.text = "%.2f SR" % (sr)
+		rating_label.self_modulate = Rating.get_color_from_rating(sr,false,true)
 		var rank_value = profile.get("rank")
 		rank_label.text = "#%d" % int(rank_value) if rank_value is int or rank_value is float else "not placed"
 		_request_avatar(profile.avatar_url)

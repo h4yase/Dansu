@@ -156,13 +156,16 @@ func _on_page(data: Dictionary) -> void:
 		return
 	_page = int(data.get("page", _page + 1))
 	_total_pages = int(data.get("total_pages", _page))
+	var is_ranked := not _chart.file_name.is_empty() and _chart.storage_root == FileSystem.official_chart_path
+	if _chart.chart_set != null:
+		is_ranked = is_ranked or _chart.chart_set.status == "ranked" or _chart.chart_set.online_metadata.get("origin") == "official"
 	var index := 0
 	for item in data.items:
 		if not item is Dictionary:
 			continue
 		var row := InlineLeaderboardRow.new()
 		_entries.add_child(row)
-		row.set_entry(item, _maximum_combo, _chart.chart_set != null and _chart.chart_set.status == "ranked")
+		row.set_entry(item, _maximum_combo, is_ranked)
 		row.action_pressed.connect(_on_row_action.bind(row))
 		row.play_appear(minf(index * 0.035, 0.35))
 		index += 1
