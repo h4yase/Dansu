@@ -1,6 +1,8 @@
 extends Node
 class_name EditorTransport
 
+signal note_crossed(note: Note)
+
 const SFX_PLAYER_COUNT := 8
 
 var chart: Chart = null
@@ -185,7 +187,8 @@ func _play_sfx_between(from_time: float, to_time: float) -> void:
 		if note.time > to_time:
 			break
 		if note.time > from_time:
-			_play_sfx(hitsound_manager.get_stream_for_note(note))
+			play_sfx(hitsound_manager.get_stream_for_note(note))
+			note_crossed.emit(note)
 		_playback_note_index += 1
 	_last_sfx_time = to_time
 	_play_release_sfx_between(from_time, to_time)
@@ -201,11 +204,11 @@ func _play_release_sfx_between(from_time: float, to_time: float) -> void:
 		if release_time > to_time:
 			break
 		if release_time > from_time:
-			_play_sfx(hitsound_manager.get_release_stream())
+			play_sfx(hitsound_manager.get_release_stream())
 		_release_note_index += 1
 	_last_release_sfx_time = to_time
 
-func _play_sfx(stream: AudioStream) -> void:
+func play_sfx(stream: AudioStream) -> void:
 	if stream == null or _sfx_players.is_empty():
 		return
 	var player := _sfx_players[_next_sfx_index]

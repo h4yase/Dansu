@@ -1,42 +1,192 @@
 [gd_scene format=3 uid="uid://bu0j8qugn442u"]
 
-[node name="Point" type="VBoxContainer" unique_id=1859474528]
+[ext_resource type="Script" uid="uid://bt2f7p12jrpgs" path="res://chart/editor/editor_point_item.gd" id="1_point"]
+[ext_resource type="Texture2D" uid="uid://3olrnygdfplw" path="res://resources/textures/editor/editor_slider_grabber.svg" id="2_grabber"]
+[ext_resource type="FontFile" uid="uid://c4jpym2g4ea1n" path="res://resources/fonts/thin/BebasNeue-Regular.ttf" id="2_o8u8m"]
+[ext_resource type="Texture2D" uid="uid://bhlw2kllu5qtp" path="res://resources/textures/editor/editor_slider_grabber_hover.svg" id="3_grabber_hover"]
 
-[node name="Label4" type="Label" parent="." unique_id=1437085320]
-layout_mode = 2
-text = "EDITOR_POINT"
+[sub_resource type="StyleBoxFlat" id="Style_normal"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+bg_color = Color(0.08627451, 0.09019608, 0.14509805, 0.9607843)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3372549, 0.3019608, 0.5529412, 0.75)
 
-[node name="HSeparator" type="HSeparator" parent="." unique_id=1021443731]
+[sub_resource type="StyleBoxFlat" id="Style_selected"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+bg_color = Color(0.12156863, 0.12941177, 0.20392157, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5058824, 0.43137255, 0.93333334, 0.95)
+
+[sub_resource type="StyleBoxFlat" id="Style_input"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.09803922, 0.105882354, 0.16470589, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3372549, 0.3019608, 0.5529412, 0.75)
+
+[sub_resource type="StyleBoxFlat" id="Style_input_focus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5058824, 0.43137255, 0.93333334, 0.95)
+
+[sub_resource type="StyleBoxFlat" id="Style_track"]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.11764706, 0.12156863, 0.1882353, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_fill"]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.47058824, 0.40392157, 0.8784314, 0.95)
+
+[node name="Point" type="PanelContainer" unique_id=1847929533 node_paths=PackedStringArray("number_label", "time_edit", "position_slider", "position_value", "curve_slider", "curve_value")]
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_normal")
+script = ExtResource("1_point")
+number_label = NodePath("Rows/Header/Number")
+time_edit = NodePath("Rows/Header/Time")
+position_slider = NodePath("Rows/Values/Position/Slider")
+position_value = NodePath("Rows/Values/Position/Header/Value")
+curve_slider = NodePath("Rows/Values/Curve/Slider")
+curve_value = NodePath("Rows/Values/Curve/Header/Value")
+selected_style = SubResource("Style_selected")
+
+[node name="Rows" type="VBoxContainer" parent="." unique_id=1634456408]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="Rows" unique_id=1201253093]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Number" type="Label" parent="Rows/Header" unique_id=1696969917]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.931, 0.934, 0.988, 1)
+theme_override_fonts/font = ExtResource("2_o8u8m")
+theme_override_font_sizes/font_size = 16
+text = "#1"
+
+[node name="TimeLabel" type="Label" parent="Rows/Header" unique_id=1123556055]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.931, 0.934, 0.988, 1)
+theme_override_fonts/font = ExtResource("2_o8u8m")
+theme_override_font_sizes/font_size = 18
+text = "EDITOR_TIME"
+
+[node name="Time" type="LineEdit" parent="Rows/Header" unique_id=385249355]
+custom_minimum_size = Vector2(120, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_o8u8m")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("Style_input")
+theme_override_styles/read_only = SubResource("Style_input")
+theme_override_styles/focus = SubResource("Style_input_focus")
+placeholder_text = "0"
+alignment = 2
+
+[node name="Unit" type="Label" parent="Rows/Header" unique_id=1166628539]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.76, 0.77, 0.86, 0.62)
+theme_override_fonts/font = ExtResource("2_o8u8m")
+theme_override_font_sizes/font_size = 18
+text = "ms"
+
+[node name="Values" type="HBoxContainer" parent="Rows" unique_id=2009788228]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Position" type="VBoxContainer" parent="Rows/Values" unique_id=883137984]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Header" type="HBoxContainer" parent="Rows/Values/Position" unique_id=2007232554]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="." unique_id=718418282]
+[node name="Label" type="Label" parent="Rows/Values/Position/Header" unique_id=1243539264]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.931, 0.934, 0.988, 1)
+theme_override_fonts/font = ExtResource("2_o8u8m")
+theme_override_font_sizes/font_size = 18
 text = "EDITOR_POSITION"
-horizontal_alignment = 1
 
-[node name="position" type="HSlider" parent="." unique_id=51686213]
+[node name="Value" type="Label" parent="Rows/Values/Position/Header" unique_id=1862632842]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.931, 0.934, 0.988, 1)
+theme_override_fonts/font = ExtResource("2_o8u8m")
+theme_override_font_sizes/font_size = 18
+text = "0.50"
+horizontal_alignment = 2
+
+[node name="Slider" type="HSlider" parent="Rows/Values/Position" unique_id=117870392]
+custom_minimum_size = Vector2(60, 18)
+layout_mode = 2
+theme_override_icons/grabber = ExtResource("2_grabber")
+theme_override_icons/grabber_highlight = ExtResource("3_grabber_hover")
+theme_override_icons/grabber_disabled = ExtResource("2_grabber")
+theme_override_styles/slider = SubResource("Style_track")
+theme_override_styles/grabber_area = SubResource("Style_fill")
+theme_override_styles/grabber_area_highlight = SubResource("Style_fill")
 max_value = 1.0
 step = 0.1
-value = 0.5
 
-[node name="Label3" type="Label" parent="." unique_id=994785040]
+[node name="Curve" type="VBoxContainer" parent="Rows/Values" unique_id=2070718649]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Header" type="HBoxContainer" parent="Rows/Values/Curve" unique_id=2074653547]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Rows/Values/Curve/Header" unique_id=1588266699]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.931, 0.934, 0.988, 1)
+theme_override_fonts/font = ExtResource("2_o8u8m")
+theme_override_font_sizes/font_size = 18
 text = "EDITOR_CURVE"
-horizontal_alignment = 1
 
-[node name="curve" type="HSlider" parent="." unique_id=1061330397]
+[node name="Value" type="Label" parent="Rows/Values/Curve/Header" unique_id=1948711346]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.931, 0.934, 0.988, 1)
+theme_override_fonts/font = ExtResource("2_o8u8m")
+theme_override_font_sizes/font_size = 18
+text = "0.00"
+horizontal_alignment = 2
+
+[node name="Slider" type="HSlider" parent="Rows/Values/Curve" unique_id=539993735]
+custom_minimum_size = Vector2(60, 18)
+layout_mode = 2
+theme_override_icons/grabber = ExtResource("2_grabber")
+theme_override_icons/grabber_highlight = ExtResource("3_grabber_hover")
+theme_override_icons/grabber_disabled = ExtResource("2_grabber")
+theme_override_styles/slider = SubResource("Style_track")
+theme_override_styles/grabber_area = SubResource("Style_fill")
+theme_override_styles/grabber_area_highlight = SubResource("Style_fill")
 min_value = -1.0
 max_value = 1.0
 step = 0.1
-
-[node name="Label2" type="Label" parent="." unique_id=1447457270]
-layout_mode = 2
-text = "EDITOR_TIMING"
-horizontal_alignment = 1
-
-[node name="LineEdit" type="LineEdit" parent="." unique_id=1392784769]
-layout_mode = 2
-placeholder_text = "10000"
-alignment = 1

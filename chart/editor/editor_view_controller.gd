@@ -4,10 +4,12 @@ class_name EditorViewController
 class NoteHit extends RefCounted:
 	var note: Note
 	var rail: Rail
+	var tail: bool
 
-	func _init(p_note: Note, p_rail: Rail) -> void:
+	func _init(p_note: Note, p_rail: Rail, p_tail: bool = false) -> void:
 		note = p_note
 		rail = p_rail
+		tail = p_tail
 
 class PointHit extends RefCounted:
 	var rail: Rail
@@ -18,7 +20,7 @@ class PointHit extends RefCounted:
 		point_index = p_index
 
 
-const POINT_HIT_RADIUS := 12.0
+const POINT_HIT_RADIUS := 15.0
 @export var editor: ChartEditor
 @export var chart_root: Control
 @export var chart_panel: Control
@@ -37,6 +39,48 @@ var _last_panel_size := Vector2(-1.0, -1.0)
 var _last_judge_y := INF
 var _last_current_time := INF
 
+var _hover_note: EditorNote
+var _hover_rail: EditorRail
+var _hover_mouse := Vector2(INF, INF)
+var _hover_time := INF
+var _hover_enabled := false
+
+func _ready() -> void:
+	editor.transport.note_crossed.connect(_on_note_crossed)
+
+func _on_note_crossed(note: Note) -> void:
+	var note_view := note_views.get(note) as EditorNote
+	if note_view != null:
+		note_view.play_pass()
+
+func _process(_delta: float) -> void:
+	if editor == null:
+		return
+	var can_hover: bool = editor._is_mouse_inside_chart() and not editor.edit_controller.gesture.active \
+		and not (editor.event_controller != null and editor.event_controller.active)
+	var mouse := editor.get_global_mouse_position()
+	if mouse == _hover_mouse and _hover_time == Game.current_time and can_hover == _hover_enabled:
+		return
+	_hover_mouse = mouse
+	_hover_time = Game.current_time
+	_hover_enabled = can_hover
+	if is_instance_valid(_hover_note):
+		_hover_note.set_hovered(false)
+	if is_instance_valid(_hover_rail):
+		_hover_rail.set_hovered_point(-1)
+	_hover_note = null
+	_hover_rail = null
+	var note_hit := find_note_at(mouse) if can_hover and not editor.note_passthrough else null
+	var point_hit := find_point_at(mouse) if can_hover and (note_hit == null or not note_hit.tail) else null
+	if point_hit != null:
+		note_hit = null
+	if note_hit != null:
+		_hover_note = note_views.get(note_hit.note) as EditorNote
+		_hover_note.set_hovered(true, note_hit.tail)
+	if point_hit != null:
+		_hover_rail = rail_views.get(point_hit.rail) as EditorRail
+		_hover_rail.set_hovered_point(point_hit.point_index)
+
 func prepare_layers() -> void:
 	if rail_layer != null:
 		rail_layer.z_index = 0
@@ -54,8 +98,10 @@ func configure_chart_input() -> void:
 
 func mark_layout_dirty() -> void:
 	_layout_dirty = true
+	_hover_mouse = Vector2(INF, INF)
 
 func refresh_views() -> void:
+	_hover_mouse = Vector2(INF, INF)
 	_mark_preview_dirty()
 	clear_layers()
 	rail_views.clear()
@@ -169,12 +215,17 @@ func sync_layouts() -> void:
 	editor._update_time_ui(false)
 
 func set_note_passthrough(enabled: bool) -> void:
+	_hover_mouse = Vector2(INF, INF)
 	for note_view in note_views.values():
 		note_view.set_passthrough(enabled)
 	for rail_view in rail_views.values():
 		rail_view.set_point_handles_dimmed(not enabled)
 
 func find_note_at(global_mouse_pos: Vector2) -> NoteHit:
+	for note: Note in note_views:
+		var note_view: EditorNote = note_views[note]
+		if note_view.is_tail_hit(global_mouse_pos):
+			return NoteHit.new(note, note_view.rail, true)
 	for note in note_views.keys():
 		var note_view: EditorNote = note_views[note]
 		if note_view.is_head_hit(global_mouse_pos):

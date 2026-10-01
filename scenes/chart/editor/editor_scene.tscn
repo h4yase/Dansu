@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://tbp77g1a1cni" path="res://chart/editor/editor_bpm_lines.gd" id="2_9wr6r"]
 [ext_resource type="Shader" uid="uid://cflu32au5woaj" path="res://resources/shaders/bg.gdshader" id="2_37swi"]
 [ext_resource type="Theme" uid="uid://d3ctsqw4vkokp" path="res://resources/themes/editor_mainmenu_theme.tres" id="2_theme"]
-[ext_resource type="PackedScene" uid="uid://bu0j8qugn442u" path="res://scenes/chart/editor/ui/inspector/point.tscn" id="3_1ne32"]
 [ext_resource type="PackedScene" uid="uid://bg8obfjf1d3ei" path="res://scenes/chart/editor/ui/inspector/timing.tscn" id="4_8or05"]
 [ext_resource type="PackedScene" uid="uid://btmqivw5ns62f" path="res://scenes/chart/editor/hit_sound.tscn" id="5_7qxkj"]
 [ext_resource type="Script" uid="uid://b8yql4aso0jt0" path="res://chart/editor/editor_view_controller.gd" id="6_8vclr"]
@@ -409,7 +408,7 @@ text_overrun_behavior = 5
 layout_mode = 2
 text = "EDITOR_SELECT_SKIN"
 
-[node name="Property" type="TabBar" parent="Inspector" unique_id=826723775 node_paths=PackedStringArray("editor", "note_tab", "rail_tab", "note_time_lineedit", "note_type_option", "note_length_lineedit", "note_animation_option", "note_hitsound_option", "note_dir_option", "point_position_slider", "point_curve_slider", "point_time_lineedit")]
+[node name="Property" type="TabBar" parent="Inspector" unique_id=826723775 node_paths=PackedStringArray("editor", "note_tab", "rail_tab", "note_time_lineedit", "note_type_option", "note_length_lineedit", "note_animation_option", "note_hitsound_option", "note_dir_option", "point_list")]
 visible = false
 layout_mode = 2
 script = ExtResource("1_ryhys")
@@ -422,9 +421,7 @@ note_length_lineedit = NodePath("ScrollContainer/MarginContainer/HBoxContainer/N
 note_animation_option = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Note/animation/OptionButton")
 note_hitsound_option = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Note/SFX/OptionButton")
 note_dir_option = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Note/dir/OptionButton")
-point_position_slider = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Rail/PanelContainer/MarginContainer/Point/position")
-point_curve_slider = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Rail/PanelContainer/MarginContainer/Point/curve")
-point_time_lineedit = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Rail/PanelContainer/MarginContainer/Point/LineEdit")
+point_list = NodePath("ScrollContainer/MarginContainer/HBoxContainer/Rail/Points")
 metadata/_tab_index = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Inspector/Property" unique_id=1591273615]
@@ -441,10 +438,10 @@ horizontal_scroll_mode = 0
 [node name="MarginContainer" type="MarginContainer" parent="Inspector/Property/ScrollContainer" unique_id=1040505119]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
 [node name="HBoxContainer" type="VBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer" unique_id=1931066086]
 layout_mode = 2
@@ -577,18 +574,9 @@ layout_mode = 2
 theme_override_constants/separation = 10
 theme_override_styles/separator = SubResource("StyleBoxLine_t60lc")
 
-[node name="PanelContainer" type="PanelContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Rail" unique_id=773364680]
+[node name="Points" type="VBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Rail" unique_id=756106588]
 layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Rail/PanelContainer" unique_id=325320651]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="Point" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Rail/PanelContainer/MarginContainer" unique_id=1859474528 instance=ExtResource("3_1ne32")]
-layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="Timing" type="TabBar" parent="Inspector" unique_id=1819708243]
 visible = false

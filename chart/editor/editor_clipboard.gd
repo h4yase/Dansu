@@ -7,6 +7,12 @@ class RailEntry extends RefCounted:
 	var start_x: float
 	var end_x: float
 
+class Placement extends RefCounted:
+	var rail: Rail
+	var target: Rail
+	var notes: Array[Note] = []
+	var points: Array[RailPoint] = []
+
 var data: Array[RailEntry] = []
 var first_time := 0
 
@@ -67,11 +73,18 @@ func copy(selection: ChartEditorSelection) -> bool:
 	)
 	return true
 
-func paste(editor: ChartEditor) -> bool:
+func get_paste_time(editor: ChartEditor) -> int:
+	var time := int(round(Game.current_time))
+	if editor._is_mouse_inside_chart():
+		var local := editor.chart_panel.get_local_mouse_position()
+		time = editor._local_y_to_time(local.y)
+	return editor.timeline.snap_time(time)
+
+func build_placements(editor: ChartEditor) -> Array[Placement]:
 	if data.is_empty():
-		return false
+		return []
 	var chart := CM.ensure_parsed_chart()
-	var time := int(editor.timeline.snap_time(int(round(Game.current_time))))
+	var time := get_paste_time(editor)
 	var shift := time - first_time
 	var selected := editor.selection.selected_rail
 	var targets: Array[Rail] = []
@@ -88,21 +101,25 @@ func paste(editor: ChartEditor) -> bool:
 		var index := targets.find(selected)
 		targets = targets.slice(index)
 	var x_shift := 0.0 if selected == null else selected._get_rail_x_at_time(time) - float(data[0].start_x)
-	editor._push_history_snapshot()
-	var pasted_notes: Dictionary = {}
-	var pasted_points: Dictionary[RailPoint, Rail] = {}
+	var placements: Array[Placement] = []
 	for i in range(data.size()):
 		var item := data[i]
 		var start := int(item.start) + shift
 		var finish := int(item.finish) + shift
-		var target: Rail
+		var placement := Placement.new()
+		var target := Rail.new()
 		var existing := selected != null and i < targets.size()
 		if existing:
-			target = targets[i]
-		else:
-			target = Rail.new()
-			target.id = EditorChartOps.next_rail_id()
-			chart.rails.append(target)
+			placement.target = targets[i]
+			target.id = placement.target.id
+			target.notes = placement.target.notes.duplicate()
+			for original: RailPoint in placement.target.points:
+				var point := RailPoint.new()
+				point.time = original.time
+				point.x = original.x
+				point.curve = original.curve
+				target.points.append(point)
+		placement.rail = target
 		var start_x := target._get_rail_x_at_time(start) if existing else clampf(float(item.start_x) + x_shift, 0.0, 1.0)
 		var end_x := target._get_rail_x_at_time(finish) if existing else clampf(float(item.end_x) + x_shift, 0.0, 1.0)
 		if existing:
@@ -115,7 +132,7 @@ func paste(editor: ChartEditor) -> bool:
 			var alpha := 0.0 if finish == start else float(point_time - start) / float(finish - start)
 			var offset := lerpf(start_x - float(item.start_x), end_x - float(item.end_x), alpha) if existing else x_shift
 			var placed := _put_point(target, point_time, clampf(float(point.x) + offset, 0.0, 1.0), point.curve)
-			pasted_points[placed] = target
+			placement.points.append(placed)
 		for note_data: EditorSnapshot.NoteData in item.rail.notes:
 			var note := Note.new()
 			note.time = int(note_data.time) + shift
@@ -127,21 +144,45 @@ func paste(editor: ChartEditor) -> bool:
 			for old: Note in target.notes.duplicate():
 				if absi(old.time - note.time) <= 1:
 					target.notes.erase(old)
-					pasted_notes.erase(old)
+					placement.notes.erase(old)
 			target.notes.append(note)
-			pasted_notes[note] = target
+			placement.notes.append(note)
 			target.sort_notes()
+		placements.append(placement)
+	return placements
+
+func paste(editor: ChartEditor) -> bool:
+	var placements := build_placements(editor)
+	if placements.is_empty():
+		return false
+	editor._push_history_snapshot()
 	editor.selection.clear()
-	if not pasted_notes.is_empty():
-		var primary: Note = pasted_notes.keys()[0]
-		editor.selection.select_note(pasted_notes[primary], primary)
-		editor.selection.selected_notes = pasted_notes
-	elif not pasted_points.is_empty():
-		var primary: RailPoint = pasted_points.keys()[0]
-		var rail: Rail = pasted_points[primary]
-		editor.selection.select_point(rail, rail.points.find(primary))
-	for point: RailPoint in pasted_points:
-		editor.selection.selected_points[point] = pasted_points[point]
+	for placement in placements:
+		var target := placement.target
+		if target == null:
+			target = placement.rail
+			target.id = EditorChartOps.next_rail_id()
+			CM.parsed_chart.rails.append(target)
+		else:
+			target.points = placement.rail.points
+			target.notes = placement.rail.notes
+	# Pick a primary object before filling the selection: selecting one clears it.
+	for placement in placements:
+		if not placement.notes.is_empty():
+			editor.selection.select_note(placement.target if placement.target != null else placement.rail, placement.notes[0])
+			break
+	if editor.selection.selected_note == null:
+		for placement in placements:
+			if not placement.points.is_empty():
+				var target := placement.target if placement.target != null else placement.rail
+				editor.selection.select_point(target, target.points.find(placement.points[0]))
+				break
+	for placement in placements:
+		var target := placement.target if placement.target != null else placement.rail
+		for note in placement.notes:
+			editor.selection.selected_notes[note] = target
+		for point in placement.points:
+			editor.selection.selected_points[point] = target
 	editor.selection.refresh()
 	editor.refresh_views()
 	return true

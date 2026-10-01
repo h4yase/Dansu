@@ -8,14 +8,14 @@ const PAGE_SIZE := 20
 @onready var _status: Label = $Status
 
 var _chart: Chart
-var _request: HTTPRequest
+var _request: SessionRequest
 var _generation := 0
 var _page := 0
 var _total_pages := 0
 var _chart_id := -1
 var _maximum_combo := 0
 var _debounce: Timer
-var _replay_request: HTTPRequest
+var _replay_request: SessionRequest
 var _replay_generation := 0
 var _replay_row: InlineLeaderboardRow
 
@@ -105,15 +105,15 @@ func _load_page() -> void:
 
 func _request_json(path: String, callback: Callable) -> void:
 	_cancel_request()
-	_request = HTTPRequest.new()
+	_request = SessionRequest.new()
 	_request.timeout = 15.0
 	_request.max_redirects = 0
 	_request.body_size_limit = 2 * 1024 * 1024
 	add_child(_request)
-	_request.request_completed.connect(_on_response.bind(callback, _generation))
+	_request.response_received.connect(_on_response.bind(callback, _generation))
 	var headers := Auth.authorization_headers()
 	headers.append("Accept: application/json")
-	if _request.request(ServerURLs.api(path), headers) != OK:
+	if _request.send(ServerURLs.api(path), headers) != OK:
 		_cancel_request()
 		push_warning("Could not connect to the server.")
 		_show_status(GameText.text(GameText.Key.ERROR_SERVER_CONNECTION))
@@ -187,7 +187,7 @@ func _on_scroll(value: float) -> void:
 func _cancel_request() -> void:
 	_generation += 1
 	if is_instance_valid(_request):
-		_request.cancel_request()
+		_request.stop()
 		_request.queue_free()
 	_request = null
 
@@ -221,14 +221,14 @@ func _download_replay(item: Dictionary, row: InlineLeaderboardRow) -> void:
 	_cancel_replay()
 	_replay_row = row
 	row.set_replay_loading(true)
-	_replay_request = HTTPRequest.new()
+	_replay_request = SessionRequest.new()
 	_replay_request.timeout = 30.0
 	_replay_request.max_redirects = 0
 	_replay_request.body_size_limit = 4 * 1024 * 1024
 	add_child(_replay_request)
-	_replay_request.request_completed.connect(_on_replay_loaded.bind(local, _replay_generation))
+	_replay_request.response_received.connect(_on_replay_loaded.bind(local, _replay_generation))
 	var url := ServerURLs.api("/leaderboards/charts/%d/scores/%d/replay" % [_chart_id, score_id])
-	if _replay_request.request(url, Auth.authorization_headers()) != OK:
+	if _replay_request.send(url, Auth.authorization_headers()) != OK:
 		_cancel_replay()
 		Notification.notice(GameText.text(GameText.Key.ERROR_REPLAY_DOWNLOAD), Notification.Type.WARNING)
 
@@ -275,7 +275,7 @@ func _on_replay_loaded(result: int, code: int, _headers: PackedStringArray, body
 func _cancel_replay() -> void:
 	_replay_generation += 1
 	if is_instance_valid(_replay_request):
-		_replay_request.cancel_request()
+		_replay_request.stop()
 		_replay_request.queue_free()
 	_replay_request = null
 	if is_instance_valid(_replay_row):

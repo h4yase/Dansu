@@ -12,7 +12,7 @@ var _judge_y := 0.0
 var _pixels_per_ms := 0.0
 var _current_time := 0.0
 var _sampled_points := PackedVector2Array()
-var _point_handles: Array = []
+var _point_handles: Array[TextureRect] = []
 var _selected := false
 var _selected_point_index := -1
 var _point_handles_dimmed := false
@@ -88,8 +88,8 @@ func distance_to_curve(global_mouse_position: Vector2) -> float:
 			closest_distance = distance
 	return closest_distance
 
-func get_point_hit_index(global_mouse_position: Vector2, radius: float = 12.0) -> int:
-	if rail == null:
+func get_point_hit_index(global_mouse_position: Vector2, radius: float = 15.0) -> int:
+	if rail == null or not visible:
 		return -1
 
 	var local_position := get_global_transform_with_canvas().affine_inverse() * global_mouse_position
@@ -104,6 +104,10 @@ func get_point_hit_index(global_mouse_position: Vector2, radius: float = 12.0) -
 			closest_index = index
 
 	return closest_index
+
+func set_hovered_point(index: int) -> void:
+	for i in range(_point_handles.size()):
+		_point_handles[i].hovered = i == index
 
 func _draw() -> void:
 	if rail == null or rail.points.size() < 2:
@@ -172,7 +176,7 @@ func _update_point_handles() -> void:
 		var point_position := _point_to_panel(point)
 		handle.position = point_position - handle.size * 0.5
 		handle.visible = true
-		var point_color := Color("ffd166") if editor != null and editor.selection.selected_points.has(point) \
+		var point_color := Color(1.2, 1.1, 1.35) if editor != null and editor.selection.selected_points.has(point) \
 			else Color(1, 1, 1, 0.9)
 		if _point_handles_dimmed:
 			point_color.a *= POINT_DIM_ALPHA

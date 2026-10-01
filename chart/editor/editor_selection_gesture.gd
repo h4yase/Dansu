@@ -17,14 +17,17 @@ var point_values: Dictionary = {}
 var initial_selection: EditorSnapshot.SelectionData
 var snapshot: EditorSnapshot
 var click_rail: Rail
-var marquee: Panel
+var marquee: ColorRect
 var delta_time := 0
 var delta_x := 0.0
+var tail_note: Note
+var tail_rail: Rail
+var tail_length := 0
 
 func press(owner: ChartEditor, position: Vector2, ctrl: bool, shift: bool) -> void:
 	editor = owner
 	var notes := editor._find_note_at(position)
-	var points := editor._find_point_at(position)
+	var points := editor._find_point_at(position) if notes == null or not notes.tail else null
 	if shift and select_range(position):
 		return
 	if points != null:
@@ -48,6 +51,11 @@ func press(owner: ChartEditor, position: Vector2, ctrl: bool, shift: bool) -> vo
 			editor.selection.select_note(notes.rail, note)
 		begin(position, false)
 		anchor_time = note.time
+		if notes.tail:
+			tail_note = note
+			tail_rail = notes.rail
+			tail_length = note.length
+			anchor_time = note.end_time
 	else:
 		click_rail = editor._find_rail_at(position)
 		begin(position, true)
@@ -56,6 +64,8 @@ func press(owner: ChartEditor, position: Vector2, ctrl: bool, shift: bool) -> vo
 			initial_points.clear()
 
 func begin(position: Vector2, box: bool) -> void:
+	tail_note = null
+	tail_rail = null
 	active = true
 	dragging = false
 	box_mode = box
@@ -103,7 +113,9 @@ func motion(position: Vector2) -> void:
 	if not dragging:
 		editor.transport.pause()
 		dragging = true
-	if box_mode:
+	if tail_note != null:
+		resize_tail(local)
+	elif box_mode:
 		local = local.clamp(Vector2.ZERO, editor.chart_panel.size)
 		update_box(Rect2(origin, local - origin).abs())
 	else:
@@ -117,24 +129,24 @@ func motion(position: Vector2) -> void:
 
 func update_box(rect: Rect2) -> void:
 	if marquee == null:
-		marquee = Panel.new()
+		marquee = ColorRect.new()
 		marquee.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		marquee.z_index = 3
-		var style := StyleBoxFlat.new()
-		style.bg_color = Color(0.45, 0.35, 0.85, 0.12)
-		style.border_color = Color(0.7, 0.65, 1.0, 0.9)
-		style.set_border_width_all(1)
-		marquee.add_theme_stylebox_override("panel", style)
+		var fill := ShaderMaterial.new()
+		fill.shader = preload("res://resources/shaders/editor_marquee.gdshader")
+		marquee.material = fill
 		editor.chart_panel.add_child(marquee)
 	marquee.show()
 	var clipped := rect.intersection(Rect2(Vector2.ZERO, editor.chart_panel.size))
 	marquee.position = clipped.position
 	marquee.size = clipped.size
+	marquee.material.set_shader_parameter("box_size", clipped.size)
 	var notes := initial_notes.duplicate()
 	var points := initial_points.duplicate()
 	for rail: Rail in CM.parsed_chart.rails:
 		for note: Note in rail.notes:
-			if rect.has_point(element_position(note.time, rail._get_rail_x_at_time(note.time))):
+			if rect.has_point(element_position(note.time, rail._get_rail_x_at_time(note.time))) \
+				or (note.length > 0 and rect.has_point(element_position(note.end_time, rail._get_rail_x_at_time(note.end_time)))):
 				notes[note] = rail
 		for point: RailPoint in rail.points:
 			if rect.has_point(element_position(point.time, point.x)):
@@ -153,6 +165,17 @@ func set_selection(notes: Dictionary, points: Dictionary) -> void:
 	editor.selection.selected_notes = notes
 	editor.selection.selected_points = points
 	editor.selection.refresh()
+
+func resize_tail(position: Vector2) -> void:
+	var end_time := editor.timeline.snap_time(anchor_time + int(round((origin.y - position.y) / editor.get_pixels_per_ms())))
+	var length := EditorChartOps.clamp_note_length_to_rail(tail_rail, tail_note, end_time - tail_note.time)
+	if tail_note.length == length:
+		return
+	if snapshot == null:
+		snapshot = EditorHistory.capture(editor)
+	tail_note.length = length
+	editor.view_controller.refresh_note(tail_note)
+	editor.selection_changed.emit()
 
 func apply_delta(proposed: int, dx: float) -> void:
 	var bounds := Vector2(-INF, INF)
@@ -229,6 +252,8 @@ func finish(position: Vector2, cancel: bool = false) -> void:
 	if not active:
 		return
 	if cancel:
+		if tail_note != null:
+			tail_note.length = tail_length
 		for note: Note in note_times:
 			note.time = note_times[note]
 		for point: RailPoint in point_values:
@@ -241,7 +266,8 @@ func finish(position: Vector2, cancel: bool = false) -> void:
 			editor.selection.select_rail(click_rail)
 		else:
 			editor.selection.clear()
-	elif not box_mode and snapshot != null and (delta_time != 0 or not is_zero_approx(delta_x)):
+	elif not box_mode and snapshot != null and (delta_time != 0 or not is_zero_approx(delta_x) \
+		or (tail_note != null and tail_note.length != tail_length)):
 		if initial_notes.is_empty() and initial_points.size() == 1:
 			editor._point_drag_history_pending = false
 			editor.view_controller.finalize_selected_point_drag(position)
@@ -252,6 +278,8 @@ func finish(position: Vector2, cancel: bool = false) -> void:
 	active = false
 	dragging = false
 	snapshot = null
+	tail_note = null
+	tail_rail = null
 
 func local_position(position: Vector2) -> Vector2:
 	return editor.chart_panel.get_global_transform_with_canvas().affine_inverse() * position

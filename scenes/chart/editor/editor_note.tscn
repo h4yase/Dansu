@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://oldipk4jyhoy"]
 
 [ext_resource type="Script" uid="uid://dmujqvudlmh0x" path="res://chart/editor/note_editor.gd" id="1_o01ly"]
-[ext_resource type="Texture2D" uid="uid://bge6enc8cx55h" path="res://resources/textures/editor/editor_hit.tres" id="1_x8u0d"]
+[ext_resource type="Texture2D" path="res://resources/textures/editor/editor_hit.svg" id="1_x8u0d"]
 
 [node name="Note" type="TextureRect" unique_id=1040766631]
 custom_minimum_size = Vector2(50, 20)

@@ -32,7 +32,7 @@ var _detail_clip: Control
 var _detail_status: Label
 var _judgements: HBoxContainer
 var _detail_tween: Tween
-var _detail_request: HTTPRequest
+var _detail_request: SessionRequest
 var _detail_data: Dictionary = {}
 var _detail_open := false
 var _detail_appear: Tween
@@ -257,14 +257,14 @@ func toggle_details(chart_id: int) -> void:
 		push_warning("Score details unavailable")
 		_detail_error(GameText.text(GameText.Key.ERROR_SCORE_DETAILS_LOAD))
 		return
-	_detail_request = HTTPRequest.new()
+	_detail_request = SessionRequest.new()
 	_detail_request.timeout = 15.0
 	_detail_request.max_redirects = 0
 	_detail_request.body_size_limit = 256 * 1024
 	add_child(_detail_request)
-	_detail_request.request_completed.connect(_on_detail_loaded.bind(chart_id, score_id))
+	_detail_request.response_received.connect(_on_detail_loaded.bind(chart_id, score_id))
 	var url := ServerURLs.api("/leaderboards/charts/%d/scores/%d" % [chart_id, score_id])
-	if _detail_request.request(url, Auth.authorization_headers()) != OK:
+	if _detail_request.send(url, Auth.authorization_headers()) != OK:
 		_detail_request.queue_free()
 		_detail_request = null
 		_detail_error(GameText.text(GameText.Key.ERROR_SCORE_DETAILS_LOAD))
@@ -323,7 +323,7 @@ func set_replay_loading(loading: bool) -> void:
 
 func _exit_tree() -> void:
 	if is_instance_valid(_detail_request):
-		_detail_request.cancel_request()
+		_detail_request.stop()
 
 
 func play_appear(delay: float) -> void:

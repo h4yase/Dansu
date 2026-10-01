@@ -42,6 +42,11 @@ func handle_mouse_button(event: InputEventMouseButton) -> void:
 	if event.button_index != MOUSE_BUTTON_LEFT:
 		return
 
+	var hit := editor._find_note_at(mouse_pos)
+	if hit != null and (hit.tail or editor._find_point_at(mouse_pos) == null):
+		var note_view := editor.view_controller.note_views.get(hit.note) as EditorNote
+		if note_view != null:
+			note_view.play_click()
 	gesture.press(editor, mouse_pos, event.ctrl_pressed, event.shift_pressed)
 	editor.get_viewport().set_input_as_handled()
 
@@ -64,6 +69,7 @@ func handle_key_input(event: InputEventKey) -> void:
 			return
 
 	match event.keycode:
+		KEY_I: straighten_next_point()
 		KEY_R: create_rail()
 		KEY_Z: create_hit_note()
 		KEY_ESCAPE: editor.exit()
@@ -81,6 +87,22 @@ func copy_selected() -> bool:
 
 func paste_copied() -> bool:
 	return editor != null and clipboard.paste(editor)
+
+func straighten_next_point() -> void:
+	var point := editor.selection.get_point()
+	var rail := editor.selection.selected_rail
+	if point == null or rail == null:
+		return
+	var index := rail.points.find(point)
+	if index < 0 or index + 1 >= rail.points.size():
+		return
+	var next := rail.points[index + 1]
+	if is_equal_approx(next.x, point.x):
+		return
+	editor._push_history_snapshot()
+	next.x = point.x
+	editor.view_controller.refresh_geometry([rail])
+	editor.selection.refresh()
 
 func set_current_time(value: float) -> void:
 	if editor == null or editor.timeline == null:
@@ -136,6 +158,10 @@ func create_note(note_type: Note.NoteType, dir: int) -> void:
 	editor.selection.selected_rail.sort_notes()
 	editor.selection.select_note(editor.selection.selected_rail, new_note)
 	editor.refresh_views()
+	var note_view := editor.view_controller.note_views.get(new_note) as EditorNote
+	if note_view != null:
+		note_view.play_placement()
+	editor.transport.play_sfx(editor.hitsound_manager.get_stream_for_note(new_note))
 
 func delete_selected() -> void:
 	if editor == null:

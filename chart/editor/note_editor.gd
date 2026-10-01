@@ -5,11 +5,15 @@ const NOTE_TYPE_HIT := 1
 const NOTE_TYPE_MOVE := 2
 const NOTE_TYPE_TRACE := 3
 const NOTE_TYPE_SPIKE := 4
-const NOTE_DRAW_SIZE := Vector2(50, 20)
-@export var hit_texture: Texture2D = preload("res://resources/textures/editor/editor_hit.tres")
-@export var trace_texture: Texture2D = preload("res://resources/textures/editor/editor_trace.tres")
-@export var move_texture: Texture2D = preload("res://resources/textures/editor/editor_move.png")
-@export var spike_texture: Texture2D = preload("res://resources/textures/editor/editor_spike.png")
+const NOTE_DRAW_SIZE := Vector2(68, 42)
+const PLACEMENT_DURATION := 0.28
+const TAIL_DRAW_SIZE := Vector2(32, 24)
+const TAIL_TEXTURE := preload("res://resources/textures/editor/editor_note_tail.svg")
+const TAIL_OUTLINE := preload("res://resources/textures/editor/editor_note_tail_outline.svg")
+@export var hit_texture: Texture2D = preload("res://resources/textures/editor/editor_hit.svg")
+@export var trace_texture: Texture2D = preload("res://resources/textures/editor/editor_trace.svg")
+@export var move_texture: Texture2D = preload("res://resources/textures/editor/editor_move.svg")
+@export var spike_texture: Texture2D = preload("res://resources/textures/editor/editor_spike.svg")
 
 var note: Note = null
 var rail: Rail = null
@@ -21,10 +25,76 @@ var _current_time := 0.0
 var _selected := false
 var _passthrough := false
 var _head_rect := Rect2()
+var _hovered := false
+var _hover_scale := 1.0
+var _tail_hovered := false
+var _tail_hover_scale := 1.0
+var _click_time := 1.0
+var _placement_time := PLACEMENT_DURATION
+var _pass_strength := 0.0
+var _motion_time := 0.0
+var _trail: Control
+var _tail_handle: Control
+const OUTLINE_TEXTURES: Array[Texture2D] = [
+	preload("res://resources/textures/editor/editor_hit_outline.svg"),
+	preload("res://resources/textures/editor/editor_move_outline.svg"),
+	preload("res://resources/textures/editor/editor_trace_outline.svg"),
+	preload("res://resources/textures/editor/editor_spike_outline.svg"),
+]
+
+func set_hovered(value: bool, tail: bool = false) -> void:
+	_hovered = value and not tail
+	_tail_hovered = value and tail
+
+func play_click() -> void:
+	_click_time = 0.0
+
+func play_placement() -> void:
+	_placement_time = 0.0
+	queue_redraw()
+
+func play_pass() -> void:
+	_pass_strength = 1.0
+	queue_redraw()
+
+func _process(delta: float) -> void:
+	var passing := _pass_strength > 0.0
+	_pass_strength = move_toward(_pass_strength, 0.0, delta * 4.5)
+	if not visible:
+		return
+	var previous_scale := _hover_scale
+	var previous_tail_scale := _tail_hover_scale
+	_hover_scale = move_toward(_hover_scale, 1.1 if _hovered else 1.0, delta * 1.4)
+	_tail_hover_scale = move_toward(_tail_hover_scale, 1.2 if _tail_hovered else 1.0, delta * 2.0)
+	var clicking := _click_time < 0.3
+	var placing := _placement_time < PLACEMENT_DURATION
+	_click_time += delta
+	_placement_time += delta
+	if _selected or clicking or placing or passing \
+		or not is_equal_approx(previous_scale, _hover_scale) \
+		or not is_equal_approx(previous_tail_scale, _tail_hover_scale):
+		_motion_time += delta
+		queue_redraw()
+
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texture = null
+	# Draw trails behind all note heads, and tail handles in front.
+	z_as_relative = false
+	z_index = 1
+	_trail = Control.new()
+	_trail.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_trail.z_as_relative = false
+	_trail.z_index = 0
+	_trail.draw.connect(_draw_trail)
+	add_child(_trail)
+	_tail_handle = Control.new()
+	_tail_handle.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_tail_handle.z_as_relative = false
+	_tail_handle.z_index = 2
+	_tail_handle.draw.connect(_draw_tail_handle)
+	add_child(_tail_handle)
 
 func sync_layout(panel_size: Vector2, judge_y: float, pixels_per_ms: float, current_time: float) -> void:
 	var layout_changed := _panel_size != panel_size \
@@ -63,37 +133,78 @@ func set_passthrough(is_passthrough: bool) -> void:
 	queue_redraw()
 
 func is_head_hit(global_mouse_position: Vector2) -> bool:
+	if not visible:
+		return false
 	_ensure_head_rect()
 	var local_position := get_global_transform_with_canvas().affine_inverse() * global_mouse_position
-	return _head_rect.grow(6.0).has_point(local_position)
+	return _head_rect.grow(2.0).has_point(local_position)
+
+func is_tail_hit(global_mouse_position: Vector2) -> bool:
+	if not visible or note == null or note.length <= 0 or _passthrough:
+		return false
+	var local_position := get_global_transform_with_canvas().affine_inverse() * global_mouse_position
+	var tail_position := _get_position_at_time(note.end_time)
+	return Rect2(tail_position - TAIL_DRAW_SIZE * 0.5, TAIL_DRAW_SIZE).has_point(local_position)
 
 func _draw() -> void:
+	_trail.queue_redraw()
+	_tail_handle.queue_redraw()
 	if note == null or rail == null:
 		return
 
 	_ensure_head_rect()
-	var head_position = _head_rect.get_center()
-	var _draw_texture = _get_note_texture()
+	var head_position := _head_rect.get_center()
+	var note_texture := _get_note_texture()
 
-	if note.length > 0:
-		var trail_points := _sample_trail_points()
-		if trail_points.size() >= 2:
-			var trail_color := Color("7ed2ff") if int(note.type) == NOTE_TYPE_TRACE else Color("f5c26b")
-			if _passthrough:
-				trail_color.a = 0.35
-			draw_polyline(trail_points, trail_color, 10.0, true)
-
-	if draw_texture != null:
+	if note_texture != null:
 		var color := Color(1, 1, 1, 0.35) if _passthrough else Color.WHITE
-		_draw_note_texture(_draw_texture, head_position, color)
+		if _selected:
+			_draw_note_texture(OUTLINE_TEXTURES[clampi(int(note.type) - 1, 0, 3)], head_position, color)
+		var brightness := (1.18 if _selected else 1.0) + _pass_strength * 0.35
+		color = Color(brightness, brightness, brightness, color.a)
+		_draw_note_texture(note_texture, head_position, color)
 	else:
 		var fill := Color("7ed2ff")
 		if _passthrough:
 			fill.a = 0.35
 		draw_rect(_head_rect, fill, true)
 
+func _draw_trail() -> void:
+	if note == null or rail == null or note.length <= 0:
+		return
+	var trail_points := _sample_trail_points()
+	if trail_points.size() < 2:
+		return
+	var trail_color := _get_note_color()
+	if _passthrough:
+		trail_color.a = 0.35
+	_trail.draw_polyline(trail_points, trail_color, 10.0, true)
+
+func _draw_tail_handle() -> void:
+	if note == null or rail == null or note.length <= 0:
+		return
+	var tail_position := _get_position_at_time(note.end_time)
+	var rect := Rect2(-TAIL_DRAW_SIZE * 0.5, TAIL_DRAW_SIZE)
+	var color := _get_note_color()
+	if _passthrough:
+		color.a = 0.35
+	_tail_handle.draw_set_transform(tail_position, 0.0, Vector2.ONE * _tail_hover_scale)
 	if _selected:
-		draw_rect(_head_rect.grow(4.0), Color("fff1a8"), false, 2.0)
+		_tail_handle.draw_texture_rect(TAIL_OUTLINE, rect, false, Color(1, 1, 1, color.a))
+	_tail_handle.draw_texture_rect(TAIL_TEXTURE, rect, false, color)
+	_tail_handle.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+
+func _get_note_color() -> Color:
+	match int(note.type):
+		NOTE_TYPE_MOVE:
+			return Color("ef3d4d")
+		NOTE_TYPE_TRACE:
+			return Color("be77f8")
+		NOTE_TYPE_SPIKE:
+			return Color("a89eb8")
+		_:
+			return Color("858df4")
 
 func _get_note_texture() -> Texture2D:
 	match int(note.type):
@@ -108,15 +219,20 @@ func _get_note_texture() -> Texture2D:
 		_:
 			return hit_texture
 
-func _draw_note_texture(_draw_texture: Texture2D, head_position: Vector2, color: Color) -> void:
-	var local_rect := Rect2(-NOTE_DRAW_SIZE * 0.5, NOTE_DRAW_SIZE)
+func _draw_note_texture(note_texture: Texture2D, head_position: Vector2, color: Color) -> void:
+	var click_scale := 1.0
+	if _click_time < 0.3:
+		click_scale -= sin(_click_time / 0.3 * PI) * 0.15
+	var draw_scale := Vector2.ONE * _hover_scale * click_scale * (1.0 + _pass_strength * 0.2)
+	if _placement_time < PLACEMENT_DURATION:
+		var placement_scale: float = Tween.interpolate_value(0.55, 0.45, _placement_time, PLACEMENT_DURATION, Tween.TRANS_BACK, Tween.EASE_OUT)
+		draw_scale *= placement_scale
 	if _should_flip_h():
-		draw_set_transform(head_position, 0.0, Vector2(-1, 1))
-		draw_texture_rect(_draw_texture, local_rect, false, color)
-		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
-		return
-
-	draw_texture_rect(_draw_texture, _head_rect, false, color)
+		draw_scale.x *= -1.0
+	var sway_angle := sin(_motion_time * 2.5) * deg_to_rad(4.0) if _selected else 0.0
+	draw_set_transform(head_position, sway_angle, draw_scale)
+	draw_texture_rect(note_texture, Rect2(-NOTE_DRAW_SIZE * 0.5, NOTE_DRAW_SIZE), false, color)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 func _should_flip_h() -> bool:
 	return int(note.type) == NOTE_TYPE_MOVE and int(note.dir) == int(Note.Dir.RIGHT)
