@@ -28,6 +28,7 @@ var charts_by_uuid: Dictionary = {}
 
 var _database = null
 var _scanner := ChartLibraryScanner.new()
+var _initial_selection_pending := true
 
 
 func _ready() -> void:
@@ -344,6 +345,7 @@ func _start_background_sync() -> void:
 func _on_scan_finished(success: bool) -> void:
 	if success:
 		_refresh_library_from_database(true)
+		_select_initial_chart()
 		_emit_update()
 	database_sync_finished.emit(success)
 
@@ -418,10 +420,26 @@ func _emit_progress(ratio: float) -> void:
 
 
 func _emit_initial_ready() -> void:
+	_select_initial_chart()
 	loading_finished.emit()
 	if not chartsets.is_empty():
 		if selected_chartset == null:
 			selected_chartset = chartsets[0]
+
+func _select_initial_chart() -> void:
+	if not _initial_selection_pending:
+		return
+	var builtin_charts: Array[Chart] = []
+	for chartset in chartsets:
+		for chart in chartset.charts:
+			if chart.storage_root == FileSystem.official_chart_path and FileAccess.file_exists(chart.file_path):
+				builtin_charts.append(chart)
+	if builtin_charts.is_empty():
+		return
+	_initial_selection_pending = false
+	var chart: Chart = builtin_charts.pick_random()
+	select_chartset(chart.chart_set)
+	select_chart(chart)
 
 
 func _emit_loading_failure() -> void:
