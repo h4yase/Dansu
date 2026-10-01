@@ -18,14 +18,14 @@ ACTION_LEAVE_UNSAVED,Leave without saving,저장하지 않고 나가기,保存�
 CONFIRM_DELETE_CHART,Move this difficulty to the Recycle Bin?,이 난이도를 휴지통으로 옮길까요?,この難易度をゴミ箱に移動しますか？,将此难度移入回收站吗？
 CONFIRM_DELETE_DIFFICULTY,Move difficulty '%s' to the Recycle Bin?,해당 난이도(%s)를 휴지통으로 옮기겠습니까?,難易度「%s」をゴミ箱に移動しますか？,将难度“%s”移入回收站吗？
 CONFIRM_DELETE_CHARTSET,"Move chart '%s', including all difficulties and related files, to the Recycle Bin?",채보 '%s'의 모든 난이도와 관련 파일을 휴지통으로 옮길까요?,譜面「%s」のすべての難易度と関連ファイルをゴミ箱に移動しますか？,将谱面“%s”的所有难度和相关文件移入回收站吗？
-HINT_DELETE_LAST_DIFFICULTY,This is the last difficulty. Use Delete Chart to remove the entire chart.,마지막 난이도입니다. 채보 전체 삭제를 이용해 주세요.,最後の難易度です。「譜面をすべて削除」を使ってください。,这是最后一个难度，请使用“删除整份谱面”。
+HINT_DELETE_LAST_DIFFICULTY,This is the last difficulty. Use Delete Chart to remove the entire chart.,마지막 난이도입니다. 채보 전체 삭제를 사용해 주세요.,最後の難易度です。「譜面をすべて削除」を使ってください。,这是最后一个难度，请使用“删除整份谱面”。
 ERROR_DELETE_CHART,Failed to delete %s.,파일 삭제에 실패했습니다. %s,%sの削除に失敗しました。,删除 %s 失败。
 NOTICE_CHART_DELETED,%s moved to the Recycle Bin.,다음 파일이 휴지통으로 옮겨졌습니다: %s,%sをゴミ箱に移動しました。,%s 已移入回收站。
 ERROR_CHART_NOT_SELECTED,Select a difficulty first.,선택된 난이도가 없습니다.,先に難易度を選択してください。,请先选择难度。
 ERROR_CHARTSET_NOT_SELECTED,Select a chart first.,선택된 채보가 없습니다.,先に譜面を選択してください。,请先选择谱面。
 ERROR_CHART_MISSING,The difficulty file is missing.,채보 파일을 찾을 수 없습니다.,難易度ファイルが見つかりません。,找不到难度文件。
 ERROR_CHART_OPEN_FAILED,Could not open difficulty: %s,채보 파일을 열지 못했습니다: %s,難易度ファイルを開けませんでした：%s,无法打开难度文件：%s
-ERROR_CHART_VERSION,Unsupported difficulty file version: %s,지원하지 않는 난이도 파일 버전입니다: %s,未対応の難易度ファイルのバージョンです：%s,不支持的难度文件版本：%s
+ERROR_CHART_VERSION,Unsupported difficulty file version: %s,지원하지 않는 파일 버전입니다: %s,未対応の難易度ファイルのバージョンです：%s,不支持的难度文件版本：%s
 ERROR_CHART_PLAYTEST,Select a difficulty to test play.,테스트 플레이할 난이도를 선택해 주세요.,テストプレイする難易度を選択してください。,请选择要试玩的难度。
 ERROR_PLAYTEST_AUDIO,audio file is required for playtest,테스트 플레이엔 오디오 파일이 필요합니다.,テストプレイには音声ファイルが必要です,试玩需要音频文件
 ERROR_DIFFICULTY_FILENAME,This difficulty name cannot be used as a filename. Choose another name.,파일 이름으로 사용할 수 없는 난이도명입니다. 다른 이름을 입력해 주세요.,この難易度名はファイル名に使えません。別の名前を入力してください。,此难度名称不能用作文件名，请输入其他名称。
@@ -41,7 +41,7 @@ ERROR_SEARCH_START,Could not load the song list. Please retry.,곡 목록을 불
 ERROR_SEARCH_FILTERS,The server rejected these filters. Check the ranges.,지원하지 않는 검색 범위입니다.,サーバーが検索条件を拒否しました。範囲を確認してください。,服务器拒绝了这些筛选条件，请检查范围。
 ERROR_SERVER_CONNECTION,Cannot reach the server. Check your connection and retry.,서버를 찾을 수 없습니다. 기기의 연결상태를 확인 해주세요.,サーバーに接続できません。ネットワーク接続を確認して、もう一度お試しください。,无法连接到服务器。请检查网络连接后重试。
 ERROR_REQUEST_FAILED,Could not complete the request. Please retry later.,요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.,処理できませんでした。しばらくしてからお試しください。,无法完成请求，请稍后重试。
-ERROR_CONTENT_FORBIDDEN,This account cannot access this content.,이 계정으로는 해당 콘텐츠에 액세스할 수 없습니다.,このアカウントではこのコンテンツにアクセスできません。,此账号无法访问该内容。
+ERROR_CONTENT_FORBIDDEN,This account cannot access this content.,이 계정으로는 해당 콘텐츠에 접근할 수 없습니다.,このアカウントではこのコンテンツにアクセスできません。,此账号无法访问该内容。
 NOTICE_PLAYLISTS_EMPTY,No playlists yet.,아직 재생목록가 없습니다.,プレイリストはまだありません。,暂无播放列表。
 ERROR_PLAYLIST_LOAD,Could not load playlists. Restart the game to sync again.,재생목록을 불러올 수 없습니다. 게임을 재시작하여 재생 목록 동기화 해주세요.,プレイリストを読み込めませんでした。ゲームを再起動して再同期してください。,无法加载播放列表。请重启游戏以重新同步。
 ERROR_PLAYLIST_NOT_FOUND,Playlist not found.,재생목록을 찾을 수 없습니다.,プレイリストが見つかりません。,未找到播放列表。
@@ -61,7 +61,7 @@ ERROR_REPLAY_SAVE,Failed to save replay.,리플레이를 저장하지 못했습�
 HINT_REPLAY_DOWNLOAD_CHART,Download or update this chart before watching the replay.,리플레이를 재생하기 전에 이 채보를 다운로드하거나 업데이트해주세요.,リプレイを見る前に、この譜面をダウンロードまたは更新してください。,观看回放前，请下载或更新此谱面。
 ERROR_SCORE_RECORD,Could not save your play record. Check free disk space.,플레이 기록을 저장하지 못했습니다. 저장 공간을 확인해 주세요.,プレイ記録を保存できませんでした。空き容量を確認してください。,无法保存游玩记录，请检查可用空间。
 ERROR_SCORE_REVISION,This record does not match the current chart version. Update the chart and play again.,이 기록은 현재 채보 버전과 맞지 않습니다. 채보를 업데이트하고 다시 플레이해 주세요.,この記録は現在の譜面バージョンと一致しません。譜面を更新して、もう一度プレイしてください。,此记录与当前谱面版本不符，请更新谱面后重新游玩。
-NOTICE_SCORE_SAVED_OFFLINE,Score was saved locally because the session is offline.,오프라인 상태로 플레이 기록을 이 기기에 저장했습니다.,オフラインのため、スコアをローカルに保存しました。,当前处于离线状态，成绩已保存到本地。
+NOTICE_SCORE_SAVED_OFFLINE,Score was saved locally.,플레이 기록을 로컬로 저장했습니다.,オフラインのため、スコアをローカルに保存しました。,当前处于离线状态，成绩已保存到本地。
 ERROR_OFFICIAL_CHART_MISSING,This Original chart is not installed.,이 오리지널 채보가 설치되어 있지 않습니다.,このオリジナル譜面はインストールされていません。,此原创谱面尚未安装。
 ERROR_CACHED_CHART_MISSING,The cached chart is unavailable. Download it again.,저장된 채보를 사용할 수 없습니다. 다시 다운로드해 주세요.,キャッシュされた譜面を利用できません。もう一度ダウンロードしてください。,缓存的谱面不可用，请重新下载。
 ERROR_INSTALLED_CHART_OPEN,The installed chart could not be opened.,설치된 채보를 열 수 없습니다.,インストール済みの譜面を開けませんでした。,无法打开已安装的谱面。
@@ -99,7 +99,7 @@ HINT_PUBLISH_BUILTIN_REPLACE,Regular updates are locked. Adding this chart to th
 NOTICE_PUBLISH_PREPARING,Checking the published version and preparing files…,게시된 버전을 확인하고 파일을 준비하는 중…,公開済みバージョンを確認し、ファイルを準備しています…,正在检查已发布版本并准备文件…
 NOTICE_PUBLISH_UPLOADING,Uploading chart…,채보 업로드 중…,譜面をアップロード中…,正在上传谱面…
 NOTICE_PUBLISHED,chart published successfully.,채보가 성공적으로 업로드 되었습니다.,譜面を公開しました。,谱面发布成功。
-NOTICE_PUBLISHED_BUILTIN,Chart published and added to the game.,채보를 게시하고 게임에 추가했습니다.,譜面を公開し、ゲームに追加しました。,谱面已发布并添加到游戏中。
+NOTICE_PUBLISHED_BUILTIN,Chart published and added to the game.,Chart published and added to the game.,Chart published and added to the game.,Chart published and added to the game.
 ERROR_PUBLISH_OWNER,Only the original uploader can update this chart.,업로더만 채보를 업데이트 할 수 있습니다.,この譜面を更新できるのは最初の投稿者だけです。,只有原始上传者可以更新此谱面。
 ERROR_PUBLISH_LOCKED,approved and ranked charts cannot be updated.,승인됐거나 랭크된 채보는 업데이트할 수 없습니다.,オリジナル・承認済み・ランク対象の譜面はここでは更新できません。,原创、已审核和排位谱面无法在此更新。
 ERROR_PUBLISH_UNSUPPORTED,Chart uploads are currently unavailable. Please retry later.,지금은 채보를 업로드할 수 없습니다. 잠시 후 다시 시도해 주세요.,現在、譜面をアップロードできません。しばらくしてからお試しください。,暂时无法上传谱面，请稍后重试。
@@ -139,7 +139,7 @@ SETTINGS_CHART_LOAD_THREADS,Chart Load Threads,채보 로딩 작업 수,譜面�
 SETTINGS_SERVER_API,Server API,서버 API,サーバーAPI,服务器 API
 SETTINGS_FULLSCREEN,Fullscreen,전체 화면,フルスクリーン,全屏
 SETTINGS_WINDOWED,Windowed,창 모드,ウィンドウ,窗口化
-SETTINGS_EXCLUSIVE_FULLSCREEN,Exclusive,독점 전체 화면,排他フルスクリーン,独占全屏
+SETTINGS_EXCLUSIVE_FULLSCREEN,Exclusive,전체 창 모드,排他フルスクリーン,独占全屏
 SETTINGS_DISABLED,Disabled,비활성화,無効,关闭
 SETTINGS_ENABLED,Enabled,활성화,有効,开启
 SETTINGS_VSYNC_ADAPTIVE,Adaptive,적응형,アダプティブ,自适应
