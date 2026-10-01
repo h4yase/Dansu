@@ -11,6 +11,7 @@
 
 - **Dansu! is currently in development.**
 - In the process of registering the Steam store page
+- BTW its vibe coded shit
 
 ## About
 A rhythm game where you move to the music.
