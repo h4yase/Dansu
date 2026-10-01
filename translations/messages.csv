@@ -39,10 +39,10 @@ HINT_FILTER_NUMBER,"Enter a non-negative number, or leave the field empty.",0 �
 NOTICE_SEARCH_EMPTY,No charts match these filters.,이 필터에 일치하는 채보가 없습니다.,条件に一致する譜面がありません。,没有符合筛选条件的谱面。
 ERROR_SEARCH_START,Could not load the song list. Please retry.,곡 목록을 불러오지 못했습니다. 다시 시도해 주세요.,楽曲一覧を読み込めませんでした。もう一度お試しください。,无法加载歌曲列表，请重试。
 ERROR_SEARCH_FILTERS,The server rejected these filters. Check the ranges.,지원하지 않는 검색 범위입니다.,サーバーが検索条件を拒否しました。範囲を確認してください。,服务器拒绝了这些筛选条件，请检查范围。
-ERROR_SERVER_CONNECTION,Cannot reach the server. Check your connection and retry.,서버를 찾을 수 없습니다. 기기의 연결상태를 확인 해주세요.,サーバーに接続できません。ネットワーク接続を確認して、もう一度お試しください。,无法连接到服务器。请检查网络连接后重试。
+ERROR_SERVER_CONNECTION,Cannot reach the server. Check your connection and retry.,서버에 연결할 수 없습니다. 네트워크 연결을 확인한 후 다시 시도해 주세요.,サーバーに接続できません。ネットワーク接続を確認して、もう一度お試しください。,无法连接到服务器。请检查网络连接后重试。
 ERROR_REQUEST_FAILED,Could not complete the request. Please retry later.,요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.,処理できませんでした。しばらくしてからお試しください。,无法完成请求，请稍后重试。
 ERROR_CONTENT_FORBIDDEN,This account cannot access this content.,이 계정으로는 해당 콘텐츠에 접근할 수 없습니다.,このアカウントではこのコンテンツにアクセスできません。,此账号无法访问该内容。
-NOTICE_PLAYLISTS_EMPTY,No playlists yet.,아직 재생목록가 없습니다.,プレイリストはまだありません。,暂无播放列表。
+NOTICE_PLAYLISTS_EMPTY,No playlists yet.,아직 재생목록이 없습니다.,プレイリストはまだありません。,暂无播放列表。
 ERROR_PLAYLIST_LOAD,Could not load playlists. Restart the game to sync again.,재생목록을 불러올 수 없습니다. 게임을 재시작하여 재생 목록 동기화 해주세요.,プレイリストを読み込めませんでした。ゲームを再起動して再同期してください。,无法加载播放列表。请重启游戏以重新同步。
 ERROR_PLAYLIST_NOT_FOUND,Playlist not found.,재생목록을 찾을 수 없습니다.,プレイリストが見つかりません。,未找到播放列表。
 ERROR_PLAYLIST_METADATA,Some charts in this playlist could not be loaded.,재생목록의 일부 채보를 불러오지 못했습니다.,プレイリストの一部の譜面を読み込めませんでした。,无法加载此播放列表中的部分谱面。
@@ -61,7 +61,7 @@ ERROR_REPLAY_SAVE,Failed to save replay.,리플레이를 저장하지 못했습�
 HINT_REPLAY_DOWNLOAD_CHART,Download or update this chart before watching the replay.,리플레이를 재생하기 전에 이 채보를 다운로드하거나 업데이트해주세요.,リプレイを見る前に、この譜面をダウンロードまたは更新してください。,观看回放前，请下载或更新此谱面。
 ERROR_SCORE_RECORD,Could not save your play record. Check free disk space.,플레이 기록을 저장하지 못했습니다. 저장 공간을 확인해 주세요.,プレイ記録を保存できませんでした。空き容量を確認してください。,无法保存游玩记录，请检查可用空间。
 ERROR_SCORE_REVISION,This record does not match the current chart version. Update the chart and play again.,이 기록은 현재 채보 버전과 맞지 않습니다. 채보를 업데이트하고 다시 플레이해 주세요.,この記録は現在の譜面バージョンと一致しません。譜面を更新して、もう一度プレイしてください。,此记录与当前谱面版本不符，请更新谱面后重新游玩。
-NOTICE_SCORE_SAVED_OFFLINE,Score was saved locally.,플레이 기록을 로컬로 저장했습니다.,オフラインのため、スコアをローカルに保存しました。,当前处于离线状态，成绩已保存到本地。
+NOTICE_SCORE_SAVED_OFFLINE,Score was saved locally.,플레이 기록을 로컬로 저장했습니다.,スコアをローカルに保存しました。,成绩已保存到本地。
 ERROR_OFFICIAL_CHART_MISSING,This Original chart is not installed.,이 오리지널 채보가 설치되어 있지 않습니다.,このオリジナル譜面はインストールされていません。,此原创谱面尚未安装。
 ERROR_CACHED_CHART_MISSING,The cached chart is unavailable. Download it again.,저장된 채보를 사용할 수 없습니다. 다시 다운로드해 주세요.,キャッシュされた譜面を利用できません。もう一度ダウンロードしてください。,缓存的谱面不可用，请重新下载。
 ERROR_INSTALLED_CHART_OPEN,The installed chart could not be opened.,설치된 채보를 열 수 없습니다.,インストール済みの譜面を開けませんでした。,无法打开已安装的谱面。
@@ -86,13 +86,9 @@ Difficulties not included in this upload will be deleted from the server.","채�
 今回のアップロードに含まれない難易度はサーバーから削除されます。","更新此谱面吗？
 本次上传中未包含的难度将从服务器删除。"
 HINT_PUBLISH_CONTENTS,"
-
 Includes all difficulties, music, images and skins in this folder.","
-
 이 폴더의 모든 난이도, 음악, 이미지, 스킨 파일이 포함됩니다.","
-
 このフォルダーのすべての難易度、楽曲、画像、スキンが含まれます。","
-
 包含此文件夹中的所有难度、音乐、图片和皮肤文件。"
 HINT_PUBLISH_BUILTIN,Built-in upload is available for this chart.,이 채보는 내장 업로드를 사용할 수 있습니다.,この譜面では組み込みアップロードを利用できます。,此谱面可使用内置上传。
 HINT_PUBLISH_BUILTIN_REPLACE,Regular updates are locked. Adding this chart to the game replaces it as a ranked Original chart.,이 채보는 일반 업데이트가 제한되어 있습니다.,通常の更新は制限されています。ゲームに追加すると、ランク対象のオリジナル譜面に置き換わります。,普通更新已被锁定，添加到游戏后将替换为参与排位的原创谱面。
@@ -137,9 +133,9 @@ SETTINGS_NOTE_HIT_2,Note Hit 2,노트 입력 2,ノーツ入力2,音符按键2
 SETTINGS_LANGUAGE,Language,언어,言語,语言
 SETTINGS_CHART_LOAD_THREADS,Chart Load Threads,채보 로딩 작업 수,譜面読み込みスレッド数,谱面加载线程数
 SETTINGS_SERVER_API,Server API,서버 API,サーバーAPI,服务器 API
-SETTINGS_FULLSCREEN,Fullscreen,전체 화면,フルスクリーン,全屏
+SETTINGS_FULLSCREEN,Fullscreen,전체 창 모드,フルスクリーン,全屏
 SETTINGS_WINDOWED,Windowed,창 모드,ウィンドウ,窗口化
-SETTINGS_EXCLUSIVE_FULLSCREEN,Exclusive,전체 창 모드,排他フルスクリーン,独占全屏
+SETTINGS_EXCLUSIVE_FULLSCREEN,Exclusive,전체 화면,排他フルスクリーン,独占全屏
 SETTINGS_DISABLED,Disabled,비활성화,無効,关闭
 SETTINGS_ENABLED,Enabled,활성화,有効,开启
 SETTINGS_VSYNC_ADAPTIVE,Adaptive,적응형,アダプティブ,自适应
@@ -365,7 +361,7 @@ MENU_EDIT_NEW_CHART,New Difficulty,새 난이도,難易度を追加,添加难度
 MENU_EDIT_DELETE_CHARTSET,Delete Chart,채보 전체 삭제,譜面をすべて削除,删除整份谱面
 MENU_EDIT_DELETE_CHART,Delete Difficulty,난이도 삭제,難易度を削除,删除难度
 PLAYLIST_ALL_CHARTS,All Charts,전체 보기,すべての譜面,全部谱面
-PLAYLIST_LOVED,Favorites,즐겨찾기,お気に入り,收藏
+PLAYLIST_LOVED,Loved,즐겨찾기,お気に入り,收藏
 PLAYLIST_RECENT,Recently Played,최근 플레이,最近プレイした曲,最近游玩
 MENU_TAB_OFFICIAL,Original,오리지널,オリジナル,原创
 MENU_TAB_COMMUNITY,Community,커뮤니티,コミュニティ,社区
