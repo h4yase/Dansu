@@ -1304,7 +1304,6 @@ offset_left = -373.15805
 offset_top = -164.13788
 offset_right = 385.84195
 offset_bottom = -124.13788
-theme = ExtResource("17_y7e7m")
 theme_override_constants/separation = 9
 
 [node name="NewDifficulty" type="Button" parent="ChartInfo/EditActions" unique_id=1382980622]

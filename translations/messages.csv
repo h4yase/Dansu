@@ -257,7 +257,7 @@ SETTINGS_SYSTEM,System,시스템,システム,系统
 SETTINGS_WINDOW_MODE,Window Mode,화면 모드,ウィンドウモード,窗口模式
 SETTINGS_VSYNC,VSync,수직 동기화,垂直同期,垂直同步
 SETTINGS_MAX_FPS,Max FPS,최대 FPS,最大FPS,最大帧率
-SETTINGS_TEMPORAL_AA,Temporal AA,시간적 안티앨리어싱,Temporal AA,时间抗锯齿
+SETTINGS_TEMPORAL_AA,TAA,TAA,TAA,TAA
 SETTINGS_MASTER_VOLUME,Master,전체 음량,マスター,主音量
 SETTINGS_MUSIC_VOLUME,Music,음악 음량,音楽,音乐
 SETTINGS_SFX_VOLUME,SFX,효과음 음량,効果音,音效
@@ -289,9 +289,9 @@ FILTER_DIRECTION,Direction,정렬 방향,方向,方向
 FILTER_REVERSE_ORDER,Reverse order,역순,逆順,倒序
 FILTER_STATUS,status,랭크 상태,ステータス,状态
 FILTER_ANY_STATUS,Any status,모든 상태,すべて,任意状态
-FILTER_RANKED,Ranked,랭크,Ranked,Ranked
+FILTER_RANKED,Ranked,랭크됨,Ranked,Ranked
 FILTER_APPROVED,Approved,승인됨,Approved,Approved
-FILTER_UNRANKED,Unranked,비랭크,Unranked,Unranked
+FILTER_UNRANKED,Unranked,검토중,Unranked,Unranked
 FILTER_DURATION,Duration,곡 길이,長さ（秒）,时长（秒）
 FILTER_MINIMUM,Min,최소,最小,最小
 FILTER_MAXIMUM,Max,최대,最大,最大
@@ -511,7 +511,7 @@ MENU_EXIT,Exit,종료,終了,退出
 MENU_EDIT,Edit,편집,編集,编辑
 MENU_SETTINGS,Options,설정,設定,设置
 MENU_NEW_CHART,New Chart,신규 채보,新規譜面,新建谱面
-MENU_BACK,Back,뒤로,戻る,返回
+MENU_BACK,Back,Back,戻る,返回
 MENU_CHART_DOWNLOD,Downloding,다운로드 중,,
 MENU_CHART_PLAY,Play,플레이,プレイ,游玩
 MENU_EDIT_UPLOAD,Upload,업로드,Upload,Upload

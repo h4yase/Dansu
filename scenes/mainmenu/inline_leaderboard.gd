@@ -158,7 +158,7 @@ func _on_page(data: Dictionary) -> void:
 			continue
 		var row := InlineLeaderboardRow.new()
 		_entries.add_child(row)
-		row.set_entry(item, _maximum_combo)
+		row.set_entry(item, _maximum_combo, _chart.chart_set != null and _chart.chart_set.status == "ranked")
 		row.action_pressed.connect(_on_row_action.bind(row))
 		row.play_appear(minf(index * 0.035, 0.35))
 		index += 1

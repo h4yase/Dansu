@@ -4,6 +4,7 @@ class_name FilterRangeSlider
 signal changed
 
 const HANDLE_SIZE := 36.0
+const TRACK_WIDTH := 30.0
 const TRACK_Y := 28.0
 const HANDLE_FONT := preload("res://resources/fonts/bold/Next Bravo.ttf")
 
@@ -19,6 +20,7 @@ class HandleVisual:
 var lower := 0
 var upper := 41
 var _dragging := false
+var _previous_mouse_mode := Input.MOUSE_MODE_VISIBLE
 var _upper_active := false
 var _drag_offset := 0.0
 var _lower_visual := HandleVisual.new()
@@ -45,11 +47,25 @@ func _ready() -> void:
 	)
 	visibility_changed.connect(func():
 		if not is_visible_in_tree():
-			_dragging = false
+			_end_drag()
 			_hover_lower = false
 			_hover_upper = false
 		set_process(is_visible_in_tree())
 	)
+
+func _exit_tree() -> void:
+	_end_drag()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		_end_drag()
+
+func _end_drag() -> void:
+	if not _dragging:
+		return
+	_dragging = false
+	Input.mouse_mode = _previous_mouse_mode
+	set_process(true)
 
 func set_values(minimum: int, maximum: int) -> void:
 	lower = clampi(minimum, 0, finite_steps)
@@ -109,9 +125,9 @@ func _draw() -> void:
 	var selected_start := Vector2(_step_x(_lower_visual.step), TRACK_Y)
 	var selected_end := Vector2(_step_x(_upper_visual.step), TRACK_Y)
 	var energy := maxf(_lower_visual.held + _lower_visual.pulse, _upper_visual.held + _upper_visual.pulse)
-	draw_line(start, end, Color("383344"), 4.0)
-	draw_line(selected_start, selected_end, Color(0.65, 0.53, 0.95, 0.1 * energy), 10.0)
-	draw_line(selected_start, selected_end, Color("a598ec").lerp(Color.WHITE, minf(0.35, energy * 0.2)), 4.0)
+	draw_line(start, end, Color("383344"), TRACK_WIDTH)
+	draw_line(selected_start, selected_end, Color(0.65, 0.53, 0.95, 0.1 * energy), TRACK_WIDTH + 6.0)
+	draw_line(selected_start, selected_end, Color("a598ec").lerp(Color.WHITE, minf(0.35, energy * 0.2)), TRACK_WIDTH)
 	for is_upper in [false, true]:
 		_draw_handle(is_upper)
 
@@ -144,10 +160,12 @@ func _gui_input(event: InputEvent) -> void:
 			var on_upper := _handle_rect(true).has_point(event.position)
 			_upper_active = on_upper if on_lower or on_upper else absf(event.position.x - _step_x(upper)) < absf(event.position.x - _step_x(lower))
 			_drag_offset = event.position.x - _step_x(upper if _upper_active else lower) if on_lower or on_upper else 0.0
+			_previous_mouse_mode = Input.mouse_mode
+			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 			_dragging = true
 			_move_to_mouse(event.position.x)
 		else:
-			_dragging = false
+			_end_drag()
 			var visual := _upper_visual if _upper_active else _lower_visual
 			visual.pulse = 0.65
 		accept_event()

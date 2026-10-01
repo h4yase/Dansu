@@ -25,6 +25,7 @@ var _actions_hide_tween: Tween
 
 var _hovered := false
 var _item: Dictionary = {}
+var _is_ranked := false
 var _replay_button: Button
 var _detail_button: Button
 var _detail_clip: Control
@@ -189,7 +190,8 @@ func _label(parent: Node, font_size: int) -> Label:
 	return label
 
 
-func set_entry(item: Dictionary, maximum_combo: int) -> void:
+func set_entry(item: Dictionary, maximum_combo: int, is_ranked: bool) -> void:
+	_is_ranked = is_ranked
 	_item = item
 	_replay_button.disabled = not bool(item.get("replay_available", false))
 	_replay_button.tooltip_text = "Watch replay" if not _replay_button.disabled else "Replay unavailable"
@@ -298,7 +300,7 @@ func _on_detail_loaded(result: int, code: int, _headers: PackedStringArray, body
 	var sr := _label(_judgements, 23)
 	sr.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	sr.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	sr.text = "SR\n%.2f" % float(data.score_sr) if data.get("score_sr") != null else "SR\n--"
+	sr.text = "SR\n%.2f" % float(data.score_sr) if _is_ranked and data.get("score_sr") != null else "SR\n--"
 	_judgements.show()
 	_judgements.modulate.a = 0.0
 	if _detail_appear:

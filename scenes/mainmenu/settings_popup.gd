@@ -51,6 +51,12 @@ var _pending_keybind_action := ""
 
 func _ready() -> void:
 	max_fps_line_edit = max_fps_spin.get_line_edit()
+	for style_name in ["normal", "focus", "read_only"]:
+		var style := max_fps_line_edit.get_theme_stylebox(style_name).duplicate() as StyleBoxFlat
+		style.content_margin_top = 4.0
+		style.content_margin_bottom = 4.0
+		for spin in [max_fps_spin, offset_spin, chart_load_threads_spin]:
+			spin.get_line_edit().add_theme_stylebox_override(style_name, style)
 	visible = false
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	process_mode = Node.PROCESS_MODE_ALWAYS

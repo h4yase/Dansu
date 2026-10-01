@@ -164,7 +164,7 @@ func _update_border(chart: Chart) -> void:
 			"ranked":
 				panel_style.border_color = Color("ffffd1")
 			"approved":
-				panel_style.border_color = Color("c6fba6")
+				panel_style.border_color = Color("8fe44fff")
 
 func check_is_selected():
 	selected = charts.has(CM.selected_chart)

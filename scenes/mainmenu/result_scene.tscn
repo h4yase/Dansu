@@ -79,7 +79,7 @@ expand_margin_top = 10.0
 expand_margin_right = 10.0
 expand_margin_bottom = 10.0
 
-[node name="Control" type="Control" unique_id=440496817 node_paths=PackedStringArray("rank", "next_rank_score", "current_rank_score", "score_label", "progress_bar", "player_sprite", "back_button", "rank_up_particles", "just_plus_count_label", "just_count_label", "good_count_label", "okay_count_label", "nah_count_label", "miss_count_label", "combo_value_label", "avg_value_label", "difficulty_label", "title_value_label", "artist_value_label", "cover_image_rect", "account_panel", "sr_gain_label")]
+[node name="Control" type="Control" unique_id=440496817 node_paths=PackedStringArray("rank", "next_rank_score", "current_rank_score", "score_label", "progress_bar", "player_sprite", "back_button", "rank_up_particles", "just_plus_count_label", "just_count_label", "good_count_label", "okay_count_label", "nah_count_label", "miss_count_label", "combo_value_label", "avg_value_label", "difficulty_label", "title_value_label", "artist_value_label", "cover_image_rect", "account_panel", "sr_gain_label", "sr_value_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -110,6 +110,7 @@ artist_value_label = NodePath("HBoxContainer3/VBoxContainer/Artist")
 cover_image_rect = NodePath("HBoxContainer3/CoverImage")
 account_panel = NodePath("AccountPanel")
 sr_gain_label = NodePath("SRGain")
+sr_value_label = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/SRValue")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1374195926]
 material = SubResource("ShaderMaterial_dpngd")
@@ -517,4 +518,4 @@ size_flags_horizontal = 3
 size_flags_vertical = 6
 theme_override_fonts/font = ExtResource("8_n4qk8")
 theme_override_font_sizes/font_size = 40
-text = "-2ms"
+text = "--"

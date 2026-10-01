@@ -375,11 +375,11 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_6wklw")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_oxefu")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_7vhfp")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_0w3cm")
-tab_alignment = 1
-current_tab = 0
+current_tab = 4
 tab_focus_mode = 0
 
 [node name="Graphics" type="ScrollContainer" parent="Panel/Margin/VBox/Pages" unique_id=1538677562]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -416,8 +416,9 @@ vertical_alignment = 1
 
 [node name="WindowModeOption" type="OptionButton" parent="Panel/Margin/VBox/Pages/Graphics/Margin/Rows/WindowModeRow/HBox" unique_id=1405835317]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 36)
+custom_minimum_size = Vector2(220, 32)
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("3")
 
 [node name="VSyncRow" type="PanelContainer" parent="Panel/Margin/VBox/Pages/Graphics/Margin/Rows" unique_id=1932589528]
@@ -438,8 +439,9 @@ text = "SETTINGS_VSYNC"
 
 [node name="VSyncOption" type="OptionButton" parent="Panel/Margin/VBox/Pages/Graphics/Margin/Rows/VSyncRow/HBox" unique_id=2078976166]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 36)
+custom_minimum_size = Vector2(220, 32)
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("3")
 
 [node name="MaxFpsRow" type="PanelContainer" parent="Panel/Margin/VBox/Pages/Graphics/Margin/Rows" unique_id=1248943954]
@@ -458,10 +460,19 @@ theme_override_fonts/font = ExtResource("3")
 theme_override_font_sizes/font_size = 18
 text = "SETTINGS_MAX_FPS"
 
+[node name="Note" type="Label" parent="Panel/Margin/VBox/Pages/Graphics/Margin/Rows/MaxFpsRow/HBox" unique_id=509891017]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.62152386, 0.62152386, 0.6215238, 1)
+theme_override_font_sizes/font_size = 14
+text = "HINT_MAX_FPS_0"
+autowrap_mode = 3
+
 [node name="MaxFpsSpin" type="SpinBox" parent="Panel/Margin/VBox/Pages/Graphics/Margin/Rows/MaxFpsRow/HBox" unique_id=224565952]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 32)
+custom_minimum_size = Vector2(220, 32)
 layout_mode = 2
+size_flags_vertical = 4
 max_value = 480.0
 step = 5.0
 
@@ -483,8 +494,9 @@ text = "SETTINGS_TEMPORAL_AA"
 
 [node name="TAACheck" type="CheckBox" parent="Panel/Margin/VBox/Pages/Graphics/Margin/Rows/TAARow/HBox" unique_id=1236202123]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 44)
+custom_minimum_size = Vector2(220, 32)
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("3")
 text = "SETTINGS_ENABLED"
 
@@ -506,8 +518,9 @@ text = "MSAA"
 
 [node name="MSAAOption" type="OptionButton" parent="Panel/Margin/VBox/Pages/Graphics/Margin/Rows/MSAARow/HBox" unique_id=173610110]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 44)
+custom_minimum_size = Vector2(220, 32)
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("3")
 
 [node name="Audio" type="ScrollContainer" parent="Panel/Margin/VBox/Pages" unique_id=87365343]
@@ -708,8 +721,9 @@ vertical_alignment = 1
 
 [node name="OffsetSpin" type="SpinBox" parent="Panel/Margin/VBox/Pages/Audio/Margin/Rows/OffsetRow/HBox" unique_id=1127113291]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 44)
+custom_minimum_size = Vector2(220, 32)
 layout_mode = 2
+size_flags_vertical = 4
 min_value = -250.0
 max_value = 250.0
 
@@ -790,8 +804,9 @@ text = "SETTINGS_IGNORE_CHART_SKIN"
 
 [node name="IgnoreChartSkinCheck" type="CheckBox" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/IgnoreChartSkinRow/HBox" unique_id=1527105585]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 44)
+custom_minimum_size = Vector2(220, 32)
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("3")
 text = "SETTINGS_ENABLED"
 
@@ -832,7 +847,7 @@ text = "SETTINGS_MOVE_LEFT"
 
 [node name="ActionLeftButton" type="Button" parent="Panel/Margin/VBox/Pages/Keybinds/Margin/Rows/ActionLeftRow/HBox" unique_id=1568072780]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 22)
+custom_minimum_size = Vector2(220, 22)
 layout_mode = 2
 text = "Left"
 
@@ -854,7 +869,7 @@ text = "SETTINGS_MOVE_RIGHT"
 
 [node name="ActionRightButton" type="Button" parent="Panel/Margin/VBox/Pages/Keybinds/Margin/Rows/ActionRightRow/HBox" unique_id=852118360]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 22)
+custom_minimum_size = Vector2(220, 22)
 layout_mode = 2
 text = "Right"
 
@@ -876,7 +891,7 @@ text = "SETTINGS_NOTE_HIT_1"
 
 [node name="ActionHit1Button" type="Button" parent="Panel/Margin/VBox/Pages/Keybinds/Margin/Rows/ActionHit1Row/HBox" unique_id=1219787748]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 22)
+custom_minimum_size = Vector2(220, 22)
 layout_mode = 2
 text = "Hit 1"
 
@@ -898,12 +913,11 @@ text = "SETTINGS_NOTE_HIT_2"
 
 [node name="ActionHit2Button" type="Button" parent="Panel/Margin/VBox/Pages/Keybinds/Margin/Rows/ActionHit2Row/HBox" unique_id=801263686]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 22)
+custom_minimum_size = Vector2(220, 22)
 layout_mode = 2
 text = "Hit 2"
 
 [node name="System" type="ScrollContainer" parent="Panel/Margin/VBox/Pages" unique_id=603168884]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -932,11 +946,11 @@ theme_override_constants/separation = 12
 
 [node name="Row" type="HBoxContainer" parent="Panel/Margin/VBox/Pages/System/Margin/Rows/LanguageRow/VBox" unique_id=1300184203]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 24
 
 [node name="Title" type="Label" parent="Panel/Margin/VBox/Pages/System/Margin/Rows/LanguageRow/VBox/Row" unique_id=1747471062]
 layout_mode = 2
-size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("3")
 theme_override_font_sizes/font_size = 18
 text = "SETTINGS_LANGUAGE"
@@ -944,14 +958,17 @@ text = "SETTINGS_LANGUAGE"
 [node name="Note" type="Label" parent="Panel/Margin/VBox/Pages/System/Margin/Rows/LanguageRow/VBox/Row" unique_id=119838994]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.62152386, 0.62152386, 0.6215238, 1)
+theme_override_font_sizes/font_size = 14
 text = "HINT_LANGUAGE_RESTART"
 autowrap_mode = 3
 
 [node name="LanguageOption" type="OptionButton" parent="Panel/Margin/VBox/Pages/System/Margin/Rows/LanguageRow/VBox/Row" unique_id=1204131473]
 unique_name_in_owner = true
 auto_translate_mode = 2
-custom_minimum_size = Vector2(240, 44)
+custom_minimum_size = Vector2(220, 32)
 layout_mode = 2
+size_flags_vertical = 4
 
 [node name="ThreadsRow" type="PanelContainer" parent="Panel/Margin/VBox/Pages/System/Margin/Rows" unique_id=1767643768]
 custom_minimum_size = Vector2(0, 50)
@@ -971,8 +988,9 @@ text = "SETTINGS_CHART_LOAD_THREADS"
 
 [node name="ChartThreadsSpin" type="SpinBox" parent="Panel/Margin/VBox/Pages/System/Margin/Rows/ThreadsRow/HBox" unique_id=1567634741]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 44)
+custom_minimum_size = Vector2(220, 32)
 layout_mode = 2
+size_flags_vertical = 4
 min_value = 1.0
 max_value = 32.0
 value = 1.0

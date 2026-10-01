@@ -46,7 +46,22 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.47058824, 0.40392157, 0.8784314, 0.34)
+border_color = Color(0.47058824, 0.40392157, 0.8784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e6xu1"]
+content_margin_left = 30.0
+content_margin_right = 30.0
+bg_color = Color(0.05490196, 0.05882353, 0.08627451, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6b80m"]
+content_margin_left = 30.0
+content_margin_right = 30.0
+bg_color = Color(0.51720417, 0.47119164, 0.8932131, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g36tt"]
+content_margin_left = 30.0
+content_margin_right = 30.0
+bg_color = Color(0.4509804, 0.3882353, 0.84313726, 1)
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_t60lc"]
 color = Color(0.4509804, 0.3882353, 0.84313726, 1)
@@ -154,10 +169,12 @@ theme_override_constants/separation = 20
 
 [node name="Back" type="Button" parent="TopBar/Margin/Row" unique_id=2033992967]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "EDITOR_BACK_MENU"
 
 [node name="SkinEditor" type="Button" parent="TopBar/Margin/Row" unique_id=882752776]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "EDITOR_SKIN_EDITOR"
 
 [node name="EventEditor" type="Button" parent="TopBar/Margin/Row" unique_id=1179785375]
@@ -171,12 +188,14 @@ size_flags_horizontal = 3
 
 [node name="BeatDivisionLabel" type="Label" parent="TopBar/Margin/Row" unique_id=1602701495]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "EDITOR_BEAT_DIVISION"
 vertical_alignment = 1
 
 [node name="BeatDivisionValue" type="Label" parent="TopBar/Margin/Row" unique_id=1347535791]
 custom_minimum_size = Vector2(42, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 18
 text = "1/4"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -230,18 +249,21 @@ editor = NodePath("../..")
 [node name="Inspector" type="TabContainer" parent="." unique_id=792765145]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.94166666
+anchor_left = 0.73700005
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -392.0
+offset_left = 0.95996094
 offset_top = 70.0
 offset_right = -24.0
-offset_bottom = -84.0
+offset_bottom = -53.0
 pivot_offset = Vector2(430, 0)
+theme_override_font_sizes/font_size = 16
 theme_override_styles/panel = SubResource("StyleBoxFlat_37swi")
+theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_e6xu1")
+theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_6b80m")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_g36tt")
 current_tab = 0
 tab_focus_mode = 1
-metadata/_edit_use_anchors_ = true
 
 [node name="Chart" type="TabBar" parent="Inspector" unique_id=65841320]
 layout_mode = 2
@@ -428,7 +450,6 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 
 [node name="Note" type="VBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer" unique_id=570037262]
-visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=80382324]
@@ -439,9 +460,11 @@ text = "EDITOR_NOTE"
 layout_mode = 2
 
 [node name="time" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=1000023139]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/time" unique_id=1318776239]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "EDITOR_TIME"
 
@@ -452,14 +475,17 @@ size_flags_vertical = 3
 placeholder_text = "1000"
 
 [node name="type" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=818998700]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/type" unique_id=1778811650]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "EDITOR_NOTE_TYPE"
 
 [node name="OptionButton" type="OptionButton" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/type" unique_id=475769546]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 selected = 1
 item_count = 4
 popup/item_0/text = "EDITOR_HIT"
@@ -472,14 +498,17 @@ popup/item_3/text = "EDITOR_SPIKE"
 popup/item_3/id = 4
 
 [node name="dir" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=610865530]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/dir" unique_id=1959779201]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "EDITOR_DIRECTION"
 
 [node name="OptionButton" type="OptionButton" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/dir" unique_id=611654619]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 selected = 1
 item_count = 2
 popup/item_0/text = "EDITOR_LEFT"
@@ -488,9 +517,11 @@ popup/item_1/text = "EDITOR_RIGHT"
 popup/item_1/id = 1
 
 [node name="length" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=1638812228]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/length" unique_id=948612822]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "EDITOR_LENGTH"
 
@@ -498,12 +529,15 @@ text = "EDITOR_LENGTH"
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_font_sizes/font_size = 16
 placeholder_text = "0"
 
 [node name="animation" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=1695244177]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
 [node name="animation" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/animation" unique_id=546716715]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "EDITOR_ANIMATION"
 
@@ -515,9 +549,11 @@ clip_text = true
 fit_to_longest_item = false
 
 [node name="SFX" type="HBoxContainer" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note" unique_id=72922546]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
 [node name="sfx" type="Label" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/SFX" unique_id=1233933479]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "EDITOR_SFX"
 
@@ -621,12 +657,15 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="label" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1646588012]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "EDITOR_HIT_NOTE"
 
 [node name="Hit" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1066772196]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
 text_overrun_behavior = 5
 clip_text = true
 fit_to_longest_item = false
@@ -635,12 +674,15 @@ fit_to_longest_item = false
 layout_mode = 2
 
 [node name="hit" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=64586634]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "EDITOR_MOVE_NOTE"
 
 [node name="Move" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1080815256]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
 text_overrun_behavior = 5
 clip_text = true
 fit_to_longest_item = false
@@ -649,12 +691,15 @@ fit_to_longest_item = false
 layout_mode = 2
 
 [node name="hit" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1052878308]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "EDITOR_TRACE_NOTE"
 
 [node name="Trace" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1082399630]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
 text_overrun_behavior = 5
 clip_text = true
 fit_to_longest_item = false
@@ -663,12 +708,15 @@ fit_to_longest_item = false
 layout_mode = 2
 
 [node name="spike" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=12234412]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "EDITOR_SPIKE_NOTE"
 
 [node name="Spike" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=12234413]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
 text_overrun_behavior = 5
 clip_text = true
 fit_to_longest_item = false
@@ -677,12 +725,15 @@ fit_to_longest_item = false
 layout_mode = 2
 
 [node name="release" type="Label" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer5" unique_id=12234415]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "EDITOR_LONG_RELEASE"
 
 [node name="Release" type="OptionButton" parent="Inspector/SFX/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer5" unique_id=12234416]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
 text_overrun_behavior = 5
 clip_text = true
 fit_to_longest_item = false
@@ -698,14 +749,12 @@ layout_mode = 2
 [node name="Chart" type="Control" parent="." unique_id=342643612]
 clip_contents = true
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = 9
 anchor_bottom = 1.0
 offset_left = 183.0
 offset_top = 70.0
-offset_right = -1189.0
+offset_right = 731.0
 offset_bottom = -84.0
-grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
@@ -763,6 +812,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_t60lc")
 metadata/_edit_use_anchors_ = true
 
 [node name="Object" type="VBoxContainer" parent="." unique_id=2054365102]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 1
 anchors_preset = -1
 anchor_bottom = 1.0
@@ -779,32 +829,26 @@ text = "EDITOR_NOTES"
 
 [node name="Hit2" type="Button" parent="Object" unique_id=66446060]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "EDITOR_TOOL_RAIL"
 
 [node name="Hit" type="Button" parent="Object" unique_id=823023364]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "EDITOR_TOOL_HIT"
 
 [node name="Trace" type="Button" parent="Object" unique_id=53886401]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "EDITOR_TOOL_TRACE"
 
 [node name="Left" type="Button" parent="Object" unique_id=653754946]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "EDITOR_TOOL_LEFT"
 
 [node name="Right" type="Button" parent="Object" unique_id=711043301]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "EDITOR_TOOL_RIGHT"
 
 [node name="Spike" type="Button" parent="Object" unique_id=469186168]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "EDITOR_TOOL_SPIKE"
 
 [node name="Label2" type="Label" parent="Object" unique_id=1482789204]
@@ -813,27 +857,22 @@ text = "EDITOR_CONTROLS"
 
 [node name="Delete" type="Button" parent="Object" unique_id=1709305272]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "EDITOR_DELETE"
 
 [node name="Copy" type="Button" parent="Object" unique_id=2126726355]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "EDITOR_COPY"
 
 [node name="Paste" type="Button" parent="Object" unique_id=650479365]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "EDITOR_PASTE"
 
 [node name="Undo" type="Button" parent="Object" unique_id=1200218470]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "EDITOR_UNDO"
 
 [node name="Redo" type="Button" parent="Object" unique_id=1009727530]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "EDITOR_REDO"
 
 [node name="Label3" type="Label" parent="Object" unique_id=81705010]
@@ -842,7 +881,6 @@ text = "EDITOR_CHART"
 
 [node name="Save" type="Button" parent="Object" unique_id=1739146947]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "EDITOR_SAVE_CHART"
 
 [node name="SongSlider" type="HSlider" parent="." unique_id=1825726041]
