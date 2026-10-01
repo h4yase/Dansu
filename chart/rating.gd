@@ -36,7 +36,7 @@ static func get_color_from_rating(value: float,fade: bool = false,user: bool = f
 		15: Color("d1bd28"), # hard
 		20: Color("ee5c3c"), # advanced
 		25: Color("ad232d"), # expert
-		30: Color("c262bbff"), # master
+		30: Color("b252abff"), # master
 		35: Color("734ab3ff"), # beyond
 		40: Color("38091dff"), # zenith
 		50: Color("282423ff") # omega
@@ -51,7 +51,7 @@ static func get_color_from_rating(value: float,fade: bool = false,user: bool = f
 			# pro era
 			2000: Color("ee5c3c"), # orange
 			2500: Color("ad232d"), # red
-			3000: Color("c262bbff"), # pink
+			3000: Color("b252abff"), # pink
 			3300: Color("a585e3ff"), # lavender
 			3500: Color("734ab3ff"), # purple
 			# god era
