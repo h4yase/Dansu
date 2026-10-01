@@ -174,7 +174,7 @@ var custom_skin_path: String:
 
 var note_speed: float:
 	get:
-		return config.get_value(SECTION_GAMEPLAY,"note_speed",50)
+		return config.get_value(SECTION_GAMEPLAY,"note_speed",40)
 	set(value):
 		config.set_value(SECTION_GAMEPLAY,"note_speed",value)
 
