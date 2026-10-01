@@ -53,7 +53,7 @@ func show_popup(online: bool, values: SongFilters, authenticated: bool = false) 
 		_add_sort_option(GameText.Key.FILTER_SORT_TITLE, "title")
 		_add_sort_option(GameText.Key.FILTER_SORT_ARTIST, "artist")
 		_add_sort_option(GameText.Key.FILTER_SORT_DIFFICULTY, "rating")
-		_add_sort_option(GameText.Key.FILTER_SORT_RECENT, "recent")
+		_add_sort_option(GameText.Key.PLAYLIST_RECENT, "recent")
 		_add_sort_option(GameText.Key.FILTER_SORT_LENGTH, "length")
 	for row in _server_rows:
 		row.visible = online

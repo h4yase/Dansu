@@ -254,7 +254,8 @@ func toggle_details(chart_id: int) -> void:
 	_detail_status.hide()
 	var score_id := int(_item.get("score_id", -1))
 	if chart_id <= 0 or score_id <= 0:
-		_detail_error(GameText.text(GameText.Key.ERROR_SCORE_DETAILS_MISSING))
+		push_warning("Score details unavailable")
+		_detail_error(GameText.text(GameText.Key.ERROR_SCORE_DETAILS_LOAD))
 		return
 	_detail_request = HTTPRequest.new()
 	_detail_request.timeout = 15.0
@@ -284,7 +285,8 @@ func _on_detail_loaded(result: int, code: int, _headers: PackedStringArray, body
 		return
 	var data = JSON.parse_string(body.get_string_from_utf8())
 	if not data is Dictionary or int(data.get("chart_id", -1)) != chart_id or int(data.get("score_id", -1)) != score_id:
-		_detail_error(GameText.text(GameText.Key.ERROR_SCORE_DETAILS_INVALID))
+		push_warning("Invalid score details")
+		_detail_error(GameText.text(GameText.Key.ERROR_SCORE_DETAILS_LOAD))
 		return
 	for judgement in JUDGEMENTS:
 		if not data.has(judgement[1]):

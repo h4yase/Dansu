@@ -1988,7 +1988,7 @@ hover_scale = 1.0
 custom_minimum_size = Vector2(240, 64)
 layout_mode = 2
 bg_color = Color(0.105882354, 0.09019608, 0.16470589, 1)
-button_text = "MENU_CHART_PLAY"
+button_text = "MENU_PLAY"
 icon_texture = ExtResource("35_xuiok")
 hover_scale = 1.0
 

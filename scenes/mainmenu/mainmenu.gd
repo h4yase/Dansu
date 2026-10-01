@@ -469,7 +469,7 @@ func _select_source_tab(tab: int) -> void:
 		return
 	_remember_source_selection()
 	if tab == 1 and not Auth.is_authenticated():
-		Notification.notice(GameText.text(GameText.Key.HINT_SIGN_IN_COMMUNITY), Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.HINT_SIGN_IN_REQUIRED), Notification.Type.WARNING)
 		source_tabs.set_block_signals(true)
 		source_tabs.current_tab = 0
 		source_tabs.set_block_signals(false)
@@ -713,7 +713,7 @@ func _update_editor_chart_actions() -> void:
 	delete_chartset_button.disabled = not has_chart
 	delete_difficulty_button.disabled = not has_chart or CM.selected_chartset.charts.size() <= 1
 	delete_difficulty_button.tooltip_text = (
-		GameText.text(GameText.Key.HINT_DELETE_CHARTSET)
+		GameText.text(GameText.Key.HINT_DELETE_LAST_DIFFICULTY)
 		if has_chart and CM.selected_chartset.charts.size() <= 1
 		else ""
 	)

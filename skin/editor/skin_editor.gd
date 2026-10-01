@@ -3,7 +3,7 @@ class_name SkinEditor
 
 const EDITOR_SCENE_PATH := "res://scenes/chart/editor/editor_scene.tscn"
 const EFFECT_OPTIONS := ["none", "groove", "spin"]
-const EFFECT_KEYS: Array[GameText.Key] = [GameText.Key.EDITOR_EFFECT_NONE, GameText.Key.EDITOR_EFFECT_GROOVE, GameText.Key.EDITOR_EFFECT_SPIN]
+const EFFECT_KEYS: Array[GameText.Key] = [GameText.Key.EDITOR_NONE, GameText.Key.EDITOR_EFFECT_GROOVE, GameText.Key.EDITOR_EFFECT_SPIN]
 const PREVIEW_SCALE_DIVISOR := 4.0
 const CALCULATED_SPRITE_HEIGHT := 2000.0
 const HIT_SLOT_ROW_SCENE := preload("res://scenes/skin/editor/hit_slot_row.tscn")
@@ -96,7 +96,7 @@ func _connect_dialogs() -> void:
 
 func _configure_static_options() -> void:
 	var tabs: TabContainer = $Inspector/TabContainer
-	tabs.set_tab_title(0, GameText.text(GameText.Key.EDITOR_TAB_SKIN))
+	tabs.set_tab_title(0, GameText.text(GameText.Key.EDITOR_SKIN))
 	tabs.set_tab_title(1, GameText.text(GameText.Key.EDITOR_TAB_ANIMATIONS))
 	if scale_spinbox != null:
 		scale_spinbox.min_value = 0.000001

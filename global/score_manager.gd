@@ -37,7 +37,8 @@ func record_play(chart: Chart, score: Score) -> int:
 	if DB.connection != null:
 		play_id = int(DB.connection.record_play(chart, score))
 		if play_id <= 0:
-			Notification.notice(GameText.text(GameText.Key.ERROR_SCORE_RECORD) % DB.connection.get_last_error_message(),
+			push_warning("Failed to record play: %s" % DB.connection.get_last_error_message())
+			Notification.notice(GameText.text(GameText.Key.ERROR_SCORE_RECORD),
 				Notification.Type.ERROR)
 			return -1
 
@@ -278,7 +279,8 @@ func _on_chartset_resolved(
 		return
 	var data = JSON.parse_string(body.get_string_from_utf8())
 	if not data is Dictionary or not data.get("charts") is Array:
-		_fail_active(GameText.text(GameText.Key.ERROR_CHART_METADATA))
+		push_warning("The server returned invalid chart metadata.")
+		_fail_active(GameText.text(GameText.Key.ERROR_CHART_INFO))
 		return
 	var chart: Chart = _active_submission.chart
 	var metadata: Dictionary = {}
@@ -299,7 +301,8 @@ func _post_active(metadata: Dictionary) -> void:
 	var score: Score = _active_submission.score
 	var payload := build_submission_payload(chart, score, metadata, score.submission_id)
 	if payload.is_empty():
-		_fail_active(GameText.text(GameText.Key.ERROR_SCORE_METADATA))
+		push_warning("The completed score does not match the chart metadata.")
+		_fail_active(GameText.text(GameText.Key.ERROR_SCORE_SUBMIT))
 		return
 	_request = _new_request()
 	_request.request_completed.connect(_on_score_submitted)
@@ -313,7 +316,8 @@ func _post_active(metadata: Dictionary) -> void:
 		HTTPClient.METHOD_POST,
 		_build_multipart_submission(payload, score.replay.to_bytes(), boundary, score.submission_id)
 	) != OK:
-		_retry_or_fail(GameText.text(GameText.Key.ERROR_SCORE_SUBMIT_START))
+		push_warning("Could not start the score submission.")
+		_retry_or_fail(GameText.text(GameText.Key.ERROR_SCORE_SUBMIT))
 
 
 func _on_score_submitted(
@@ -331,12 +335,14 @@ func _on_score_submitted(
 		_finish_active()
 		return
 	if result != HTTPRequest.RESULT_SUCCESS or code != 201:
-		var message := _response_error(body, GameText.text(GameText.Key.ERROR_SCORE_SUBMIT_HTTP) % code)
+		push_warning("Score submission failed (HTTP %d)." % code)
+		var message := _response_error(body, GameText.text(GameText.Key.ERROR_SCORE_SUBMIT))
 		_retry_or_fail(message, result, code)
 		return
 	var data = JSON.parse_string(body.get_string_from_utf8())
 	if not data is Dictionary or not data.get("score") is Dictionary:
-		_fail_active(GameText.text(GameText.Key.ERROR_SCORE_RESPONSE))
+		push_warning("The server returned an invalid score response.")
+		_fail_active(GameText.text(GameText.Key.ERROR_SCORE_SUBMIT))
 		return
 	score.submitted = true
 	score.submission_error = ""
@@ -378,7 +384,7 @@ func _fail_active(message: String) -> void:
 		return
 	var score: Score = _active_submission.score
 	score.submission_error = message
-	Notification.notice(GameText.text(GameText.Key.ERROR_SCORE_SUBMIT_DETAIL) % message, Notification.Type.WARNING)
+	Notification.notice(message, Notification.Type.WARNING)
 	submission_failed.emit(score, message)
 	_finish_active()
 
@@ -411,7 +417,7 @@ func _response_error(body: PackedByteArray, fallback: String) -> String:
 		return fallback
 	var data = parser.data
 	if data is Dictionary and data.get("detail") is String:
-		return str(data.detail)
+		push_warning("Score submission: %s" % str(data.detail))
 	return fallback
 
 

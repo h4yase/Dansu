@@ -71,10 +71,10 @@ var _pending_exit_target := ""
 
 func _ready() -> void:
 	var tabs: TabContainer = $Inspector
-	tabs.set_tab_title(0, GameText.text(GameText.Key.EDITOR_TAB_CHART))
+	tabs.set_tab_title(0, GameText.text(GameText.Key.EDITOR_CHART))
 	tabs.set_tab_title(1, GameText.text(GameText.Key.EDITOR_TAB_PROPERTY))
-	tabs.set_tab_title(2, GameText.text(GameText.Key.EDITOR_TAB_TIMING))
-	tabs.set_tab_title(3, GameText.text(GameText.Key.EDITOR_TAB_SFX))
+	tabs.set_tab_title(2, GameText.text(GameText.Key.EDITOR_TIMING))
+	tabs.set_tab_title(3, GameText.text(GameText.Key.EDITOR_SFX))
 	$VBoxContainer/Label2.text = GameText.text(GameText.Key.EDITOR_NOTE_COUNT) % 9999999
 	$VBoxContainer/Label3.text = GameText.text(GameText.Key.EDITOR_RAIL_COUNT) % 9999999
 	if not Game.reopen_editor_without_chart_reload:

@@ -3,252 +3,117 @@ HINT_USERNAME_SETUP,Choose a username to continue.,계속하려면 사용할 플
 HINT_USERNAME_RULES,"Use 3–24 English letters, numbers, or underscores, starting with a letter.","3~24자의 영문자, 숫자, 밑줄(_)을 사용할 수 있으며 영문자로 시작해야 합니다.",3～24文字の半角英字・数字・アンダースコアを使用でき、先頭は英字にしてください。,可使用 3～24 个英文字母、数字或下划线，且必须以英文字母开头。
 HINT_USERNAME_VISIBLE,This is how other players will see you.,다른 플레이어에게 표시되는 이름입니다.,他のプレイヤーにはこの名前が表示されます。,其他玩家将看到这个名称。
 HINT_LANGUAGE_RESTART,Restart the game to apply language changes.,언어 변경엔 재시작이 필요합니다.,言語の変更を適用するにはゲームを再起動してください。,重启游戏以应用语言更改。
-HINT_TRANSLATION_IMPORTED,Translation imported. Select its language and restart the game.,번역을 가져왔습니다. 언어를 선택한 후 게임을 재시작해 주세요.,翻訳をインポートしました。言語を選択してゲームを再起動してください。,翻译已导入。请选择对应语言并重启游戏。
-NOTICE_TRANSLATION_EXPORTED,Translation template saved.,번역 템플릿을 저장했습니다.,翻訳テンプレートを保存しました。,翻译模板已保存。
-ERROR_TRANSLATION_OPEN,Could not open the translation CSV.,CSV 번역파일을 불러 올 수 없습니다.,翻訳CSVを開けませんでした。,无法打开翻译 CSV。
-ERROR_TRANSLATION_HEADER,"The CSV must begin with keys,en and use UTF-8 encoding.","CSV는 keys,en으로 시작해야 하며 UTF-8 인코딩을 사용해야 합니다.","CSVは keys,en で始まり、UTF-8でエンコードされている必要があります。","CSV 必须以 keys,en 开头，并使用 UTF-8 编码。"
-ERROR_TRANSLATION_LOCALE,The CSV contains an invalid or duplicate language code.,CSV에 유효하지 않거나 중복된 언어 코드가 있습니다.,CSVに無効または重複した言語コードがあります。,CSV 中包含无效或重复的语言代码。
-ERROR_TRANSLATION_ROW,Invalid or duplicate translation at CSV row %d.,CSV %d행에 유효하지 않거나 중복된 번역이 있습니다.,CSVの%d行目に無効または重複した翻訳があります。,CSV 第 %d 行存在无效或重复的翻译。
-ERROR_TRANSLATION_FORMAT,Keep the original placeholders at CSV row %d.,CSV %d행의 원본 플레이스홀더를 유지해 주세요.,CSVの%d行目では元のプレースホルダーを維持してください。,请保留 CSV 第 %d 行中的原始占位符。
-ERROR_TRANSLATION_FOLDER,Could not create the translation folder.,번역 폴더를 생성할 수 없습니다.,翻訳フォルダーを作成できませんでした。,无法创建翻译文件夹。
-ERROR_TRANSLATION_SAVE,Could not save the translation CSV.,번역 CSV를 저장할 수 없습니다.,翻訳CSVを保存できませんでした。,无法保存翻译 CSV。
-ERROR_TRANSLATION_EXPORT,Could not save the translation template.,번역 템플릿을 저장할 수 없습니다.,翻訳テンプレートを保存できませんでした。,无法保存翻译模板。
 ERROR_USERNAME_TAKEN,That username is already taken.,이미 사용중인 플레이어명입니다.,そのユーザー名はすでに使用されています。,该用户名已被使用。
-ERROR_USERNAME_SAVE,Could not save the username. Please retry.,플레이어명 저장에 실패했습니다. 다시 시도해주세요.,ユーザー名を保存できませんでした。もう一度お試しください。,无法保存用户名，请重试。
-ERROR_USERNAME_RESPONSE,Invalid username response from the server.,유효하지 않은 플레이어명을 반환받았습니다.,サーバーから無効なユーザー名応答が返されました。,服务器返回了无效的用户名响应。
-HINT_SIGN_IN_COMMUNITY,Sign in to access Community charts.,커뮤니티 채보는 로그인이 필요합니다.,コミュニティ譜面を利用するにはログインしてください。,登录后即可访问社区谱面。
-HINT_SIGN_IN_PLAYLISTS,Sign in to use playlists.,재생목록은 로그인이 필요합니다.,プレイリストを利用するにはログインしてください。,登录后即可使用播放列表。
-HINT_SIGN_IN_HISTORY,Sign in to use the play history filter.,플레이 기록 필터를 사용하려면 로그인해 주세요.,プレイ履歴フィルターを利用するにはログインしてください。,登录后即可使用游玩记录筛选。
-HINT_SIGN_IN_PUBLISH,Sign in with Steam to publish chartsets.,채보를 게시하려면 Steam로그인이 필요합니다.,譜面セットを公開するにはSteamでログインしてください。,请使用 Steam 登录后发布谱面集。
-HINT_SIGN_IN_DOWNLOAD,"Sign in with Steam, then press play again.",로그인후 플레이 버튼을 다시 눌러주세요.,Steamでログインしてから、もう一度プレイを押してください。,请使用 Steam 登录，然后再次点击游玩。
-HINT_SIGN_IN_STEAM,"Sign in to the Steam client, then retry.",스팀 로그인 후 다시 시도해주세요.,Steamクライアントにログインしてから、もう一度お試しください。,请登录 Steam 客户端后重试。
+ERROR_USERNAME_SAVE,Could not save the username. Please retry.,플레이어명 저장에 실패했습니다. 다시 시도해 주세요.,ユーザー名を保存できませんでした。もう一度お試しください。,无法保存用户名，请重试。
+HINT_SIGN_IN_DOWNLOAD,"Sign in with Steam, then press Play again.",Steam으로 로그인한 후 플레이 버튼을 다시 눌러 주세요.,Steamでログインしてから、もう一度プレイを押してください。,请使用 Steam 登录，然后再次点击游玩。
+HINT_SIGN_IN_STEAM,"Sign in to the Steam client, then retry.",스팀 로그인 후 다시 시도해 주세요.,Steamクライアントにログインしてから、もう一度お試しください。,请登录 Steam 客户端后重试。
 ERROR_SESSION_EXPIRED,Session expired.,로그인 정보가 만료되었습니다.,セッションの有効期限が切れました。,会话已过期。
-ERROR_SESSION_RETRY,Sign in with Steam and retry.,Steam으로 로그인한 후 다시 시도해 주세요.,Steamでログインしてから、もう一度お試しください。,请使用 Steam 登录后重试。
 ERROR_SERVER_CHANGED,Server changed. Sign in again.,서버가 변경되었으니 다시 로그인해 주십시오.,サーバーが変更されました。もう一度ログインしてください。,服务器已更改，请重新登录。
 ERROR_SERVER_URL,Use an HTTPS API URL.,HTTPS API 주소를 사용해주세요.,HTTPSのAPI URLを使用してください。,请使用 HTTPS API 地址。
-ERROR_SIGN_IN_TIMEOUT,Steam sign-in timed out. Please retry.,"
-Steam 로그인 시간이 초과되었습니다. 다시 시도해 주세요.",Steamログインがタイムアウトしました。もう一度お試しください。,Steam 登录超时，请重试。
-ERROR_SIGN_IN_START,Could not start the sign-in request. Please retry.,"
-로그인 요청을 시작할 수 없습니다. 다시 시도해 주세요.",ログイン要求を開始できませんでした。もう一度お試しください。,无法发起登录请求，请重试。
-ERROR_SIGN_IN_HTTP,Sign-in failed (HTTP %d). Please retry.,"
-로그인에 실패했습니다(HTTP %d). 다시 시도해 주세요.",ログインに失敗しました（HTTP %d）。もう一度お試しください。,登录失败（HTTP %d），请重试。
-ERROR_SIGN_IN_FORBIDDEN,This account cannot sign in.,"
-이 계정으로는 로그인할 수 없습니다.",このアカウントではログインできません。,此账号无法登录。
-ERROR_SIGN_IN_RESPONSE,Invalid sign-in response from the server.,"
-서버로부터 유효하지 않은 로그인 응답을 받았습니다.",サーバーから無効なログイン応答が返されました。,服务器返回了无效的登录响应。
-ERROR_SIGN_IN_SESSION,Sign-in did not return a usable session.,"
-로그인 결과 유효한 세션이 반환되지 않았습니다.",ログインで有効なセッションを取得できませんでした。,登录未返回可用的会话。
-ERROR_STEAM_EXTENSION,GodotSteam could not load. Check the Steam extension and DLLs.,"
-GodotSteam을 로드할 수 없습니다. Steam 확장 기능과 DLL을 확인하십시오.",GodotSteamを読み込めませんでした。Steam拡張機能とDLLを確認してください。,无法加载 GodotSteam。请检查 Steam 扩展和 DLL。
-ERROR_STEAM_INIT,Steam initialization failed.,"
-Steam 초기화에 실패했습니다.",Steamの初期化に失敗しました。,Steam 初始化失败。
-ERROR_STEAM_TICKET_CREATE,Steam could not issue an authentication ticket.,"
-Steam이 인증 티켓을 발급할 수 없었습니다.",Steam認証チケットを発行できませんでした。,Steam 无法签发身份验证票据。
-ERROR_STEAM_TICKET_REJECTED,Steam rejected the request. Please retry.,"
-Steam이 요청을 거부했습니다. 다시 시도해 주세요.",Steamに要求を拒否されました。もう一度お試しください。,Steam 拒绝了请求，请重试。
-ERROR_STEAM_TICKET_EXPIRED,Steam ticket expired or was rejected. Please retry.,Steam 티켓이 만료되었거나 거부되었습니다. 다시 시도해 주세요.,Steamチケットの有効期限が切れているか、拒否されました。もう一度お試しください。,Steam 票据已过期或被拒绝，请重试。
-ERROR_STEAM_SERVER,Steam sign-in is unavailable on the server. Please retry later.,"
-서버에서 Steam 로그인을 이용할 수 없습니다. 나중에 다시 시도해 주세요.",サーバーでSteamログインを利用できません。しばらくしてからお試しください。,服务器暂时无法使用 Steam 登录，请稍后重试。
+ERROR_SIGN_IN_FORBIDDEN,This account cannot sign in.,이 계정으로는 로그인할 수 없습니다.,このアカウントではログインできません。,此账号无法登录。
+ERROR_STEAM_SERVER,Steam sign-in is unavailable on the server. Please retry later.,서버에서 Steam 로그인을 이용할 수 없습니다. 나중에 다시 시도해 주세요.,サーバーでSteamログインを利用できません。しばらくしてからお試しください。,服务器暂时无法使用 Steam 登录，请稍后重试。
 CONFIRM_SAVE_CHANGES,Save changes before leaving?,나가기 전에 변경 사항을 저장하시겠습니까?,終了する前に変更を保存しますか？,离开前保存更改吗？
-CONFIRM_SAVE_CHART,Save chart changes before leaving?,"
-나가기 전에 채보 변경 사항을 저장하시겠습니까?",終了する前に譜面の変更を保存しますか？,离开前保存谱面更改吗？
-CONFIRM_SAVE_EVENTS,Save event changes before returning?,"
-돌아가기 전에 이벤트 변경 사항을 저장하시겠습니까?",戻る前にイベントの変更を保存しますか？,返回前保存事件更改吗？
-CONFIRM_SAVE_SKIN,Save skin changes before leaving?,"
-나가기 전에 스킨 변경 사항을 저장하시겠습니까?",終了する前にスキンの変更を保存しますか？,离开前保存皮肤更改吗？
 ACTION_SAVE_AND_LEAVE,Save and leave,저장 후 나가기,保存して終了,保存并离开
-ACTION_SAVE_AND_RETURN,Save and return,저장 후 돌아가기,保存して戻る,保存并返回
 ACTION_LEAVE_UNSAVED,Leave without saving,저장하지 않고 나가기,保存せずに終了,不保存并离开
-ACTION_RETURN_UNSAVED,Return without saving,저장하지 않고 돌아가기,保存せずに戻る,不保存并返回
-CONFIRM_DELETE_CHART,Move this chart to the Recycle Bin?,해당 채보를 휴지통으로 옮기겠습니까?,この譜面をゴミ箱に移動しますか？,将此谱面移入回收站吗？
+CONFIRM_DELETE_CHART,Move this difficulty to the Recycle Bin?,이 난이도를 휴지통으로 옮길까요?,この難易度をゴミ箱に移動しますか？,将此难度移入回收站吗？
 CONFIRM_DELETE_DIFFICULTY,Move difficulty '%s' to the Recycle Bin?,해당 난이도(%s)를 휴지통으로 옮기겠습니까?,難易度「%s」をゴミ箱に移動しますか？,将难度“%s”移入回收站吗？
-CONFIRM_DELETE_CHARTSET,Move chartset '%s' and all of its difficulties and resources to the Recycle Bin?,"
-채보 '%s'의 모든 난이도 및 리소스를 휴지통으로 옮기겠습니까?",譜面セット「%s」と、そのすべての難易度およびリソースをゴミ箱に移動しますか？,将谱面集“%s”及其所有难度和资源移入回收站吗？
-HINT_DELETE_LAST_DIFFICULTY,This is the last difficulty. Use Delete Chartset instead.,마지막 난이도입니다. 대신 채보 삭제를 해주세요.,最後の難易度です。代わりに「譜面セットを削除」を使用してください。,这是最后一个难度，请改用“删除谱面集”。
-HINT_DELETE_CHARTSET,Use Delete Chartset for the last difficulty.,마지막 난이도엔 채보 삭제를 이용해주세요.,最後の難易度には「譜面セットを削除」を使用してください。,最后一个难度请使用“删除谱面集”。
+CONFIRM_DELETE_CHARTSET,"Move chart '%s', including all difficulties and related files, to the Recycle Bin?",채보 '%s'의 모든 난이도와 관련 파일을 휴지통으로 옮길까요?,譜面「%s」のすべての難易度と関連ファイルをゴミ箱に移動しますか？,将谱面“%s”的所有难度和相关文件移入回收站吗？
+HINT_DELETE_LAST_DIFFICULTY,This is the last difficulty. Use Delete Chart to remove the entire chart.,마지막 난이도입니다. 채보 전체 삭제를 이용해 주세요.,最後の難易度です。「譜面をすべて削除」を使ってください。,这是最后一个难度，请使用“删除整份谱面”。
 ERROR_DELETE_CHART,Failed to delete %s.,파일 삭제에 실패했습니다. %s,%sの削除に失敗しました。,删除 %s 失败。
 NOTICE_CHART_DELETED,%s moved to the Recycle Bin.,다음 파일이 휴지통으로 옮겨졌습니다: %s,%sをゴミ箱に移動しました。,%s 已移入回收站。
-ERROR_CHART_NOT_SELECTED,no chart selected,선택된 난이도가 없습니다.,譜面が選択されていません,未选择谱面
-ERROR_CHARTSET_NOT_SELECTED,no chartset selected,선택된 채보가 없습니다.,譜面セットが選択されていません,未选择谱面集
-ERROR_CHART_MISSING,chart file is missing,채보 파일을 찾을 수 없습니다.,譜面ファイルがありません,缺少谱面文件
-ERROR_CHART_OPEN_FAILED,Failed to open chart file: %s,채보 파일 열람에 실패했습니다: %s,譜面ファイルを開けませんでした: %s,无法打开谱面文件：%s
-ERROR_CHART_VERSION,Unsupported chart version ! : %s,지원하지 않는 채보 파일 버전입니다: %s,未対応の譜面バージョンです: %s,不支持的谱面版本：%s
-ERROR_CHART_PLAYTEST,no chart available for playtest,테스트 플레이할 채보가 없습니다.,テストプレイできる譜面がありません,没有可供试玩的谱面
+ERROR_CHART_NOT_SELECTED,Select a difficulty first.,선택된 난이도가 없습니다.,先に難易度を選択してください。,请先选择难度。
+ERROR_CHARTSET_NOT_SELECTED,Select a chart first.,선택된 채보가 없습니다.,先に譜面を選択してください。,请先选择谱面。
+ERROR_CHART_MISSING,The difficulty file is missing.,채보 파일을 찾을 수 없습니다.,難易度ファイルが見つかりません。,找不到难度文件。
+ERROR_CHART_OPEN_FAILED,Could not open difficulty: %s,채보 파일을 열지 못했습니다: %s,難易度ファイルを開けませんでした：%s,无法打开难度文件：%s
+ERROR_CHART_VERSION,Unsupported difficulty file version: %s,지원하지 않는 난이도 파일 버전입니다: %s,未対応の難易度ファイルのバージョンです：%s,不支持的难度文件版本：%s
+ERROR_CHART_PLAYTEST,Select a difficulty to test play.,테스트 플레이할 난이도를 선택해 주세요.,テストプレイする難易度を選択してください。,请选择要试玩的难度。
 ERROR_PLAYTEST_AUDIO,audio file is required for playtest,테스트 플레이엔 오디오 파일이 필요합니다.,テストプレイには音声ファイルが必要です,试玩需要音频文件
-ERROR_DIFFICULTY_FILENAME,difficulty cannot be used as a file name,난이도명으로 파일 저장에 실패했습니다.,この難易度名はファイル名として使用できません,该难度名不能用作文件名
-ERROR_AUDIO_LOAD,Failed to load audio file,오디오 파일을 불러오는것에 실패했습니다.,音声ファイルの読み込みに失敗しました,音频文件加载失败
-ERROR_COVER_LOAD,Failed to load cover file,이미지 파일을 불러오는것에 실패했습니다.,カバー画像の読み込みに失敗しました,封面文件加载失败
-ERROR_NOTE_OUTSIDE_RAIL,You cannot place notes outside the rails.,레일 밖에 노트를 배치 할 수 없습니다.,レールの外にはノーツを配置できません。,不能在轨道外放置音符。
+ERROR_DIFFICULTY_FILENAME,This difficulty name cannot be used as a filename. Choose another name.,파일 이름으로 사용할 수 없는 난이도명입니다. 다른 이름을 입력해 주세요.,この難易度名はファイル名に使えません。別の名前を入力してください。,此难度名称不能用作文件名，请输入其他名称。
+ERROR_AUDIO_LOAD,Failed to load audio file,음악 파일을 불러오지 못했습니다.,音声ファイルの読み込みに失敗しました,音频文件加载失败
+ERROR_COVER_LOAD,Failed to load cover file,커버 이미지를 불러오지 못했습니다.,カバー画像の読み込みに失敗しました,封面文件加载失败
+ERROR_NOTE_OUTSIDE_RAIL,You cannot place notes outside the rails.,레일 밖에 노트를 배치할 수 없습니다.,レールの外にはノーツを配置できません。,不能在轨道外放置音符。
 ERROR_RAIL_MERGE_OVERLAP,rails can only merge when their time ranges do not overlap,레일은 범위가 겹치지 않을때 병합이 가능합니다.,時間範囲が重なっていないレール同士のみ結合できます,仅当时间范围不重叠时才能合并轨道
 ERROR_EVENT_NO_SPACE,No space for the selected events,이벤트를 배치할 공간이 없습니다.,選択したイベントを配置するスペースがありません,没有空间放置所选事件
 ERROR_OVERLAY_OCCUPIED,Overlay position is occupied,오버레이의 위치가 겹칩니다.,そのオーバーレイ位置はすでに使用されています,该叠加层位置已被占用
 HINT_FILTER_NUMBER,"Enter a non-negative number, or leave the field empty.",0 이상의 숫자를 입력하거나 비워 두세요.,0以上の数値を入力するか、空欄にしてください。,请输入非负数，或将此项留空。
-HINT_FILTER_RANGE,The minimum must not exceed the maximum.,최솟값은 최댓값을 초과해서는 안 됩니다.,最小値は最大値以下にしてください。,最小值不能大于最大值。
-NOTICE_SEARCH_EMPTY,No charts match these filters.,"
-이 필터에 일치하는 채보가 없습니다.",条件に一致する譜面がありません。,没有符合筛选条件的谱面。
-ERROR_SEARCH_START,Could not start the search. Retry.,검색을 할 수 없습니다. 재시도 해주세요.,検索を開始できませんでした。もう一度お試しください。,无法开始搜索，请重试。
+NOTICE_SEARCH_EMPTY,No charts match these filters.,이 필터에 일치하는 채보가 없습니다.,条件に一致する譜面がありません。,没有符合筛选条件的谱面。
+ERROR_SEARCH_START,Could not load the song list. Please retry.,곡 목록을 불러오지 못했습니다. 다시 시도해 주세요.,楽曲一覧を読み込めませんでした。もう一度お試しください。,无法加载歌曲列表，请重试。
 ERROR_SEARCH_FILTERS,The server rejected these filters. Check the ranges.,지원하지 않는 검색 범위입니다.,サーバーが検索条件を拒否しました。範囲を確認してください。,服务器拒绝了这些筛选条件，请检查范围。
-ERROR_SEARCH_RESPONSE,The server returned an invalid song list.,지원하지 않는 검색결과입니다.,サーバーから無効な楽曲リストが返されました。,服务器返回了无效的歌曲列表。
-ERROR_SONG_METADATA,The server returned invalid song metadata.,지원하지 않는 노래 형식입니다.,サーバーから無効な楽曲メタデータが返されました。,服务器返回了无效的歌曲元数据。
-ERROR_CHART_METADATA,The server returned invalid chart metadata.,지원하지 않는 난이도 형식입니다.,サーバーから無効な譜面メタデータが返されました。,服务器返回了无效的谱面元数据。
-ERROR_CHARTSET_METADATA,The server returned invalid chartset metadata.,지원하지 않는 채보 형식입니다.,サーバーから無効な譜面セットメタデータが返されました。,服务器返回了无效的谱面集元数据。
-ERROR_SERVER_CONNECT,Could not connect to the server.,서버에 접속 할 수 없습니다.,サーバーに接続できませんでした。,无法连接到服务器。
-ERROR_SERVER_RETRY,Could not reach the server. Retry.,서버를 찾을 수 없습니다.,サーバーに接続できませんでした。もう一度お試しください。,无法连接到服务器，请重试。
 ERROR_SERVER_CONNECTION,Cannot reach the server. Check your connection and retry.,서버를 찾을 수 없습니다. 기기의 연결상태를 확인 해주세요.,サーバーに接続できません。ネットワーク接続を確認して、もう一度お試しください。,无法连接到服务器。请检查网络连接后重试。
-ERROR_REQUEST_FAILED,Request failed.,요청에 실패했습니다.,リクエストに失敗しました。,请求失败。
-ERROR_ACTION_CONNECTION,%s failed. Check your connection and retry.,%s에 실패했습니다. 네트워크 연결을 확인한 후 다시 시도해 주세요.,%sに失敗しました。ネットワーク接続を確認して、もう一度お試しください。,%s 失败。请检查网络连接后重试。
-ERROR_ACTION_NOT_FOUND,%s is unavailable on the server (404).,%s failed. 알 수 없는 요청입니다. (404),%sはサーバーで利用できません（404）。,服务器上无法使用 %s（404）。
-ERROR_ACTION_HTTP,%s failed (HTTP %d). Retry.,%s failed (HTTP %d). 재시도 해주세요.,%sに失敗しました（HTTP %d）。もう一度お試しください。,%s 失败（HTTP %d），请重试。
-ERROR_CONTENT_FORBIDDEN,This account cannot access this content.,"
-이 계정으로는 해당 콘텐츠에 액세스할 수 없습니다.",このアカウントではこのコンテンツにアクセスできません。,此账号无法访问该内容。
-NOTICE_PLAYLISTS_EMPTY,No playlists yet.,아직 플레이리스트가 없습니다.,プレイリストはまだありません。,暂无播放列表。
-ERROR_PLAYLIST_LOAD,Could not load playlists. Restart the game to sync again.,재생목록을 불러 올 수 없습니다. 게임을 재시작하여 재생 목록 동기화 해주세요.,プレイリストを読み込めませんでした。ゲームを再起動して再同期してください。,无法加载播放列表。请重启游戏以重新同步。
+ERROR_REQUEST_FAILED,Could not complete the request. Please retry later.,요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.,処理できませんでした。しばらくしてからお試しください。,无法完成请求，请稍后重试。
+ERROR_CONTENT_FORBIDDEN,This account cannot access this content.,이 계정으로는 해당 콘텐츠에 액세스할 수 없습니다.,このアカウントではこのコンテンツにアクセスできません。,此账号无法访问该内容。
+NOTICE_PLAYLISTS_EMPTY,No playlists yet.,아직 재생목록가 없습니다.,プレイリストはまだありません。,暂无播放列表。
+ERROR_PLAYLIST_LOAD,Could not load playlists. Restart the game to sync again.,재생목록을 불러올 수 없습니다. 게임을 재시작하여 재생 목록 동기화 해주세요.,プレイリストを読み込めませんでした。ゲームを再起動して再同期してください。,无法加载播放列表。请重启游戏以重新同步。
 ERROR_PLAYLIST_NOT_FOUND,Playlist not found.,재생목록을 찾을 수 없습니다.,プレイリストが見つかりません。,未找到播放列表。
-ERROR_PLAYLIST_METADATA,The playlist contains invalid chart metadata.,해당 재생목록이 지원하지 않는 형식의 채보정보를 포함하고있습니다.,プレイリストに無効な譜面メタデータが含まれています。,播放列表中包含无效的谱面元数据。
+ERROR_PLAYLIST_METADATA,Some charts in this playlist could not be loaded.,재생목록의 일부 채보를 불러오지 못했습니다.,プレイリストの一部の譜面を読み込めませんでした。,无法加载此播放列表中的部分谱面。
 ERROR_LOVED_UPDATE,Could not update Loved.,즐겨찾기 갱신에 실패했습니다.,Lovedを更新できませんでした。,无法更新 Loved。
-HINT_PROFILE_UNAVAILABLE,Profile is not available yet,아직 등록되지 않은 유저입니다.,プロフィールはまだ利用できません,个人资料暂不可用
+HINT_PROFILE_UNAVAILABLE,Profile is not available yet.,아직 프로필을 볼 수 없습니다.,プロフィールはまだ表示できません。,暂时无法查看个人资料。
 NOTICE_LEADERBOARD_EMPTY,No scores yet.,등록된 점수가 없습니다.,スコアはまだありません。,暂无成绩。
 NOTICE_LEADERBOARD_MISSING,No leaderboard for this chart.,리더보드를 지원하지 않는 채보입니다.,この譜面にはリーダーボードがありません。,此谱面没有排行榜。
-ERROR_LEADERBOARD_LOAD,Could not load leaderboard.,리더보드를 불러 올 수 없습니다.,リーダーボードを読み込めませんでした。,无法加载排行榜。
-ERROR_LEADERBOARD_READ,Could not read leaderboard.,리더보드를 읽을 수 없습니다.,リーダーボードを読み取れませんでした。,无法读取排行榜。
-ERROR_SCORE_DETAILS_LOAD,Could not load details. Close and retry.,기록을 불러오는것에 실패했습니다. 재시도 해주세요.,詳細を読み込めませんでした。閉じてからもう一度お試しください。,无法加载详情。请关闭后重试。
-ERROR_SCORE_DETAILS_INVALID,Invalid score details,유효하지 기록 점수 세부 정보,スコア詳細が無効です,成绩详情无效
-ERROR_SCORE_DETAILS_MISSING,Score details unavailable,"
-점수 세부 정보를 확인할 수 없습니다.
-",スコア詳細を利用できません,成绩详情不可用
-ERROR_JUDGEMENT_COUNTS,Judgement counts unavailable,"
-판정 갯수를 확인할 수 없습니다.",判定数を利用できません,判定数量不可用
-ERROR_REPLAY_DOWNLOAD,Could not download replay. Try again.,"
-리플레이를 다운로드할 수 없습니다. 다시 시도해 주세요.",リプレイをダウンロードできませんでした。もう一度お試しください。,无法下载回放，请重试。
-ERROR_REPLAY_PLAY,Could not play replay.,"
-리플레이를 재생할 수 없습니다.",リプレイを再生できませんでした。,无法播放回放。
-ERROR_REPLAY_VERSION,Replay does not match the chart version.,"
-리플레이가 채보 버전과 일치하지 않습니다.",リプレイと譜面のバージョンが一致しません。,回放与谱面版本不匹配。
-ERROR_REPLAY_REMOVED,Replay is no longer available.,"
-더 이상 이용할 수 없는 리플레이입니다. ",このリプレイは利用できなくなりました。,该回放已不可用。
-ERROR_REPLAY_SAVE,Failed to save replay.,"
-리플레이를 저장하지 못했습니다.",リプレイの保存に失敗しました。,回放保存失败。
-HINT_REPLAY_DOWNLOAD_CHART,Download or update this chart before watching the replay.,리플레이를 재생하기 전에 이 채보를 다운로드하거나 업데이트 해주세요.,リプレイを見る前に、この譜面をダウンロードまたは更新してください。,观看回放前，请下载或更新此谱面。
-ERROR_SCORE_RECORD,failed to record play: %s,점수 기록에 실패했습니다: %s,プレイ記録の保存に失敗しました: %s,记录游玩成绩失败：%s
-ERROR_SCORE_SUBMIT_START,Could not start the score submission.,"
-점수 제출을 시도에 실패했습니다.",スコア送信を開始できませんでした。,无法开始提交成绩。
-ERROR_SCORE_SUBMIT_HTTP,Score submission failed (HTTP %d).,"
-점수 제출에 실패했습니다. (HTTP %d).",スコア送信に失敗しました（HTTP %d）。,成绩提交失败（HTTP %d）。
-ERROR_SCORE_SUBMIT_DETAIL,Score submission failed: %s,점수 제출에 실패했습니다: %s,スコア送信に失敗しました: %s,成绩提交失败：%s
-ERROR_SCORE_RESPONSE,The server returned an invalid score response.,"
-서버가 유효하지 않은 점수 응답을 반환했습니다.",サーバーから無効なスコア応答が返されました。,服务器返回了无效的成绩响应。
-ERROR_SCORE_METADATA,The completed score does not match the chart metadata.,완료된 점수가 채보 메타데이터와 일치하지 않습니다.,完了したスコアと譜面メタデータが一致しません。,已完成的成绩与谱面元数据不匹配。
-ERROR_SCORE_REVISION,This score belongs to a different chart revision. Update the chart and retry.,이 점수는 다른 채보 리비전에 속합니다. 채보를 업데이트한 후 다시 시도해 주세요.,このスコアは別の譜面リビジョンのものです。譜面を更新して、もう一度お試しください。,该成绩属于其他谱面版本。请更新谱面后重试。
-NOTICE_SCORE_SAVED_OFFLINE,Score was saved locally because the session is offline.,오프라인 상태이므로 점수를 로컬에 저장했습니다.,オフラインのため、スコアをローカルに保存しました。,当前处于离线状态，成绩已保存到本地。
-ERROR_OFFICIAL_CHART_MISSING,This official chart is not installed.,이 공식 채보가 설치되어 있지 않습니다.,この公式譜面はインストールされていません。,此官方谱面尚未安装。
-ERROR_CACHED_CHART_MISSING,The cached chart is unavailable. Download it again.,캐시된 채보를 사용할 수 없습니다. 다시 다운로드해 주세요.,キャッシュされた譜面を利用できません。もう一度ダウンロードしてください。,缓存的谱面不可用，请重新下载。
+ERROR_LEADERBOARD_LOAD,Could not load leaderboard.,리더보드를 불러올 수 없습니다.,リーダーボードを読み込めませんでした。,无法加载排行榜。
+ERROR_SCORE_DETAILS_LOAD,Score details are unavailable. Close and retry.,점수 상세 정보를 볼 수 없습니다. 닫은 후 다시 시도해 주세요.,スコアの詳細を表示できません。閉じてからもう一度お試しください。,无法查看分数详情，请关闭后重试。
+ERROR_JUDGEMENT_COUNTS,Judgement counts unavailable,판정 개수를 확인할 수 없습니다.,判定数を利用できません,判定数量不可用
+ERROR_REPLAY_DOWNLOAD,Could not download replay. Try again.,리플레이를 다운로드할 수 없습니다. 다시 시도해 주세요.,リプレイをダウンロードできませんでした。もう一度お試しください。,无法下载回放，请重试。
+ERROR_REPLAY_PLAY,Could not play replay.,리플레이를 재생할 수 없습니다.,リプレイを再生できませんでした。,无法播放回放。
+ERROR_REPLAY_VERSION,Replay does not match the chart version.,리플레이가 채보 버전과 일치하지 않습니다.,リプレイと譜面のバージョンが一致しません。,回放与谱面版本不匹配。
+ERROR_REPLAY_REMOVED,Replay is no longer available.,더 이상 이용할 수 없는 리플레이입니다.,このリプレイは利用できなくなりました。,该回放已不可用。
+ERROR_REPLAY_SAVE,Failed to save replay.,리플레이를 저장하지 못했습니다.,リプレイの保存に失敗しました。,回放保存失败。
+HINT_REPLAY_DOWNLOAD_CHART,Download or update this chart before watching the replay.,리플레이를 재생하기 전에 이 채보를 다운로드하거나 업데이트해주세요.,リプレイを見る前に、この譜面をダウンロードまたは更新してください。,观看回放前，请下载或更新此谱面。
+ERROR_SCORE_RECORD,Could not save your play record. Check free disk space.,플레이 기록을 저장하지 못했습니다. 저장 공간을 확인해 주세요.,プレイ記録を保存できませんでした。空き容量を確認してください。,无法保存游玩记录，请检查可用空间。
+ERROR_SCORE_REVISION,This record does not match the current chart version. Update the chart and play again.,이 기록은 현재 채보 버전과 맞지 않습니다. 채보를 업데이트하고 다시 플레이해 주세요.,この記録は現在の譜面バージョンと一致しません。譜面を更新して、もう一度プレイしてください。,此记录与当前谱面版本不符，请更新谱面后重新游玩。
+NOTICE_SCORE_SAVED_OFFLINE,Score was saved locally because the session is offline.,오프라인 상태로 플레이 기록을 이 기기에 저장했습니다.,オフラインのため、スコアをローカルに保存しました。,当前处于离线状态，成绩已保存到本地。
+ERROR_OFFICIAL_CHART_MISSING,This Original chart is not installed.,이 오리지널 채보가 설치되어 있지 않습니다.,このオリジナル譜面はインストールされていません。,此原创谱面尚未安装。
+ERROR_CACHED_CHART_MISSING,The cached chart is unavailable. Download it again.,저장된 채보를 사용할 수 없습니다. 다시 다운로드해 주세요.,キャッシュされた譜面を利用できません。もう一度ダウンロードしてください。,缓存的谱面不可用，请重新下载。
 ERROR_INSTALLED_CHART_OPEN,The installed chart could not be opened.,설치된 채보를 열 수 없습니다.,インストール済みの譜面を開けませんでした。,无法打开已安装的谱面。
 ERROR_CHART_REVISION_LOOKUP,Could not resolve the online chart version.,온라인 채보 버전을 확인할 수 없습니다.,オンラインの譜面バージョンを確認できませんでした。,无法获取在线谱面版本。
-HINT_CHART_AUTO_UPDATE,A newer chart revision was found. Updating automatically…,새 채보 리비전을 찾았습니다. 자동으로 업데이트합니다…,新しい譜面リビジョンが見つかりました。自動更新しています…,发现新的谱面版本，正在自动更新…
-NOTICE_CHART_UPDATED,Chart updated. Ready to play.,채보가 업데이트되었습니다. 플레이할 수 있습니다.,譜面を更新しました。プレイできます。,谱面已更新，可以游玩。
-ERROR_PREVIEW_START,Could not start the audio preview.,오디오 미리보기를 시작할 수 없습니다.,音声プレビューを開始できませんでした。,无法开始音频预览。
-ERROR_PREVIEW_DECODE,The audio preview could not be decoded.,오디오 미리보기를 디코딩할 수 없습니다.,音声プレビューをデコードできませんでした。,无法解码音频预览。
+HINT_CHART_AUTO_UPDATE,A new chart version is available. Updating…,새 버전이 있습니다. 채보 업데이트 중…,譜面の新しいバージョンがあります。更新中…,发现谱面新版本，正在更新…
+NOTICE_CHART_UPDATED,Chart updated.,채보가 업데이트되었습니다.,譜面を更新しました。,谱面已更新。
+ERROR_PREVIEW_START,Could not play the song preview.,곡 미리듣기를 재생하지 못했습니다.,楽曲の試聴を再生できませんでした。,无法播放歌曲试听。
 ERROR_DOWNLOAD_START,Could not start the download.,다운로드를 시작할 수 없습니다.,ダウンロードを開始できませんでした。,无法开始下载。
-ERROR_DOWNLOAD_URL,The server returned an invalid download URL.,서버가 유효하지 않은 다운로드 URL을 반환했습니다.,サーバーから無効なダウンロードURLが返されました。,服务器返回了无效的下载地址。
-ERROR_DOWNLOAD_FOLDER,Could not create the download folder.,다운로드 폴더를 생성할 수 없습니다.,ダウンロードフォルダーを作成できませんでした。,无法创建下载文件夹。
-ERROR_DOWNLOAD_STAGING,Could not create the download staging folder.,다운로드 임시 폴더를 생성할 수 없습니다.,ダウンロード用の一時フォルダーを作成できませんでした。,无法创建下载暂存文件夹。
-ERROR_DOWNLOAD_PACKAGE,The downloaded file is not a valid chart package.,다운로드한 파일이 유효한 채보 패키지가 아닙니다.,ダウンロードしたファイルは有効な譜面パッケージではありません。,下载的文件不是有效的谱面包。
-ERROR_DOWNLOAD_RESPONSE,The server returned an invalid or oversized chart package.,서버가 유효하지 않거나 너무 큰 채보 패키지를 반환했습니다.,サーバーから無効またはサイズ超過の譜面パッケージが返されました。,服务器返回了无效或大小超限的谱面包。
-ERROR_PACKAGE_CHANGED,The package changed since this search. Refresh the list and retry.,검색 이후 패키지가 변경되었습니다. 목록을 새로고침한 후 다시 시도해 주세요.,検索後にパッケージが変更されました。一覧を更新して、もう一度お試しください。,搜索后该包已发生更改。请刷新列表后重试。
-ERROR_INSTALLER_START,Could not start the chart installer.,채보 설치 프로그램을 시작할 수 없습니다.,譜面インストーラーを開始できませんでした。,无法启动谱面安装程序。
-ERROR_CHARTSET_BACKUP,Could not back up the existing chartset. Close any files and retry.,기존 채보를 백업할 수 없습니다. 열려 있는 파일을 닫고 다시 시도해 주세요.,既存の譜面セットをバックアップできませんでした。ファイルを閉じて、もう一度お試しください。,无法备份现有谱面集。请关闭相关文件后重试。
-ERROR_CHARTSET_INSTALL,Could not move the installed charts into the library.,설치된 채보를 라이브러리로 이동할 수 없습니다.,インストールした譜面をライブラリへ移動できませんでした。,无法将已安装的谱面移动到曲库。
-ERROR_CHART_REVISION_SAVE,Could not save the installed chart revision.,설치된 채보 리비전을 저장할 수 없습니다.,インストールした譜面のリビジョンを保存できませんでした。,无法保存已安装谱面的版本信息。
-ERROR_PACKAGE_WRITE,Could not write the chart package. Check disk space.,채보 패키지를 기록할 수 없습니다. 디스크 공간을 확인해 주세요.,譜面パッケージを書き込めませんでした。ディスクの空き容量を確認してください。,无法写入谱面包。请检查磁盘空间。
-ERROR_PACKAGE_WRITE_FINISH,Could not finish writing the chart package. Check disk space.,채보 패키지 기록을 완료할 수 없습니다. 디스크 공간을 확인해 주세요.,譜面パッケージの書き込みを完了できませんでした。ディスクの空き容量を確認してください。,无法完成谱面包写入。请检查磁盘空间。
-ERROR_PACKAGE_FILE_COUNT,The chart package has an invalid file count.,채보 패키지의 파일 수가 올바르지 않습니다.,譜面パッケージのファイル数が無効です。,谱面包的文件数量无效。
-ERROR_PACKAGE_PATH,The chart package contains an unsafe or duplicate path.,채보 패키지에 안전하지 않거나 중복된 경로가 있습니다.,譜面パッケージに安全でない、または重複したパスがあります。,谱面包中包含不安全或重复的路径。
-ERROR_PACKAGE_SIZE,The expanded package exceeds the size limit.,압축 해제된 패키지가 용량 제한을 초과합니다.,展開後のパッケージがサイズ上限を超えています。,解压后的包超过大小限制。
-ERROR_PACKAGE_CHART_PATH,The package contains an invalid chart path.,패키지에 유효하지 않은 채보 경로가 있습니다.,パッケージに無効な譜面パスがあります。,包中包含无效的谱面路径。
-ERROR_PACKAGE_CHARTSET,A chart in the server package belongs to another chartset.,서버 패키지의 채보가 다른 채보에 속합니다.,サーバーパッケージ内の譜面が別の譜面セットに属しています。,服务器包中的谱面属于其他谱面集。
-ERROR_PACKAGE_CHART_REVISION_MISSING,A chart in the server package is missing revision metadata.,서버 패키지의 채보에 리비전 메타데이터가 없습니다.,サーバーパッケージ内の譜面にリビジョン情報がありません。,服务器包中的谱面缺少版本元数据。
-ERROR_PACKAGE_CHART_REVISION,A chart revision does not match the server manifest.,채보 리비전이 서버 매니페스트와 일치하지 않습니다.,譜面リビジョンがサーバーマニフェストと一致しません。,谱面版本与服务器清单不匹配。
-ERROR_PACKAGE_CHART_CHECKSUM,A chart checksum does not match the server manifest.,채보 체크섬이 서버 매니페스트와 일치하지 않습니다.,譜面のチェックサムがサーバーマニフェストと一致しません。,谱面校验和与服务器清单不匹配。
-ERROR_PACKAGE_RESOURCE_MISSING,A required chart resource is missing.,필수 채보 리소스가 없습니다.,必要な譜面リソースがありません。,缺少必要的谱面资源。
-CONFIRM_PUBLISH_CHARTSET,Publish this chartset to the online catalogue?,이 채보를 커뮤니티 목록에 게시하겠습니까?,この譜面セットをオンラインカタログに公開しますか？,将此谱面集发布到在线目录吗？
-CONFIRM_REPLACE_RANKED_CHARTSET,"Replace this published chartset with this package?
-Include all existing difficulties.",채보를 업데이트 하시겠습니까? 모든 난이도가 포함됩니다.,"公開済みの譜面セットをこのパッケージで置き換えますか？
-既存の難易度をすべて含めます。","使用此包替换已发布的谱面集吗？
-将包含所有现有难度。"
-CONFIRM_REPLACE_CHARTSET,"Replace this published chartset with this package?
-Difficulties absent from this package are removed from the server.","채보를 업데이트 하시겠습니까?
-삭제된 난이도는 서버에서 삭제됩니다.","公開済みの譜面セットをこのパッケージで置き換えますか？
-このパッケージに含まれない難易度はサーバーから削除されます。","使用此包替换已发布的谱面集吗？
-此包中不存在的难度将从服务器删除。"
+ERROR_DOWNLOAD_PACKAGE,The downloaded chart is damaged or incomplete. Download it again.,다운로드한 채보가 손상되었거나 일부 파일이 없습니다. 다시 다운로드해 주세요.,ダウンロードした譜面が破損しているか、ファイルが不足しています。もう一度ダウンロードしてください。,下载的谱面已损坏或文件不完整，请重新下载。
+ERROR_PACKAGE_CHANGED,This chart was updated. Refresh the list and retry.,채보가 업데이트되었습니다. 목록을 새로고침한 후 다시 시도해 주세요.,譜面が更新されました。一覧を更新して、もう一度お試しください。,此谱面已更新，请刷新列表后重试。
+ERROR_CHARTSET_BACKUP,Could not back up the existing chart. Close any files and retry.,기존 채보를 백업할 수 없습니다. 열려 있는 파일을 닫고 다시 시도해 주세요.,既存の譜面をバックアップできませんでした。ファイルを閉じて、もう一度お試しください。,无法备份现有谱面。请关闭相关文件后重试。
+ERROR_PACKAGE_SIZE,This chart exceeds the download size limit.,채보가 다운로드 용량 제한을 초과합니다.,譜面がダウンロードの容量制限を超えています。,此谱面超出了下载容量限制。
+CONFIRM_PUBLISH_CHARTSET,Publish this chart to the online catalogue?,이 채보를 커뮤니티 목록에 게시하겠습니까?,この譜面をオンラインカタログに公開しますか？,将此谱面发布到在线目录吗？
+CONFIRM_REPLACE_RANKED_CHARTSET,"Update this chart?
+You must include all existing difficulties.","채보를 업데이트할까요?
+기존 난이도를 모두 포함해야 합니다.","譜面を更新しますか？
+既存の難易度をすべて含める必要があります。","更新此谱面吗？
+必须包含所有现有难度。"
+CONFIRM_REPLACE_CHARTSET,"Update this chart?
+Difficulties not included in this upload will be deleted from the server.","채보를 업데이트할까요?
+삭제된 난이도는 서버에서 제거됩니다.","譜面を更新しますか？
+今回のアップロードに含まれない難易度はサーバーから削除されます。","更新此谱面吗？
+本次上传中未包含的难度将从服务器删除。"
 HINT_PUBLISH_CONTENTS,"
 
-Includes charts, audio, images and skin files from this folder.","
-이 폴더의 채보, 오디오, 이미지 및 스킨 파일이 포함됩니다.","
+Includes all difficulties, music, images and skins in this folder.","
 
-このフォルダー内の譜面、音声、画像、スキンファイルが含まれます。","
+이 폴더의 모든 난이도, 음악, 이미지, 스킨 파일이 포함됩니다.","
 
-包含此文件夹中的谱面、音频、图像和皮肤文件。"
-HINT_PUBLISH_BUILTIN,Built-in upload is available for this chartset.,이 채보 세트는 내장 업로드를 사용할 수 있습니다.,この譜面セットでは組み込みアップロードを利用できます。,此谱面集可使用内置上传。
-HINT_PUBLISH_BUILTIN_REPLACE,The regular update is locked. The built-in action will replace it as an official ranked chartset.,일반 업데이트가 잠겨 있습니다. 내장 작업을 사용하면 공식 Ranked 채보 세트로 교체됩니다.,通常の更新はロックされています。組み込み操作により公式Ranked譜面セットとして置き換えられます。,常规更新已锁定。内置操作会将其替换为官方 Ranked 谱面集。
+このフォルダーのすべての難易度、楽曲、画像、スキンが含まれます。","
+
+包含此文件夹中的所有难度、音乐、图片和皮肤文件。"
+HINT_PUBLISH_BUILTIN,Built-in upload is available for this chart.,이 채보는 내장 업로드를 사용할 수 있습니다.,この譜面では組み込みアップロードを利用できます。,此谱面可使用内置上传。
+HINT_PUBLISH_BUILTIN_REPLACE,Regular updates are locked. Adding this chart to the game replaces it as a ranked Original chart.,이 채보는 일반 업데이트가 제한되어 있습니다.,通常の更新は制限されています。ゲームに追加すると、ランク対象のオリジナル譜面に置き換わります。,普通更新已被锁定，添加到游戏后将替换为参与排位的原创谱面。
 NOTICE_PUBLISH_PREPARING,Checking the published version and preparing files…,게시된 버전을 확인하고 파일을 준비하는 중…,公開済みバージョンを確認し、ファイルを準備しています…,正在检查已发布版本并准备文件…
-NOTICE_PUBLISH_UPLOADING,Uploading and validating the package…,패키지 업로드 및 유효성 검사 중…,パッケージをアップロードして検証しています…,正在上传并验证包…
-NOTICE_PUBLISHED,Chartset published successfully.,채보가 성공적으로 업로드 되었습니다.,譜面セットを公開しました。,谱面集发布成功。
-NOTICE_PUBLISHED_BUILTIN,Chartset published and added as a built-in map.,채보가 내장 컨텐츠로 업데이트 되었습니다.,譜面セットを公開し、組み込みマップとして追加しました。,谱面集已发布并添加为内置地图。
-ERROR_PUBLISH_OWNER,Only the original uploader can update this chartset.,업로더만 채보를 업데이트 할 수 있습니다.,この譜面セットを更新できるのは最初の投稿者だけです。,只有原始上传者可以更新此谱面集。
-ERROR_PUBLISH_LOCKED,Approved and ranked chartsets cannot be updated.,승인됐거나 랭크된 채보는 업데이트 할 수 없습니다.,ApprovedおよびRankedの譜面セットは更新できません。,Approved 和 Ranked 谱面集无法更新。
-ERROR_PUBLISH_UNSUPPORTED,Chart publishing support is not deployed on the server yet.,서버에 아직 채보 게시 기능이 배포되지 않았습니다.,サーバーにはまだ譜面公開機能が導入されていません。,服务器尚未部署谱面发布功能。
+NOTICE_PUBLISH_UPLOADING,Uploading chart…,채보 업로드 중…,譜面をアップロード中…,正在上传谱面…
+NOTICE_PUBLISHED,chart published successfully.,채보가 성공적으로 업로드 되었습니다.,譜面を公開しました。,谱面发布成功。
+NOTICE_PUBLISHED_BUILTIN,Chart published and added to the game.,채보를 게시하고 게임에 추가했습니다.,譜面を公開し、ゲームに追加しました。,谱面已发布并添加到游戏中。
+ERROR_PUBLISH_OWNER,Only the original uploader can update this chart.,업로더만 채보를 업데이트 할 수 있습니다.,この譜面を更新できるのは最初の投稿者だけです。,只有原始上传者可以更新此谱面。
+ERROR_PUBLISH_LOCKED,approved and ranked charts cannot be updated.,승인됐거나 랭크된 채보는 업데이트할 수 없습니다.,オリジナル・承認済み・ランク対象の譜面はここでは更新できません。,原创、已审核和排位谱面无法在此更新。
+ERROR_PUBLISH_UNSUPPORTED,Chart uploads are currently unavailable. Please retry later.,지금은 채보를 업로드할 수 없습니다. 잠시 후 다시 시도해 주세요.,現在、譜面をアップロードできません。しばらくしてからお試しください。,暂时无法上传谱面，请稍后重试。
 ERROR_PUBLISH_LOOKUP,Could not check the published version. Retry.,게시된 버전을 확인할 수 없습니다. 다시 시도해 주세요.,公開済みバージョンを確認できませんでした。もう一度お試しください。,无法检查已发布版本，请重试。
-ERROR_PUBLISH_LOOKUP_HTTP,Could not check the published version (HTTP %d).,게시된 버전을 확인할 수 없습니다(HTTP %d).,公開済みバージョンを確認できませんでした（HTTP %d）。,无法检查已发布版本（HTTP %d）。
-ERROR_UPLOAD_START,Could not start the package builder.,패키지 빌더를 시작 할 수 없습니다.,パッケージ作成処理を開始できませんでした。,无法启动打包程序。
-ERROR_UPLOAD_FOLDER,Could not create the upload folder.,업로드 폴더 생성에 실패했습니다.,アップロードフォルダーを作成できませんでした。,无法创建上传文件夹。
-ERROR_UPLOAD_PACKAGE,Could not create the upload package.,업로드 패키지를 생성할 수 없습니다.,アップロードパッケージを作成できませんでした。,无法创建上传包。
-ERROR_UPLOAD_WRITE,Could not write the upload package. Check disk space.,업로드 패키지를 기록할 수 없습니다. 디스크 공간을 확인해 주세요.,アップロードパッケージを書き込めませんでした。ディスクの空き容量を確認してください。,无法写入上传包。请检查磁盘空间。
-ERROR_UPLOAD_FINISH,Could not finish the upload package.,업로드 패키지 생성을 완료할 수 없습니다.,アップロードパッケージの作成を完了できませんでした。,无法完成上传包。
-ERROR_UPLOAD_HTTP,Upload failed (HTTP %d).,업로드에 실패했습니다(HTTP %d).,アップロードに失敗しました（HTTP %d）。,上传失败（HTTP %d）。
+ERROR_UPLOAD_START,"Could not prepare the upload. Check the chart files and free disk space, then retry.",업로드를 준비하지 못했습니다. 채보 파일과 저장 공간을 확인한 후 다시 시도해 주세요.,アップロードの準備ができませんでした。譜面ファイルと空き容量を確認して、もう一度お試しください。,无法准备上传，请检查谱面文件和可用空间后重试。
 ERROR_UPLOAD_CONNECTION,Upload failed. Check your connection and retry.,업로드에 실패했습니다. 연결 상태를 확인하고 다시 시도해 주세요.,アップロードに失敗しました。ネットワーク接続を確認して、もう一度お試しください。,上传失败。请检查网络连接后重试。
-ERROR_UPLOAD_SOURCE,Could not read the chartset folder.,채보 폴더를 읽을 수 없습니다.,譜面セットフォルダーを読み取れませんでした。,无法读取谱面集文件夹。
-ERROR_UPLOAD_EMPTY,The chartset folder is empty.,채보 폴더가 비어 있습니다.,譜面セットフォルダーが空です。,谱面集文件夹为空。
-ERROR_UPLOAD_FOLDERS,The chartset contains too many folders.,채보 폴더가 너무 많습니다.,譜面セット内のフォルダー数が多すぎます。,谱面集包含过多文件夹。
-ERROR_UPLOAD_LIMIT,"A chartset may contain up to 100 MiB and 5,000 files.","채보는 최대 100 MiB, 5,000개 파일까지 포함할 수 있습니다.","譜面セットは最大100 MiB、5,000ファイルまでです。","单个谱面集最多可包含 100 MiB、5,000 个文件。"
+ERROR_UPLOAD_SOURCE,Could not read the chart folder.,채보 폴더를 읽을 수 없습니다.,譜面フォルダーを読み取れませんでした。,无法读取谱面文件夹。
+ERROR_UPLOAD_EMPTY,The chart folder is empty.,채보 폴더가 비어 있습니다.,譜面フォルダーが空です。,谱面文件夹为空。
+ERROR_UPLOAD_LIMIT,"A chart may contain up to 100 MiB and 5,000 files or folders.","채보는 최대 100 MiB이며, 파일과 폴더는 각각 5,000개까지 포함할 수 있습니다.","譜面は最大100 MiB、ファイルとフォルダーはそれぞれ5,000個までです。","谱面最大为 100 MiB，文件和文件夹各不得超过 5,000 个。"
 ERROR_UPLOAD_FILENAME,A chart resource has an unsupported filename: %s,지원하지 않는 파일명의 채보 리소스가 있습니다: %s,譜面リソースに未対応のファイル名があります: %s,谱面资源使用了不支持的文件名：%s
 ERROR_UPLOAD_FILE_READ,Could not read: %s,읽을 수 없습니다: %s,%sを読み取れませんでした。,无法读取：%s
-ERROR_UPLOAD_RESOURCE_CHANGED,A resource changed while preparing the package. Retry.,패키지를 준비하는 동안 리소스가 변경되었습니다. 다시 시도해 주세요.,パッケージ準備中にリソースが変更されました。もう一度お試しください。,准备包时资源发生了更改，请重试。
-ERROR_UPLOAD_PACKAGE_MISSING,The prepared package is missing. Close and retry.,준비된 패키지가 없습니다. 닫은 후 다시 시도해 주세요.,準備したパッケージがありません。閉じてからもう一度お試しください。,找不到已准备的包。请关闭后重试。
-ERROR_UPLOAD_RESOURCE_LIMIT,The resources exceed 100 MiB.,리소스가 100 MiB를 초과합니다.,リソースが100 MiBを超えています。閉じてからパッケージを作り直してください。,资源超过 100 MiB。请关闭后重新准备包。
-ERROR_UPLOAD_ZIP_LIMIT,The ZIP exceeds the 100 MiB upload limit.,ZIP 파일이 100 MiB 업로드 제한을 초과합니다.,ZIPが100 MiBのアップロード上限を超えています。,ZIP 超过 100 MiB 上传限制。
+ERROR_UPLOAD_RESOURCE_CHANGED,A chart file changed during upload preparation. Please retry.,업로드 준비 중 채보 파일이 변경되었습니다. 다시 시도해 주세요.,アップロードの準備中に譜面ファイルが変更されました。もう一度お試しください。,准备上传时谱面文件发生了变化，请重试。
 ERROR_PACK_ID,Invalid pack ID.,유효하지 않은 팩 ID입니다.,パックIDが無効です。,包 ID 无效。
-ERROR_BUILTIN_PACK_ID,The pack ID is invalid.,팩 ID가 유효하지 않습니다.,パックIDが無効です。,包 ID 无效。
-ERROR_BUILTIN_CHARTSET_ID,The chartset UUID is invalid.,채보 UUID가 유효하지 않습니다.,譜面セットUUIDが無効です。,谱面集 UUID 无效。
-ERROR_BUILTIN_EDITOR_REQUIRED,Built-in chartsets can only be installed while running from the editor.,내장 채보는 에디터에서 실행 중일 때만 설치할 수 있습니다.,組み込み譜面セットはエディターから実行している場合のみインストールできます。,只有从编辑器运行游戏时才能安装内置谱面集。
-ERROR_BUILTIN_MANIFEST_MISSING,The built-in chartset JSON is missing.,내장 채보 JSON이 없습니다.,組み込み譜面セットのJSONがありません。,缺少内置谱面集 JSON。
-ERROR_BUILTIN_MANIFEST_INVALID,The built-in chartset JSON is invalid.,내장 채보 JSON이 유효하지 않습니다.,組み込み譜面セットのJSONが無効です。,内置谱面集 JSON 无效。
-ERROR_BUILTIN_MANIFEST_ENTRIES,The built-in chartset JSON contains invalid entries.,내장 채보 JSON에 유효하지 않은 항목이 있습니다.,組み込み譜面セットのJSONに無効な項目があります。,内置谱面集 JSON 中包含无效条目。
-ERROR_BUILTIN_MANIFEST_SAVE,Could not update the built-in chartset JSON.,내장 채보 JSON을 업데이트할 수 없습니다.,組み込み譜面セットのJSONを更新できませんでした。,无法更新内置谱面集 JSON。
-ERROR_BUILTIN_FOLDER_NAME,Could not choose a built-in chartset folder name.,내장 채보 폴더 이름을 정할 수 없습니다.,組み込み譜面セットのフォルダー名を決定できませんでした。,无法确定内置谱面集文件夹名称。
-ERROR_BUILTIN_STAGING,Could not create the built-in chart staging folder.,내장 채보 임시 폴더를 생성할 수 없습니다.,組み込み譜面用の一時フォルダーを作成できませんでした。,无法创建内置谱面的暂存文件夹。
-ERROR_BUILTIN_RESOURCE_FOLDER,Could not create a built-in chart resource folder.,내장 채보 리소스 폴더를 생성할 수 없습니다.,組み込み譜面のリソースフォルダーを作成できませんでした。,无法创建内置谱面的资源文件夹。
-ERROR_BUILTIN_RESOURCE_IMPORT,Could not mark a built-in resource as Keep File.,내장 리소스를 Keep File로 표시할 수 없습니다.,組み込みリソースを「Keep File」に設定できませんでした。,无法将内置资源标记为 Keep File。
-ERROR_BUILTIN_COPY,Could not finish copying the built-in chartset folder.,내장 채보 세트 폴더 복사를 완료할 수 없습니다.,組み込み譜面セットフォルダーのコピーを完了できませんでした。,无法完成内置谱面集文件夹的复制。
-ERROR_BUILTIN_REPLACE,Could not replace the existing built-in chartset folder.,기존 내장 채보 세트 폴더를 교체할 수 없습니다.,既存の組み込み譜面セットフォルダーを置き換えられませんでした。,无法替换现有的内置谱面集文件夹。
-ERROR_BUILTIN_PUBLISHED_INSTALL,"Published to the server, but built-in installation failed: %s",서버 게시에는 성공했지만 내장 설치에 실패했습니다: %s,サーバーへの公開は完了しましたが、組み込みインストールに失敗しました: %s,已发布到服务器，但内置安装失败：%s
-ERROR_SERVER_PACKAGE_MISSING,The server chart package is missing.,서버 채보 패키지가 없습니다.,サーバーの譜面パッケージがありません。,缺少服务器谱面包。
-ERROR_SERVER_PACKAGE_RESPONSE,The server response is not a valid chart package.,서버 응답이 유효한 채보 패키지가 아닙니다.,サーバーの応答は有効な譜面パッケージではありません。,服务器响应不是有效的谱面包。
-ERROR_SERVER_PACKAGE_SAVE,Could not save the server chart package.,서버 채보 패키지를 저장할 수 없습니다.,サーバーの譜面パッケージを保存できませんでした。,无法保存服务器谱面包。
-ERROR_SERVER_PACKAGE_SAVE_FINISH,Could not finish saving the server chart package.,서버 채보 패키지 저장을 완료할 수 없습니다.,サーバーの譜面パッケージの保存を完了できませんでした。,无法完成服务器谱面包的保存。
-ERROR_SERVER_PACKAGE_WRITE,Could not finish writing the server chart package.,서버 채보 패키지 기록을 완료할 수 없습니다.,サーバーの譜面パッケージの書き込みを完了できませんでした。,无法完成服务器谱面包的写入。
-ERROR_SERVER_PACKAGE_PATH,The server chart package contains an unsafe or duplicate path.,서버 채보 패키지에 안전하지 않거나 중복된 경로가 있습니다.,サーバーの譜面パッケージに安全でない、または重複したパスがあります。,服务器谱面包中包含不安全或重复的路径。
-ERROR_SERVER_PACKAGE_RESOURCE,The server chart package contains an unsupported resource: %s,서버 채보 패키지에 지원하지 않는 리소스가 있습니다: %s,サーバーの譜面パッケージに未対応のリソースがあります: %s,服务器谱面包中包含不支持的资源：%s
-ERROR_SERVER_PACKAGE_FILES,The server chart package has an invalid file count.,서버 채보 패키지의 파일 수가 올바르지 않습니다.,サーバーの譜面パッケージのファイル数が無効です。,服务器谱面包的文件数量无效。
-ERROR_SERVER_PACKAGE_EMPTY,The server chart package contains no charts.,서버 채보 패키지에 채보가 없습니다.,サーバーの譜面パッケージに譜面がありません。,服务器谱面包中没有谱面。
-ERROR_SERVER_PACKAGE_SIZE,The expanded server chart package exceeds 100 MiB.,압축 해제된 서버 채보 패키지가 100 MiB를 초과합니다.,展開後のサーバー譜面パッケージが100 MiBを超えています。,解压后的服务器谱面包超过 100 MiB。
-ERROR_SERVER_PACKAGE_MANIFEST,The server chart package is missing its revision manifest.,서버 채보 패키지에 리비전 매니페스트가 없습니다.,サーバーの譜面パッケージにリビジョンマニフェストがありません。,服务器谱面包缺少版本清单。
-ERROR_SERVER_PACKAGE_METADATA,The server chart package has invalid chartset metadata.,서버 채보 패키지의 채보 세트 메타데이터가 유효하지 않습니다.,サーバーの譜面パッケージに無効な譜面セットメタデータがあります。,服务器谱面包中的谱面集元数据无效。
-ERROR_SERVER_PACKAGE_REVISION,The server chart package has invalid chart revision metadata.,서버 채보 패키지의 채보 리비전 메타데이터가 유효하지 않습니다.,サーバーの譜面パッケージに無効な譜面リビジョン情報があります。,服务器谱面包中的谱面版本元数据无效。
-ERROR_SERVER_PACKAGE_REVISION_MISSING,The server chart package has incomplete chart revision metadata.,서버 채보 패키지의 채보 리비전 메타데이터가 불완전합니다.,サーバーの譜面パッケージの譜面リビジョン情報が不完全です。,服务器谱面包中的谱面版本元数据不完整。
-ERROR_SERVER_PACKAGE_REVISION_DUPLICATE,The server chart package has duplicate chart revision metadata.,서버 채보 패키지에 중복된 채보 리비전 메타데이터가 있습니다.,サーバーの譜面パッケージに重複した譜面リビジョン情報があります。,服务器谱面包中存在重复的谱面版本元数据。
-ERROR_SERVER_PACKAGE_FOLDER,Could not create a chart resource folder.,채보 리소스 폴더를 생성할 수 없습니다.,譜面リソースフォルダーを作成できませんでした。,无法创建谱面资源文件夹。
-ERROR_SERVER_PACKAGE_ZIP,The ZIP is invalid or exceeds the 100 MiB extraction limit.,ZIP이 유효하지 않거나 100 MiB 압축 해제 제한을 초과합니다.,ZIPが無効か、100 MiBの展開上限を超えています。,ZIP 无效或超过 100 MiB 解压限制。
-ERROR_SERVER_PACKAGE_FORMAT,"The server did not return a ZIP package. Update the server to support built-in publishing, then retry.",서버가 ZIP 패키지를 반환하지 않았습니다. 서버를 내장 게시 기능을 지원하는 버전으로 업데이트한 후 다시 시도해 주세요.,サーバーからZIPパッケージが返されませんでした。組み込み公開に対応するようサーバーを更新して、もう一度お試しください。,服务器未返回 ZIP 包。请更新服务器以支持内置发布，然后重试。
+ERROR_BUILTIN_PUBLISHED_INSTALL,"Published successfully, but could not add the chart to the game. Check the log.",게시했지만 게임에 채보를 추가하지 못했습니다. 로그를 확인해 주세요.,公開できましたが、ゲームに譜面を追加できませんでした。ログを確認してください。,发布成功，但无法将谱面添加到游戏中，请查看日志。
 SETTINGS_GRAPHICS,Graphics,그래픽,グラフィック,图形
 SETTINGS_AUDIO,Audio,오디오,オーディオ,音频
 SETTINGS_GAMEPLAY,Gameplay,게임 플레이,ゲームプレイ,游戏
@@ -262,15 +127,15 @@ SETTINGS_MASTER_VOLUME,Master,전체 음량,マスター,主音量
 SETTINGS_MUSIC_VOLUME,Music,음악 음량,音楽,音乐
 SETTINGS_SFX_VOLUME,SFX,효과음 음량,効果音,音效
 SETTINGS_HITSOUND_VOLUME,hitsound,히트사운드 음량,ヒットサウンド,打击音效
-SETTINGS_AUDIO_OFFSET,Audio Offset,오디오 오프셋,オーディオオフセット,音频偏移
+SETTINGS_AUDIO_OFFSET,Audio Offset,음악 싱크 조절,オーディオオフセット,音频偏移
 SETTINGS_NOTE_SPEED,Note Speed,노트 속도,ノーツ速度,音符速度
-SETTINGS_IGNORE_CHART_SKIN,Ignore Chart Skin,차트 스킨 무시,譜面スキンを無視,忽略谱面皮肤
+SETTINGS_IGNORE_CHART_SKIN,Ignore Chart Skin,채보 스킨 사용 안 함,譜面スキンを無視,忽略谱面皮肤
 SETTINGS_MOVE_LEFT,move left,왼쪽 이동,左へ移動,向左移动
 SETTINGS_MOVE_RIGHT,move right,오른쪽 이동,右へ移動,向右移动
 SETTINGS_NOTE_HIT_1,Note Hit 1,노트 입력 1,ノーツ入力1,音符按键1
 SETTINGS_NOTE_HIT_2,Note Hit 2,노트 입력 2,ノーツ入力2,音符按键2
 SETTINGS_LANGUAGE,Language,언어,言語,语言
-SETTINGS_CHART_LOAD_THREADS,Chart Load Threads,차트 로딩 스레드 수,譜面読み込みスレッド数,谱面加载线程数
+SETTINGS_CHART_LOAD_THREADS,Chart Load Threads,채보 로딩 작업 수,譜面読み込みスレッド数,谱面加载线程数
 SETTINGS_SERVER_API,Server API,서버 API,サーバーAPI,服务器 API
 SETTINGS_FULLSCREEN,Fullscreen,전체 화면,フルスクリーン,全屏
 SETTINGS_WINDOWED,Windowed,창 모드,ウィンドウ,窗口化
@@ -283,18 +148,13 @@ SETTINGS_AA_OFF,Off,끄기,オフ,关闭
 SETTINGS_FPS_UNLIMITED,Infinite,무제한,無制限,无限制
 SETTINGS_PRESS_KEY,Press key...,키를 눌러 지정...,キーを押してください…,请按键…
 FILTER_TITLE,Search options,검색 필터,検索オプション,搜索选项
-FILTER_CLOSE,Close,닫기,閉じる,关闭
 FILTER_SORT_BY,Sort by,정렬 기준,並び順,排序方式
-FILTER_DIRECTION,Direction,정렬 방향,方向,方向
 FILTER_REVERSE_ORDER,Reverse order,역순,逆順,倒序
 FILTER_STATUS,status,랭크 상태,ステータス,状态
-FILTER_ANY_STATUS,Any status,모든 상태,すべて,任意状态
 FILTER_RANKED,Ranked,랭크됨,Ranked,Ranked
 FILTER_APPROVED,Approved,승인됨,Approved,Approved
-FILTER_UNRANKED,Unranked,검토중,Unranked,Unranked
+FILTER_UNRANKED,Unranked,비랭크,非ランク,非排位
 FILTER_DURATION,Duration,곡 길이,長さ（秒）,时长（秒）
-FILTER_MINIMUM,Min,최소,最小,最小
-FILTER_MAXIMUM,Max,최대,最大,最大
 FILTER_RATING,rating,난이도,レーティング,定数
 FILTER_PLAY_HISTORY,Play history,플레이 기록,プレイ履歴,游玩记录
 FILTER_ANY_HISTORY,Any,전체,すべて,任意
@@ -314,12 +174,11 @@ FILTER_SORT_POPULARITY,Popularity,인기순,人気順,热度
 FILTER_SORT_TITLE,Title,곡 제목,タイトル,标题
 FILTER_SORT_ARTIST,Artist,아티스트,アーティスト,艺术家
 FILTER_SORT_DIFFICULTY,Difficulty,난이도,難易度,难度
-FILTER_SORT_RECENT,Recently played,최근 플레이,最近プレイした順,最近游玩
 EDITOR_BACK_MENU,Back to menu,메뉴로 돌아가기,メニューに戻る,返回菜单
-EDITOR_BACK_CHART,Back to chart,차트로 돌아가기,譜面に戻る,返回谱面
+EDITOR_BACK_CHART,Back to chart,채보 편집으로 돌아가기,譜面に戻る,返回谱面
 EDITOR_SKIN_EDITOR,Skin Editor,스킨 에디터,スキンエディター,皮肤编辑器
 EDITOR_EVENT_EDITOR,Event Editor,이벤트 에디터,イベントエディター,事件编辑器
-EDITOR_BEAT_DIVISION,Beat Division,비트 나눔수,拍分割,节拍细分
+EDITOR_BEAT_DIVISION,Beat Division,박자 나누기,拍分割,节拍细分
 EDITOR_SELECT_COVER,"select cover
 from browser",커버 이미지 선택,"ブラウザーから
 カバーを選択","从浏览器
@@ -345,7 +204,7 @@ EDITOR_NOTE_TYPE,type,종류,種類,类型
 EDITOR_HIT,Hit,일반,Hit,Hit
 EDITOR_MOVE,Move,이동,Move,Move
 EDITOR_TRACE,Trace,트레이스,Trace,Trace
-EDITOR_SPIKE,Spike,스파이크,Spike,Spike
+EDITOR_SPIKE,Spike,장애물,Spike,Spike
 EDITOR_DIRECTION,dir,방향,方向,方向
 EDITOR_LEFT,LEFT,왼쪽,左,左
 EDITOR_RIGHT,RIGHT,오른쪽,右,右
@@ -354,13 +213,12 @@ EDITOR_ANIMATION,animation,애니메이션,アニメーション,动画
 EDITOR_SFX,sfx,효과음,効果音,音效
 EDITOR_RAIL,Rail,레일,レール,轨道
 EDITOR_ADD_TIMING,Add new timing,타이밍 추가,タイミングを追加,添加时间点
-EDITOR_HIT_NOTE,Hit Note,히트 노트,Hitノーツ,Hit 音符
+EDITOR_HIT_NOTE,Hit Note,일반 노트,Hitノーツ,Hit 音符
 EDITOR_MOVE_NOTE,Move Note,이동 노트,Moveノーツ,Move 音符
 EDITOR_TRACE_NOTE,Trace Note,트레이스 노트,Traceノーツ,Trace 音符
-EDITOR_SPIKE_NOTE,Spike Note,스파이크 노트,Spikeノーツ,Spike 音符
+EDITOR_SPIKE_NOTE,Spike Note,장애물 노트,Spikeノーツ,Spike 音符
 EDITOR_LONG_RELEASE,Long Release,롱노트 해제,ロング解除,长按释放
 EDITOR_ADD_SFX,Add new sfx,효과음 추가,効果音を追加,添加音效
-EDITOR_NOTES,Notes,노트,ノーツ,音符
 EDITOR_TOOL_RAIL,Rail (R),레일 (R),レール (R),轨道 (R)
 EDITOR_TOOL_HIT,Hit (Z),일반 노트 (Z),Hit (Z),Hit (Z)
 EDITOR_TOOL_TRACE,Trace (X),트레이스 (X),Trace (X),Trace (X)
@@ -373,8 +231,8 @@ EDITOR_COPY,Copy,복사,コピー,复制
 EDITOR_PASTE,Paste,붙여넣기,貼り付け,粘贴
 EDITOR_UNDO,Undo,실행 취소,元に戻す,撤销
 EDITOR_REDO,Redo,다시 실행,やり直す,重做
-EDITOR_CHART,chart,채보,譜面,谱面
-EDITOR_SAVE_CHART,Save chart,채보 저장,譜面を保存,保存谱面
+EDITOR_CHART,Difficulty,난이도,難易度,难度
+EDITOR_SAVE_CHART,Save Difficulty,난이도 저장,難易度を保存,保存难度
 EDITOR_PLAY_TEST,Play test,플레이 테스트,テストプレイ,试玩
 EDITOR_OPEN_FILE,Open a File,파일 열기,ファイルを開く,打开文件
 EDITOR_REMOVE,REMOVE,삭제,削除,移除
@@ -384,10 +242,7 @@ EDITOR_POINT,point,제어점,ポイント,点
 EDITOR_POSITION,position,위치,位置,位置
 EDITOR_CURVE,curve,곡률,カーブ,曲线
 EDITOR_TIMING,timing,타이밍,タイミング,时间点
-EDITOR_EVENT_TIMELINE,EVENT TIMELINE,이벤트 타임라인,イベントタイムライン,事件时间轴
-EDITOR_ADD_OVERLAY,Overlay,오버레이,オーバーレイ,叠加层
 EDITOR_ZOOM,Zoom,확대 배율,ズーム,缩放
-EDITOR_FOLLOW,Follow,재생 위치 따라가기,追従,跟随
 EDITOR_COLLAPSE,Collapse,접기,折りたたむ,折叠
 EDITOR_EXPAND,Expand,펼치기,展開,展开
 EDITOR_PLAY,Play,재생,プレイ,游玩
@@ -411,17 +266,15 @@ EDITOR_STOP_PREVIEW,stop preview,미리보기 정지,プレビュー停止,停�
 EDITOR_ANIMATION_FPS,animation fps,애니메이션 FPS,アニメーションFPS,动画帧率
 EDITOR_ANIMATION_EFFECT,animation effect,애니메이션 효과,アニメーション効果,动画效果
 EDITOR_IMPORT_SPRITES,Import Sprite Images,스프라이트 이미지 가져오기,スプライト画像をインポート,导入精灵图像
-EDITOR_OPEN_FILES,Open File(s),파일 열기,ファイルを開く,打开文件
 EDITOR_REMOVE_ANIMATION,remove animation,애니메이션 삭제,アニメーションを削除,删除动画
 EDITOR_UNSAVED_CHANGES,Unsaved changes,저장하지 않은 변경 사항,未保存の変更,未保存的更改
-EDITOR_CANCEL,Cancel,취소,キャンセル,取消
 EDITOR_DEFERRED_ANIMATION,Deferred,스킨 기본값,遅延,延迟
 EDITOR_DEFAULT,Default,기본값,デフォルト,默认
 EDITOR_NONE,None,없음,なし,无
 EDITOR_CREATE_SKIN,Create New One,새 스킨 만들기,新規作成,新建
 EDITOR_CURRENT_SKIN,%s (current),%s (현재),%s（現在）,%s（当前）
 EDITOR_NO_FRAME,No frame selected,선택된 프레임 없음,フレームが選択されていません,未选择帧
-EDITOR_CHART_SAVED,Chart saved,차트 저장됨,譜面を保存しました,谱面已保存
+EDITOR_CHART_SAVED,Difficulty saved.,난이도를 저장했습니다.,難易度を保存しました。,难度已保存。
 EDITOR_SAVE_FAILED,Save failed,저장 실패,保存に失敗しました,保存失败
 EDITOR_TOOL_THEME,Theme (T),테마 (T),テーマ (T),主题 (T)
 EDITOR_TOOL_CAMERA,Camera (C),카메라 (C),カメラ (C),相机 (C)
@@ -467,14 +320,9 @@ EDITOR_ONION_STATE,toggle onion skin (%s),어니언 스킨 전환 (%s),オニオ
 EDITOR_ON,on,켜짐,オン,开
 EDITOR_OFF,off,꺼짐,オフ,关
 EDITOR_HIT_SLOT,hit %d,입력 %d,ヒット%d,命中 %d
-EDITOR_EFFECT_NONE,none,없음,なし,无
 EDITOR_EFFECT_GROOVE,groove,흔들기,グルーヴ,律动
 EDITOR_EFFECT_SPIN,spin,회전,スピン,旋转
-EDITOR_TAB_CHART,Chart,차트,譜面,谱面
 EDITOR_TAB_PROPERTY,Property,속성,プロパティ,属性
-EDITOR_TAB_TIMING,Timing,타이밍,タイミング,时间点
-EDITOR_TAB_SFX,SFX,효과음,効果音,音效
-EDITOR_TAB_SKIN,Skin,스킨,スキン,皮肤
 EDITOR_TAB_ANIMATIONS,Animations,애니메이션,アニメーション,动画
 EDITOR_NOTE_COUNT,note count:  %d,노트 수: %d,ノーツ数: %d,音符数：%d
 EDITOR_RAIL_COUNT,rail count: %d,레일 수: %d,レール数: %d,轨道数：%d
@@ -483,20 +331,20 @@ EDITOR_COVER_IMAGE,Cover Image,커버 이미지,カバー画像,封面图像
 EDITOR_AUDIO_FILE,Audio File,오디오 파일,音声ファイル,音频文件
 EDITOR_WAV_AUDIO,WAV Audio,WAV 오디오,WAV音声,WAV 音频
 EDITOR_PNG_IMAGE,PNG Image,PNG 이미지,PNG画像,PNG 图像
-EDITOR_EASE_DEFAULT,Default (linear),기본값 (선형),デフォルト（linear）,默认（linear）
-EDITOR_EASE_LINEAR,linear,선형,linear,linear
-EDITOR_EASE_IN_SINE,in_sine,사인 가속,in_sine,in_sine
-EDITOR_EASE_OUT_SINE,out_sine,사인 감속,out_sine,out_sine
-EDITOR_EASE_IN_OUT_SINE,in_out_sine,사인 가속·감속,in_out_sine,in_out_sine
-EDITOR_EASE_IN_QUAD,in_quad,2차 가속,in_quad,in_quad
-EDITOR_EASE_OUT_QUAD,out_quad,2차 감속,out_quad,out_quad
-EDITOR_EASE_IN_OUT_QUAD,in_out_quad,2차 가속·감속,in_out_quad,in_out_quad
-EDITOR_EASE_IN_CUBIC,in_cubic,3차 가속,in_cubic,in_cubic
-EDITOR_EASE_OUT_CUBIC,out_cubic,3차 감속,out_cubic,out_cubic
-EDITOR_EASE_IN_OUT_CUBIC,in_out_cubic,3차 가속·감속,in_out_cubic,in_out_cubic
-EDITOR_EASE_IN_BACK,in_back,반동 가속,in_back,in_back
-EDITOR_EASE_OUT_BACK,out_back,반동 감속,out_back,out_back
-EDITOR_EASE_IN_OUT_BACK,in_out_back,반동 가속·감속,in_out_back,in_out_back
+EDITOR_EASE_DEFAULT,Default (linear),기본값 (일정한 속도),デフォルト（一定速度）,默认（匀速）
+EDITOR_EASE_LINEAR,Linear,일정한 속도,一定速度,匀速
+EDITOR_EASE_IN_SINE,Sine ease in,사인 가속,サイン 加速,正弦加速
+EDITOR_EASE_OUT_SINE,Sine ease out,사인 감속,サイン 減速,正弦减速
+EDITOR_EASE_IN_OUT_SINE,Sine ease in/out,사인 가속·감속,サイン 加速・減速,正弦加速/减速
+EDITOR_EASE_IN_QUAD,Quadratic ease in,2차 가속,2次 加速,二次加速
+EDITOR_EASE_OUT_QUAD,Quadratic ease out,2차 감속,2次 減速,二次减速
+EDITOR_EASE_IN_OUT_QUAD,Quadratic ease in/out,2차 가속·감속,2次 加速・減速,二次加速/减速
+EDITOR_EASE_IN_CUBIC,Cubic ease in,3차 가속,3次 加速,三次加速
+EDITOR_EASE_OUT_CUBIC,Cubic ease out,3차 감속,3次 減速,三次减速
+EDITOR_EASE_IN_OUT_CUBIC,Cubic ease in/out,3차 가속·감속,3次 加速・減速,三次加速/减速
+EDITOR_EASE_IN_BACK,Back ease in,반동 가속,バック 加速,回弹加速
+EDITOR_EASE_OUT_BACK,Back ease out,반동 감속,バック 減速,回弹减速
+EDITOR_EASE_IN_OUT_BACK,Back ease in/out,반동 가속·감속,バック 加速・減速,回弹加速/减速
 EDITOR_ANCHOR_TOP_LEFT,Top Left,왼쪽 위,左上,左上
 EDITOR_ANCHOR_TOP_CENTER,Top Center,가운데 위,上中央,上中
 EDITOR_ANCHOR_TOP_RIGHT,Top Right,오른쪽 위,右上,右上
@@ -511,17 +359,31 @@ MENU_EXIT,Exit,종료,終了,退出
 MENU_EDIT,Edit,편집,編集,编辑
 MENU_SETTINGS,Options,설정,設定,设置
 MENU_NEW_CHART,New Chart,신규 채보,新規譜面,新建谱面
-MENU_BACK,Back,Back,戻る,返回
-MENU_CHART_DOWNLOD,Downloding,다운로드 중,,
-MENU_CHART_PLAY,Play,플레이,プレイ,游玩
-MENU_EDIT_UPLOAD,Upload,업로드,Upload,Upload
-MENU_EDIT_NEW_CHART,New Difficulty,새 난이도,New Difficulty,New Difficulty
-MENU_EDIT_DELETE_CHARTSET,Delete Entire Chart,채보 전체 삭제,Delete Entire Chart,Delete Entire Chart
-MENU_EDIT_DELETE_CHART,Delete Difficulty,난이도 삭제,Delete Difficulty,Delete Difficulty
-PLAYLIST_ALL_CHARTS,All Charts,전체 보기,All Charts,All Charts
-PLAYLIST_LOVED,Loved,즐겨찾기,Loved,Loved
-PLAYLIST_RECENT,Recent,최근 플레이,Recent,Recent
-MENU_TAB_OFFICIAL,Official,오리지널,,
-MENU_TAB_COMMUNITY,Community,커뮤니티,,
-COMMON_SEARCH,Search,검색,,
-COMMON_FILTER,Filter,필터,,
+MENU_BACK,Back,돌아가기,戻る,返回
+MENU_EDIT_UPLOAD,Upload,업로드,アップロード,上传
+MENU_EDIT_NEW_CHART,New Difficulty,새 난이도,難易度を追加,添加难度
+MENU_EDIT_DELETE_CHARTSET,Delete Chart,채보 전체 삭제,譜面をすべて削除,删除整份谱面
+MENU_EDIT_DELETE_CHART,Delete Difficulty,난이도 삭제,難易度を削除,删除难度
+PLAYLIST_ALL_CHARTS,All Charts,전체 보기,すべての譜面,全部谱面
+PLAYLIST_LOVED,Favorites,즐겨찾기,お気に入り,收藏
+PLAYLIST_RECENT,Recently Played,최근 플레이,最近プレイした曲,最近游玩
+MENU_TAB_OFFICIAL,Original,오리지널,オリジナル,原创
+MENU_TAB_COMMUNITY,Community,커뮤니티,コミュニティ,社区
+COMMON_SEARCH,Search,검색,検索,搜索
+COMMON_FILTER,Filter,필터,絞り込み,筛选
+HINT_SIGN_IN_REQUIRED,Sign in with Steam to use this feature.,이 기능을 사용하려면 Steam으로 로그인해 주세요.,この機能を使うにはSteamでログインしてください。,请使用 Steam 登录后使用此功能。
+ERROR_SIGN_IN_FAILED,Could not sign in. Please retry.,로그인하지 못했습니다. 다시 시도해 주세요.,ログインできませんでした。もう一度お試しください。,登录失败，请重试。
+ERROR_STEAM_UNAVAILABLE,Could not connect to Steam. Restart Steam and the game.,Steam에 연결하지 못했습니다. Steam과 게임을 다시 실행해 주세요.,Steamに接続できませんでした。Steamとゲームを再起動してください。,无法连接到 Steam，请重启 Steam 和游戏。
+ERROR_CHART_INFO,Could not load chart information. Please retry.,채보 정보를 불러오지 못했습니다. 다시 시도해 주세요.,譜面情報を読み込めませんでした。もう一度お試しください。,无法加载谱面信息，请重试。
+ERROR_SCORE_SUBMIT,Could not upload your score. Your play record is saved on this device.,점수를 업로드하지 못했습니다. 플레이 기록은 이 기기에 저장되어 있습니다.,スコアを送信できませんでした。プレイ記録はこの端末に保存されています。,分数上传失败，游玩记录已保存在此设备上。
+ERROR_CHART_STORAGE,Could not save the chart. Check free disk space and folder permissions.,채보를 저장하지 못했습니다. 저장 공간과 폴더 접근 권한을 확인해 주세요.,譜面を保存できませんでした。空き容量とフォルダーへのアクセス権限を確認してください。,无法保存谱面，请检查可用空间和文件夹访问权限。
+STATUS_DOWNLOADING,Downloading…,다운로드 중…,ダウンロード中…,正在下载…
+STATUS_UPDATING,Updating…,업데이트 중…,更新中…,正在更新…
+STATUS_INSTALLING,Installing…,설치 중…,インストール中…,正在安装…
+STATUS_PREPARING,Preparing…,준비 중…,準備中…,正在准备…
+STATUS_CHECKING,Checking…,확인 중…,確認中…,正在检查…
+STATUS_LOADING_PLAYLISTS,Loading playlists…,재생목록 불러오는 중…,プレイリストを読み込み中…,正在加载播放列表…
+ACTION_UPDATE,Update,업데이트,更新,更新
+STATUS_SONG_COUNT,%d songs,%d곡,%d曲,%d 首歌曲
+STATUS_SONG_COUNT_PARTIAL,%d of %d songs,%d / %d곡,%d / %d曲,%d / %d 首歌曲
+PUBLISH_DIFFICULTIES,%d difficulties,난이도 %d개,難易度数：%d,%d 个难度

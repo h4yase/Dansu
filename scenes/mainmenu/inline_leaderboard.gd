@@ -115,7 +115,8 @@ func _request_json(path: String, callback: Callable) -> void:
 	headers.append("Accept: application/json")
 	if _request.request(ServerURLs.api(path), headers) != OK:
 		_cancel_request()
-		_show_status(GameText.text(GameText.Key.ERROR_SERVER_CONNECT))
+		push_warning("Could not connect to the server.")
+		_show_status(GameText.text(GameText.Key.ERROR_SERVER_CONNECTION))
 
 
 func _on_response(result: int, code: int, _headers: PackedStringArray, body: PackedByteArray, callback: Callable, generation: int) -> void:
@@ -123,14 +124,16 @@ func _on_response(result: int, code: int, _headers: PackedStringArray, body: Pac
 		return
 	_cancel_request()
 	if result != HTTPRequest.RESULT_SUCCESS:
-		_show_status(GameText.text(GameText.Key.ERROR_SERVER_CONNECT))
+		push_warning("Could not connect to the server.")
+		_show_status(GameText.text(GameText.Key.ERROR_SERVER_CONNECTION))
 		return
 	if code != 200:
 		_show_status(GameText.text(GameText.Key.NOTICE_LEADERBOARD_MISSING) if code == 404 else GameText.text(GameText.Key.ERROR_LEADERBOARD_LOAD))
 		return
 	var data = JSON.parse_string(body.get_string_from_utf8())
 	if not data is Dictionary:
-		_show_status(GameText.text(GameText.Key.ERROR_LEADERBOARD_READ))
+		push_warning("Could not read leaderboard.")
+		_show_status(GameText.text(GameText.Key.ERROR_LEADERBOARD_LOAD))
 		return
 	callback.call(data)
 
@@ -148,7 +151,8 @@ func _on_resolved(data: Dictionary) -> void:
 
 func _on_page(data: Dictionary) -> void:
 	if not data.get("items") is Array or int(data.get("chart_id", -1)) != _chart_id:
-		_show_status(GameText.text(GameText.Key.ERROR_LEADERBOARD_READ))
+		push_warning("Could not read leaderboard.")
+		_show_status(GameText.text(GameText.Key.ERROR_LEADERBOARD_LOAD))
 		return
 	_page = int(data.get("page", _page + 1))
 	_total_pages = int(data.get("total_pages", _page))

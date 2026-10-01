@@ -43,7 +43,8 @@ func _process(_delta: float) -> void:
 		_steam.call("run_callbacks")
 	if state in [State.REQUESTING_TICKET, State.SIGNING_IN] and Time.get_ticks_msec() >= _ticket_deadline_msec:
 		if _access_token.is_empty():
-			_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_TIMEOUT))
+			push_warning("Steam sign-in timed out. Please retry.")
+			_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
 		else:
 			_finish_login()
 	if state in [State.USERNAME_REQUIRED, State.SETTING_USERNAME, State.SIGNED_IN] and Time.get_ticks_msec() >= _expires_at_msec:
@@ -74,7 +75,8 @@ func login() -> void:
 	var identity := str(ProjectSettings.get_setting("steam/web_api_identity", "dansuapi"))
 	_ticket_handle = int(_steam.call("getAuthTicketForWebApi", identity))
 	if _ticket_handle == 0:
-		_fail(GameText.text(GameText.Key.ERROR_STEAM_TICKET_CREATE))
+		push_warning("Steam could not issue an authentication ticket.")
+		_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
 
 
 func logout() -> void:
@@ -157,13 +159,15 @@ func _initialize_steam() -> bool:
 	if _steam_initialized:
 		return true
 	if not Engine.has_singleton("Steam"):
-		_fail(GameText.text(GameText.Key.ERROR_STEAM_EXTENSION))
+		push_warning("GodotSteam could not load. Check the Steam extension and DLLs.")
+		_fail(GameText.text(GameText.Key.ERROR_STEAM_UNAVAILABLE))
 		return false
 	_steam = Engine.get_singleton("Steam")
 	var app_id := int(ProjectSettings.get_setting("steam/app_id", 0))
 	var result: Dictionary = _steam.call("steamInitEx", app_id, false)
 	if int(result.get("status", -1)) != 0:
-		_fail(GameText.text(GameText.Key.ERROR_STEAM_INIT))
+		push_warning("Steam initialization failed.")
+		_fail(GameText.text(GameText.Key.ERROR_STEAM_UNAVAILABLE))
 		return false
 	_steam_initialized = true
 	_steam.connect("get_ticket_for_web_api", _on_web_api_ticket)
@@ -174,7 +178,8 @@ func _on_web_api_ticket(handle: int, result: int, ticket_size: int, buffer: Pack
 	if state != State.REQUESTING_TICKET or handle != _ticket_handle:
 		return
 	if result != 1 or ticket_size <= 0 or ticket_size > buffer.size() or ticket_size > 2560:
-		_fail(GameText.text(GameText.Key.ERROR_STEAM_TICKET_REJECTED))
+		push_warning("Steam rejected the request. Please retry.")
+		_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
 		return
 	_request = HTTPRequest.new()
 	_request.timeout = maxf(_remaining_login_seconds(), 0.001)
@@ -190,7 +195,8 @@ func _on_web_api_ticket(handle: int, result: int, ticket_size: int, buffer: Pack
 		JSON.stringify({"ticket": buffer.slice(0, ticket_size).hex_encode()})
 	)
 	if error != OK:
-		_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_START))
+		push_warning("Could not start the sign-in request. Please retry.")
+		_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
 
 
 func _on_token_response(result: int, code: int, _headers: PackedStringArray, body: PackedByteArray, attempt: int) -> void:
@@ -206,14 +212,19 @@ func _on_token_response(result: int, code: int, _headers: PackedStringArray, bod
 		return
 	if code != 200:
 		match code:
-			401: _fail(GameText.text(GameText.Key.ERROR_STEAM_TICKET_EXPIRED))
+			401:
+				push_warning("Steam ticket expired or was rejected. Please retry.")
+				_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
 			403: _fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FORBIDDEN))
 			502, 503: _fail(GameText.text(GameText.Key.ERROR_STEAM_SERVER))
-			_: _fail(GameText.text(GameText.Key.ERROR_SIGN_IN_HTTP) % code)
+			_:
+				push_warning("Sign-in failed (HTTP %d). Please retry." % code)
+				_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
 		return
 	var data = JSON.parse_string(body.get_string_from_utf8())
 	if not data is Dictionary:
-		_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_RESPONSE))
+		push_warning("Invalid sign-in response from the server.")
+		_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
 		return
 	var token = data.get("access_token")
 	var lifetime = data.get("expires_in")
@@ -226,7 +237,8 @@ func _on_token_response(result: int, code: int, _headers: PackedStringArray, bod
 		or not (profile.get("id") is float or profile.get("id") is int)
 		or not username_required is bool
 	):
-		_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_RESPONSE))
+		push_warning("Invalid sign-in response from the server.")
+		_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
 		return
 	_access_token = token
 	_expires_at_msec = Time.get_ticks_msec() + int(float(lifetime) * 1000)
@@ -275,7 +287,8 @@ func _finish_login() -> void:
 	_dispose_request()
 	_cancel_ticket()
 	if _access_token.is_empty() or user.is_empty():
-		_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_SESSION))
+		push_warning("Sign-in did not return a usable session.")
+		_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
 		return
 	if _username_required:
 		_set_state(State.USERNAME_REQUIRED, GameText.text(GameText.Key.HINT_USERNAME_SETUP))
@@ -306,7 +319,8 @@ func _on_username_response(
 		return
 	var profile = JSON.parse_string(body.get_string_from_utf8())
 	if not profile is Dictionary or not profile.get("username") is String:
-		_username_setup_failed(GameText.text(GameText.Key.ERROR_USERNAME_RESPONSE))
+		push_warning("Invalid username response from the server.")
+		_username_setup_failed(GameText.text(GameText.Key.ERROR_USERNAME_SAVE))
 		return
 	user.merge(profile, true)
 	_username_required = false
@@ -323,7 +337,7 @@ func _response_detail(body: PackedByteArray, fallback: String) -> String:
 	if data is Dictionary and data.get("detail") is String:
 		var detail := str(data.get("detail")).strip_edges()
 		if not detail.is_empty():
-			return detail
+			push_warning("Username setup: %s" % detail)
 	return fallback
 
 

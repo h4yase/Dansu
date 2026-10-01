@@ -412,7 +412,7 @@ stretch_mode = 5
 [node name="Dialogs" type="Node" parent="." unique_id=319213067]
 
 [node name="ImportDialog" type="FileDialog" parent="Dialogs" unique_id=98028452]
-title = "EDITOR_OPEN_FILES"
+title = "EDITOR_OPEN_FILE"
 file_mode = 1
 access = 2
 filters = PackedStringArray("*.png ; PNG Image")
@@ -420,4 +420,4 @@ use_native_dialog = true
 
 [node name="UnsavedChangesDialog" parent="Dialogs" unique_id=1239745447 instance=ExtResource("8_unsaved")]
 visible = false
-message = "CONFIRM_SAVE_SKIN"
+message = "CONFIRM_SAVE_CHANGES"

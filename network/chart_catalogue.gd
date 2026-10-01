@@ -125,7 +125,7 @@ func refresh() -> void:
 	page = 1
 	_has_result_snapshot = false
 	if filters.has_play_history() and not Auth.is_authenticated():
-		_list_failed(GameText.text(GameText.Key.HINT_SIGN_IN_HISTORY))
+		_list_failed(GameText.text(GameText.Key.HINT_SIGN_IN_REQUIRED))
 		return
 	if playlist_id != 0:
 		_show_cached_playlist()
@@ -134,7 +134,7 @@ func refresh() -> void:
 
 func _show_cached_playlist() -> void:
 	if CM.playlist_loader.loading:
-		status = "Loading playlists…"
+		status = GameText.text(GameText.Key.STATUS_LOADING_PLAYLISTS)
 		state_changed.emit()
 		return
 	if not CM.playlist_loader.loaded:
@@ -154,7 +154,7 @@ func _show_cached_playlist() -> void:
 	loading = false
 	loading_more = false
 	_has_result_snapshot = true
-	status = GameText.text(GameText.Key.NOTICE_SEARCH_EMPTY) if _results.is_empty() else "%d songs" % total
+	status = GameText.text(GameText.Key.NOTICE_SEARCH_EMPTY) if _results.is_empty() else GameText.text(GameText.Key.STATUS_SONG_COUNT) % total
 	results_changed.emit(_results)
 	state_changed.emit()
 	_cover_queue.append_array(_results)
@@ -184,16 +184,19 @@ func _on_list(result: int, code: int, _headers: PackedStringArray, body: PackedB
 		return
 	var data = JSON.parse_string(body.get_string_from_utf8())
 	if not data is Dictionary or not data.get("items") is Array or not data.get("total_pages") is float or not data.get("total") is float:
-		_list_failed(GameText.text(GameText.Key.ERROR_SEARCH_RESPONSE))
+		push_warning("The server returned an invalid song list.")
+		_list_failed(GameText.text(GameText.Key.ERROR_SEARCH_START))
 		return
 	var added: Array[ChartSet] = []
 	for item in data.items:
 		if not item is Dictionary:
-			_list_failed(GameText.text(GameText.Key.ERROR_SONG_METADATA))
+			push_warning("The server returned invalid song metadata.")
+			_list_failed(GameText.text(GameText.Key.ERROR_SEARCH_START))
 			return
 		var mapped := OnlineChartMapper.from_metadata(item)
 		if mapped == null:
-			_list_failed(GameText.text(GameText.Key.ERROR_SONG_METADATA))
+			push_warning("The server returned invalid song metadata.")
+			_list_failed(GameText.text(GameText.Key.ERROR_SEARCH_START))
 			return
 		var key := _chartset_key(mapped)
 		if _seen_chartsets.has(key):
@@ -207,7 +210,7 @@ func _on_list(result: int, code: int, _headers: PackedStringArray, body: PackedB
 	loading = false
 	loading_more = false
 	var visible_total := maxi(total, _results.size())
-	status = GameText.text(GameText.Key.NOTICE_SEARCH_EMPTY) if _results.is_empty() else "%d of %d songs" % [_results.size(), visible_total]
+	status = GameText.text(GameText.Key.NOTICE_SEARCH_EMPTY) if _results.is_empty() else GameText.text(GameText.Key.STATUS_SONG_COUNT_PARTIAL) % [_results.size(), visible_total]
 	results_changed.emit(_results)
 	state_changed.emit()
 	_cover_queue.append_array(added)
@@ -395,7 +398,8 @@ func _on_audio(result: int, code: int, _headers: PackedStringArray, bytes: Packe
 	var stream := AudioStreamMP3.new()
 	stream.data = bytes
 	if stream.get_length() <= 0:
-		message.emit(GameText.text(GameText.Key.ERROR_PREVIEW_DECODE))
+		push_warning("The audio preview could not be decoded.")
+		message.emit(GameText.text(GameText.Key.ERROR_PREVIEW_START))
 		return
 	preview_player.stream = stream
 	preview_player.volume_db = -30
@@ -501,12 +505,14 @@ func _begin_download(chartset: ChartSet, automatic_update: bool = false) -> bool
 	var url := _resource_url(str(_download_metadata.get("download_url", "")))
 	if not url.begins_with(_api_url("/chartsets/")):
 		_automatic_update = false
-		message.emit(GameText.text(GameText.Key.ERROR_DOWNLOAD_URL))
+		push_warning("The server returned an invalid download URL.")
+		message.emit(GameText.text(GameText.Key.ERROR_DOWNLOAD_START))
 		return false
 	var transfer_directory := ChartTransfer.create()
 	if transfer_directory.is_empty():
 		_automatic_update = false
-		message.emit(GameText.text(GameText.Key.ERROR_DOWNLOAD_FOLDER))
+		push_warning("Could not create the download folder.")
+		message.emit(GameText.text(GameText.Key.ERROR_CHART_STORAGE))
 		return false
 	_archive_path = transfer_directory.path_join("download.part")
 	downloading = true
@@ -544,7 +550,8 @@ func _on_download(result: int, code: int, headers: PackedStringArray, _body: Pac
 	_installer_thread = Thread.new()
 	if _installer_thread.start(ChartPackageInstaller.install.bind(_archive_path, _download_metadata)) != OK:
 		_installer_thread = null
-		_download_failed(GameText.text(GameText.Key.ERROR_INSTALLER_START))
+		push_warning("Could not start the chart installer.")
+		_download_failed(GameText.text(GameText.Key.ERROR_DOWNLOAD_START))
 	state_changed.emit()
 
 func _process(delta: float) -> void:
@@ -564,7 +571,7 @@ func _process(delta: float) -> void:
 				_cached_chartsets[installed.uuid.to_lower()] = installed
 				ChartPackageInstaller.prune_cache(installed.folder_name)
 				downloading = false
-				message.emit(GameText.text(GameText.Key.NOTICE_CHART_UPDATED) if _automatic_update else "Download complete.")
+				message.emit(GameText.text(GameText.Key.NOTICE_CHART_UPDATED))
 				if _pending_play:
 					call_deferred("_play_cached_selection")
 				_pending_play = false
@@ -578,12 +585,12 @@ func _process(delta: float) -> void:
 
 func download_label() -> String:
 	if _installer_thread != null:
-		return "Installing…"
+		return GameText.text(GameText.Key.STATUS_INSTALLING)
 	if is_instance_valid(_download):
 		var size := _download.get_body_size()
 		if size > 0:
-			return "%s %d%%" % ["Update" if _automatic_update else "Download", int(100.0 * _download.get_downloaded_bytes() / size)]
-	return "Updating…" if _automatic_update else "Downloading…"
+			return "%s %d%%" % [GameText.text(GameText.Key.STATUS_UPDATING) if _automatic_update else GameText.text(GameText.Key.STATUS_DOWNLOADING), int(100.0 * _download.get_downloaded_bytes() / size)]
+	return GameText.text(GameText.Key.STATUS_UPDATING) if _automatic_update else GameText.text(GameText.Key.STATUS_DOWNLOADING)
 
 func _play_cached_selection() -> void:
 	var remote := CM.selected_chart
@@ -696,15 +703,21 @@ func _cancel(node: HTTPRequest) -> void:
 
 func _http_error(result: int, code: int, action: String) -> String:
 	if result != HTTPRequest.RESULT_SUCCESS:
-		return GameText.text(GameText.Key.ERROR_ACTION_CONNECTION) % action
+		push_warning("%s failed. Check your connection and retry." % action)
+		return GameText.text(GameText.Key.ERROR_SERVER_CONNECTION)
 	match code:
 		401:
 			Auth.logout()
-			return GameText.text(GameText.Key.ERROR_SESSION_RETRY)
+			push_warning("Sign in with Steam and retry.")
+			return GameText.text(GameText.Key.HINT_SIGN_IN_STEAM)
 		403: return GameText.text(GameText.Key.ERROR_CONTENT_FORBIDDEN)
-		404: return GameText.text(GameText.Key.ERROR_ACTION_NOT_FOUND) % action
+		404:
+			push_warning("%s is unavailable on the server (404)." % action)
+			return GameText.text(GameText.Key.ERROR_REQUEST_FAILED)
 		422: return GameText.text(GameText.Key.ERROR_SEARCH_FILTERS)
-		_: return GameText.text(GameText.Key.ERROR_ACTION_HTTP) % [action, code]
+		_:
+			push_warning("%s failed (HTTP %d). Retry." % [action, code])
+			return GameText.text(GameText.Key.ERROR_REQUEST_FAILED)
 
 func _exit_tree() -> void:
 	_generation += 1

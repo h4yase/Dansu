@@ -825,7 +825,7 @@ alignment = 1
 
 [node name="Label" type="Label" parent="Object" unique_id=1191092861]
 layout_mode = 2
-text = "EDITOR_NOTES"
+text = "EDITOR_NOTE"
 
 [node name="Hit2" type="Button" parent="Object" unique_id=66446060]
 layout_mode = 2
@@ -1036,4 +1036,4 @@ use_native_dialog = true
 
 [node name="UnsavedChangesDialog" parent="Dialogs" unique_id=171144 instance=ExtResource("10_unsaved")]
 visible = false
-message = "CONFIRM_SAVE_CHART"
+message = "CONFIRM_SAVE_CHANGES"

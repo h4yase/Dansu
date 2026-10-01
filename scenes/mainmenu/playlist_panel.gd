@@ -71,7 +71,7 @@ func open_pack_browser(target_rect: Rect2, pack_id: String) -> void:
 
 func open(chartset: ChartSet = null, target_rect: Rect2 = Rect2()) -> void:
 	if not Auth.is_authenticated():
-		Notification.notice(GameText.text(GameText.Key.HINT_SIGN_IN_PLAYLISTS), Notification.Type.WARNING)
+		Notification.notice(GameText.text(GameText.Key.HINT_SIGN_IN_REQUIRED), Notification.Type.WARNING)
 		return
 	_current_chartset = chartset
 	_browsing_packs = false
