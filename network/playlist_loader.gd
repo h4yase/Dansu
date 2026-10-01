@@ -5,7 +5,7 @@ var loading := false
 var loaded := false
 var error := ""
 var _started := false
-var _request: HTTPRequest
+var _request: SessionRequest
 var _pending: Array[Playlist] = []
 var _index := -1
 var _page := 1
@@ -20,7 +20,7 @@ func _ready() -> void:
 func _on_auth_changed() -> void:
 	if not Auth.is_authenticated():
 		if is_instance_valid(_request):
-			_request.cancel_request()
+			_request.stop()
 			_request.queue_free()
 		_request = null
 		_pending.clear()
@@ -36,18 +36,18 @@ func _on_auth_changed() -> void:
 	_started = true
 	loading = true
 	_index = -1
-	_request = HTTPRequest.new()
+	_request = SessionRequest.new()
 	_request.timeout = 20
 	_request.max_redirects = 0
 	_request.body_size_limit = 16 * 1024 * 1024
 	add_child(_request)
-	_request.request_completed.connect(_on_response)
+	_request.response_received.connect(_on_response)
 	_send("/playlists")
 	CM.playlists_changed.emit()
 
 
 func _send(path: String) -> void:
-	if _request.request(ServerURLs.api(path), Auth.authorization_headers()) != OK:
+	if _request.send(ServerURLs.api(path), Auth.authorization_headers()) != OK:
 		_fail()
 
 

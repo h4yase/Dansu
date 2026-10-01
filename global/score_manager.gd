@@ -20,8 +20,8 @@ class Submission extends RefCounted:
 var scores: Array[Score] = []
 var _submission_queue: Array[Submission] = []
 var _active_submission: Submission
-var _request: HTTPRequest
-var _play_start_requests: Array[HTTPRequest] = []
+var _request: SessionRequest
+var _play_start_requests: Array[SessionRequest] = []
 
 
 func record_play(chart: Chart, score: Score) -> int:
@@ -64,13 +64,13 @@ func record_play_start(chart: Chart) -> void:
 		return
 	if chart.uuid.is_empty() or chart.chart_set == null or chart.chart_set.uuid.is_empty():
 		return
-	var request := HTTPRequest.new()
+	var request := SessionRequest.new()
 	request.timeout = 10.0
 	request.body_size_limit = 4 * 1024 * 1024
 	add_child(request)
 	_play_start_requests.append(request)
-	request.request_completed.connect(_on_play_metadata_resolved.bind(request, chart))
-	if request.request(
+	request.response_received.connect(_on_play_metadata_resolved.bind(request, chart))
+	if request.send(
 		_api_url("/chartsets/by-uuid/" + chart.chart_set.uuid.uri_encode()),
 		Auth.authorization_headers()
 	) != OK:
@@ -80,7 +80,7 @@ func record_play_start(chart: Chart) -> void:
 func _post_play_start(chart_id: int, revision: int, chartset: ChartSet) -> void:
 	if chart_id <= 0 or revision <= 0:
 		return
-	var request := HTTPRequest.new()
+	var request := SessionRequest.new()
 	request.timeout = 10.0
 	request.body_size_limit = 64 * 1024
 	add_child(request)
@@ -90,10 +90,10 @@ func _post_play_start(chart_id: int, revision: int, chartset: ChartSet) -> void:
 		if playlist.kind == "recent":
 			recent = playlist
 			break
-	request.request_completed.connect(_on_play_start_recorded.bind(request, chartset, recent))
+	request.response_received.connect(_on_play_start_recorded.bind(request, chartset, recent))
 	var headers := Auth.authorization_headers()
 	headers.append("Content-Type: application/json")
-	if request.request(
+	if request.send(
 		_api_url("/plays/" + str(chart_id)),
 		headers,
 		HTTPClient.METHOD_POST,
@@ -110,7 +110,7 @@ func _on_play_metadata_resolved(
 	code: int,
 	_headers: PackedStringArray,
 	body: PackedByteArray,
-	request: HTTPRequest,
+	request: SessionRequest,
 	chart: Chart
 ) -> void:
 	_dispose_play_start_request(request)
@@ -132,7 +132,7 @@ func _on_play_start_recorded(
 	code: int,
 	_headers: PackedStringArray,
 	body: PackedByteArray,
-	request: HTTPRequest,
+	request: SessionRequest,
 	chartset: ChartSet,
 	recent: Playlist
 ) -> void:
@@ -157,10 +157,10 @@ func _on_play_start_recorded(
 	CM.playlists_changed.emit()
 
 
-func _dispose_play_start_request(request: HTTPRequest) -> void:
+func _dispose_play_start_request(request: SessionRequest) -> void:
 	_play_start_requests.erase(request)
 	if is_instance_valid(request):
-		request.cancel_request()
+		request.stop()
 		request.queue_free()
 
 
@@ -261,9 +261,9 @@ func _begin_active_submission() -> void:
 		_post_active(metadata)
 		return
 	_request = _new_request()
-	_request.request_completed.connect(_on_chartset_resolved)
+	_request.response_received.connect(_on_chartset_resolved)
 	var url := _api_url("/chartsets/by-uuid/" + chart.chart_set.uuid.uri_encode())
-	if _request.request(url, PackedStringArray(["Accept: application/json"])) != OK:
+	if _request.send(url, PackedStringArray(["Accept: application/json"])) != OK:
 		_retry_or_fail(GameText.text(GameText.Key.ERROR_CHART_REVISION_LOOKUP))
 
 
@@ -305,12 +305,12 @@ func _post_active(metadata: Dictionary) -> void:
 		_fail_active(GameText.text(GameText.Key.ERROR_SCORE_SUBMIT))
 		return
 	_request = _new_request()
-	_request.request_completed.connect(_on_score_submitted)
+	_request.response_received.connect(_on_score_submitted)
 	var headers := Auth.authorization_headers()
 	var boundary := "----DansuReplay" + score.submission_id.replace("-", "")
 	headers.append("Content-Type: multipart/form-data; boundary=" + boundary)
 	headers.append("Accept: application/json")
-	if _request.request_raw(
+	if _request.send_raw(
 		_api_url("/scores"),
 		headers,
 		HTTPClient.METHOD_POST,
@@ -395,8 +395,8 @@ func _finish_active() -> void:
 	call_deferred("_pump_submissions")
 
 
-func _new_request() -> HTTPRequest:
-	var request := HTTPRequest.new()
+func _new_request() -> SessionRequest:
+	var request := SessionRequest.new()
 	request.timeout = 15.0
 	request.max_redirects = 0
 	request.body_size_limit = 1024 * 1024
@@ -406,7 +406,7 @@ func _new_request() -> HTTPRequest:
 
 func _dispose_request() -> void:
 	if is_instance_valid(_request):
-		_request.cancel_request()
+		_request.stop()
 		_request.queue_free()
 	_request = null
 

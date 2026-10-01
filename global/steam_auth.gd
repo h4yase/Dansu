@@ -4,6 +4,7 @@ class_name SteamAuthManager
 ## Steam Web API ticket -> Dansu JWT. Credentials are held in memory only.
 
 signal state_changed
+signal refresh_finished(success: bool)
 
 enum State {
 	OFFLINE,
@@ -16,11 +17,14 @@ enum State {
 }
 
 const LOGIN_TTL_SECONDS := 15.0
+const REFRESH_BEFORE_SECONDS := 300.0
+const REFRESH_RETRY_SECONDS := 30.0
 const USER_GROUP_ADMIN := 1 << 1
 
 var state := State.OFFLINE
 var status_message := "Offline"
 var user: Dictionary = {}
+var session_version := 0
 
 var _steam: Object
 var _steam_initialized := false
@@ -32,6 +36,11 @@ var _session_api_url := ""
 var _request: HTTPRequest
 var _attempt := 0
 var _username_required := false
+var _refreshing := false
+var _login_step := State.OFFLINE
+var _received_token := false
+var _refresh_at_msec := 0
+var _retry_at_msec := 0
 
 
 func _ready() -> void:
@@ -41,23 +50,26 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if _steam_initialized:
 		_steam.call("run_callbacks")
-	if state in [State.REQUESTING_TICKET, State.SIGNING_IN] and Time.get_ticks_msec() >= _ticket_deadline_msec:
-		if _access_token.is_empty():
+	if state != State.OFFLINE and _session_api_url != _api_url():
+		logout()
+		_set_state(State.OFFLINE, GameText.text(GameText.Key.ERROR_SERVER_CHANGED))
+		return
+	var now := Time.get_ticks_msec()
+	if _login_step in [State.REQUESTING_TICKET, State.SIGNING_IN] and now >= _ticket_deadline_msec:
+		if not _received_token:
 			push_warning("Steam sign-in timed out. Please retry.")
 			_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
 		else:
 			_finish_login()
-	if state in [State.USERNAME_REQUIRED, State.SETTING_USERNAME, State.SIGNED_IN] and Time.get_ticks_msec() >= _expires_at_msec:
-		_clear_session()
+	if state == State.SIGNED_IN and not _refreshing and now >= maxi(_refresh_at_msec, _retry_at_msec):
+		_start_refresh()
+	if state in [State.USERNAME_REQUIRED, State.SETTING_USERNAME] and now >= _expires_at_msec:
+		logout()
 		_set_state(State.OFFLINE, GameText.text(GameText.Key.ERROR_SESSION_EXPIRED))
-	if state in [State.REQUESTING_TICKET, State.SIGNING_IN, State.USERNAME_REQUIRED, State.SETTING_USERNAME, State.SIGNED_IN]:
-		if _session_api_url != _api_url():
-			logout()
-			_set_state(State.OFFLINE, GameText.text(GameText.Key.ERROR_SERVER_CHANGED))
 
 
 func login() -> void:
-	if is_busy() or is_authenticated() or is_username_setup_pending():
+	if _refreshing or is_busy() or is_authenticated() or is_username_setup_pending():
 		return
 	_clear_session()
 	_session_api_url = _api_url()
@@ -66,12 +78,17 @@ func login() -> void:
 		return
 	if not _initialize_steam():
 		return
+	_request_ticket()
+
+
+func _request_ticket() -> void:
+	_received_token = false
 	if not bool(_steam.call("loggedOn")):
 		_fail(GameText.text(GameText.Key.HINT_SIGN_IN_STEAM))
 		return
 	_attempt += 1
 	_ticket_deadline_msec = Time.get_ticks_msec() + int(LOGIN_TTL_SECONDS * 1000)
-	_set_state(State.REQUESTING_TICKET, "Requesting Steam ticket…")
+	_set_login_step(State.REQUESTING_TICKET, "Requesting Steam ticket…")
 	var identity := str(ProjectSettings.get_setting("steam/web_api_identity", "dansuapi"))
 	_ticket_handle = int(_steam.call("getAuthTicketForWebApi", identity))
 	if _ticket_handle == 0:
@@ -85,6 +102,7 @@ func logout() -> void:
 	_cancel_ticket()
 	_clear_session()
 	_set_state(State.OFFLINE, "Offline")
+	_end_refresh(false)
 
 
 func is_busy() -> bool:
@@ -99,10 +117,10 @@ func is_username_setup_submitting() -> bool:
 	return state == State.SETTING_USERNAME
 
 
+# The signed-in UI survives renewal; ensure_session checks token validity before requests.
 func is_authenticated() -> bool:
 	return (
 		state == State.SIGNED_IN and not _access_token.is_empty()
-		and Time.get_ticks_msec() < _expires_at_msec
 		and _session_api_url == _api_url()
 	)
 
@@ -112,9 +130,47 @@ func is_admin() -> bool:
 
 
 func authorization_headers() -> PackedStringArray:
-	if not _has_valid_session():
+	if _access_token.is_empty() or _session_api_url != _api_url():
 		return PackedStringArray()
 	return PackedStringArray(["Authorization: Bearer " + _access_token])
+
+
+# Requests share one renewal; an old 401 must not renew an already replaced token.
+func ensure_session(rejected_token: String = "") -> bool:
+	if not is_authenticated():
+		return false
+	if _has_valid_session() and rejected_token != _access_token:
+		return true
+	var version := session_version
+	if not _refreshing:
+		if Time.get_ticks_msec() < _retry_at_msec:
+			return false
+		_start_refresh()
+	if not _refreshing:
+		return false
+	var success: bool = await refresh_finished
+	return success and _has_valid_session() and is_authenticated() and session_version == version
+
+
+func _start_refresh() -> void:
+	if _refreshing or state != State.SIGNED_IN:
+		return
+	_refreshing = true
+	_request_ticket()
+
+
+func _set_login_step(step: State, message: String) -> void:
+	_login_step = step
+	if not _refreshing:
+		_set_state(step, message)
+
+
+func _end_refresh(success: bool) -> void:
+	_login_step = State.OFFLINE
+	if not _refreshing:
+		return
+	_refreshing = false
+	refresh_finished.emit(success)
 
 
 func submit_username(value: String) -> void:
@@ -175,7 +231,7 @@ func _initialize_steam() -> bool:
 
 
 func _on_web_api_ticket(handle: int, result: int, ticket_size: int, buffer: PackedByteArray) -> void:
-	if state != State.REQUESTING_TICKET or handle != _ticket_handle:
+	if _login_step != State.REQUESTING_TICKET or handle != _ticket_handle:
 		return
 	if result != 1 or ticket_size <= 0 or ticket_size > buffer.size() or ticket_size > 2560:
 		push_warning("Steam rejected the request. Please retry.")
@@ -187,7 +243,7 @@ func _on_web_api_ticket(handle: int, result: int, ticket_size: int, buffer: Pack
 	_request.body_size_limit = 64 * 1024
 	add_child(_request)
 	_request.request_completed.connect(_on_token_response.bind(_attempt))
-	_set_state(State.SIGNING_IN, "Signing in…")
+	_set_login_step(State.SIGNING_IN, "Signing in…")
 	var error := _request.request(
 		_session_api_url + "/auth/steam/token",
 		PackedStringArray(["Content-Type: application/json", "Accept: application/json"]),
@@ -200,7 +256,7 @@ func _on_web_api_ticket(handle: int, result: int, ticket_size: int, buffer: Pack
 
 
 func _on_token_response(result: int, code: int, _headers: PackedStringArray, body: PackedByteArray, attempt: int) -> void:
-	if attempt != _attempt or state != State.SIGNING_IN:
+	if attempt != _attempt or _login_step != State.SIGNING_IN:
 		return
 	_dispose_request()
 	_cancel_ticket()
@@ -215,7 +271,9 @@ func _on_token_response(result: int, code: int, _headers: PackedStringArray, bod
 			401:
 				push_warning("Steam ticket expired or was rejected. Please retry.")
 				_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
-			403: _fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FORBIDDEN))
+			403:
+				logout()
+				_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FORBIDDEN))
 			502, 503: _fail(GameText.text(GameText.Key.ERROR_STEAM_SERVER))
 			_:
 				push_warning("Sign-in failed (HTTP %d). Please retry." % code)
@@ -240,9 +298,19 @@ func _on_token_response(result: int, code: int, _headers: PackedStringArray, bod
 		push_warning("Invalid sign-in response from the server.")
 		_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
 		return
+	if _refreshing and int(profile.id) != int(user.get("id", -1)):
+		logout()
+		_fail(GameText.text(GameText.Key.ERROR_SIGN_IN_FAILED))
+		return
+	_received_token = true
 	_access_token = token
 	_expires_at_msec = Time.get_ticks_msec() + int(float(lifetime) * 1000)
-	user = profile.duplicate(true)
+	_refresh_at_msec = _expires_at_msec - int(minf(REFRESH_BEFORE_SECONDS, float(lifetime) * 0.5) * 1000)
+	_retry_at_msec = 0
+	if _refreshing:
+		user.merge(profile, true)
+	else:
+		user = profile.duplicate(true)
 	_username_required = username_required
 	_request_user_profile(attempt)
 
@@ -257,9 +325,9 @@ func _request_user_profile(attempt: int) -> void:
 	_request.body_size_limit = 256 * 1024
 	add_child(_request)
 	_request.request_completed.connect(_on_profile_response.bind(attempt))
-	_set_state(State.SIGNING_IN, "Loading player profile…")
+	_set_login_step(State.SIGNING_IN, "Loading player profile…")
 	var error := _request.request(
-		_api_url() + "/users/" + str(user.get("id", -1)),
+		_api_url() + "/users/" + str(int(user.get("id", -1))),
 		PackedStringArray(["Accept: application/json", "Authorization: Bearer " + _access_token])
 	)
 	if error != OK:
@@ -273,7 +341,7 @@ func _on_profile_response(
 	body: PackedByteArray,
 	attempt: int
 ) -> void:
-	if attempt != _attempt or state != State.SIGNING_IN:
+	if attempt != _attempt or _login_step != State.SIGNING_IN:
 		return
 	_dispose_request()
 	if result == HTTPRequest.RESULT_SUCCESS and code == 200:
@@ -293,7 +361,13 @@ func _finish_login() -> void:
 	if _username_required:
 		_set_state(State.USERNAME_REQUIRED, GameText.text(GameText.Key.HINT_USERNAME_SETUP))
 	else:
-		_set_state(State.SIGNED_IN, "Signed in as " + str(user["username"]))
+		var message := "Signed in as " + str(user["username"])
+		if _refreshing:
+			# A token replacement must not reload the catalogue or reset selection.
+			status_message = message
+		else:
+			_set_state(State.SIGNED_IN, message)
+	_end_refresh(true)
 
 
 func _on_username_response(
@@ -370,6 +444,11 @@ func _dispose_request() -> void:
 
 
 func _clear_session() -> void:
+	session_version += 1
+	_received_token = false
+	_login_step = State.OFFLINE
+	_refresh_at_msec = 0
+	_retry_at_msec = 0
 	_access_token = ""
 	_expires_at_msec = 0
 	_username_required = false
@@ -393,6 +472,11 @@ func _set_state(value: State, message: String) -> void:
 func _fail(message: String) -> void:
 	_dispose_request()
 	_cancel_ticket()
+	if _refreshing:
+		_retry_at_msec = Time.get_ticks_msec() + int(REFRESH_RETRY_SECONDS * 1000)
+		push_warning("Session renewal failed; will retry in 30 seconds.")
+		_end_refresh(false)
+		return
 	_clear_session()
 	_set_state(State.ERROR, message)
 

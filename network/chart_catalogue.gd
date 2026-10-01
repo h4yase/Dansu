@@ -19,10 +19,10 @@ var status := ""
 var filters: SongFilters = SongFilters.new(true)
 var search_text := ""
 var playlist_id := 0
-var _list: HTTPRequest
-var _audio: HTTPRequest
-var _detail_cover: HTTPRequest
-var _download: HTTPRequest
+var _list: SessionRequest
+var _audio: SessionRequest
+var _detail_cover: SessionRequest
+var _download: SessionRequest
 @export var preview_player: AudioStreamPlayer
 @export var search_debounce: Timer
 var _generation := 0
@@ -31,7 +31,7 @@ var _detail_cover_generation := 0
 var _preview_id := -1
 var _preview_loop := MenuPreviewLoop.new()
 var _cover_queue: Array[ChartSet] = []
-var _cover_requests: Array[HTTPRequest] = []
+var _cover_requests: Array[SessionRequest] = []
 var _archive_path := ""
 var _download_metadata: Dictionary = {}
 var _redirects := 0
@@ -169,9 +169,9 @@ func _request_page(append: bool) -> void:
 	var query := filters.to_query()
 	query.merge({"q": search_text, "p": page, "limit": 20, "origin": "community"}, true)
 	_list = _request_node(4 * 1024 * 1024)
-	_list.request_completed.connect(_on_list.bind(_generation, append))
+	_list.response_received.connect(_on_list.bind(_generation, append))
 	var headers := Auth.authorization_headers() if filters.has_play_history() else PackedStringArray()
-	if _list.request(_api_url("/chartset/?") + ServerURLs.query(query), headers) != OK:
+	if _list.send(_api_url("/chartset/?") + ServerURLs.query(query), headers) != OK:
 		_list_failed(GameText.text(GameText.Key.ERROR_SEARCH_START))
 
 func _on_list(result: int, code: int, _headers: PackedStringArray, body: PackedByteArray, generation: int, append: bool) -> void:
@@ -279,12 +279,12 @@ func _pump_covers() -> void:
 			continue
 		var request := _request_node(2 * 1024 * 1024)
 		_cover_requests.append(request)
-		request.request_completed.connect(_on_cover.bind(request, chartset, _generation))
-		if request.request(url) != OK:
+		request.response_received.connect(_on_cover.bind(request, chartset, _generation))
+		if request.send(url) != OK:
 			_cover_requests.erase(request)
 			_cancel(request)
 
-func _on_cover(result: int, code: int, _headers: PackedStringArray, bytes: PackedByteArray, request: HTTPRequest, chartset: ChartSet, generation: int) -> void:
+func _on_cover(result: int, code: int, _headers: PackedStringArray, bytes: PackedByteArray, request: SessionRequest, chartset: ChartSet, generation: int) -> void:
 	_cover_requests.erase(request)
 	_cancel(request)
 	if generation != _generation or not active:
@@ -337,8 +337,8 @@ func _on_selected(chart: Chart) -> void:
 	if url.is_empty():
 		return
 	_audio = _request_node(8 * 1024 * 1024)
-	_audio.request_completed.connect(_on_audio.bind(_preview_generation))
-	if _audio.request(url) != OK:
+	_audio.response_received.connect(_on_audio.bind(_preview_generation))
+	if _audio.send(url) != OK:
 		stop_preview()
 		message.emit(GameText.text(GameText.Key.ERROR_PREVIEW_START))
 
@@ -351,10 +351,10 @@ func _request_detail_cover(chart: Chart) -> void:
 	if url.is_empty():
 		return
 	_detail_cover = _request_node(8 * 1024 * 1024)
-	_detail_cover.request_completed.connect(
+	_detail_cover.response_received.connect(
 		_on_detail_cover.bind(chart, _detail_cover_generation)
 	)
-	if _detail_cover.request(url) != OK:
+	if _detail_cover.send(url) != OK:
 		_cancel_detail_cover()
 		detail_cover_failed.emit(chart)
 
@@ -525,8 +525,8 @@ func _start_download(url: String, headers: PackedStringArray) -> void:
 	_download = _request_node(100 * 1024 * 1024)
 	_download.timeout = 180
 	_download.download_file = _archive_path
-	_download.request_completed.connect(_on_download)
-	if _download.request(url, headers) != OK:
+	_download.response_received.connect(_on_download)
+	if _download.send(url, headers) != OK:
 		_download_failed(GameText.text(GameText.Key.ERROR_DOWNLOAD_START))
 
 func _on_download(result: int, code: int, headers: PackedStringArray, _body: PackedByteArray) -> void:
@@ -682,8 +682,8 @@ func _remove_archive() -> void:
 		ChartTransfer.cleanup(_archive_path.get_base_dir())
 		_archive_path = ""
 
-func _request_node(limit: int) -> HTTPRequest:
-	var node := HTTPRequest.new()
+func _request_node(limit: int) -> SessionRequest:
+	var node := SessionRequest.new()
 	node.timeout = 20
 	node.max_redirects = 0
 	node.body_size_limit = limit
@@ -696,9 +696,9 @@ func _api_url(path: String) -> String:
 func _resource_url(path: String) -> String:
 	return ServerURLs.resolve(path)
 
-func _cancel(node: HTTPRequest) -> void:
+func _cancel(node: SessionRequest) -> void:
 	if is_instance_valid(node):
-		node.cancel_request()
+		node.stop()
 		node.queue_free()
 
 func _http_error(result: int, code: int, action: String) -> String:
@@ -707,7 +707,6 @@ func _http_error(result: int, code: int, action: String) -> String:
 		return GameText.text(GameText.Key.ERROR_SERVER_CONNECTION)
 	match code:
 		401:
-			Auth.logout()
 			push_warning("Sign in with Steam and retry.")
 			return GameText.text(GameText.Key.HINT_SIGN_IN_STEAM)
 		403: return GameText.text(GameText.Key.ERROR_CONTENT_FORBIDDEN)

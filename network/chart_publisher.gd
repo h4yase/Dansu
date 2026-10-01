@@ -17,7 +17,7 @@ var _thread: Thread
 var _package := ChartPackageBuilder.BuildResult.new()
 var _target: ChartSet
 var _submitter := -1
-var _upload: HTTPRequest
+var _upload: SessionRequest
 const DEFAULT_BUILTIN_PACK_ID := "dansu"
 
 @export var pack_id_input: LineEdit
@@ -242,13 +242,13 @@ func _submit(as_builtin: bool = false) -> void:
 	body.append_array(("\r\n--%s--\r\n" % boundary).to_utf8_buffer())
 	var headers := Auth.authorization_headers()
 	headers.append("Content-Type: multipart/form-data; boundary=" + boundary)
-	_upload = HTTPRequest.new()
+	_upload = SessionRequest.new()
 	_upload.timeout = 180
 	_upload.max_redirects = 0
 	_upload.body_size_limit = 100 * 1024 * 1024 if _publish_as_builtin else 2 * 1024 * 1024
 	add_child(_upload)
-	_upload.request_completed.connect(_on_uploaded)
-	if _upload.request_raw(_api_url("/chartsets/uploads"), headers, HTTPClient.METHOD_POST, body) != OK:
+	_upload.response_received.connect(_on_uploaded)
+	if _upload.send_raw(_api_url("/chartsets/uploads"), headers, HTTPClient.METHOD_POST, body) != OK:
 		_on_uploaded(HTTPRequest.RESULT_CANT_CONNECT, 0, PackedStringArray(), PackedByteArray())
 	_update_dialog()
 	state_changed.emit()
@@ -310,7 +310,6 @@ func _on_uploaded(result: int, code: int, headers: PackedStringArray, bytes: Pac
 			if data is Dictionary and data.get("detail") is String:
 				push_warning("Chart upload: %s" % str(data.detail))
 		if code == 401:
-			Auth.logout()
 			error = GameText.text(GameText.Key.HINT_SIGN_IN_STEAM)
 		_package.error = error
 		_update_dialog()
@@ -350,7 +349,7 @@ func _exit_tree() -> void:
 	_generation += 1
 	_cancel_request()
 	if is_instance_valid(_upload):
-		_upload.cancel_request()
+		_upload.stop()
 	if _thread != null:
 		_package = _thread.wait_to_finish()
 		_thread = null

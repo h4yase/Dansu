@@ -50,6 +50,7 @@ var _pause_tween: Tween
 
 func _enter_tree() -> void:
 	if not editor_preview:
+		Engine.max_fps = Config.max_fps
 		DisplayServer.window_set_vsync_mode(Config.vsync_mode)
 		return
 	var environment_node := get_node("WorldEnvironment") as WorldEnvironment
@@ -76,8 +77,9 @@ func _ready() -> void:
 	reset()
 
 func _exit_tree() -> void:
-	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
 	if not editor_preview:
+		Engine.max_fps = 0
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
 		_input.stop()
 
 func reset() -> void:

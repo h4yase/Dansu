@@ -94,7 +94,6 @@ var max_fps: int:
 	set(value):
 		value = _sanitize_max_fps_value(value)
 		config.set_value(SECTION_GRAPHICS, "max_fps", value)
-		Engine.max_fps = value
 
 var window_size: Vector2i:
 	get:
@@ -226,6 +225,8 @@ var chart_load_threads: int:
 		config.set_value(SECTION_ETC,"chart_load_threads",value)
 
 func _ready() -> void:
+	Engine.max_fps = 0
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
 	config.load(FILE_PATH)
 	if config.has_section_key(SECTION_ETC, "server_api_url"):
 		config.erase_section_key(SECTION_ETC, "server_api_url")

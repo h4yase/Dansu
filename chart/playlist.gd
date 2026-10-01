@@ -105,12 +105,12 @@ func set_chartset(chartset: ChartSet, added: bool) -> bool:
 	var chartset_id := int(chartset.online_metadata.get("id", 0))
 	if chartset_id <= 0:
 		return false
-	var request := HTTPRequest.new()
+	var request := SessionRequest.new()
 	request.timeout = 20
 	request.max_redirects = 0
 	CM.add_child(request)
 	var method := HTTPClient.METHOD_PUT if added else HTTPClient.METHOD_DELETE
-	var error := request.request(
+	var error := request.send(
 		ServerURLs.api("/playlists/%d/chartsets/%d" % [id, chartset_id]),
 		Auth.authorization_headers(), method
 	)
@@ -119,7 +119,7 @@ func set_chartset(chartset: ChartSet, added: bool) -> bool:
 		return false
 	busy = true
 	CM.playlist_state_changed.emit()
-	var response: Array = await request.request_completed
+	var response: Array = await request.response_received
 	request.queue_free()
 	busy = false
 	if not CM.playlists.has(self) or not Auth.is_authenticated():
