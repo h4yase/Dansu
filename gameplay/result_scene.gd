@@ -34,6 +34,7 @@ var score = Score.new()
 @export var cover_image_rect: TextureRect
 @export var account_panel: AccountPanel
 @export var sr_gain_label: Label
+@export var sr_value_label: Label
 
 var _default_cover_texture: Texture2D
 
@@ -82,6 +83,7 @@ func _setup_score_submission_ui() -> void:
 	Auth.state_changed.connect(_refresh_account_panel_visibility)
 	Scores.submission_completed.connect(_on_score_submission_completed)
 	sr_gain_label.hide()
+	sr_value_label.text = "--"
 	if not score.submission_response.is_empty():
 		call_deferred("_show_sr_gain", score.submission_response)
 
@@ -101,8 +103,11 @@ func _show_sr_gain(response: Dictionary) -> void:
 		return
 	_sr_gain_shown = true
 	var score_response: Dictionary = response.score
-	var gained_sr := float(score_response.get("sr_awarded", 0.0))
+	if not bool(score_response.get("is_ranked", false)) or score_response.get("sr_awarded") == null:
+		return
+	var gained_sr := float(score_response.sr_awarded) * 5.0
 	var sign_text := "+ " if gained_sr >= 0.0 else "- "
+	sr_value_label.text = sign_text + "%.2f" % absf(gained_sr)
 	sr_gain_label.text = sign_text + "%.2f SR" % absf(gained_sr)
 	sr_gain_label.show()
 	sr_gain_label.modulate.a = 1.0
