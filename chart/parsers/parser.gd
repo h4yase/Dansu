@@ -6,7 +6,7 @@ const PARSER_V1 = "FILE_VERSION_1"
 static func parse_meta(chart: Chart) -> bool:
 	var file := FileAccess.open(chart.file_path, FileAccess.READ)
 	if file == null:
-		Notification.notice(GameText.text(GameText.Key.ERROR_CHART_OPEN_FAILED) % chart.file_path, Notification.Type.ERROR)
+		Notification.call_deferred("notice", GameText.text(GameText.Key.ERROR_CHART_OPEN_FAILED) % chart.file_path, Notification.Type.ERROR)
 		return false
 
 	var parser: MetaParser = null
@@ -19,7 +19,7 @@ static func parse_meta(chart: Chart) -> bool:
 		chart.build_search_string()
 		return true
 
-	Notification.notice(GameText.text(GameText.Key.ERROR_CHART_VERSION) % version, Notification.Type.ERROR)
+	Notification.call_deferred("notice", GameText.text(GameText.Key.ERROR_CHART_VERSION) % version, Notification.Type.ERROR)
 	return false
 
 func parse_object(chart: Chart) -> ParseResult:
@@ -28,7 +28,7 @@ func parse_object(chart: Chart) -> ParseResult:
 	var message: String
 	if file == null:
 		message = GameText.text(GameText.Key.ERROR_CHART_OPEN_FAILED) % chart.file_path
-		Notification.notice(message, Notification.Type.ERROR)
+		Notification.call_deferred("notice", message, Notification.Type.ERROR)
 		return result.set_error(message)
 
 	var parser: ObjectParser = null
@@ -43,5 +43,5 @@ func parse_object(chart: Chart) -> ParseResult:
 		return result.set_success(parsed_chart)
 
 	message = GameText.text(GameText.Key.ERROR_CHART_VERSION) % version
-	Notification.notice(message, Notification.Type.ERROR)
+	Notification.call_deferred("notice", message, Notification.Type.ERROR)
 	return result.set_error(message)

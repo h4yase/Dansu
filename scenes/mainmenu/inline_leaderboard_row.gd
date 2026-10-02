@@ -123,25 +123,17 @@ func _setup_actions() -> void:
 	add_child(_actions)
 
 	_actions.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	_actions.offset_left = -258
+	_actions.offset_left = -176
 	_actions.offset_right = -20
 	_actions.offset_top = 21
 	_actions.offset_bottom = 61
 
 	_actions.size_flags_horizontal = Control.SIZE_SHRINK_END
 
-	var profile := _action_button("PROFILE")
 	var replay := _action_button("REPLAY")
 	var more := _action_button("DETAIL")
 	_replay_button = replay
 	_detail_button = more
-	profile.disabled = true
-	profile.tooltip_text = GameText.text(GameText.Key.HINT_PROFILE_UNAVAILABLE)
-
-	profile.pressed.connect(
-		func():
-			action_pressed.emit("profile", _item)
-	)
 
 	replay.pressed.connect(
 		func():
@@ -153,7 +145,7 @@ func _setup_actions() -> void:
 			action_pressed.emit("more", _item)
 	)
 
-	for button: Button in [profile, replay, more]:
+	for button: Button in [replay, more]:
 		button.mouse_entered.connect(_set_hover.bind(true))
 		button.mouse_exited.connect(_on_mouse_exited)
 

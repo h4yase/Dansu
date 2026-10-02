@@ -6,7 +6,9 @@ const DATABASE_PATH := "user://dansu.db"
 var connection = null
 
 
-func _ready() -> void:
+func initialize() -> void:
+	if connection != null:
+		return
 	if not ClassDB.class_exists("DansuDB"):
 		push_error("[database] DansuDB extension is unavailable")
 		return

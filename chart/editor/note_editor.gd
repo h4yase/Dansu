@@ -9,7 +9,7 @@ const NOTE_DRAW_SIZE := Vector2(68, 42)
 const PLACEMENT_DURATION := 0.28
 const TAIL_DRAW_SIZE := Vector2(32, 24)
 const TAIL_TEXTURE := preload("res://resources/textures/editor/editor_note_tail.svg")
-const TAIL_OUTLINE := preload("res://resources/textures/editor/editor_note_tail_outline.svg")
+const OUTLINE_SHADER := preload("res://resources/shaders/editor_note_outline.gdshader")
 @export var hit_texture: Texture2D = preload("res://resources/textures/editor/editor_hit.svg")
 @export var trace_texture: Texture2D = preload("res://resources/textures/editor/editor_trace.svg")
 @export var move_texture: Texture2D = preload("res://resources/textures/editor/editor_move.svg")
@@ -35,12 +35,8 @@ var _pass_strength := 0.0
 var _motion_time := 0.0
 var _trail: Control
 var _tail_handle: Control
-const OUTLINE_TEXTURES: Array[Texture2D] = [
-	preload("res://resources/textures/editor/editor_hit_outline.svg"),
-	preload("res://resources/textures/editor/editor_move_outline.svg"),
-	preload("res://resources/textures/editor/editor_trace_outline.svg"),
-	preload("res://resources/textures/editor/editor_spike_outline.svg"),
-]
+var _head_material: ShaderMaterial
+var _tail_material: ShaderMaterial
 
 func set_hovered(value: bool, tail: bool = false) -> void:
 	_hovered = value and not tail
@@ -80,6 +76,11 @@ func _process(delta: float) -> void:
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texture = null
+	_head_material = ShaderMaterial.new()
+	_head_material.shader = OUTLINE_SHADER
+	_head_material.set_shader_parameter("draw_size", NOTE_DRAW_SIZE)
+	_head_material.set_shader_parameter("selected", _selected)
+	material = _head_material
 	# Draw trails behind all note heads, and tail handles in front.
 	z_as_relative = false
 	z_index = 1
@@ -93,6 +94,11 @@ func _ready() -> void:
 	_tail_handle.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_tail_handle.z_as_relative = false
 	_tail_handle.z_index = 2
+	_tail_material = ShaderMaterial.new()
+	_tail_material.shader = OUTLINE_SHADER
+	_tail_material.set_shader_parameter("draw_size", TAIL_DRAW_SIZE)
+	_tail_material.set_shader_parameter("selected", _selected)
+	_tail_handle.material = _tail_material
 	_tail_handle.draw.connect(_draw_tail_handle)
 	add_child(_tail_handle)
 
@@ -124,6 +130,9 @@ func set_selected(is_selected: bool) -> void:
 	if _selected == is_selected:
 		return
 	_selected = is_selected
+	if _head_material != null:
+		_head_material.set_shader_parameter("selected", _selected)
+		_tail_material.set_shader_parameter("selected", _selected)
 	queue_redraw()
 
 func set_passthrough(is_passthrough: bool) -> void:
@@ -158,8 +167,6 @@ func _draw() -> void:
 
 	if note_texture != null:
 		var color := Color(1, 1, 1, 0.35) if _passthrough else Color.WHITE
-		if _selected:
-			_draw_note_texture(OUTLINE_TEXTURES[clampi(int(note.type) - 1, 0, 3)], head_position, color)
 		var brightness := (1.18 if _selected else 1.0) + _pass_strength * 0.35
 		color = Color(brightness, brightness, brightness, color.a)
 		_draw_note_texture(note_texture, head_position, color)
@@ -189,8 +196,6 @@ func _draw_tail_handle() -> void:
 	if _passthrough:
 		color.a = 0.35
 	_tail_handle.draw_set_transform(tail_position, 0.0, Vector2.ONE * _tail_hover_scale)
-	if _selected:
-		_tail_handle.draw_texture_rect(TAIL_OUTLINE, rect, false, Color(1, 1, 1, color.a))
 	_tail_handle.draw_texture_rect(TAIL_TEXTURE, rect, false, color)
 	_tail_handle.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 

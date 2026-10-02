@@ -597,29 +597,35 @@ grow_vertical = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 1080)
 
-[node name="Resume" parent="Control/PauseMenu" unique_id=869280924 instance=ExtResource("20_sxh0i")]
+[node name="Resume" parent="Control/PauseMenu" unique_id=869280924 node_paths=PackedStringArray("button") instance=ExtResource("20_sxh0i")]
 custom_minimum_size = Vector2(300, 64)
 layout_mode = 2
+mouse_filter = 0
 bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
 button_text = "resume"
 icon_texture = ExtResource("21_c6mtg")
 hover_scale = 1.04
+button = NodePath("Button")
 
-[node name="Retry" parent="Control/PauseMenu" unique_id=1558929082 instance=ExtResource("20_sxh0i")]
+[node name="Retry" parent="Control/PauseMenu" unique_id=1558929082 node_paths=PackedStringArray("button") instance=ExtResource("20_sxh0i")]
 custom_minimum_size = Vector2(300, 64)
 layout_mode = 2
+mouse_filter = 0
 bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
 button_text = "retry"
 icon_texture = ExtResource("21_sxh0i")
 hover_scale = 1.04
+button = NodePath("Button")
 
-[node name="Quit" parent="Control/PauseMenu" unique_id=977372013 instance=ExtResource("20_sxh0i")]
+[node name="Quit" parent="Control/PauseMenu" unique_id=977372013 node_paths=PackedStringArray("button") instance=ExtResource("20_sxh0i")]
 custom_minimum_size = Vector2(300, 64)
 layout_mode = 2
+mouse_filter = 0
 bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
 button_text = "quit"
 icon_texture = ExtResource("23_ol8dy")
 hover_scale = 1.04
+button = NodePath("Button")
 
 [node name="ReplayLabel" type="Label" parent="Control" unique_id=1550486121]
 visible = false
@@ -651,7 +657,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Label" type="Label" parent="." unique_id=1168744697]
+[node name="FpsLabel" type="Label" parent="." unique_id=1168744697]
 offset_left = 24.0
 offset_top = 8.0
 offset_right = 89.0

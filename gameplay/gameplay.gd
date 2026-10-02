@@ -69,7 +69,7 @@ func _ready() -> void:
 	if editor_preview:
 		set_process(false)
 		_visuals.hide_gameplay_hud_for_preview()
-		get_node("Label").hide()
+		get_node("FpsLabel").hide()
 		return
 
 	_setup_hud()

@@ -29,6 +29,7 @@ const TEXT_SIDE_SPACE := 70.0
 @export var pivot: Control
 @export var background: ColorRect
 @export var button: Button
+@export var label: Label
 @export var icon: TextureRect
 @export var hover_player: AudioStreamPlayer
 @export var click_player: AudioStreamPlayer
@@ -94,9 +95,7 @@ func _update_button() -> void:
 	if not is_node_ready():
 		return
 
-	button.text = button_text
-	button.clip_text = false
-	button.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
+	label.text = button_text
 	_update_background_size()
 
 func _hover_enter() -> void:
@@ -146,6 +145,11 @@ func _update_background_size() -> void:
 		-1,
 		font_size
 	).x
+	button.custom_minimum_size = Vector2(
+		text_width + button.get_theme_stylebox("normal").content_margin_left,
+		label.get_combined_minimum_size().y
+	)
+	label.size = button.size
 
 	background.size = Vector2(
 		text_width + TEXT_SIDE_SPACE,

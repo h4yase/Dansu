@@ -70,6 +70,7 @@ var _loading_started_msec := 0
 var _login_loading_deadline_msec := 0
 var _loading_completion_started := false
 var _auth_loading_started := false
+var _loading_status := "preparing…"
 var _logo_pulse_time := LOGO_PULSE_DURATION
 var _last_logo_half_beat_key := ""
 var _last_logo_chart_key := ""
@@ -83,7 +84,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	$LoadingOverlay.visible = true
 	animations.start_loading()
-	current_chartset_label.hide()
+	current_chartset_label.show()
+	current_chartset_label.text = _loading_status
 	_loading_started_msec = Time.get_ticks_msec()
 	_loading_completion_started = Game.stage != Game.GameStage.Loading
 
@@ -94,6 +96,7 @@ func _ready() -> void:
 	_set_button_group_interaction(bottom_buttons, false)
 
 	CM.progress_changed.connect(_update_progress)
+	CM.loading_stage_changed.connect(_set_loading_status)
 	CM.database_sync_finished.connect(_on_database_sync_finished)
 	Auth.state_changed.connect(_on_auth_state_changed)
 	username_input.text_submitted.connect(func(_value: String): _submit_username())
@@ -101,7 +104,7 @@ func _ready() -> void:
 	_on_auth_state_changed()
 
 	if Game.stage == Game.GameStage.Loading:
-		CM._load(false)
+		_start_loading.call_deferred()
 
 	if search_input != null:
 		search_input.text_changed.connect(_on_search_text_changed)
@@ -141,6 +144,18 @@ func _ready() -> void:
 	playlist_panel.chartset_chosen.connect(_on_playlist_chartset_chosen)
 	_apply_song_select_mode(false)
 
+func _start_loading() -> void:
+	# Let the loading overlay render before reading the chart library.
+	_set_loading_status("initializing database…", 0.02)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	DB.initialize()
+	_set_loading_status("importing files…", 0.08)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	FileSystem.process_startup_imports()
+	CM._load(false)
+
 func _process(delta):
 	if is_exiting:
 		return
@@ -167,6 +182,19 @@ func _process(delta):
 
 func _input(event: InputEvent) -> void:
 	if is_exiting:
+		get_viewport().set_input_as_handled()
+		return
+	if (
+		Game.stage == Game.GameStage.Main
+		and not is_menu_transitioning
+		and not settings_popup.is_open()
+		and event is InputEventKey
+		and event.pressed
+		and not event.echo
+		and event.ctrl_pressed
+		and event.keycode == KEY_O
+	):
+		settings_popup.show_popup()
 		get_viewport().set_input_as_handled()
 		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F3:
@@ -340,9 +368,16 @@ func begin_exit() -> void:
 	get_tree().quit()
 
 func _update_progress(_progress: float) -> void:
-	progress = _progress
+	if Game.stage != Game.GameStage.Loading or _loading_completion_started:
+		return
+	_set_loading_status("loading built-in songs… %d%%" % int(_progress * 100.0), lerpf(0.35, 0.85, _progress))
+
+
+func _set_loading_status(message: String, ratio: float) -> void:
+	_loading_status = message
+	progress = ratio
 	if progress_bar != null:
-		progress_bar.value = _progress
+		progress_bar.value = ratio
 	_update_loading_status()
 
 
@@ -388,19 +423,21 @@ func _submit_username() -> void:
 func _update_loading_status() -> void:
 	if current_chartset_label == null or Game.stage != Game.GameStage.Loading:
 		return
-	current_chartset_label.visible = _auth_loading_started
-	current_chartset_label.text = Auth.status_message.to_lower() if _auth_loading_started else ""
+	current_chartset_label.show()
+	current_chartset_label.text = Auth.status_message.to_lower() if _auth_loading_started else _loading_status
 
 func _on_database_sync_finished(_success: bool) -> void:
 	if _loading_completion_started:
 		return
 
 	_loading_completion_started = true
+	_set_loading_status("songs loaded", 0.85)
 	var elapsed_seconds := float(Time.get_ticks_msec() - _loading_started_msec) / 1000.0
 	var remaining_seconds := maxf(MIN_LOADING_DISPLAY_SECONDS - elapsed_seconds, 0.0)
 	if remaining_seconds > 0.0:
 		await get_tree().create_timer(remaining_seconds).timeout
 	_auth_loading_started = true
+	_set_loading_status("signing in…", 0.9)
 	_login_loading_deadline_msec = Time.get_ticks_msec() + int(LOGIN_LOADING_TTL_SECONDS * 1000.0)
 	if not Auth.is_authenticated() and not Auth.is_busy():
 		Auth.login()
@@ -409,8 +446,9 @@ func _on_database_sync_finished(_success: bool) -> void:
 		await get_tree().process_frame
 	while Auth.is_username_setup_pending():
 		await get_tree().process_frame
+	_auth_loading_started = false
+	_set_loading_status("loading playlists…", 0.95)
 	while CM.playlist_loader.loading:
-		current_chartset_label.text = "loading playlists…"
 		await get_tree().process_frame
 	if not is_inside_tree() or is_exiting:
 		return
@@ -420,16 +458,18 @@ func _on_database_sync_finished(_success: bool) -> void:
 
 func _finish_loading() -> void:
 	print("[charts] load time %f" %loading_timer)
-	_update_progress(1.0)
+	_set_loading_status("preparing menu…", 0.98)
+	await get_tree().process_frame
+	await get_tree().process_frame
 	if chart_scroll != null:
 		chart_scroll.rebuild_items()
-	if current_chartset_label != null:
-		current_chartset_label.text = "enjoy!"
+	_set_loading_status("enjoy!", 1.0)
 	Game.stage = Game.GameStage.Main
 	Game.main_menu_state = Game.MainMenuState.Home
 	_on_auth_state_changed()
 	animations.loading_done()
 	_refresh_chart_browser()
+	menu_audio_switcher.change_audio(CM.selected_chart)
 
 
 func _setup_catalogue() -> void:
@@ -784,7 +824,7 @@ func _confirm_chart_delete() -> void:
 	CM.parsed_chart = null
 	CM.select_chart(null)
 	CM.select_chartset(null)
-	CM.reload_editor_library()
+	await CM.reload_editor_library()
 	if scope == "difficulty":
 		_restore_editor_chartset_selection(restore_folder)
 	chart_scroll.rebuild_items()

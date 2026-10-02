@@ -2,6 +2,7 @@ extends Node
 class_name ChartManager
 
 signal progress_changed(ratio: float)
+signal loading_stage_changed(message: String, ratio: float)
 signal loading_finished()
 signal database_sync_finished(success: bool)
 signal chart_update(chart_set)
@@ -28,6 +29,7 @@ var charts_by_uuid: Dictionary = {}
 
 var _database = null
 var _scanner := ChartLibraryScanner.new()
+var _editor_load_thread := Thread.new()
 var _initial_selection_pending := true
 
 
@@ -37,6 +39,8 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	_scanner.stop()
+	if _editor_load_thread.is_started():
+		_editor_load_thread.wait_to_finish()
 
 
 func parse_selected_chart() -> bool:
@@ -151,8 +155,23 @@ func register_saved_editor_chart(chart: Chart) -> bool:
 
 
 func reload_editor_library() -> void:
+	if _editor_load_thread.is_started():
+		while _editor_load_thread.is_started():
+			await get_tree().process_frame
+		return
+	var error := _editor_load_thread.start(_read_editor_library)
+	if error != OK:
+		push_error("[editor charts] failed to start loading: %s" % error_string(error))
+		return
+	while _editor_load_thread.is_alive():
+		await get_tree().process_frame
+	editor_chartsets = _editor_load_thread.wait_to_finish()
+	editor_chart_update.emit(editor_chartsets)
+
+
+func _read_editor_library() -> Array[ChartSet]:
 	FileSystem.ensure_dir(FileSystem.editor_chart_path)
-	editor_chartsets.clear()
+	var loaded_chartsets: Array[ChartSet] = []
 	var parser := Parser.new()
 
 	var folder_names := DirAccess.get_directories_at(FileSystem.editor_chart_path)
@@ -165,7 +184,7 @@ func reload_editor_library() -> void:
 		var chart_set := ChartSet.new()
 		chart_set.folder_name = folder_name
 		for file_name in file_names:
-			if not file_name.ends_with(Config.FILE_EXTENSION):
+			if not file_name.ends_with(AppConfig.FILE_EXTENSION):
 				continue
 
 			var parsed_set := ChartSet.new()
@@ -202,9 +221,9 @@ func reload_editor_library() -> void:
 			continue
 		if chart_set.uuid.is_empty():
 			chart_set.build_uuid()
-		editor_chartsets.append(chart_set)
+		loaded_chartsets.append(chart_set)
 
-	editor_chart_update.emit(editor_chartsets)
+	return loaded_chartsets
 
 
 class RatingRecalculation extends RefCounted:
@@ -245,10 +264,13 @@ func recalculate_all_ratings() -> RatingRecalculation:
 
 
 func _load(_is_reload: bool) -> void:
+	await _begin_loading_stage("loading content packs…", 0.15)
 	var mounted_dlcs := DlcPackLoader.mount_installed()
 	if mounted_dlcs > 0:
 		print("[dlc] mounted %d content packs" % mounted_dlcs)
-	reload_editor_library()
+	await _begin_loading_stage("loading editor songs…", 0.2)
+	await reload_editor_library()
+	await _begin_loading_stage("loading song cache…", 0.25)
 	_database = DB.get("connection") if DB != null else null
 	if _database == null:
 		push_error("[database] DansuDB is unavailable")
@@ -261,7 +283,15 @@ func _load(_is_reload: bool) -> void:
 
 	_refresh_library_from_database(false)
 	_emit_initial_ready()
+	await _begin_loading_stage("checking built-in songs…", 0.35)
 	_start_background_sync()
+
+
+func _begin_loading_stage(message: String, ratio: float) -> void:
+	loading_stage_changed.emit(message, ratio)
+	# Give the status label a frame to draw before the next blocking operation.
+	await get_tree().process_frame
+	await get_tree().process_frame
 
 
 func _refresh_library_from_database(filesystem_validated: bool) -> bool:

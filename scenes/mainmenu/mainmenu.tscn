@@ -1770,6 +1770,7 @@ grow_horizontal = 0
 mouse_filter = 0
 
 [node name="LoadingProgress" type="Control" parent="." unique_id=752860147]
+z_index = 1
 layout_mode = 1
 anchor_top = 0.99300003
 anchor_right = 1.0

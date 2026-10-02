@@ -66,7 +66,7 @@ func stop_audio() -> void:
 
 
 func _ready() -> void:
-	if CM.selected_chart:
+	if Game.stage != Game.GameStage.Loading and CM.selected_chart:
 		current_audio.stream = CM.selected_chart.get_stream()
 		current_audio.volume_db = 0.0
 		current_chart_start_sec = _get_chart_preview_start_sec(CM.selected_chart)
@@ -85,7 +85,7 @@ func _process(delta: float) -> void:
 
 
 func change_audio(chart: Chart) -> void:
-	if _shutting_down or online_preview or chart == null:
+	if Game.stage == Game.GameStage.Loading or _shutting_down or online_preview or chart == null:
 		return
 
 	var requested_song_key := _get_song_key(chart)

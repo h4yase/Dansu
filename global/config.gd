@@ -135,6 +135,7 @@ var msaa: Viewport.MSAA:
 		return config.get_value(SECTION_GRAPHICS,"msaa",Viewport.MSAA_2X)
 	set(value):
 		var vp := get_viewport()
+		vp.msaa_2d = value
 		vp.msaa_3d = value
 		config.set_value(SECTION_GRAPHICS,"msaa",value)
 
@@ -251,7 +252,6 @@ func _ready() -> void:
 	config.load(FILE_PATH)
 	if config.has_section_key(SECTION_ETC, "server_api_url"):
 		config.erase_section_key(SECTION_ETC, "server_api_url")
-	FileSystem.process_startup_imports()
 	save_config()
 
 func save_config() -> void:

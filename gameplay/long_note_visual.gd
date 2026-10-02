@@ -100,6 +100,7 @@ func set_failed() -> void:
 	if _material != null:
 		_material.set_shader_parameter("body_color", body_color)
 		_material.set_shader_parameter("edge_color", edge_color)
+		_material.set_shader_parameter("direction_color", Color(FAILED_BRIGHTNESS, FAILED_BRIGHTNESS, FAILED_BRIGHTNESS))
 	if tail_cap != null:
 		tail_cap.modulate = _cap_color
 	_update_clip_position()
@@ -196,6 +197,11 @@ func _setup_material() -> void:
 	_cap_color = body_color
 	_material = _get_material_template(_note.type).duplicate() as ShaderMaterial
 	_material.render_priority = BODY_RENDER_PRIORITY
+	if _note.type == Note.NoteType.MOVE:
+		if _note.dir == Note.Dir.RIGHT:
+			_material.set_shader_parameter("move_direction", 1.0)
+		elif _note.dir == Note.Dir.LEFT:
+			_material.set_shader_parameter("move_direction", -1.0)
 	_material.set_shader_parameter("spawn_fade_distance", GameplayPlayfield.get_spawn_fade_distance())
 	var owner_transform := _head_owner.transform
 	_material.set_shader_parameter("owner_z_axis", Vector3(

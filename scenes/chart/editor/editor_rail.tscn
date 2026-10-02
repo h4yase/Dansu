@@ -12,7 +12,8 @@ point_handle_template = NodePath("PointHandleTemplate")
 
 [node name="PointHandleTemplate" type="TextureRect" parent="." unique_id=867723468]
 visible = false
-z_index = 1
+z_index = 3
+z_as_relative = false
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 0
 offset_right = 24.0
