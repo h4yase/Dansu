@@ -4,7 +4,7 @@ HINT_USERNAME_RULES,"Use 3–24 English letters, numbers, or underscores, starti
 HINT_USERNAME_VISIBLE,This is how other players will see you.,다른 플레이어에게 표시되는 이름입니다.,他のプレイヤーにはこの名前が表示されます。,其他玩家将看到这个名称。
 HINT_LANGUAGE_RESTART,Restart the game to apply language changes.,언어 변경엔 재시작이 필요합니다.,言語の変更を適用するにはゲームを再起動してください。,重启游戏以应用语言更改。
 ERROR_USERNAME_TAKEN,That username is already taken.,이미 사용중인 플레이어명입니다.,そのユーザー名はすでに使用されています。,该用户名已被使用。
-ERROR_USERNAME_SAVE,Could not save the username. Please retry.,플레이어명 저장에 실패했습니다. 다시 시도해 주세요.,ユーザー名を保存できませんでした。もう一度お試しください。,无法保存用户名，请重试。
+ERROR_USERNAME_SAVE,Could not save the username. Please retry.,플레이어명 저장에 실패했습니다. 다시 시도해 주세요.,ユーザー名の保存に失敗しました。もう一度お試しください。,无法保存用户名，请重试。
 HINT_SIGN_IN_DOWNLOAD,"Sign in with Steam, then press Play again.",Steam으로 로그인한 후 플레이 버튼을 다시 눌러 주세요.,Steamでログインしてから、もう一度プレイを押してください。,请使用 Steam 登录，然后再次点击游玩。
 HINT_SIGN_IN_STEAM,"Sign in to the Steam client, then retry.",스팀 로그인 후 다시 시도해 주세요.,Steamクライアントにログインしてから、もう一度お試しください。,请登录 Steam 客户端后重试。
 ERROR_SESSION_EXPIRED,Session expired.,로그인 정보가 만료되었습니다.,セッションの有効期限が切れました。,会话已过期。
@@ -42,17 +42,17 @@ ERROR_SEARCH_FILTERS,The server rejected these filters. Check the ranges.,지원
 ERROR_SERVER_CONNECTION,Cannot reach the server. Check your connection and retry.,서버에 연결할 수 없습니다. 네트워크 연결을 확인한 후 다시 시도해 주세요.,サーバーに接続できません。ネットワーク接続を確認して、もう一度お試しください。,无法连接到服务器。请检查网络连接后重试。
 ERROR_REQUEST_FAILED,Could not complete the request. Please retry later.,요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.,処理できませんでした。しばらくしてからお試しください。,无法完成请求，请稍后重试。
 ERROR_CONTENT_FORBIDDEN,This account cannot access this content.,이 계정으로는 해당 콘텐츠에 접근할 수 없습니다.,このアカウントではこのコンテンツにアクセスできません。,此账号无法访问该内容。
-NOTICE_PLAYLISTS_EMPTY,No playlists yet.,아직 재생목록이 없습니다.,プレイリストはまだありません。,暂无播放列表。
+NOTICE_PLAYLISTS_EMPTY,No playlists yet.,아직 재생목록이 없습니다.,まだプレイリストがありません。,暂无播放列表。
 ERROR_PLAYLIST_LOAD,Could not load playlists. Restart the game to sync again.,재생목록을 불러올 수 없습니다. 게임을 재시작하여 재생 목록 동기화 해주세요.,プレイリストを読み込めませんでした。ゲームを再起動して再同期してください。,无法加载播放列表。请重启游戏以重新同步。
 ERROR_PLAYLIST_NOT_FOUND,Playlist not found.,재생목록을 찾을 수 없습니다.,プレイリストが見つかりません。,未找到播放列表。
 ERROR_PLAYLIST_METADATA,Some charts in this playlist could not be loaded.,재생목록의 일부 채보를 불러오지 못했습니다.,プレイリストの一部の譜面を読み込めませんでした。,无法加载此播放列表中的部分谱面。
 ERROR_LOVED_UPDATE,Could not update Loved.,즐겨찾기 갱신에 실패했습니다.,Lovedを更新できませんでした。,无法更新 Loved。
 HINT_PROFILE_UNAVAILABLE,Profile is not available yet.,아직 프로필을 볼 수 없습니다.,プロフィールはまだ表示できません。,暂时无法查看个人资料。
-NOTICE_LEADERBOARD_EMPTY,No scores yet.,등록된 점수가 없습니다.,スコアはまだありません。,暂无成绩。
+NOTICE_LEADERBOARD_EMPTY,No scores yet.,등록된 점수가 없습니다.,スコアがありません。,暂无成绩。
 NOTICE_LEADERBOARD_MISSING,No leaderboard for this chart.,리더보드를 지원하지 않는 채보입니다.,この譜面にはリーダーボードがありません。,此谱面没有排行榜。
 ERROR_LEADERBOARD_LOAD,Could not load leaderboard.,리더보드를 불러올 수 없습니다.,リーダーボードを読み込めませんでした。,无法加载排行榜。
 ERROR_SCORE_DETAILS_LOAD,Score details are unavailable. Close and retry.,점수 상세 정보를 볼 수 없습니다. 닫은 후 다시 시도해 주세요.,スコアの詳細を表示できません。閉じてからもう一度お試しください。,无法查看分数详情，请关闭后重试。
-ERROR_JUDGEMENT_COUNTS,Judgement counts unavailable,판정 개수를 확인할 수 없습니다.,判定数を利用できません,判定数量不可用
+ERROR_JUDGEMENT_COUNTS,Judgement counts unavailable,판정 개수를 확인할 수 없습니다.,判定数を確認できません。,判定数量不可用
 ERROR_REPLAY_DOWNLOAD,Could not download replay. Try again.,리플레이를 다운로드할 수 없습니다. 다시 시도해 주세요.,リプレイをダウンロードできませんでした。もう一度お試しください。,无法下载回放，请重试。
 ERROR_REPLAY_PLAY,Could not play replay.,리플레이를 재생할 수 없습니다.,リプレイを再生できませんでした。,无法播放回放。
 ERROR_REPLAY_VERSION,Replay does not match the chart version.,리플레이가 채보 버전과 일치하지 않습니다.,リプレイと譜面のバージョンが一致しません。,回放与谱面版本不匹配。
