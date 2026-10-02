@@ -45,20 +45,19 @@ static func get_color_from_rating(value: float, fade: bool = false,user: bool = 
 		color_map = {
 			# noob era
 			0: Color("9ca3eb"), # sky
-			500: Color("425ae0ff"), # blue
-			1000: Color("91cc53"), # green
+			100: Color("425ae0ff"), # blue
+			200: Color("91cc53"), # green
 			# advanced era
-			1500: Color("ceba27ff"), # yellow
-			2000: Color("ee5c3c"), # orange
-			2500: Color("ad232d"), # red
+			300: Color("ceba27ff"), # yellow
+			400: Color("ee5c3c"), # orange
+			500: Color("ad232d"), # red
 			# pro era
-			3000: Color("994093ff"), # pink
-			3500: Color("734ab3ff"), # purple
+			600: Color("994093ff"), # pink
+			700: Color("734ab3ff"), # purple
 			# god era
-			4000: Color("e0115fff"), # ruby
-			4200: Color("3a0113ff"), # ruby-ex
-			4400: Color("ffedb2ff"), # omega
-			5000: Color("ffffffff") # Bro What
+			800: Color("e0115fff"), # ruby
+			900: Color("3a0113ff"), # ruby-ex
+			1000: Color("ffedb2ff"), # omega
 		}
 	var keys = color_map.keys()
 	keys.sort()
