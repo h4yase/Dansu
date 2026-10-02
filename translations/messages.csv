@@ -125,6 +125,9 @@ SETTINGS_SFX_VOLUME,SFX,효과음 음량,効果音,音效
 SETTINGS_HITSOUND_VOLUME,hitsound,히트사운드 음량,ヒットサウンド,打击音效
 SETTINGS_AUDIO_OFFSET,Audio Offset,음악 싱크 조절,オーディオオフセット,音频偏移
 SETTINGS_NOTE_SPEED,Note Speed,노트 속도,ノーツ速度,音符速度
+SETTINGS_JUDGMENT_LINE_POSITION,Judgment Line Position,판정선 위치,判定ラインの位置,判定线位置
+SETTINGS_PLAYER_SIZE,Player Size,플레이어 크기,プレイヤーサイズ,玩家大小
+SETTINGS_PLAY_AREA_TILT,Play Area Tilt,플레이 영역 기울기,プレイエリアの傾き,游玩区域倾斜角度
 SETTINGS_IGNORE_CHART_SKIN,Ignore Chart Skin,채보 스킨 사용 안 함,譜面スキンを無視,忽略谱面皮肤
 SETTINGS_MOVE_LEFT,move left,왼쪽 이동,左へ移動,向左移动
 SETTINGS_MOVE_RIGHT,move right,오른쪽 이동,右へ移動,向右移动

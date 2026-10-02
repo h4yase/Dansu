@@ -277,10 +277,12 @@ shader = ExtResource("18_stage_vignette")
 shader_parameter/edge_color = Color(0, 0, 0, 1)
 shader_parameter/strength = 0.46
 
-[node name="Gameplay" type="Node3D" unique_id=1019670328 node_paths=PackedStringArray("player", "rail_container", "songplayer", "dim", "pause_menu", "gameplay_camera", "hud_root", "combo_container", "combo_label", "score_hud", "world_environment", "stage_visualizer")]
+[node name="Gameplay" type="Node3D" unique_id=1019670328 node_paths=PackedStringArray("player", "play_area", "judgment_line", "rail_container", "songplayer", "dim", "pause_menu", "gameplay_camera", "hud_root", "combo_container", "combo_label", "score_hud", "world_environment", "stage_visualizer")]
 script = ExtResource("1_m3hu3")
 player = NodePath("Player")
-rail_container = NodePath("PlayArea/RailContainer")
+play_area = NodePath("PlayArea")
+judgment_line = NodePath("PlayArea/JudgmentLine")
+rail_container = NodePath("PlayArea/JudgmentLine/RailContainer")
 songplayer = NodePath("AudioStreamPlayer")
 dim = NodePath("Control/DIM")
 pause_menu = NodePath("Control/PauseMenu")
@@ -290,10 +292,10 @@ combo_container = NodePath("Control/VBoxContainer")
 combo_label = NodePath("Control/VBoxContainer/Combo")
 score_hud = NodePath("Control/VBoxContainer2")
 world_environment = NodePath("WorldEnvironment")
-stage_visualizer = NodePath("PlayArea/StageVisualizer")
+stage_visualizer = NodePath("PlayArea/JudgmentLine/StageVisualizer")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1092359596 node_paths=PackedStringArray("player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 3.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3.5)
 fov = 74.0
 script = ExtResource("2_0w2j2")
 player = NodePath("../Player")
@@ -310,6 +312,7 @@ script = ExtResource("4_i6m2i")
 player = NodePath("../Player")
 
 [node name="Player" type="Node3D" parent="." unique_id=480149074 node_paths=PackedStringArray("sprite")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
 script = ExtResource("2_q64rj")
 sprite = NodePath("Sprite3D")
 hit_star_effect_scene = ExtResource("3_hit_stars")
@@ -330,7 +333,7 @@ libraries/ = SubResource("AnimationLibrary_ct7aa")
 [node name="Sprite3D" type="Sprite3D" parent="Player" unique_id=1036638687 node_paths=PackedStringArray("effectplayer")]
 layers = 4
 offset = Vector2(0, 980)
-pixel_size = 0.0009
+pixel_size = 0.001
 render_priority = 2
 texture = ExtResource("8_l0mho")
 script = ExtResource("4_gh441")
@@ -340,22 +343,25 @@ effectplayer = NodePath("../SkinEffects")
 bus = &"Music"
 
 [node name="PlayArea" type="Node3D" parent="." unique_id=1670040184]
-transform = Transform3D(1, 0, 0, 0, 0.8329211, -0.5533914, 0, 0.5533914, 0.8329211, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.8660252, -0.49999988, 0, 0.49999988, 0.8660252, 0, 0, 0)
 
-[node name="Ground" type="MeshInstance3D" parent="PlayArea" unique_id=910030164]
+[node name="JudgmentLine" type="Node3D" parent="PlayArea" unique_id=1255132189]
+
+[node name="Ground" type="MeshInstance3D" parent="PlayArea/JudgmentLine" unique_id=910030164]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0)
 cast_shadow = 0
 mesh = SubResource("PlaneMesh_00tan")
 
-[node name="GroundDecals" type="Node3D" parent="PlayArea" unique_id=1887894158]
+[node name="GroundDecals" type="Node3D" parent="PlayArea/JudgmentLine" unique_id=1887894158]
 
-[node name="StageVisualizer" type="Node3D" parent="PlayArea" unique_id=1180810529 node_paths=PackedStringArray("ground", "player", "vignette")]
+[node name="StageVisualizer" type="Node3D" parent="PlayArea/JudgmentLine" unique_id=1180810529 node_paths=PackedStringArray("ground", "player", "vignette", "world_environment")]
 script = ExtResource("9_stage_visualizer")
 ground = NodePath("../Ground")
-player = NodePath("../../Player")
-vignette = NodePath("../../Control/Vignette")
+player = NodePath("../../../Player")
+vignette = NodePath("../../../Control/Vignette")
+world_environment = NodePath("../../../WorldEnvironment")
 
-[node name="RailContainer" type="Node3D" parent="PlayArea" unique_id=739287196]
+[node name="RailContainer" type="Node3D" parent="PlayArea/JudgmentLine" unique_id=739287196]
 transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, 0, -50.5)
 
 [node name="Control" type="Control" parent="." unique_id=1030558378]
@@ -406,7 +412,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("17_stage_overlay")
-visualizer = NodePath("../../PlayArea/StageVisualizer")
+visualizer = NodePath("../../PlayArea/JudgmentLine/StageVisualizer")
 metadata/_edit_lock_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=40893792]

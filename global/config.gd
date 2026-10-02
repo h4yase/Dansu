@@ -34,6 +34,9 @@ func apply_settings() -> void:
 	hit_effect_db = hit_effect_db
 	offset = offset
 	note_speed = note_speed
+	judgment_line_position = judgment_line_position
+	player_size = player_size
+	play_area_tilt = play_area_tilt
 	vsync_mode = vsync_mode
 	taa = taa
 	msaa = msaa
@@ -176,6 +179,24 @@ var note_speed: float:
 		return config.get_value(SECTION_GAMEPLAY,"note_speed",40)
 	set(value):
 		config.set_value(SECTION_GAMEPLAY,"note_speed",value)
+
+var judgment_line_position: float:
+	get:
+		return clampf(config.get_value(SECTION_GAMEPLAY, "judgment_line_position", 0.0), -50.0, 50.0)
+	set(value):
+		config.set_value(SECTION_GAMEPLAY, "judgment_line_position", clampf(value, -50.0, 50.0))
+
+var player_size: float:
+	get:
+		return clampf(config.get_value(SECTION_GAMEPLAY, "player_size", 1.0), 0.5, 2.0)
+	set(value):
+		config.set_value(SECTION_GAMEPLAY, "player_size", clampf(value, 0.5, 2.0))
+
+var play_area_tilt: float:
+	get:
+		return clampf(config.get_value(SECTION_GAMEPLAY, "play_area_tilt", 25.0), 0.0, 90.0)
+	set(value):
+		config.set_value(SECTION_GAMEPLAY, "play_area_tilt", clampf(value, 0.0, 90.0))
 
 ## Audio
 var master_db: float:

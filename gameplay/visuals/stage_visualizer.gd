@@ -1,3 +1,4 @@
+@tool
 extends Node3D
 class_name GameplayStageVisualizer
 
@@ -53,6 +54,7 @@ const GROUND_VOLUME_ALPHA_BOOST := 0.34
 @export var ground: MeshInstance3D
 @export var player: Node3D
 @export var vignette: ColorRect
+@export var world_environment: WorldEnvironment
 @export_range(0.0, 10.0, 0.1) var scroll_speed := 3.2
 
 var accent_color: Color
@@ -86,10 +88,16 @@ var _judgement_material: ShaderMaterial = null
 func _ready() -> void:
 	_spectrum_levels.resize(WAVE_SAMPLE_COUNT)
 	_cache_ground_material()
+	if Engine.is_editor_hint():
+		_setup_editor_preview()
+		set_process(false)
+		return
 	_find_spectrum_analyzer()
 
 
 func _process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
 	_update_audio_levels(delta)
 	var playback_seconds := maxf(Game.current_time, 0.0) * 0.001
 	_shader_scroll_offset = playback_seconds * scroll_speed
@@ -105,12 +113,29 @@ func set_theme_colors(base_color: Color, detail_color: Color, rail_color: Color)
 	_update_theme_palette(base_color, detail_color, rail_color)
 	if _ground_material != null:
 		_ground_material.set_shader_parameter("floor_color", _floor_color)
-	if vignette != null and vignette.material is ShaderMaterial:
+	if not Engine.is_editor_hint() and vignette != null and vignette.material is ShaderMaterial:
 		var vignette_material := vignette.material as ShaderMaterial
 		vignette_material.set_shader_parameter("edge_color", _floor_color.darkened(0.36))
 	_ensure_themed_visuals()
 	_update_judgement_line()
 	_update_shader_parameters()
+
+
+func _setup_editor_preview() -> void:
+	if world_environment == null or world_environment.environment == null:
+		return
+	var sky := world_environment.environment.sky
+	if sky == null:
+		return
+	var sky_material := sky.sky_material as ShaderMaterial
+	if sky_material == null:
+		return
+	set_theme_colors(
+		sky_material.get_shader_parameter("base_color"),
+		sky_material.get_shader_parameter("detail_color"),
+		GameRail.DEFAULT_ACCENT_COLOR
+	)
+	_update_waveforms(0.0)
 
 
 func _update_theme_palette(base_color: Color, detail_color: Color, rail_color: Color) -> void:
@@ -163,6 +188,10 @@ func _cache_ground_material() -> void:
 	if ground == null:
 		return
 	_ground_material = ground.get_active_material(0) as ShaderMaterial
+	if Engine.is_editor_hint() and _ground_material != null:
+		_ground_material = _ground_material.duplicate() as ShaderMaterial
+		# Apply the preview material without storing it in the scene.
+		RenderingServer.instance_geometry_set_material_override(ground.get_instance(), _ground_material.get_rid())
 
 
 func _find_spectrum_analyzer() -> void:

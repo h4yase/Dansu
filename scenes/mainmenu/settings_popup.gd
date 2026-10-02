@@ -32,6 +32,9 @@ const CLOSE_DURATION := 0.14
 @export var offset_spin: SpinBox
 @export var note_speed_slider: HSlider
 @export var note_speed_value: Label
+@export var judgment_line_position_spin: SpinBox
+@export var player_size_spin: SpinBox
+@export var play_area_tilt_spin: SpinBox
 @export var action_left_button: Button
 @export var action_right_button: Button
 @export var action_hit1_button: Button
@@ -55,7 +58,7 @@ func _ready() -> void:
 		var style := max_fps_line_edit.get_theme_stylebox(style_name).duplicate() as StyleBoxFlat
 		style.content_margin_top = 4.0
 		style.content_margin_bottom = 4.0
-		for spin in [max_fps_spin, offset_spin, chart_load_threads_spin]:
+		for spin in [max_fps_spin, offset_spin, chart_load_threads_spin, judgment_line_position_spin, player_size_spin, play_area_tilt_spin]:
 			spin.get_line_edit().add_theme_stylebox_override(style_name, style)
 	visible = false
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -176,6 +179,9 @@ func _connect_signals() -> void:
 	offset_spin.value_changed.connect(_on_offset_changed)
 
 	note_speed_slider.value_changed.connect(_on_note_speed_changed)
+	judgment_line_position_spin.value_changed.connect(_on_judgment_line_position_changed)
+	player_size_spin.value_changed.connect(_on_player_size_changed)
+	play_area_tilt_spin.value_changed.connect(_on_play_area_tilt_changed)
 	action_left_button.pressed.connect(_begin_keybind_capture.bind("action_left"))
 	action_right_button.pressed.connect(_begin_keybind_capture.bind("action_right"))
 	action_hit1_button.pressed.connect(_begin_keybind_capture.bind("action_hit1"))
@@ -205,6 +211,9 @@ func _sync_from_config() -> void:
 	offset_spin.value = Config.offset
 
 	note_speed_slider.value = Config.note_speed
+	judgment_line_position_spin.value = Config.judgment_line_position
+	player_size_spin.value = Config.player_size
+	play_area_tilt_spin.value = Config.play_area_tilt
 	ignore_chart_skin_check.button_pressed = Config.ignore_chart_skin
 	_refresh_keybind_labels()
 
@@ -410,6 +419,27 @@ func _on_note_speed_changed(value: float) -> void:
 	if _is_syncing:
 		return
 	Config.note_speed = value
+	_persist()
+
+
+func _on_judgment_line_position_changed(value: float) -> void:
+	if _is_syncing:
+		return
+	Config.judgment_line_position = value
+	_persist()
+
+
+func _on_player_size_changed(value: float) -> void:
+	if _is_syncing:
+		return
+	Config.player_size = value
+	_persist()
+
+
+func _on_play_area_tilt_changed(value: float) -> void:
+	if _is_syncing:
+		return
+	Config.play_area_tilt = value
 	_persist()
 
 

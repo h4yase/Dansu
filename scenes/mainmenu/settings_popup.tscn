@@ -254,7 +254,7 @@ shader_parameter/height = 3.0
 shader_parameter/frequency = 20.0
 shader_parameter/speed = 3.0
 
-[node name="SettingsPopup" type="Control" unique_id=1093484558 node_paths=PackedStringArray("overlay", "panel", "tab_container", "close_button", "window_mode_option", "vsync_option", "max_fps_spin", "taa_check", "msaa_option", "master_slider", "master_value", "music_slider", "music_value", "sfx_slider", "sfx_value", "hit_effect_slider", "hit_effect_value", "offset_spin", "note_speed_slider", "note_speed_value", "action_left_button", "action_right_button", "action_hit1_button", "action_hit2_button", "ignore_chart_skin_check", "chart_load_threads_spin", "api_url_edit")]
+[node name="SettingsPopup" type="Control" unique_id=1093484558 node_paths=PackedStringArray("overlay", "panel", "tab_container", "close_button", "window_mode_option", "vsync_option", "max_fps_spin", "taa_check", "msaa_option", "master_slider", "master_value", "music_slider", "music_value", "sfx_slider", "sfx_value", "hit_effect_slider", "hit_effect_value", "offset_spin", "note_speed_slider", "note_speed_value", "judgment_line_position_spin", "player_size_spin", "play_area_tilt_spin", "action_left_button", "action_right_button", "action_hit1_button", "action_hit2_button", "ignore_chart_skin_check", "chart_load_threads_spin", "api_url_edit")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -284,6 +284,9 @@ hit_effect_value = NodePath("Panel/Margin/VBox/Pages/Audio/Margin/Rows/HitEffect
 offset_spin = NodePath("Panel/Margin/VBox/Pages/Audio/Margin/Rows/OffsetRow/HBox/OffsetSpin")
 note_speed_slider = NodePath("Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/NoteSpeedRow/HBox/Control/NoteSpeedSlider")
 note_speed_value = NodePath("Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/NoteSpeedRow/HBox/Control/NoteSpeedValue")
+judgment_line_position_spin = NodePath("Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/JudgmentLinePositionRow/HBox/JudgmentLinePositionSpin")
+player_size_spin = NodePath("Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/PlayerSizeRow/HBox/PlayerSizeSpin")
+play_area_tilt_spin = NodePath("Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/PlayAreaTiltRow/HBox/PlayAreaTiltSpin")
 action_left_button = NodePath("Panel/Margin/VBox/Pages/Keybinds/Margin/Rows/ActionLeftRow/HBox/ActionLeftButton")
 action_right_button = NodePath("Panel/Margin/VBox/Pages/Keybinds/Margin/Rows/ActionRightRow/HBox/ActionRightButton")
 action_hit1_button = NodePath("Panel/Margin/VBox/Pages/Keybinds/Margin/Rows/ActionHit1Row/HBox/ActionHit1Button")
@@ -785,6 +788,90 @@ theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 24
 text = "50"
 horizontal_alignment = 2
+
+[node name="JudgmentLinePositionRow" type="PanelContainer" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_row")
+
+[node name="HBox" type="HBoxContainer" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/JudgmentLinePositionRow"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Title" type="Label" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/JudgmentLinePositionRow/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3")
+theme_override_font_sizes/font_size = 18
+text = "SETTINGS_JUDGMENT_LINE_POSITION"
+
+[node name="JudgmentLinePositionSpin" type="SpinBox" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/JudgmentLinePositionRow/HBox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 24
+min_value = -100.0
+max_value = 100.0
+step = 1.0
+value = 0.0
+suffix = ""
+
+[node name="PlayerSizeRow" type="PanelContainer" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_row")
+
+[node name="HBox" type="HBoxContainer" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/PlayerSizeRow"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Title" type="Label" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/PlayerSizeRow/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3")
+theme_override_font_sizes/font_size = 18
+text = "SETTINGS_PLAYER_SIZE"
+
+[node name="PlayerSizeSpin" type="SpinBox" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/PlayerSizeRow/HBox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 24
+min_value = 0.5
+max_value = 2.0
+step = 0.05
+value = 1.0
+suffix = ""
+
+[node name="PlayAreaTiltRow" type="PanelContainer" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_row")
+
+[node name="HBox" type="HBoxContainer" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/PlayAreaTiltRow"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Title" type="Label" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/PlayAreaTiltRow/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3")
+theme_override_font_sizes/font_size = 18
+text = "SETTINGS_PLAY_AREA_TILT"
+
+[node name="PlayAreaTiltSpin" type="SpinBox" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows/PlayAreaTiltRow/HBox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 24
+min_value = 0.0
+max_value = 90.0
+step = 1.0
+value = 25.0
+suffix = "°"
 
 [node name="IgnoreChartSkinRow" type="PanelContainer" parent="Panel/Margin/VBox/Pages/Gameplay/Margin/Rows" unique_id=422459195]
 custom_minimum_size = Vector2(0, 50)

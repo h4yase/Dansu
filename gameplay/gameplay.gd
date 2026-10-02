@@ -15,6 +15,8 @@ const JUDGE_POPUP_OFFSET := Vector3(0.0, 2.5, -0.1)
 @export var editor_preview := false
 @export var autoplay_enabled := false
 @export var player: Player
+@export var play_area: Node3D
+@export var judgment_line: Node3D
 @export var rail_container: Node3D
 @export var songplayer: AudioStreamPlayer
 @export var dim: ColorRect
@@ -55,10 +57,13 @@ func _enter_tree() -> void:
 		return
 	var environment_node := get_node("WorldEnvironment") as WorldEnvironment
 	environment_node.environment = environment_node.environment.duplicate(true)
-	var ground := get_node("PlayArea/Ground") as MeshInstance3D
+	var ground := get_node("PlayArea/JudgmentLine/Ground") as MeshInstance3D
 	ground.mesh = ground.mesh.duplicate(true)
 
 func _ready() -> void:
+	judgment_line.position.z = Config.judgment_line_position / 10.0
+	player.sprite.pixel_size = 0.001 * Config.player_size
+	play_area.rotation.x = deg_to_rad(Config.play_area_tilt)
 	_visuals.setup(player, gameplay_camera, hud_root, world_environment, stage_visualizer)
 	_spawner.setup(CM.parsed_chart, rail_container)
 	if editor_preview:
