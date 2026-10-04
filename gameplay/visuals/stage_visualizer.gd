@@ -3,9 +3,11 @@ extends Node3D
 class_name GameplayStageVisualizer
 
 const DETAIL_SHADER := preload("res://resources/shaders/stage_detail.gdshader")
+const WAVE_SHADER := preload("res://resources/shaders/stage_wave.gdshader")
 const JUDGEMENT_SHADER := preload("res://resources/shaders/judgement_line.gdshader")
 const SPECTRUM_BUS := &"Music"
 const WAVE_SAMPLE_COUNT := 48
+const WAVE_POINT_COUNT := (WAVE_SAMPLE_COUNT - 1) * 4 + 1
 const MIN_FREQUENCY_HZ := 55.0
 const MAX_FREQUENCY_HZ := 12000.0
 const ABSOLUTE_FLOOR_DB := -62.0
@@ -79,8 +81,6 @@ var _stage_shell: Node3D = null
 var _shell_material: StandardMaterial3D = null
 var _scrolling_details: Node3D = null
 var _detail_material: ShaderMaterial = null
-var _wave_left: ImmediateMesh = null
-var _wave_right: ImmediateMesh = null
 var _wave_material: ShaderMaterial = null
 var _judgement_material: ShaderMaterial = null
 
@@ -104,7 +104,6 @@ func _process(delta: float) -> void:
 	_scroll_phase = fposmod(_shader_scroll_offset, SCROLL_LOOP_LENGTH)
 	if _scrolling_details != null:
 		_scrolling_details.position.z = _scroll_phase
-	_update_waveforms(playback_seconds)
 	_update_judgement_line()
 	_update_shader_parameters()
 
@@ -135,7 +134,6 @@ func _setup_editor_preview() -> void:
 		sky_material.get_shader_parameter("detail_color"),
 		GameRail.DEFAULT_ACCENT_COLOR
 	)
-	_update_waveforms(0.0)
 
 
 func _update_theme_palette(base_color: Color, detail_color: Color, rail_color: Color) -> void:
@@ -323,7 +321,12 @@ func _update_shader_parameters() -> void:
 		_detail_material.set_shader_parameter("low_energy", low_energy)
 		_detail_material.set_shader_parameter("volume_level", volume_level)
 	if _wave_material != null:
-		_wave_material.set_shader_parameter("low_energy", low_energy)
+		var row_spacing := (WAVE_Z_MAX - WAVE_Z_MIN) / float(WAVE_SAMPLE_COUNT - 1)
+		_wave_material.set_shader_parameter("spectrum_levels", _spectrum_levels)
+		_wave_material.set_shader_parameter("sample_shift", _scroll_phase * 1.7)
+		_wave_material.set_shader_parameter("z_shift", fposmod(_shader_scroll_offset, row_spacing))
+		_wave_material.set_shader_parameter("accent_color", accent_color)
+		_wave_material.set_shader_parameter("shadow_color", _floor_color.darkened(0.58))
 		_wave_material.set_shader_parameter("volume_level", volume_level)
 
 
@@ -442,91 +445,48 @@ func _create_scrolling_details() -> void:
 
 
 func _create_waveforms() -> void:
-	_wave_material = _create_detail_material()
+	_wave_material = ShaderMaterial.new()
+	_wave_material.shader = WAVE_SHADER
 	_wave_material.render_priority = -1
-	_wave_left = ImmediateMesh.new()
-	_wave_right = ImmediateMesh.new()
+	_wave_material.set_shader_parameter("base_offset", WAVE_BASE_OFFSET)
+	_wave_material.set_shader_parameter("surface_y", WAVE_SURFACE_Y)
+	_wave_material.set_shader_parameter("backing_y", WAVE_BACKING_Y)
+	_wave_material.set_shader_parameter("fade_start_z", -GameplayPlayfield.PLAY_AREA_SIZE.y)
+	_wave_material.set_shader_parameter(
+		"fade_end_z",
+		-GameplayPlayfield.PLAY_AREA_SIZE.y + GameplayPlayfield.get_spawn_fade_distance()
+	)
 
-	var left_instance := MeshInstance3D.new()
-	left_instance.name = "SpectrumLeft"
-	left_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	left_instance.mesh = _wave_left
-	left_instance.transform = _get_wall_transform(-1.0)
-	add_child(left_instance)
+	var mesh := ArrayMesh.new()
+	for layer in range(3):
+		var surface := SurfaceTool.new()
+		surface.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
+		surface.set_material(_wave_material)
+		for index in range(WAVE_POINT_COUNT):
+			var progress := float(index) / float(WAVE_POINT_COUNT - 1)
+			var z := lerpf(WAVE_Z_MIN, WAVE_Z_MAX, progress)
+			# UV stores the sample position and edge; UV2 selects body, line, or shadow.
+			surface.set_uv2(Vector2(float(layer), 0.0))
+			surface.set_uv(Vector2(progress, 0.0))
+			surface.add_vertex(Vector3(WAVE_BASE_OFFSET, WAVE_BACKING_Y, z))
+			surface.set_uv(Vector2(progress, 1.0))
+			surface.add_vertex(Vector3(WAVE_BASE_OFFSET + 0.15, WAVE_SURFACE_Y, z))
+		surface.commit(mesh)
 
-	var right_instance := MeshInstance3D.new()
-	right_instance.name = "SpectrumRight"
-	right_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	right_instance.mesh = _wave_right
-	right_instance.transform = _get_wall_transform(1.0)
-	add_child(right_instance)
-
-
-func _update_waveforms(playback_seconds: float) -> void:
-	if _wave_left == null or _wave_right == null:
-		return
+	# Include the full shader displacement so the waves are not culled at rest.
 	var row_spacing := (WAVE_Z_MAX - WAVE_Z_MIN) / float(WAVE_SAMPLE_COUNT - 1)
-	var fractional_shift := fposmod(playback_seconds * scroll_speed, row_spacing)
-	_build_waveform_surface(_wave_left, fractional_shift)
-	_build_waveform_surface(_wave_right, fractional_shift)
-
-
-func _build_waveform_surface(mesh: ImmediateMesh, z_shift: float) -> void:
-	mesh.clear_surfaces()
-	mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP, _wave_material)
-	for index in range(WAVE_SAMPLE_COUNT):
-		var progress := float(index) / float(WAVE_SAMPLE_COUNT - 1)
-		var z := lerpf(WAVE_Z_MIN, WAVE_Z_MAX, progress) + z_shift
-		var source_index := (index + int(_scroll_phase * 1.7)) % WAVE_SAMPLE_COUNT
-		var level := _spectrum_levels[source_index]
-		var x := WAVE_BASE_OFFSET + 0.15 + level * 1.18
-		var top_y := WAVE_SURFACE_Y - level * 0.012
-		var wall_color := accent_color
-		wall_color.a = 0.10 + level * 0.18
-		var base_color := wall_color
-		base_color.a *= 0.35
-
-		mesh.surface_set_color(base_color)
-		mesh.surface_add_vertex(Vector3(x, WAVE_BACKING_Y, z))
-		mesh.surface_set_color(wall_color)
-		mesh.surface_add_vertex(Vector3(x, top_y, z))
-	mesh.surface_end()
-
-	mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP, _wave_material)
-	for index in range(WAVE_SAMPLE_COUNT):
-		var progress := float(index) / float(WAVE_SAMPLE_COUNT - 1)
-		var z := lerpf(WAVE_Z_MIN, WAVE_Z_MAX, progress) + z_shift
-		var source_index := (index + int(_scroll_phase * 1.7)) % WAVE_SAMPLE_COUNT
-		var level := _spectrum_levels[source_index]
-		var amplitude := 0.15 + level * 1.18
-		var x := WAVE_BASE_OFFSET + amplitude
-		var half_width := 0.035 + level * 0.035
-		var top_y := WAVE_SURFACE_Y - level * 0.012
-		var color := accent_color
-		color.a = 0.30 + level * 0.46 + volume_level * 0.08
-
-		mesh.surface_set_color(color)
-		mesh.surface_add_vertex(Vector3(x - half_width, top_y, z))
-		mesh.surface_set_color(color)
-		mesh.surface_add_vertex(Vector3(x + half_width, top_y, z))
-	mesh.surface_end()
-
-	mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP, _wave_material)
-	for index in range(WAVE_SAMPLE_COUNT):
-		var progress := float(index) / float(WAVE_SAMPLE_COUNT - 1)
-		var z := lerpf(WAVE_Z_MIN, WAVE_Z_MAX, progress) + z_shift
-		var source_index := (index + int(_scroll_phase * 1.7)) % WAVE_SAMPLE_COUNT
-		var level := _spectrum_levels[source_index]
-		var x := WAVE_BASE_OFFSET + 0.22 + level * 1.18
-		var half_width := 0.065 + level * 0.025
-		var shadow_color := _floor_color.darkened(0.58)
-		shadow_color.a = 0.12
-
-		mesh.surface_set_color(shadow_color)
-		mesh.surface_add_vertex(Vector3(x - half_width, WAVE_BACKING_Y + 0.004, z))
-		mesh.surface_set_color(shadow_color)
-		mesh.surface_add_vertex(Vector3(x + half_width, WAVE_BACKING_Y + 0.004, z))
-	mesh.surface_end()
+	mesh.custom_aabb = AABB(
+		Vector3(0.0, WAVE_BACKING_Y, WAVE_Z_MIN),
+		Vector3(WALL_WIDTH, 0.1, WAVE_Z_MAX - WAVE_Z_MIN + row_spacing)
+	)
+	for side_value in [-1.0, 1.0]:
+		var side := float(side_value)
+		var instance := MeshInstance3D.new()
+		instance.name = "SpectrumLeft" if side < 0.0 else "SpectrumRight"
+		instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		instance.mesh = mesh
+		instance.transform = _get_wall_transform(side)
+		add_child(instance)
 
 
 func _create_judgement_line() -> void:
@@ -538,32 +498,25 @@ func _create_judgement_line() -> void:
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var judgement_z := GameplayPlayfield.JUDGEMENT_Z
 
-	var shadow_color := Color(0.0, 0.0, 0.0, 1.0)
-	shadow_color.a = 0.137
-	_add_prism(surface, Vector3(0.0, 0.010, judgement_z), Vector3(16.0, 0.016, 0.23), shadow_color)
-
 	var body_color := Color(0.33, 0.0, 0.0, 1.0)
-	body_color.a = 0.38
-	_add_prism(surface, Vector3(0.0, 0.028, judgement_z), Vector3(15.72, 0.020, 0.13), body_color)
+	_add_prism(surface, Vector3(0.0, 0.028, judgement_z), Vector3(15.72, 0.020, 0.060), body_color)
 
 	var core_color := Color(0.67, 0.0, 0.0, 1.0)
-	core_color.a = 0.278
-	_add_prism(surface, Vector3(0.0, 0.050, judgement_z - 0.003), Vector3(15.34, 0.013, 0.042), core_color)
+	_add_prism(surface, Vector3(0.0, 0.050, judgement_z - 0.003), Vector3(15.34, 0.010, 0.020), core_color)
 
 	for side_value in [-1.0, 1.0]:
 		var side := float(side_value)
 		var cap_color := Color(1.0, 0.0, 0.0, 1.0)
-		cap_color.a = 0.72
 		_add_prism(
 			surface,
 			Vector3(side * 7.79, 0.030, judgement_z),
-			Vector3(0.20, 0.050, 0.40),
+			Vector3(0.12, 0.035, 0.18),
 			cap_color
 		)
 		_add_prism(
 			surface,
 			Vector3(side * 7.48, 0.044, judgement_z),
-			Vector3(0.30, 0.017, 0.21),
+			Vector3(0.18, 0.012, 0.08),
 			core_color
 		)
 
@@ -581,8 +534,7 @@ func _update_judgement_line() -> void:
 	if _judgement_material == null:
 		return
 	_judgement_material.set_shader_parameter("rail_color", accent_color)
-	_judgement_material.set_shader_parameter("guide_color", guide_color)
-	_judgement_material.set_shader_parameter("emission_energy", 0.10 + volume_level * 0.12)
+	_judgement_material.set_shader_parameter("emission_energy", 1.8 + volume_level * 0.12)
 
 
 func _add_cross(surface: SurfaceTool, center: Vector3, size: float, thickness: float, color: Color, rotation: float) -> void:

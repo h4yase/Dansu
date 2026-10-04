@@ -28,6 +28,7 @@ const JUDGE_POPUP_OFFSET := Vector3(0.0, 2.5, -0.1)
 @export var score_hud: GameplayScoreHUD
 @export var world_environment: WorldEnvironment
 @export var stage_visualizer: GameplayStageVisualizer
+@export var key_overlay: GameplayKeyOverlay
 
 @onready var song_progress: ProgressBar = $Control/ProgressBar
 
@@ -93,6 +94,8 @@ func reset() -> void:
 	paused = false
 	_result_started = false
 	song_progress.value = 0.0
+	if key_overlay != null:
+		key_overlay.reset()
 
 	_replay_playback = Game.replay_playback
 	Game.replay_playback = null
@@ -137,6 +140,8 @@ func reset() -> void:
 	_visuals.collect_events()
 	_visuals.apply(Game.current_time)
 	_spawner.set_rail_color(_visuals.rail_color)
+	if key_overlay != null:
+		key_overlay.apply_inputs([], _visuals.rail_color)
 	_reset_combo_hud()
 	_update_score_hud()
 
@@ -167,6 +172,8 @@ func _update_game(delta: float) -> void:
 	_audio.update(int(Game.current_time), delta)
 	_visuals.apply(Game.current_time)
 	_spawner.set_rail_color(_visuals.rail_color)
+	if key_overlay != null:
+		key_overlay.apply_inputs(frame.inputs, _visuals.rail_color)
 	_update_score_hud()
 	_check_result()
 
@@ -184,6 +191,8 @@ func pause() -> void:
 		_pause_tween.kill()
 
 	if paused:
+		if key_overlay != null and not is_replay_mode:
+			key_overlay.reset()
 		_clock.pause(_input.reference_usec())
 		pause_menu.visible = true
 		_audio.pause()

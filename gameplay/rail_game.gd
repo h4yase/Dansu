@@ -2,15 +2,13 @@ extends Node3D
 class_name GameRail
 
 const CLIP_SHADER := preload("res://resources/shaders/rail_clip.gdshader")
-const DEFAULT_WIDTH := 0.1
+const DEFAULT_WIDTH := 0.15
 const DEFAULT_OUTLINE_SIZE := 0.1
 const CAP_SEGMENTS := 10
 const SAMPLE_INTERVAL_MS := 16.0
-const SHADOW_EXTRA_SIZE := 0.025
 const DEFAULT_FILL_COLOR := Color(0.135, 0.132, 0.205, 1.0)
 const DEFAULT_OUTLINE_COLOR := Color(0.455, 0.420, 0.690, 1.0)
 const DEFAULT_ACCENT_COLOR := Color(0.575, 0.520, 0.860, 1.0)
-const DEFAULT_SHADOW_COLOR := Color(0.025, 0.025, 0.04, 1.0)
 const IDLE_BRIGHTNESS := 0.38
 const STANDING_BRIGHTNESS := 1.0
 
@@ -115,8 +113,6 @@ func _update_theme_color() -> void:
 		return
 	_material.set_shader_parameter("fill_color", _theme_color.darkened(0.75))
 	_material.set_shader_parameter("outline_color", _theme_color.darkened(0.20))
-	var shadow_color := _theme_color.darkened(0.955)
-	_material.set_shader_parameter("shadow_color", shadow_color)
 	_material.set_shader_parameter("accent_color", _theme_color)
 
 
@@ -131,7 +127,7 @@ func _update_material_position() -> void:
 
 
 static func _get_visual_width(rail_width: float, rail_outline_size: float) -> float:
-	return rail_width + ((rail_outline_size + SHADOW_EXTRA_SIZE) * 2.0)
+	return rail_width + rail_outline_size * 2.0
 
 
 static func _sample_curve_points_for_rail(_rail: Rail) -> Array[Vector3]:

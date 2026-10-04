@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode unshaded, cull_disabled, depth_draw_opaque;
+render_mode cull_disabled, depth_draw_opaque, ambient_light_disabled, shadows_disabled, specular_disabled;
 
 uniform float rail_origin_z = 0.0;
 uniform float min_visible_z = 0.0;
@@ -11,6 +11,7 @@ uniform vec4 accent_color : source_color = vec4(0.575, 0.520, 0.860, 1.0);
 uniform float brightness : hint_range(0.0, 1.0) = 1.0;
 uniform float fill_width_ratio : hint_range(0.01, 1.0) = 0.285714;
 uniform float outline_width_ratio : hint_range(0.01, 1.0) = 0.857143;
+uniform float emission_strength : hint_range(0.0, 4.0) = 3.0;
 
 varying float playfield_z;
 
@@ -76,8 +77,11 @@ void fragment() {
 
 	vec3 outside_fill = mix(shadow_color.rgb, outline_surface, outline_mask);
 	vec3 final_color = mix(outside_fill, fill_surface, fill_mask);
-	float fill_emission = (0.07 + core_glow * 0.22 + soft_sweep * 0.26) * active_strength;
-
-	ALBEDO = final_color;
-	EMISSION = final_color * fill_emission * fill_mask;
+	float color_brightness = dot(accent_color.rgb, vec3(0.2126, 0.7152, 0.0722));
+	vec3 glow_color = accent_color.rgb / max(color_brightness, 0.05);
+	float glow_mask = max(outline_mask - fill_mask, 0.0);
+	glow_mask *= pow(outline_edge_mask, 2.0);
+	glow_mask *= mix(0.65, 1.0, brightness);
+	ALBEDO = vec3(0.0);
+	EMISSION = final_color + glow_color * emission_strength * glow_mask;
 }

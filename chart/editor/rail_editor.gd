@@ -29,17 +29,19 @@ func sync_layout(panel_size: Vector2, judge_y: float, pixels_per_ms: float, curr
 		or not is_equal_approx(_judge_y, judge_y) \
 		or not is_equal_approx(_pixels_per_ms, pixels_per_ms) \
 		or not is_equal_approx(_current_time, current_time)
-	var geometry_signature := _build_rail_geometry_signature()
-	var geometry_changed := _rail_geometry_signature != geometry_signature
 	var should_be_visible := _is_visible_in_view(panel_size, judge_y, pixels_per_ms, current_time)
 	if visible != should_be_visible:
 		visible = should_be_visible
 		layout_changed = true
+		for handle in _point_handles:
+			handle.set_process(should_be_visible)
 	if not should_be_visible:
 		_sampled_points.clear()
-		_rail_geometry_signature = geometry_signature
+		_rail_geometry_signature = ""
 		return
 
+	var geometry_signature := _build_rail_geometry_signature()
+	var geometry_changed := _rail_geometry_signature != geometry_signature
 	_panel_size = panel_size
 	_judge_y = judge_y
 	_pixels_per_ms = pixels_per_ms

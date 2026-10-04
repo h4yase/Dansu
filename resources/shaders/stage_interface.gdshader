@@ -52,7 +52,7 @@ void fragment() {
 	float pulse_response = volume_level;
 	float peak_response = smoothstep(0.72, 1.0, pulse_response);
 	vec3 audio_color = mix(guide_color.rgb, accent_color.rgb, 0.22 + mid_energy * 0.28 + high_energy * 0.22);
-	vec3 glow_color = mix(audio_color, vec3(1.0), high_energy * 0.075 + peak_response * 0.16);
+	vec3 glow_color = accent_color.rgb;
 	color += glow_color * pulse_response * 0.052 * depth_visibility;
 
 	float longitudinal_major = repeated_line(p.x, 2.5, 0.018);
@@ -60,7 +60,7 @@ void fragment() {
 	float cross_major = repeated_line(moving_z, 5.5, 0.030);
 	float cross_minor = repeated_line(moving_z, 1.375, 0.006);
 
-	float center_quiet = mix(0.78, 1.0, side_visibility);
+	float center_quiet = mix(0.18, 1.0, side_visibility);
 	float grid = longitudinal_major * 0.135 * center_quiet;
 	grid += longitudinal_minor * 0.030 * center_quiet;
 	grid += cross_major * 0.240 * center_quiet;
@@ -97,7 +97,7 @@ void fragment() {
 	float pulse_alpha = pulse_response * depth_visibility * volume_alpha_boost * 0.78;
 
 	ALBEDO = color;
-	EMISSION = grid_color * line_opacity * grid * 0.22 + glow_color * line_opacity * (
+	EMISSION = glow_color * line_opacity * grid * 0.22 + glow_color * line_opacity * (
 		ticks * (mid_energy * 0.070 + peak_response * 0.050) +
 		dots * (high_energy * 0.085 + peak_response * 0.060)
 	);

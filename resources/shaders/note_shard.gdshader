@@ -1,8 +1,9 @@
 shader_type spatial;
-render_mode unshaded, blend_mix, cull_disabled, depth_draw_never, depth_test_disabled, fog_disabled;
+render_mode blend_mix, cull_disabled, depth_draw_never, depth_test_disabled, fog_disabled, ambient_light_disabled, shadows_disabled, specular_disabled;
 
 uniform sampler2D shard_texture : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
 uniform vec4 tint : source_color = vec4(1.0);
+uniform vec4 rail_color : source_color = vec4(0.575, 0.520, 0.860, 1.0);
 uniform int shard_columns = 2;
 uniform int shard_rows = 1;
 uniform bool flip_h = false;
@@ -39,7 +40,7 @@ void fragment() {
 	float fade = 1.0 - smoothstep(0.56, 1.0, life_progress);
 	float glint = 1.0 - smoothstep(0.0, 0.18, life_progress);
 	vec3 color = sampled.rgb * tint.rgb;
-	ALBEDO = color;
-	EMISSION = color * (0.10 + glint * 0.30);
+	ALBEDO = vec3(0.0);
+	EMISSION = color + rail_color.rgb * (0.10 + glint * 0.30);
 	ALPHA = sampled.a * tint.a * fade;
 }

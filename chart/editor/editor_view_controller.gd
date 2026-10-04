@@ -34,6 +34,9 @@ var note_scene := preload("res://scenes/chart/editor/editor_note.tscn")
 
 var rail_views: Dictionary = {}
 var note_views: Dictionary = {}
+var _sorted_note_views: Array[EditorNote] = []
+var _note_end_times: Array[int] = []
+var _visible_note_views: Array[EditorNote] = []
 var _layout_dirty := true
 var _last_panel_size := Vector2(-1.0, -1.0)
 var _last_judge_y := INF
@@ -106,6 +109,9 @@ func refresh_views() -> void:
 	clear_layers()
 	rail_views.clear()
 	note_views.clear()
+	_sorted_note_views.clear()
+	_note_end_times.clear()
+	_visible_note_views.clear()
 	_layout_dirty = true
 
 	if editor == null or editor.transport == null or CM.parsed_chart == null:
@@ -132,6 +138,8 @@ func refresh_views() -> void:
 			note_view.rail = rail
 			note_view.editor = editor
 			note_view.set_passthrough(editor.note_passthrough)
+			note_view.hide()
+			note_view.set_process(false)
 			note_layer.add_child(note_view)
 			note_views[note] = note_view
 
@@ -193,6 +201,9 @@ func sync_layouts() -> void:
 	and is_equal_approx(_last_current_time, current_time):
 		return
 
+	var refresh_selection := _layout_dirty
+	if _layout_dirty:
+		_rebuild_note_range()
 	_layout_dirty = false
 	_last_panel_size = panel_size
 	_last_judge_y = judge_y
@@ -205,14 +216,53 @@ func sync_layouts() -> void:
 
 	for rail_view in rail_views.values():
 		rail_view.sync_layout(panel_size, judge_y, editor.get_pixels_per_ms(), current_time)
-		rail_view.set_selection_state(editor.selection.selected_rail == rail_view.rail, editor.selection.selected_point_index)
+		if refresh_selection:
+			rail_view.set_selection_state(editor.selection.selected_rail == rail_view.rail, editor.selection.selected_point_index)
 
-	for note in note_views.keys():
-		var note_view: EditorNote = note_views[note]
-		note_view.sync_layout(panel_size, judge_y, editor.get_pixels_per_ms(), current_time)
-		note_view.set_selected(editor.selection.selected_notes.has(note))
+	_sync_visible_notes(panel_size, judge_y, editor.get_pixels_per_ms(), current_time)
 
 	editor._update_time_ui(false)
+
+func _rebuild_note_range() -> void:
+	_sorted_note_views.clear()
+	_note_end_times.clear()
+	for note_view: EditorNote in note_views.values():
+		_sorted_note_views.append(note_view)
+	_sorted_note_views.sort_custom(func(a: EditorNote, b: EditorNote) -> bool: return a.note.time < b.note.time)
+	# Prefix end times retain long notes whose heads have already left the screen.
+	var last_end := -9223372036854775807
+	for note_view in _sorted_note_views:
+		last_end = maxi(last_end, note_view.note.end_time)
+		_note_end_times.append(last_end)
+
+func _sync_visible_notes(panel_size: Vector2, judge_y: float, pixels_per_ms: float, current_time: float) -> void:
+	var time_scale := maxf(pixels_per_ms, 0.001)
+	var start_time := current_time - (panel_size.y - judge_y + 96.0) / time_scale
+	var end_time := current_time + (judge_y + 96.0) / time_scale
+	for index in range(_visible_note_views.size() - 1, -1, -1):
+		var note_view := _visible_note_views[index]
+		if note_view.note.end_time < start_time or note_view.note.time > end_time:
+			note_view.sync_layout(panel_size, judge_y, pixels_per_ms, current_time)
+			_visible_note_views.remove_at(index)
+
+	var first := 0
+	var last := _note_end_times.size()
+	while first < last:
+		var middle := first + ((last - first) >> 1)
+		if _note_end_times[middle] < start_time:
+			first = middle + 1
+		else:
+			last = middle
+	for index in range(first, _sorted_note_views.size()):
+		var note_view := _sorted_note_views[index]
+		if note_view.note.time > end_time:
+			break
+		if note_view.note.end_time < start_time:
+			continue
+		if not note_view.visible:
+			_visible_note_views.append(note_view)
+		note_view.sync_layout(panel_size, judge_y, pixels_per_ms, current_time)
+		note_view.set_selected(editor.selection.selected_notes.has(note_view.note))
 
 func set_note_passthrough(enabled: bool) -> void:
 	_hover_mouse = Vector2(INF, INF)
@@ -222,14 +272,12 @@ func set_note_passthrough(enabled: bool) -> void:
 		rail_view.set_point_handles_dimmed(not enabled)
 
 func find_note_at(global_mouse_pos: Vector2) -> NoteHit:
-	for note: Note in note_views:
-		var note_view: EditorNote = note_views[note]
+	for note_view in _visible_note_views:
 		if note_view.is_tail_hit(global_mouse_pos):
-			return NoteHit.new(note, note_view.rail, true)
-	for note in note_views.keys():
-		var note_view: EditorNote = note_views[note]
+			return NoteHit.new(note_view.note, note_view.rail, true)
+	for note_view in _visible_note_views:
 		if note_view.is_head_hit(global_mouse_pos):
-			return NoteHit.new(note, note_view.rail)
+			return NoteHit.new(note_view.note, note_view.rail)
 	return null
 
 func find_rail_at(global_mouse_pos: Vector2) -> Rail:

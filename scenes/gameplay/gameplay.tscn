@@ -26,11 +26,16 @@
 [ext_resource type="Texture2D" uid="uid://bkx4imkofvyyn" path="res://resources/icons/clock.svg" id="21_sxh0i"]
 [ext_resource type="Texture2D" uid="uid://4mpob6r0inkq" path="res://resources/icons/arrow-big-left.svg" id="23_ol8dy"]
 [ext_resource type="Script" uid="uid://eviwqn52onoo" path="res://gameplay/visuals/score_hud.gd" id="30_score_hud"]
+[ext_resource type="Script" uid="uid://53fcilpl7kko" path="res://gameplay/visuals/player_reflection.gd" id="31_player_reflection"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/key_overlay.tscn" id="32_key_overlay"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sky1"]
 shader = ExtResource("8_t6o8f")
-shader_parameter/base_color = Color(0, 0, 0, 1)
-shader_parameter/detail_color = Color(0.15570518, 0.15570173, 0.18305299, 1)
+shader_parameter/base_color = Color(0.025, 0.018, 0.055, 1)
+shader_parameter/detail_color = Color(0.24, 0.16, 0.42, 1)
+shader_parameter/rail_color = Color(0.32, 0.93, 1, 1)
+shader_parameter/mountain_opacity = 0.85
+shader_parameter/mountain_line_strength = 0.0144
 
 [sub_resource type="Sky" id="Sky_q64rj"]
 sky_material = SubResource("ShaderMaterial_sky1")
@@ -38,9 +43,13 @@ sky_material = SubResource("ShaderMaterial_sky1")
 [sub_resource type="Environment" id="Environment_0w2j2"]
 background_mode = 2
 sky = SubResource("Sky_q64rj")
-sky_rotation = Vector3(-0.4712389, 3.1415927, 0)
+sky_rotation = Vector3(0.08726646, 0, 0)
 tonemap_mode = 2
 glow_enabled = true
+glow_levels/3 = 0.5
+glow_levels/4 = 0.35
+glow_levels/5 = 0.15
+glow_hdr_scale = 0.5
 fog_light_color = Color(0, 0, 0, 1)
 fog_light_energy = 0.0
 fog_sky_affect = 0.0
@@ -277,7 +286,7 @@ shader = ExtResource("18_stage_vignette")
 shader_parameter/edge_color = Color(0, 0, 0, 1)
 shader_parameter/strength = 0.46
 
-[node name="Gameplay" type="Node3D" unique_id=1019670328 node_paths=PackedStringArray("player", "play_area", "judgment_line", "rail_container", "songplayer", "dim", "pause_menu", "gameplay_camera", "hud_root", "combo_container", "combo_label", "score_hud", "world_environment", "stage_visualizer")]
+[node name="Gameplay" type="Node3D" unique_id=1019670328 node_paths=PackedStringArray("player", "play_area", "judgment_line", "rail_container", "songplayer", "dim", "pause_menu", "gameplay_camera", "hud_root", "combo_container", "combo_label", "score_hud", "world_environment", "stage_visualizer", "key_overlay")]
 script = ExtResource("1_m3hu3")
 player = NodePath("Player")
 play_area = NodePath("PlayArea")
@@ -293,12 +302,7 @@ combo_label = NodePath("Control/VBoxContainer/Combo")
 score_hud = NodePath("Control/VBoxContainer2")
 world_environment = NodePath("WorldEnvironment")
 stage_visualizer = NodePath("PlayArea/JudgmentLine/StageVisualizer")
-
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1092359596 node_paths=PackedStringArray("player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3.5)
-fov = 74.0
-script = ExtResource("2_0w2j2")
-player = NodePath("../Player")
+key_overlay = NodePath("Control/KeyOverlay")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=151517771]
 environment = SubResource("Environment_0w2j2")
@@ -338,6 +342,13 @@ render_priority = 2
 texture = ExtResource("8_l0mho")
 script = ExtResource("4_gh441")
 effectplayer = NodePath("../SkinEffects")
+
+[node name="Reflection" type="Sprite3D" parent="Player" unique_id=1325170568 node_paths=PackedStringArray("source")]
+process_priority = 1
+layers = 4
+cast_shadow = 0
+script = ExtResource("31_player_reflection")
+source = NodePath("../Sprite3D")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=906267777]
 bus = &"Music"
@@ -565,6 +576,8 @@ theme_override_font_sizes/font_size = 24
 text = "difficulty"
 text_overrun_behavior = 5
 
+[node name="KeyOverlay" parent="Control" instance=ExtResource("32_key_overlay")]
+
 [node name="Dialogue" parent="Control" unique_id=1526561723 instance=ExtResource("19_c6mtg")]
 visible = false
 layout_mode = 1
@@ -597,7 +610,7 @@ grow_vertical = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 1080)
 
-[node name="Resume" parent="Control/PauseMenu" unique_id=869280924 node_paths=PackedStringArray("button") instance=ExtResource("20_sxh0i")]
+[node name="Resume" parent="Control/PauseMenu" unique_id=869280924 instance=ExtResource("20_sxh0i")]
 custom_minimum_size = Vector2(300, 64)
 layout_mode = 2
 mouse_filter = 0
@@ -605,9 +618,8 @@ bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
 button_text = "resume"
 icon_texture = ExtResource("21_c6mtg")
 hover_scale = 1.04
-button = NodePath("Button")
 
-[node name="Retry" parent="Control/PauseMenu" unique_id=1558929082 node_paths=PackedStringArray("button") instance=ExtResource("20_sxh0i")]
+[node name="Retry" parent="Control/PauseMenu" unique_id=1558929082 instance=ExtResource("20_sxh0i")]
 custom_minimum_size = Vector2(300, 64)
 layout_mode = 2
 mouse_filter = 0
@@ -615,9 +627,8 @@ bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
 button_text = "retry"
 icon_texture = ExtResource("21_sxh0i")
 hover_scale = 1.04
-button = NodePath("Button")
 
-[node name="Quit" parent="Control/PauseMenu" unique_id=977372013 node_paths=PackedStringArray("button") instance=ExtResource("20_sxh0i")]
+[node name="Quit" parent="Control/PauseMenu" unique_id=977372013 instance=ExtResource("20_sxh0i")]
 custom_minimum_size = Vector2(300, 64)
 layout_mode = 2
 mouse_filter = 0
@@ -625,7 +636,6 @@ bg_color = Color(0.10980392, 0.101960786, 0.1764706, 1)
 button_text = "quit"
 icon_texture = ExtResource("23_ol8dy")
 hover_scale = 1.04
-button = NodePath("Button")
 
 [node name="ReplayLabel" type="Label" parent="Control" unique_id=1550486121]
 visible = false
@@ -664,6 +674,11 @@ offset_right = 89.0
 offset_bottom = 32.0
 text = "fps 1000"
 script = ExtResource("20_r4rys")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1853340759 node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 3.5)
+script = ExtResource("2_0w2j2")
+player = NodePath("../Player")
 
 [connection signal="activated" from="Control/PauseMenu/Resume" to="." method="_on_resume_activated"]
 [connection signal="activated" from="Control/PauseMenu/Retry" to="." method="_on_retry_activated"]

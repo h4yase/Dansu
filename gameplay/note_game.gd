@@ -3,6 +3,7 @@ class_name GameNote
 
 const VISUAL_SURFACE_OFFSET := 0.025
 const VISUAL_RENDER_PRIORITY := 2
+const SURFACE_SHADER := preload("res://resources/shaders/note_surface.gdshader")
 
 var move_texture : Texture2D = preload("res://resources/textures/gameplay/move_note.png")
 var spike_texture : Texture2D = preload("res://resources/textures/gameplay/spike_note.png")
@@ -12,6 +13,11 @@ var trace_texture : Texture2D = preload("res://resources/textures/gameplay/trace
 @export var note_shadow: Sprite3D
 @export var break_effect_scene: PackedScene
 @export var long_note_visual: GameplayLongNoteVisual
+@export_range(0.0, 1.0, 0.01) var surface_brightness := 0.12:
+	set(value):
+		surface_brightness = value
+		if _note_material != null:
+			_note_material.set_shader_parameter("brightness_strength", value)
 
 signal consumed(judge: int, note_node: GameNote)
 
@@ -23,6 +29,8 @@ var _note_base_modulate := Color.WHITE
 var _note_shadow_base_modulate := Color.WHITE
 var _spawn_fade_active := false
 var _failed_long_note := false
+var _note_material: ShaderMaterial
+var _glow_color := GameRail.DEFAULT_ACCENT_COLOR
 
 func _ready() -> void:
 	set_process(false)
@@ -34,6 +42,7 @@ func _ready() -> void:
 	_configure_sprite_depth(note_sprite)
 	_set_note_texture()
 	_cache_base_modulates()
+	_setup_surface_material()
 	_setup_long_note_visual()
 	_initialize_spawn_fade()
 
@@ -51,10 +60,32 @@ func _cache_base_modulates() -> void:
 		_note_shadow_base_modulate = note_shadow.modulate
 
 
+func _setup_surface_material() -> void:
+	if note_sprite == null:
+		return
+	_note_material = ShaderMaterial.new()
+	_note_material.shader = SURFACE_SHADER
+	_note_material.render_priority = VISUAL_RENDER_PRIORITY
+	_note_material.set_shader_parameter("note_texture", note_sprite.texture)
+	_note_material.set_shader_parameter("tint", note_sprite.modulate)
+	_note_material.set_shader_parameter("brightness_strength", surface_brightness)
+	_note_material.set_shader_parameter("rail_color", _glow_color)
+	note_sprite.material_override = _note_material
+
+
 func _setup_long_note_visual() -> void:
 	if long_note_visual == null:
 		return
 	long_note_visual.configure(note, rail, self, note_sprite)
+	long_note_visual.set_glow_color(_glow_color)
+
+
+func set_glow_color(color: Color) -> void:
+	_glow_color = color
+	if _note_material != null:
+		_note_material.set_shader_parameter("rail_color", color)
+	if long_note_visual != null:
+		long_note_visual.set_glow_color(color)
 
 
 func prebake_long_note_visual(note_data: Note, rail_data: Rail) -> void:
@@ -119,6 +150,8 @@ func _update_spawn_fade() -> void:
 func _set_visual_alpha(alpha: float) -> void:
 	if note_sprite != null:
 		note_sprite.modulate = Color(_note_base_modulate.r, _note_base_modulate.g, _note_base_modulate.b, _note_base_modulate.a * alpha)
+		if _note_material != null:
+			_note_material.set_shader_parameter("tint", note_sprite.modulate)
 	if note_shadow != null:
 		note_shadow.modulate = Color(
 			_note_shadow_base_modulate.r,
@@ -209,7 +242,8 @@ func _spawn_break_effect_for_sprite(sprite: Sprite3D) -> void:
 		sprite.modulate,
 		sprite.flip_h,
 		sprite.pixel_size,
-		Config.note_speed
+		Config.note_speed,
+		_glow_color
 	)
 
 func _process(_delta) -> void:

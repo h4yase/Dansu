@@ -137,6 +137,9 @@ func set_rail_color(color: Color) -> void:
 	for state in rail_states:
 		if state.node != null:
 			state.node.set_theme_color(_rail_color)
+	for state in note_states:
+		if state.node != null:
+			state.node.set_glow_color(_rail_color)
 
 func consume_note(state: GameplayNoteState, judgement: int) -> void:
 	if state == null or state.node == null:
@@ -181,6 +184,7 @@ func _spawn_note(state: GameplayNoteState) -> void:
 		return
 	node.note = state.note
 	node.rail = state.rail_state.rail
+	node.set_glow_color(_rail_color)
 	node.consumed.connect(_on_note_consumed.bind(state))
 	state.rail_state.node.note_container.add_child(node)
 	state.node = node

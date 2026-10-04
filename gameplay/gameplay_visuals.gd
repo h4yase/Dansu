@@ -20,8 +20,8 @@ var _camera_events: Array[CameraEvent] = []
 var _overlay_events: Array[OverlayEvent] = []
 var _theme_events: Array[ThemeEvent] = []
 var _sky_material: ShaderMaterial
-var _default_sky_base := Color(0.075, 0.078, 0.09, 1.0)
-var _default_sky_detail := Color(0.19, 0.19, 0.22, 1.0)
+var _default_sky_base := Color(0.025, 0.018, 0.055, 1.0)
+var _default_sky_detail := Color(0.24, 0.16, 0.42, 1.0)
 var _overlay_root: Control
 var _overlay_nodes: Array[TextureRect] = []
 var _overlay_paths: Array[String] = []
@@ -153,6 +153,7 @@ func _apply_theme(time_ms: float) -> void:
 	if _sky_material != null:
 		_sky_material.set_shader_parameter(SKY_BASE_COLOR_PARAM, base_color)
 		_sky_material.set_shader_parameter(SKY_DETAIL_COLOR_PARAM, detail_color)
+		_sky_material.set_shader_parameter("rail_color", rail_color)
 	if _stage != null:
 		_stage.set_theme_colors(base_color, detail_color, rail_color)
 

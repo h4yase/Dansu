@@ -1,24 +1,22 @@
 shader_type spatial;
-render_mode unshaded, cull_disabled, blend_mix;
+render_mode cull_disabled, ambient_light_disabled, shadows_disabled, specular_disabled;
 
 uniform vec4 rail_color : source_color = vec4(1.0);
-uniform vec4 guide_color : source_color = vec4(1.0);
-uniform float emission_energy = 0.10;
+uniform float emission_energy = 1.8;
 
 void fragment() {
-	// Vertex red identifies the strip; alpha preserves its original opacity.
+	// Vertex red separates the solid body, bright core, and end caps.
 	float role = COLOR.r;
-	vec3 color;
-	if (role < 0.16) {
-		color = mix(guide_color.rgb, vec3(1.0), 0.34);
-	} else if (role < 0.5) {
-		color = guide_color.rgb * 0.80;
+	vec3 color = rail_color.rgb;
+	float color_peak = max(color.r, max(color.g, color.b));
+	vec3 glow_color = color / max(color_peak, 0.05);
+	if (role < 0.5) {
+		color *= 0.72;
 	} else if (role < 0.84) {
-		color = mix(rail_color.rgb, guide_color.rgb, 0.14) * 0.92;
+		color += glow_color * emission_energy;
 	} else {
-		color = rail_color.rgb * 0.82;
+		color *= 0.90;
 	}
-	ALBEDO = color;
-	EMISSION = rail_color.rgb * 0.84 * emission_energy;
-	ALPHA = COLOR.a;
+	ALBEDO = vec3(0.0);
+	EMISSION = color;
 }

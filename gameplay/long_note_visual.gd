@@ -80,6 +80,11 @@ static func clear_mesh_cache() -> void:
 	_mesh_cache.clear()
 
 
+func set_glow_color(color: Color) -> void:
+	if _material != null:
+		_material.set_shader_parameter("rail_color", color)
+
+
 func set_holding(value: bool) -> void:
 	if _material != null:
 		_material.set_shader_parameter("holding", 1.0 if value else 0.0)

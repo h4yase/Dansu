@@ -1,0 +1,53 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://gameplay/visuals/key_overlay.gd" id="1_overlay"]
+[ext_resource type="Script" path="res://gameplay/visuals/key_icon.gd" id="2_icon"]
+
+[node name="KeyOverlay" type="Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -336.0
+offset_top = -128.0
+offset_right = -32.0
+offset_bottom = -64.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_overlay")
+
+[node name="Hit1" type="Control" parent="."]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2
+script = ExtResource("2_icon")
+
+[node name="Hit2" type="Control" parent="."]
+layout_mode = 0
+offset_left = 80.0
+offset_right = 144.0
+offset_bottom = 64.0
+mouse_filter = 2
+script = ExtResource("2_icon")
+
+[node name="Left" type="Control" parent="."]
+layout_mode = 0
+offset_left = 160.0
+offset_right = 224.0
+offset_bottom = 64.0
+mouse_filter = 2
+script = ExtResource("2_icon")
+shape = 1
+
+[node name="Right" type="Control" parent="."]
+layout_mode = 0
+offset_left = 240.0
+offset_right = 304.0
+offset_bottom = 64.0
+mouse_filter = 2
+script = ExtResource("2_icon")
+shape = 2

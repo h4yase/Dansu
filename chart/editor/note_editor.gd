@@ -101,6 +101,7 @@ func _ready() -> void:
 	_tail_handle.material = _tail_material
 	_tail_handle.draw.connect(_draw_tail_handle)
 	add_child(_tail_handle)
+	set_process(visible)
 
 func sync_layout(panel_size: Vector2, judge_y: float, pixels_per_ms: float, current_time: float) -> void:
 	var layout_changed := _panel_size != panel_size \
@@ -115,7 +116,11 @@ func sync_layout(panel_size: Vector2, judge_y: float, pixels_per_ms: float, curr
 	if visible != should_be_visible:
 		visible = should_be_visible
 		layout_changed = true
+	set_process(should_be_visible)
 	if not should_be_visible:
+		_pass_strength = 0.0
+		_click_time = 1.0
+		_placement_time = PLACEMENT_DURATION
 		return
 
 	if position != Vector2.ZERO:

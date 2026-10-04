@@ -1,9 +1,10 @@
 shader_type spatial;
-render_mode unshaded, cull_disabled, depth_test_disabled, depth_draw_never;
+render_mode cull_disabled, depth_test_disabled, depth_draw_never, ambient_light_disabled, shadows_disabled, specular_disabled;
 
 uniform vec4 body_color : source_color = vec4(0.55, 0.60, 0.95, 1.0);
 uniform vec4 edge_color : source_color = vec4(0.35, 0.34, 0.82, 1.0);
 uniform vec4 direction_color : source_color = vec4(1.0);
+uniform vec4 rail_color : source_color = vec4(0.575, 0.520, 0.860, 1.0);
 uniform float move_direction = 0.0;
 uniform float spawn_fade_distance = 9.0;
 uniform float playfield_origin_z = 0.0;
@@ -37,12 +38,12 @@ void fragment() {
 	float active_glow = holding * (0.10 + pulse * 0.13);
 
 	vec3 color = mix(body_color.rgb, edge_color.rgb, edge);
-	color += body_color.rgb * (core * 0.08 + active_glow * core);
+	color += body_color.rgb * core * 0.08;
 	// The ribbon follows decreasing Z, so UV.x = 0 is its right edge.
 	if ((move_direction > 0.0 && UV.x <= 0.2) || (move_direction < 0.0 && UV.x >= 0.8)) {
 		color = direction_color.rgb;
 	}
 
-	ALBEDO = color;
-	EMISSION = color * (0.08 + core * 0.08 + active_glow);
+	ALBEDO = vec3(0.0);
+	EMISSION = color + rail_color.rgb * (0.08 + core * 0.08 + active_glow * core);
 }

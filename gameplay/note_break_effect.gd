@@ -7,7 +7,7 @@ class_name GameplayNoteBreakEffect
 @export_range(0.0, 1.0, 0.01) var inertia_ratio := 0.09
 
 
-func play(texture: Texture2D, tint: Color, flip_h: bool, pixel_size: float, note_speed: float) -> void:
+func play(texture: Texture2D, tint: Color, flip_h: bool, pixel_size: float, note_speed: float, glow_color: Color) -> void:
 	if particles == null or texture == null:
 		queue_free()
 		return
@@ -30,6 +30,7 @@ func play(texture: Texture2D, tint: Color, flip_h: bool, pixel_size: float, note
 	process_material.set_shader_parameter("forward_inertia", maxf(note_speed, 0.0) * inertia_ratio)
 	shard_material.set_shader_parameter("shard_texture", texture)
 	shard_material.set_shader_parameter("tint", tint)
+	shard_material.set_shader_parameter("rail_color", glow_color)
 	shard_material.set_shader_parameter("flip_h", flip_h)
 	shard_material.set_shader_parameter("shard_columns", shard_columns)
 	shard_material.set_shader_parameter("shard_rows", shard_rows)
