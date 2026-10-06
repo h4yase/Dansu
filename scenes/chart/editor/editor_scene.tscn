@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://cm18ld8rfd7b3" path="res://chart/editor/game_preview.gd" id="12_game_preview"]
 [ext_resource type="Script" uid="uid://bgdadwghe6gtx" path="res://chart/editor/overlay_frame_view.gd" id="13_frame_view"]
 [ext_resource type="PackedScene" uid="uid://d0gsgs0n6371q" path="res://scenes/gameplay/gameplay.tscn" id="14_gameplay_preview"]
+[ext_resource type="Script" path="res://chart/editor/editor_timing_detection.gd" id="15_timing_detection"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ysqcj"]
 shader = ExtResource("2_37swi")
@@ -578,6 +579,12 @@ theme_override_styles/separator = SubResource("StyleBoxLine_t60lc")
 layout_mode = 2
 theme_override_constants/separation = 6
 
+[node name="TimingDetection" type="Node" parent="Controllers" node_paths=PackedStringArray("editor", "detect_button", "status_label")]
+script = ExtResource("15_timing_detection")
+editor = NodePath("../..")
+detect_button = NodePath("../../Inspector/Timing/ScrollContainer/HBoxContainer/DetectTiming")
+status_label = NodePath("../../Inspector/Timing/ScrollContainer/HBoxContainer/DetectionStatus")
+
 [node name="Timing" type="TabBar" parent="Inspector" unique_id=1819708243]
 visible = false
 layout_mode = 2
@@ -597,6 +604,15 @@ horizontal_scroll_mode = 0
 [node name="HBoxContainer" type="VBoxContainer" parent="Inspector/Timing/ScrollContainer" unique_id=13395794]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="DetectTiming" type="Button" parent="Inspector/Timing/ScrollContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "EDITOR_DETECT_TIMING"
+
+[node name="DetectionStatus" type="Label" parent="Inspector/Timing/ScrollContainer/HBoxContainer"]
+layout_mode = 2
+autowrap_mode = 3
 
 [node name="AddTiming" type="Button" parent="Inspector/Timing/ScrollContainer/HBoxContainer" unique_id=1791564311]
 unique_name_in_owner = true

@@ -6,6 +6,7 @@ signal spike_dodged(state)
 signal combo_changed(value, pop)
 signal standing_rail_changed(rail)
 signal failed(message)
+signal key_pressed
 
 const MAX_TIME := 9223372036854775807
 
@@ -225,6 +226,7 @@ func move_toward(target: Rail, time: int) -> bool:
 
 
 func _input_action(time: int, keycode: int) -> void:
+	key_pressed.emit()
 	var state := _get_next_hit_note()
 	if state == null or standing_rail == null:
 		_player.play_hit_animation()
@@ -246,6 +248,7 @@ func _input_action(time: int, keycode: int) -> void:
 		_player.set_hold_animation(true)
 
 func _move_action(dir: Note.Dir, time: int, allow_free_movement: bool = true) -> void:
+	key_pressed.emit()
 	var state := _get_next_move_note(dir)
 	if state != null and state.rail_state.rail == standing_rail:
 		var gap := state.note.time - time

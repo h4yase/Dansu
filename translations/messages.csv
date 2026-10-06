@@ -211,6 +211,12 @@ EDITOR_ANIMATION,animation,애니메이션,アニメーション,动画
 EDITOR_SFX,sfx,효과음,効果音,音效
 EDITOR_RAIL,Rail,레일,レール,轨道
 EDITOR_ADD_TIMING,Add new timing,타이밍 추가,タイミングを追加,添加时间点
+EDITOR_DETECT_TIMING,Auto detect BPM / offset,BPM / 오프셋 자동 탐지,BPM / オフセットを自動検出,自动检测 BPM / 偏移
+EDITOR_TIMING_DETECTING,Analyzing audio…,오디오 분석 중…,音声を解析中…,正在分析音频…
+EDITOR_TIMING_DETECTED,"BPM %.0f · Offset %.1f ms · Confidence %.1f%% · %d timing points","BPM %.0f · 오프셋 %.1f ms · 신뢰도 %.1f%% · 타이밍 %d개","BPM %.0f · オフセット %.1f ms · 信頼度 %.1f%% · タイミング %d件","BPM %.0f · 偏移 %.1f ms · 置信度 %.1f%% · %d 个时间点"
+EDITOR_TIMING_FAILED,Could not detect timing.,타이밍을 탐지하지 못했습니다.,タイミングを検出できませんでした。,无法检测时间点。
+EDITOR_TIMING_CHANGED,Audio or timing changed during analysis. Run detection again.,분석 중 오디오 또는 타이밍이 변경되었습니다. 다시 탐지해주세요.,解析中に音声またはタイミングが変更されました。再検出してください。,分析期间音频或时间点已更改。请重新检测。
+EDITOR_TIMING_REVIEW,Some sections are uncertain. Check the beat grid by listening.,일부 구간이 불확실합니다. 재생하며 박자선을 확인해주세요.,不確実な区間があります。再生して拍の位置を確認してください。,部分段落不确定。请播放并检查节拍线。
 EDITOR_HIT_NOTE,Hit Note,일반 노트,Hitノーツ,Hit 音符
 EDITOR_MOVE_NOTE,Move Note,이동 노트,Moveノーツ,Move 音符
 EDITOR_TRACE_NOTE,Trace Note,트레이스 노트,Traceノーツ,Trace 音符

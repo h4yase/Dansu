@@ -576,7 +576,7 @@ theme_override_font_sizes/font_size = 24
 text = "difficulty"
 text_overrun_behavior = 5
 
-[node name="KeyOverlay" parent="Control" instance=ExtResource("32_key_overlay")]
+[node name="KeyOverlay" parent="Control" unique_id=918401853 instance=ExtResource("32_key_overlay")]
 
 [node name="Dialogue" parent="Control" unique_id=1526561723 instance=ExtResource("19_c6mtg")]
 visible = false

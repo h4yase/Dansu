@@ -11,6 +11,7 @@ const COMBO_POP_SCALE := Vector2(0.96, 1.12)
 const COMBO_POP_DURATION_IN := 0.08
 const COMBO_POP_DURATION_OUT := 0.14
 const JUDGE_POPUP_OFFSET := Vector3(0.0, 2.5, -0.1)
+const PLAYER_INPUT_EFFECTS := preload("res://gameplay/visuals/player_input_effects.gd")
 
 @export var editor_preview := false
 @export var autoplay_enabled := false
@@ -42,6 +43,7 @@ var _rule := GameRule.new()
 var _spawner := ObjectSpawner.new()
 var _audio := GameplayAudio.new()
 var _visuals := GameplayVisuals.new()
+var _player_input_effects: PLAYER_INPUT_EFFECTS
 
 var _replay_playback: Replay
 var _play_time_ms := 0.0
@@ -73,6 +75,10 @@ func _ready() -> void:
 		get_node("FpsLabel").hide()
 		return
 
+	_player_input_effects = PLAYER_INPUT_EFFECTS.new()
+	_player_input_effects.player = player
+	judgment_line.add_child(_player_input_effects)
+	_rule.key_pressed.connect(_player_input_effects.spawn_key_beam)
 	_setup_hud()
 	_audio.setup(self, songplayer, CM.parsed_chart, _clock)
 	_rule.note_judged.connect(_on_note_judged)
@@ -90,6 +96,7 @@ func _exit_tree() -> void:
 
 func reset() -> void:
 	set_process(true)
+	_player_input_effects.reset()
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	paused = false
 	_result_started = false
@@ -162,6 +169,7 @@ func _update_game(delta: float) -> void:
 		return
 
 	Game.current_time = frame.time
+	_player_input_effects.tint = _visuals.rail_color
 	_replay_recorder.record(frame.inputs)
 
 	_spawner.spawn(frame.time, _rule.standing_rail)
@@ -286,6 +294,8 @@ func _on_note_judged(
 		return
 
 	player.spawn_hit_stars()
+	if state.note.type == Note.NoteType.MOVE:
+		_player_input_effects.spawn_move_wave(state.note.dir)
 	if not is_release and state.note.type != Note.NoteType.MOVE:
 		player.play_hit_animation(state.note)
 	if is_release:

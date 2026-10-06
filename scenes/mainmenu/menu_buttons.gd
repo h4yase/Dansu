@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends BoxContainer
 class_name MainMenuButtons
 
 @export var play_button: MenuBigButton

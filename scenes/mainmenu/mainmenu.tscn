@@ -1736,6 +1736,7 @@ menu = NodePath("..")
 
 [node name="Play" parent="MenuButtons" unique_id=869280924 instance=ExtResource("4_da4vi")]
 layout_mode = 2
+offset_transform_enabled = true
 button_text = "MENU_PLAY"
 icon_texture = ExtResource("13_hqrtg")
 hover_scale = 1.04
@@ -1889,6 +1890,7 @@ visible = false
 layout_mode = 1
 
 [node name="PlaylistPanel" parent="." unique_id=789640518 instance=ExtResource("36_playlists")]
+visible = false
 layout_mode = 1
 
 [node name="DeleteChartDialog" type="ConfirmationDialog" parent="." unique_id=2045817839]
