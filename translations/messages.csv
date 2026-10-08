@@ -1,24 +1,24 @@
 keys,en,ko,ja,zh
-HINT_USERNAME_SETUP,Choose a username to continue.,계속하려면 사용할 플레이어명을 입력하세요.,続行するにはユーザー名を入力してください。,请输入用户名以继续。
-HINT_USERNAME_RULES,"Use 3–24 English letters, numbers, or underscores, starting with a letter.","3~24자의 영문자, 숫자, 밑줄(_)을 사용할 수 있으며 영문자로 시작해야 합니다.",3～24文字の半角英字・数字・アンダースコアを使用でき、先頭は英字にしてください。,可使用 3～24 个英文字母、数字或下划线，且必须以英文字母开头。
-HINT_USERNAME_VISIBLE,This is how other players will see you.,다른 플레이어에게 표시되는 이름입니다.,他のプレイヤーにはこの名前が表示されます。,其他玩家将看到这个名称。
-HINT_LANGUAGE_RESTART,Restart the game to apply language changes.,언어 변경엔 재시작이 필요합니다.,言語の変更を適用するにはゲームを再起動してください。,重启游戏以应用语言更改。
-ERROR_USERNAME_TAKEN,That username is already taken.,이미 사용중인 플레이어명입니다.,そのユーザー名はすでに使用されています。,该用户名已被使用。
-ERROR_USERNAME_SAVE,Could not save the username. Please retry.,플레이어명 저장에 실패했습니다. 다시 시도해 주세요.,ユーザー名の保存に失敗しました。もう一度お試しください。,无法保存用户名，请重试。
+HINT_USERNAME_SETUP,Choose a username to continue.,계속하려면 사용할 플레이어명을 입력하세요.,続行するにはユーザー名を入力してください。,请输入昵称后继续。
+HINT_USERNAME_RULES,"Use 3–24 English letters, numbers, or underscores, starting with a letter.","3~24자의 영문자, 숫자, 밑줄(_)을 사용할 수 있으며 영문자로 시작해야 합니다.",3～24文字の半角英字・数字・アンダースコアを使用でき、先頭は英字にしてください。,可使用 3~24 个英文字母、数字，下划线（_），且必须以英文字母开头。
+HINT_USERNAME_VISIBLE,This is how other players will see you.,다른 플레이어에게 표시되는 이름입니다.,他のプレイヤーにはこの名前が表示されます。,其他玩家会看到你的昵称。
+HINT_LANGUAGE_RESTART,Restart the game to apply language changes.,언어 변경엔 재시작이 필요합니다.,言語の変更を適用するにはゲームを再起動してください。,更改语言后需重启游戏才能生效。
+ERROR_USERNAME_TAKEN,That username is already taken.,이미 사용중인 플레이어명입니다.,そのユーザー名はすでに使用されています。,该昵称已被使用。
+ERROR_USERNAME_SAVE,Could not save the username. Please retry.,플레이어명 저장에 실패했습니다. 다시 시도해 주세요.,ユーザー名の保存に失敗しました。もう一度お試しください。,无法保存昵称，请重试。
 HINT_SIGN_IN_DOWNLOAD,"Sign in with Steam, then press Play again.",Steam으로 로그인한 후 플레이 버튼을 다시 눌러 주세요.,Steamでログインしてから、もう一度プレイを押してください。,请使用 Steam 登录，然后再次点击游玩。
 HINT_SIGN_IN_STEAM,"Sign in to the Steam client, then retry.",스팀 로그인 후 다시 시도해 주세요.,Steamクライアントにログインしてから、もう一度お試しください。,请登录 Steam 客户端后重试。
-ERROR_SESSION_EXPIRED,Session expired.,로그인 정보가 만료되었습니다.,セッションの有効期限が切れました。,会话已过期。
-ERROR_SERVER_CHANGED,Server changed. Sign in again.,서버가 변경되었으니 다시 로그인해 주십시오.,サーバーが変更されました。もう一度ログインしてください。,服务器已更改，请重新登录。
+ERROR_SESSION_EXPIRED,Session expired.,로그인 정보가 만료되었습니다.,セッションの有効期限が切れました。,登录状态已过期。
+ERROR_SERVER_CHANGED,Server changed. Sign in again.,서버가 변경되었으니 다시 로그인해 주십시오.,サーバーが変更されました。もう一度ログインしてください。,服务器已变更，请重新登录。
 ERROR_SERVER_URL,Use an HTTPS API URL.,HTTPS API 주소를 사용해주세요.,HTTPSのAPI URLを使用してください。,请使用 HTTPS API 地址。
 ERROR_SIGN_IN_FORBIDDEN,This account cannot sign in.,이 계정으로는 로그인할 수 없습니다.,このアカウントではログインできません。,此账号无法登录。
 ERROR_STEAM_SERVER,Steam sign-in is unavailable on the server. Please retry later.,서버에서 Steam 로그인을 이용할 수 없습니다. 나중에 다시 시도해 주세요.,サーバーでSteamログインを利用できません。しばらくしてからお試しください。,服务器暂时无法使用 Steam 登录，请稍后重试。
-CONFIRM_SAVE_CHANGES,Save changes before leaving?,나가기 전에 변경 사항을 저장하시겠습니까?,終了する前に変更を保存しますか？,离开前保存更改吗？
+CONFIRM_SAVE_CHANGES,Save changes before leaving?,나가기 전에 변경 사항을 저장하시겠습니까?,終了する前に変更を保存しますか？,离开前要保存更改吗？
 ACTION_SAVE_AND_LEAVE,Save and leave,저장 후 나가기,保存して終了,保存并离开
 ACTION_LEAVE_UNSAVED,Leave without saving,저장하지 않고 나가기,保存せずに終了,不保存并离开
-CONFIRM_DELETE_CHART,Move this difficulty to the Recycle Bin?,이 난이도를 휴지통으로 옮길까요?,この難易度をゴミ箱に移動しますか？,将此难度移入回收站吗？
-CONFIRM_DELETE_DIFFICULTY,Move difficulty '%s' to the Recycle Bin?,해당 난이도(%s)를 휴지통으로 옮기겠습니까?,難易度「%s」をゴミ箱に移動しますか？,将难度“%s”移入回收站吗？
-CONFIRM_DELETE_CHARTSET,"Move chart '%s', including all difficulties and related files, to the Recycle Bin?",채보 '%s'의 모든 난이도와 관련 파일을 휴지통으로 옮길까요?,譜面「%s」のすべての難易度と関連ファイルをゴミ箱に移動しますか？,将谱面“%s”的所有难度和相关文件移入回收站吗？
-HINT_DELETE_LAST_DIFFICULTY,This is the last difficulty. Use Delete Chart to remove the entire chart.,마지막 난이도입니다. 채보 전체 삭제를 사용해 주세요.,最後の難易度です。「譜面をすべて削除」を使ってください。,这是最后一个难度，请使用“删除整份谱面”。
+CONFIRM_DELETE_CHART,Move this difficulty to the Recycle Bin?,이 난이도를 휴지통으로 옮길까요?,この難易度をゴミ箱に移動しますか？,确定要将此难度移入回收站吗？
+CONFIRM_DELETE_DIFFICULTY,Move difficulty '%s' to the Recycle Bin?,해당 난이도(%s)를 휴지통으로 옮기겠습니까?,難易度「%s」をゴミ箱に移動しますか？,确定要将难度“%s”移入回收站吗？
+CONFIRM_DELETE_CHARTSET,"Move chart '%s', including all difficulties and related files, to the Recycle Bin?",채보 '%s'의 모든 난이도와 관련 파일을 휴지통으로 옮길까요?,譜面「%s」のすべての難易度と関連ファイルをゴミ箱に移動しますか？,确定要将谱面“%s”的所有难度及相关文件移入回收站吗？
+HINT_DELETE_LAST_DIFFICULTY,This is the last difficulty. Use Delete Chart to remove the entire chart.,마지막 난이도입니다. 채보 전체 삭제를 사용해 주세요.,最後の難易度です。「譜面をすべて削除」を使ってください。,如需删除，请使用“删除整份谱面”。
 ERROR_DELETE_CHART,Failed to delete %s.,파일 삭제에 실패했습니다. %s,%sの削除に失敗しました。,删除 %s 失败。
 NOTICE_CHART_DELETED,%s moved to the Recycle Bin.,다음 파일이 휴지통으로 옮겨졌습니다: %s,%sをゴミ箱に移動しました。,%s 已移入回收站。
 ERROR_CHART_NOT_SELECTED,Select a difficulty first.,선택된 난이도가 없습니다.,先に難易度を選択してください。,请先选择难度。
@@ -28,42 +28,42 @@ ERROR_CHART_OPEN_FAILED,Could not open difficulty: %s,채보 파일을 열지 �
 ERROR_CHART_VERSION,Unsupported difficulty file version: %s,지원하지 않는 파일 버전입니다: %s,未対応の難易度ファイルのバージョンです：%s,不支持的难度文件版本：%s
 ERROR_CHART_PLAYTEST,Select a difficulty to test play.,테스트 플레이할 난이도를 선택해 주세요.,テストプレイする難易度を選択してください。,请选择要试玩的难度。
 ERROR_PLAYTEST_AUDIO,audio file is required for playtest,테스트 플레이엔 오디오 파일이 필요합니다.,テストプレイには音声ファイルが必要です,试玩需要音频文件
-ERROR_DIFFICULTY_FILENAME,This difficulty name cannot be used as a filename. Choose another name.,파일 이름으로 사용할 수 없는 난이도명입니다. 다른 이름을 입력해 주세요.,この難易度名はファイル名に使えません。別の名前を入力してください。,此难度名称不能用作文件名，请输入其他名称。
-ERROR_AUDIO_LOAD,Failed to load audio file,음악 파일을 불러오지 못했습니다.,音声ファイルの読み込みに失敗しました,音频文件加载失败
-ERROR_COVER_LOAD,Failed to load cover file,커버 이미지를 불러오지 못했습니다.,カバー画像の読み込みに失敗しました,封面文件加载失败
+ERROR_DIFFICULTY_FILENAME,This difficulty name cannot be used as a filename. Choose another name.,파일 이름으로 사용할 수 없는 난이도명입니다. 다른 이름을 입력해 주세요.,この難易度名はファイル名に使えません。別の名前を入力してください。,此难度名称不能作为文件名，请输入其他名称。
+ERROR_AUDIO_LOAD,Failed to load audio file,음악 파일을 불러오지 못했습니다.,音声ファイルの読み込みに失敗しました,音频文件加载失败。
+ERROR_COVER_LOAD,Failed to load cover file,커버 이미지를 불러오지 못했습니다.,カバー画像の読み込みに失敗しました,封面文件加载失败。
 ERROR_NOTE_OUTSIDE_RAIL,You cannot place notes outside the rails.,레일 밖에 노트를 배치할 수 없습니다.,レールの外にはノーツを配置できません。,不能在轨道外放置音符。
-ERROR_RAIL_MERGE_OVERLAP,rails can only merge when their time ranges do not overlap,레일은 범위가 겹치지 않을때 병합이 가능합니다.,時間範囲が重なっていないレール同士のみ結合できます,仅当时间范围不重叠时才能合并轨道
-ERROR_EVENT_NO_SPACE,No space for the selected events,이벤트를 배치할 공간이 없습니다.,選択したイベントを配置するスペースがありません,没有空间放置所选事件
-ERROR_OVERLAY_OCCUPIED,Overlay position is occupied,오버레이의 위치가 겹칩니다.,そのオーバーレイ位置はすでに使用されています,该叠加层位置已被占用
-HINT_FILTER_NUMBER,"Enter a non-negative number, or leave the field empty.",0 이상의 숫자를 입력하거나 비워 두세요.,0以上の数値を入力するか、空欄にしてください。,请输入非负数，或将此项留空。
+ERROR_RAIL_MERGE_OVERLAP,rails can only merge when their time ranges do not overlap,레일은 범위가 겹치지 않을때 병합이 가능합니다.,時間範囲が重なっていないレール同士のみ結合できます,仅当时间范围不重叠时才能合并轨道。
+ERROR_EVENT_NO_SPACE,No space for the selected events,이벤트를 배치할 공간이 없습니다.,選択したイベントを配置するスペースがありません,此处没有足够空间放置所选事件。
+ERROR_OVERLAY_OCCUPIED,Overlay position is occupied,오버레이의 위치가 겹칩니다.,そのオーバーレイ位置はすでに使用されています,该叠加层位置已被占用。
+HINT_FILTER_NUMBER,"Enter a non-negative number, or leave the field empty.",0 이상의 숫자를 입력하거나 비워 두세요.,0以上の数値を入力するか、空欄にしてください。,请输入非负数，或留空。
 NOTICE_SEARCH_EMPTY,No charts match these filters.,이 필터에 일치하는 채보가 없습니다.,条件に一致する譜面がありません。,没有符合筛选条件的谱面。
 ERROR_SEARCH_START,Could not load the song list. Please retry.,곡 목록을 불러오지 못했습니다. 다시 시도해 주세요.,楽曲一覧を読み込めませんでした。もう一度お試しください。,无法加载歌曲列表，请重试。
-ERROR_SEARCH_FILTERS,The server rejected these filters. Check the ranges.,지원하지 않는 검색 범위입니다.,サーバーが検索条件を拒否しました。範囲を確認してください。,服务器拒绝了这些筛选条件，请检查范围。
+ERROR_SEARCH_FILTERS,The server rejected these filters. Check the ranges.,지원하지 않는 검색 범위입니다.,サーバーが検索条件を拒否しました。範囲を確認してください。,服务器无法接受这些筛选条件，请检查数值范围。
 ERROR_SERVER_CONNECTION,Cannot reach the server. Check your connection and retry.,서버에 연결할 수 없습니다. 네트워크 연결을 확인한 후 다시 시도해 주세요.,サーバーに接続できません。ネットワーク接続を確認して、もう一度お試しください。,无法连接到服务器。请检查网络连接后重试。
-ERROR_REQUEST_FAILED,Could not complete the request. Please retry later.,요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.,処理できませんでした。しばらくしてからお試しください。,无法完成请求，请稍后重试。
+ERROR_REQUEST_FAILED,Could not complete the request. Please retry later.,요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.,処理できませんでした。しばらくしてからお試しください。,请求失败，请稍后重试。
 ERROR_CONTENT_FORBIDDEN,This account cannot access this content.,이 계정으로는 해당 콘텐츠에 접근할 수 없습니다.,このアカウントではこのコンテンツにアクセスできません。,此账号无法访问该内容。
 NOTICE_PLAYLISTS_EMPTY,No playlists yet.,아직 재생목록이 없습니다.,まだプレイリストがありません。,暂无播放列表。
-ERROR_PLAYLIST_LOAD,Could not load playlists. Restart the game to sync again.,재생목록을 불러올 수 없습니다. 게임을 재시작하여 재생 목록 동기화 해주세요.,プレイリストを読み込めませんでした。ゲームを再起動して再同期してください。,无法加载播放列表。请重启游戏以重新同步。
+ERROR_PLAYLIST_LOAD,Could not load playlists. Restart the game to sync again.,재생목록을 불러올 수 없습니다. 게임을 재시작하여 재생 목록 동기화 해주세요.,プレイリストを読み込めませんでした。ゲームを再起動して再同期してください。,无法加载播放列表。请重启游戏后重新同步。
 ERROR_PLAYLIST_NOT_FOUND,Playlist not found.,재생목록을 찾을 수 없습니다.,プレイリストが見つかりません。,未找到播放列表。
 ERROR_PLAYLIST_METADATA,Some charts in this playlist could not be loaded.,재생목록의 일부 채보를 불러오지 못했습니다.,プレイリストの一部の譜面を読み込めませんでした。,无法加载此播放列表中的部分谱面。
-ERROR_LOVED_UPDATE,Could not update Loved.,즐겨찾기 갱신에 실패했습니다.,Lovedを更新できませんでした。,无法更新 Loved。
+ERROR_LOVED_UPDATE,Could not update Loved.,즐겨찾기 갱신에 실패했습니다.,Lovedを更新できませんでした。,无法更新收藏。
 NOTICE_LEADERBOARD_EMPTY,No scores yet.,등록된 점수가 없습니다.,スコアがありません。,暂无成绩。
-NOTICE_LEADERBOARD_MISSING,No leaderboard for this chart.,리더보드를 지원하지 않는 채보입니다.,この譜面にはリーダーボードがありません。,此谱面没有排行榜。
+NOTICE_LEADERBOARD_MISSING,No leaderboard for this chart.,리더보드를 지원하지 않는 채보입니다.,この譜面にはリーダーボードがありません。,此谱面暂无排行榜。
 ERROR_LEADERBOARD_LOAD,Could not load leaderboard.,리더보드를 불러올 수 없습니다.,リーダーボードを読み込めませんでした。,无法加载排行榜。
 ERROR_SCORE_DETAILS_LOAD,Score details are unavailable. Close and retry.,점수 상세 정보를 볼 수 없습니다. 닫은 후 다시 시도해 주세요.,スコアの詳細を表示できません。閉じてからもう一度お試しください。,无法查看分数详情，请关闭后重试。
-ERROR_JUDGEMENT_COUNTS,Judgement counts unavailable,판정 개수를 확인할 수 없습니다.,判定数を確認できません。,判定数量不可用
+ERROR_JUDGEMENT_COUNTS,Judgement counts unavailable,판정 개수를 확인할 수 없습니다.,判定数を確認できません。,无法获取判定次数。
 ERROR_REPLAY_DOWNLOAD,Could not download replay. Try again.,리플레이를 다운로드할 수 없습니다. 다시 시도해 주세요.,リプレイをダウンロードできませんでした。もう一度お試しください。,无法下载回放，请重试。
 ERROR_REPLAY_PLAY,Could not play replay.,리플레이를 재생할 수 없습니다.,リプレイを再生できませんでした。,无法播放回放。
 ERROR_REPLAY_VERSION,Replay does not match the chart version.,리플레이가 채보 버전과 일치하지 않습니다.,リプレイと譜面のバージョンが一致しません。,回放与谱面版本不匹配。
 ERROR_REPLAY_REMOVED,Replay is no longer available.,더 이상 이용할 수 없는 리플레이입니다.,このリプレイは利用できなくなりました。,该回放已不可用。
 ERROR_REPLAY_SAVE,Failed to save replay.,리플레이를 저장하지 못했습니다.,リプレイの保存に失敗しました。,回放保存失败。
-HINT_REPLAY_DOWNLOAD_CHART,Download or update this chart before watching the replay.,리플레이를 재생하기 전에 이 채보를 다운로드하거나 업데이트해주세요.,リプレイを見る前に、この譜面をダウンロードまたは更新してください。,观看回放前，请下载或更新此谱面。
-ERROR_SCORE_RECORD,Could not save your play record. Check free disk space.,플레이 기록을 저장하지 못했습니다. 저장 공간을 확인해 주세요.,プレイ記録を保存できませんでした。空き容量を確認してください。,无法保存游玩记录，请检查可用空间。
-ERROR_SCORE_REVISION,This record does not match the current chart version. Update the chart and play again.,이 기록은 현재 채보 버전과 맞지 않습니다. 채보를 업데이트하고 다시 플레이해 주세요.,この記録は現在の譜面バージョンと一致しません。譜面を更新して、もう一度プレイしてください。,此记录与当前谱面版本不符，请更新谱面后重新游玩。
-NOTICE_SCORE_SAVED_OFFLINE,Score was saved locally.,플레이 기록을 로컬로 저장했습니다.,スコアをローカルに保存しました。,成绩已保存到本地。
+HINT_REPLAY_DOWNLOAD_CHART,Download or update this chart before watching the replay.,리플레이를 재생하기 전에 이 채보를 다운로드하거나 업데이트해주세요.,リプレイを見る前に、この譜面をダウンロードまたは更新してください。,播放回放前，请下载或更新此谱面。
+ERROR_SCORE_RECORD,Could not save your play record. Check free disk space.,플레이 기록을 저장하지 못했습니다. 저장 공간을 확인해 주세요.,プレイ記録を保存できませんでした。空き容量を確認してください。,无法保存游玩记录，请检查磁盘剩余空间。
+ERROR_SCORE_REVISION,This record does not match the current chart version. Update the chart and play again.,이 기록은 현재 채보 버전과 맞지 않습니다. 채보를 업데이트하고 다시 플레이해 주세요.,この記録は現在の譜面バージョンと一致しません。譜面を更新して、もう一度プレイしてください。,此记录与当前谱面版本不匹配，请更新谱面后重新游玩。
+NOTICE_SCORE_SAVED_OFFLINE,Score was saved locally.,플레이 기록을 로컬로 저장했습니다.,スコアをローカルに保存しました。,当前处于离线状态，游玩记录已保存到本地。
 ERROR_OFFICIAL_CHART_MISSING,This Original chart is not installed.,이 오리지널 채보가 설치되어 있지 않습니다.,このオリジナル譜面はインストールされていません。,此原创谱面尚未安装。
-ERROR_CACHED_CHART_MISSING,The cached chart is unavailable. Download it again.,저장된 채보를 사용할 수 없습니다. 다시 다운로드해 주세요.,キャッシュされた譜面を利用できません。もう一度ダウンロードしてください。,缓存的谱面不可用，请重新下载。
-ERROR_INSTALLED_CHART_OPEN,The installed chart could not be opened.,설치된 채보를 열 수 없습니다.,インストール済みの譜面を開けませんでした。,无法打开已安装的谱面。
+ERROR_CACHED_CHART_MISSING,The cached chart is unavailable. Download it again.,저장된 채보를 사용할 수 없습니다. 다시 다운로드해 주세요.,キャッシュされた譜面を利用できません。もう一度ダウンロードしてください。,已保存的谱面不可用，请重新下载。
+ERROR_INSTALLED_CHART_OPEN,The installed chart could not be opened.,설치된 채보를 열 수 없습니다.,インストール済みの譜面を開けませんでした。,无法打开已保存的谱面。
 ERROR_CHART_REVISION_LOOKUP,Could not resolve the online chart version.,온라인 채보 버전을 확인할 수 없습니다.,オンラインの譜面バージョンを確認できませんでした。,无法获取在线谱面版本。
 HINT_CHART_AUTO_UPDATE,A new chart version is available. Updating…,새 버전이 있습니다. 채보 업데이트 중…,譜面の新しいバージョンがあります。更新中…,发现谱面新版本，正在更新…
 NOTICE_CHART_UPDATED,Chart updated.,채보가 업데이트되었습니다.,譜面を更新しました。,谱面已更新。
@@ -73,7 +73,7 @@ ERROR_DOWNLOAD_PACKAGE,The downloaded chart is damaged or incomplete. Download i
 ERROR_PACKAGE_CHANGED,This chart was updated. Refresh the list and retry.,채보가 업데이트되었습니다. 목록을 새로고침한 후 다시 시도해 주세요.,譜面が更新されました。一覧を更新して、もう一度お試しください。,此谱面已更新，请刷新列表后重试。
 ERROR_CHARTSET_BACKUP,Could not back up the existing chart. Close any files and retry.,기존 채보를 백업할 수 없습니다. 열려 있는 파일을 닫고 다시 시도해 주세요.,既存の譜面をバックアップできませんでした。ファイルを閉じて、もう一度お試しください。,无法备份现有谱面。请关闭相关文件后重试。
 ERROR_PACKAGE_SIZE,This chart exceeds the download size limit.,채보가 다운로드 용량 제한을 초과합니다.,譜面がダウンロードの容量制限を超えています。,此谱面超出了下载容量限制。
-CONFIRM_PUBLISH_CHARTSET,Publish this chart to the online catalogue?,이 채보를 커뮤니티 목록에 게시하겠습니까?,この譜面をオンラインカタログに公開しますか？,将此谱面发布到在线目录吗？
+CONFIRM_PUBLISH_CHARTSET,Publish this chart to the online catalogue?,이 채보를 커뮤니티 목록에 게시하겠습니까?,この譜面をオンラインカタログに公開しますか？,将此谱面发布到在线社区列表吗？
 CONFIRM_REPLACE_RANKED_CHARTSET,"Update this chart?
 You must include all existing difficulties.","채보를 업데이트할까요?
 기존 난이도를 모두 포함해야 합니다.","譜面を更新しますか？
@@ -83,33 +83,33 @@ CONFIRM_REPLACE_CHARTSET,"Update this chart?
 Difficulties not included in this upload will be deleted from the server.","채보를 업데이트할까요?
 삭제된 난이도는 서버에서 제거됩니다.","譜面を更新しますか？
 今回のアップロードに含まれない難易度はサーバーから削除されます。","更新此谱面吗？
-本次上传中未包含的难度将从服务器删除。"
+本次上传未包含的难度将从服务器删除。"
 HINT_PUBLISH_CONTENTS,"
 Includes all difficulties, music, images and skins in this folder.","
 이 폴더의 모든 난이도, 음악, 이미지, 스킨 파일이 포함됩니다.","
 このフォルダーのすべての難易度、楽曲、画像、スキンが含まれます。","
-包含此文件夹中的所有难度、音乐、图片和皮肤文件。"
+包含此文件夹中的所有难度、音乐、图片和皮肤。"
 HINT_PUBLISH_BUILTIN,Built-in upload is available for this chart.,이 채보는 내장 업로드를 사용할 수 있습니다.,この譜面では組み込みアップロードを利用できます。,此谱面可使用内置上传。
-HINT_PUBLISH_BUILTIN_REPLACE,Regular updates are locked. Adding this chart to the game replaces it as a ranked Original chart.,이 채보는 일반 업데이트가 제한되어 있습니다.,通常の更新は制限されています。ゲームに追加すると、ランク対象のオリジナル譜面に置き換わります。,普通更新已被锁定，添加到游戏后将替换为参与排位的原创谱面。
+HINT_PUBLISH_BUILTIN_REPLACE,Regular updates are locked. Adding this chart to the game replaces it as a ranked Original chart.,이 채보는 일반 업데이트가 제한되어 있습니다.,通常の更新は制限されています。ゲームに追加すると、ランク対象のオリジナル譜面に置き換わります。,普通更新已被锁定，添加到游戏后将替换为已上架的原创谱面。
 NOTICE_PUBLISH_PREPARING,Checking the published version and preparing files…,게시된 버전을 확인하고 파일을 준비하는 중…,公開済みバージョンを確認し、ファイルを準備しています…,正在检查已发布版本并准备文件…
 NOTICE_PUBLISH_UPLOADING,Uploading chart…,채보 업로드 중…,譜面をアップロード中…,正在上传谱面…
 NOTICE_PUBLISHED,chart published successfully.,채보가 성공적으로 업로드 되었습니다.,譜面を公開しました。,谱面发布成功。
 NOTICE_PUBLISHED_BUILTIN,Chart published and added to the game.,Chart published and added to the game.,Chart published and added to the game.,Chart published and added to the game.
-ERROR_PUBLISH_OWNER,Only the original uploader can update this chart.,업로더만 채보를 업데이트 할 수 있습니다.,この譜面を更新できるのは最初の投稿者だけです。,只有原始上传者可以更新此谱面。
-ERROR_PUBLISH_LOCKED,approved and ranked charts cannot be updated.,승인됐거나 랭크된 채보는 업데이트할 수 없습니다.,オリジナル・承認済み・ランク対象の譜面はここでは更新できません。,原创、已审核和排位谱面无法在此更新。
+ERROR_PUBLISH_OWNER,Only the original uploader can update this chart.,업로더만 채보를 업데이트 할 수 있습니다.,この譜面を更新できるのは最初の投稿者だけです。,只有原上传者可以更新此谱面。
+ERROR_PUBLISH_LOCKED,approved and ranked charts cannot be updated.,승인됐거나 랭크된 채보는 업데이트할 수 없습니다.,オリジナル・承認済み・ランク対象の譜面はここでは更新できません。,达标和上架谱面无法更新。
 ERROR_PUBLISH_UNSUPPORTED,Chart uploads are currently unavailable. Please retry later.,지금은 채보를 업로드할 수 없습니다. 잠시 후 다시 시도해 주세요.,現在、譜面をアップロードできません。しばらくしてからお試しください。,暂时无法上传谱面，请稍后重试。
 ERROR_PUBLISH_LOOKUP,Could not check the published version. Retry.,게시된 버전을 확인할 수 없습니다. 다시 시도해 주세요.,公開済みバージョンを確認できませんでした。もう一度お試しください。,无法检查已发布版本，请重试。
 ERROR_UPLOAD_START,"Could not prepare the upload. Check the chart files and free disk space, then retry.",업로드를 준비하지 못했습니다. 채보 파일과 저장 공간을 확인한 후 다시 시도해 주세요.,アップロードの準備ができませんでした。譜面ファイルと空き容量を確認して、もう一度お試しください。,无法准备上传，请检查谱面文件和可用空间后重试。
 ERROR_UPLOAD_CONNECTION,Upload failed. Check your connection and retry.,업로드에 실패했습니다. 연결 상태를 확인하고 다시 시도해 주세요.,アップロードに失敗しました。ネットワーク接続を確認して、もう一度お試しください。,上传失败。请检查网络连接后重试。
 ERROR_UPLOAD_SOURCE,Could not read the chart folder.,채보 폴더를 읽을 수 없습니다.,譜面フォルダーを読み取れませんでした。,无法读取谱面文件夹。
 ERROR_UPLOAD_EMPTY,The chart folder is empty.,채보 폴더가 비어 있습니다.,譜面フォルダーが空です。,谱面文件夹为空。
-ERROR_UPLOAD_LIMIT,"A chart may contain up to 100 MiB and 5,000 files or folders.","채보의 용량은 최대 100 MiB이며, 파일과 폴더는 각각 5,000개까지 포함할 수 있습니다.","譜面は最大100 MiB、ファイルとフォルダーはそれぞれ5,000個までです。","谱面最大为 100 MiB，文件和文件夹各不得超过 5,000 个。"
+ERROR_UPLOAD_LIMIT,"A chart may contain up to 100 MiB and 5,000 files or folders.","채보의 용량은 최대 100 MiB이며, 파일과 폴더는 각각 5,000개까지 포함할 수 있습니다.","譜面は最大100 MiB、ファイルとフォルダーはそれぞれ5,000個までです。","谱面最大为 100 MiB，文件和文件夹不得超过 5,000 个。"
 ERROR_UPLOAD_FILENAME,A chart resource has an unsupported filename: %s,지원하지 않는 파일명의 채보 리소스가 있습니다: %s,譜面リソースに未対応のファイル名があります: %s,谱面资源使用了不支持的文件名：%s
 ERROR_UPLOAD_FILE_READ,Could not read: %s,읽을 수 없습니다: %s,%sを読み取れませんでした。,无法读取：%s
 ERROR_UPLOAD_RESOURCE_CHANGED,A chart file changed during upload preparation. Please retry.,업로드 준비 중 채보 파일이 변경되었습니다. 다시 시도해 주세요.,アップロードの準備中に譜面ファイルが変更されました。もう一度お試しください。,准备上传时谱面文件发生了变化，请重试。
-ERROR_PACK_ID,Invalid pack ID.,유효하지 않은 팩 ID입니다.,パックIDが無効です。,包 ID 无效。
+ERROR_PACK_ID,Invalid pack ID.,유효하지 않은 팩 ID입니다.,パックIDが無効です。,无效的曲包 ID。
 ERROR_BUILTIN_PUBLISHED_INSTALL,"Published successfully, but could not add the chart to the game. Check the log.",게시했지만 게임에 채보를 추가하지 못했습니다. 로그를 확인해 주세요.,公開できましたが、ゲームに譜面を追加できませんでした。ログを確認してください。,发布成功，但无法将谱面添加到游戏中，请查看日志。
-SETTINGS_GRAPHICS,Graphics,그래픽,グラフィック,图形
+SETTINGS_GRAPHICS,Graphics,그래픽,グラフィック,画面
 SETTINGS_AUDIO,Audio,오디오,オーディオ,音频
 SETTINGS_GAMEPLAY,Gameplay,게임 플레이,ゲームプレイ,游戏
 SETTINGS_KEYBINDS,Keybinds,키 설정,キー設定,按键设置
@@ -122,12 +122,12 @@ SETTINGS_MASTER_VOLUME,Master,전체 음량,マスター,主音量
 SETTINGS_MUSIC_VOLUME,Music,음악 음량,音楽,音乐
 SETTINGS_SFX_VOLUME,SFX,효과음 음량,効果音,音效
 SETTINGS_HITSOUND_VOLUME,hitsound,히트사운드 음량,ヒットサウンド,打击音效
-SETTINGS_AUDIO_OFFSET,Audio Offset,음악 싱크 조절,オーディオオフセット,音频偏移
-SETTINGS_NOTE_SPEED,Note Speed,노트 속도,ノーツ速度,音符速度
+SETTINGS_AUDIO_OFFSET,Audio Offset,음악 싱크 조절,オーディオオフセット,偏移量
+SETTINGS_NOTE_SPEED,Note Speed,노트 속도,ノーツ速度,下落速度
 SETTINGS_JUDGMENT_LINE_POSITION,Judgment Line Position,판정선 위치,判定ラインの位置,判定线位置
-SETTINGS_PLAYER_SIZE,Player Size,플레이어 크기,プレイヤーサイズ,玩家大小
+SETTINGS_PLAYER_SIZE,Player Size,플레이어 크기,プレイヤーサイズ,角色大小
 SETTINGS_PLAY_AREA_TILT,Play Area Tilt,플레이 영역 기울기,プレイエリアの傾き,游玩区域倾斜角度
-SETTINGS_IGNORE_CHART_SKIN,Ignore Chart Skin,채보 스킨 사용 안 함,譜面スキンを無視,忽略谱面皮肤
+SETTINGS_IGNORE_CHART_SKIN,Ignore Chart Skin,채보 스킨 사용 안 함,譜面スキンを無視,忽略所有谱面自带的皮肤
 SETTINGS_MOVE_LEFT,move left,왼쪽 이동,左へ移動,向左移动
 SETTINGS_MOVE_RIGHT,move right,오른쪽 이동,右へ移動,向右移动
 SETTINGS_NOTE_HIT_1,Note Hit 1,노트 입력 1,ノーツ入力1,音符按键1
@@ -138,8 +138,8 @@ SETTINGS_SERVER_API,Server API,서버 API,サーバーAPI,服务器 API
 SETTINGS_FULLSCREEN,Fullscreen,전체 창 모드,フルスクリーン,全屏
 SETTINGS_WINDOWED,Windowed,창 모드,ウィンドウ,窗口化
 SETTINGS_EXCLUSIVE_FULLSCREEN,Exclusive,전체 화면,排他フルスクリーン,独占全屏
-SETTINGS_DISABLED,Disabled,비활성화,無効,关闭
-SETTINGS_ENABLED,Enabled,활성화,有効,开启
+SETTINGS_DISABLED,Disabled,비활성화,無効,禁用
+SETTINGS_ENABLED,Enabled,활성화,有効,启用
 SETTINGS_VSYNC_ADAPTIVE,Adaptive,적응형,アダプティブ,自适应
 SETTINGS_VSYNC_MAILBOX,Mailbox,메일박스,メールボックス,邮箱模式
 SETTINGS_AA_OFF,Off,끄기,オフ,关闭
@@ -149,25 +149,25 @@ FILTER_TITLE,Search options,검색 필터,検索オプション,搜索选项
 FILTER_SORT_BY,Sort by,정렬 기준,並び順,排序方式
 FILTER_REVERSE_ORDER,Reverse order,역순,逆順,倒序
 FILTER_STATUS,status,랭크 상태,ステータス,状态
-FILTER_RANKED,Ranked,랭크됨,Ranked,Ranked
-FILTER_APPROVED,Approved,승인됨,Approved,Approved
-FILTER_UNRANKED,Unranked,비랭크,非ランク,非排位
-FILTER_DURATION,Duration,곡 길이,長さ（秒）,时长（秒）
+FILTER_RANKED,Ranked,랭크됨,Ranked,上架
+FILTER_APPROVED,Approved,승인됨,Approved,达标
+FILTER_UNRANKED,Unranked,비랭크,非ランク,未上架
+FILTER_DURATION,Duration,곡 길이,長さ（秒）,时长
 FILTER_RATING,rating,난이도,レーティング,定数
 FILTER_PLAY_HISTORY,Play history,플레이 기록,プレイ履歴,游玩记录
-FILTER_ANY_HISTORY,Any,전체,すべて,任意
-FILTER_PLAYED,Played,플레이함,プレイ済み,已游玩
-FILTER_NOT_PLAYED,Not played,플레이하지 않음,未プレイ,未游玩
+FILTER_ANY_HISTORY,Any,전체,すべて,全部
+FILTER_PLAYED,Played,플레이함,プレイ済み,玩过
+FILTER_NOT_PLAYED,Not played,플레이하지 않음,未プレイ,没玩过
 FILTER_CONTENT,Content,콘텐츠,コンテンツ,内容
 FILTER_INCLUDE_NSFL,Include NSFL,NSFL 포함,NSFLを含める,包含 NSFL
-FILTER_MAX_DOWNLOAD,Max download (MiB),최대 다운로드 용량 (MiB),最大ダウンロード容量（MiB）,最大下载量（MiB）
+FILTER_MAX_DOWNLOAD,Max download (MiB),최대 다운로드 용량 (MiB),最大ダウンロード容量（MiB）,最大下载大小 (MiB)
 FILTER_NO_LIMIT,No limit,제한 없음,制限なし,无限制
 FILTER_RESET,Reset,초기화,リセット,重置
 FILTER_CANCEL,Cancel,취소,キャンセル,取消
 FILTER_APPLY,Apply,적용,適用,应用
 FILTER_SORT_NEWEST,Newest,최신순,新着順,最新
 FILTER_SORT_LENGTH,Length,곡 길이,長さ,时长
-FILTER_SORT_FARMING,Farming,파밍,Farming,Farming
+FILTER_SORT_FARMING,Farming,파밍,Farming,刷分
 FILTER_SORT_POPULARITY,Popularity,인기순,人気順,热度
 FILTER_SORT_TITLE,Title,곡 제목,タイトル,标题
 FILTER_SORT_ARTIST,Artist,아티스트,アーティスト,艺术家
@@ -179,7 +179,7 @@ EDITOR_EVENT_EDITOR,Event Editor,이벤트 에디터,イベントエディター
 EDITOR_BEAT_DIVISION,Beat Division,박자 나누기,拍分割,节拍细分
 EDITOR_SELECT_COVER,"select cover
 from browser",커버 이미지 선택,"ブラウザーから
-カバーを選択","从浏览器
+カバーを選択","从文件浏览器
 选择封面"
 EDITOR_SELECT_AUDIO,"select audio
 from file browser",오디오 파일 선택,"ファイルブラウザーから
@@ -199,10 +199,10 @@ EDITOR_SELECT_SKIN,Select Skin,스킨 선택,スキンを選択,选择皮肤
 EDITOR_NOTE,Note,노트,ノーツ,音符
 EDITOR_TIME,time,시간,時間,时间
 EDITOR_NOTE_TYPE,type,종류,種類,类型
-EDITOR_HIT,Hit,일반,Hit,Hit
-EDITOR_MOVE,Move,이동,Move,Move
-EDITOR_TRACE,Trace,트레이스,Trace,Trace
-EDITOR_SPIKE,Spike,장애물,Spike,Spike
+EDITOR_HIT,Hit,일반,Hit,单键
+EDITOR_MOVE,Move,이동,Move,滑动
+EDITOR_TRACE,Trace,트레이스,Trace,跟随
+EDITOR_SPIKE,Spike,장애물,Spike,障碍物
 EDITOR_DIRECTION,dir,방향,方向,方向
 EDITOR_LEFT,LEFT,왼쪽,左,左
 EDITOR_RIGHT,RIGHT,오른쪽,右,右
@@ -217,18 +217,18 @@ EDITOR_TIMING_DETECTED,"BPM %.0f · Offset %.1f ms · Confidence %.1f%% · %d ti
 EDITOR_TIMING_FAILED,Could not detect timing.,타이밍을 탐지하지 못했습니다.,タイミングを検出できませんでした。,无法检测时间点。
 EDITOR_TIMING_CHANGED,Audio or timing changed during analysis. Run detection again.,분석 중 오디오 또는 타이밍이 변경되었습니다. 다시 탐지해주세요.,解析中に音声またはタイミングが変更されました。再検出してください。,分析期间音频或时间点已更改。请重新检测。
 EDITOR_TIMING_REVIEW,Some sections are uncertain. Check the beat grid by listening.,일부 구간이 불확실합니다. 재생하며 박자선을 확인해주세요.,不確実な区間があります。再生して拍の位置を確認してください。,部分段落不确定。请播放并检查节拍线。
-EDITOR_HIT_NOTE,Hit Note,일반 노트,Hitノーツ,Hit 音符
-EDITOR_MOVE_NOTE,Move Note,이동 노트,Moveノーツ,Move 音符
-EDITOR_TRACE_NOTE,Trace Note,트레이스 노트,Traceノーツ,Trace 音符
-EDITOR_SPIKE_NOTE,Spike Note,장애물 노트,Spikeノーツ,Spike 音符
-EDITOR_LONG_RELEASE,Long Release,롱노트 해제,ロング解除,长按释放
+EDITOR_HIT_NOTE,Hit Note,일반 노트,Hitノーツ,单键音符
+EDITOR_MOVE_NOTE,Move Note,이동 노트,Moveノーツ,滑动音符
+EDITOR_TRACE_NOTE,Trace Note,트레이스 노트,Traceノーツ,跟随音符
+EDITOR_SPIKE_NOTE,Spike Note,장애물 노트,Spikeノーツ,障碍物音符
+EDITOR_LONG_RELEASE,Long Release,롱노트 해제,ロング解除,长按尾判
 EDITOR_ADD_SFX,Add new sfx,효과음 추가,効果音を追加,添加音效
-EDITOR_TOOL_RAIL,Rail (R),레일 (R),レール (R),轨道 (R)
-EDITOR_TOOL_HIT,Hit (Z),일반 노트 (Z),Hit (Z),Hit (Z)
-EDITOR_TOOL_TRACE,Trace (X),트레이스 (X),Trace (X),Trace (X)
-EDITOR_TOOL_LEFT,Left (A),왼쪽 노트 (A),左 (A),左 (A)
-EDITOR_TOOL_RIGHT,Right (D),오른쪽 노트 (D),右 (D),右 (D)
-EDITOR_TOOL_SPIKE,Spike (C),장애물 노트 (C),Spike (C),Spike (C)
+EDITOR_TOOL_RAIL,Rail,레일,レール,轨道
+EDITOR_TOOL_HIT,Hit,일반,Hit,单键
+EDITOR_TOOL_TRACE,Trace,트레이스,Trace,跟随
+EDITOR_TOOL_LEFT,Left,왼쪽,左,左滑
+EDITOR_TOOL_RIGHT,Right,오른쪽,右,右滑
+EDITOR_TOOL_SPIKE,Spike,장애물,Spike,障碍物
 EDITOR_CONTROLS,Controls,편집,操作,操作
 EDITOR_DELETE,Delete (Del),삭제 (Del),削除 (Del),删除 (Del)
 EDITOR_COPY,Copy,복사,コピー,复制
@@ -241,26 +241,26 @@ EDITOR_PLAY_TEST,Play test,플레이 테스트,テストプレイ,试玩
 EDITOR_OPEN_FILE,Open a File,파일 열기,ファイルを開く,打开文件
 EDITOR_REMOVE,REMOVE,삭제,削除,移除
 EDITOR_TIMING_BPM,BPM :,BPM :,BPM :,BPM :
-EDITOR_TIMING_TIME,Time :,시간 :,Time :,Time :
-EDITOR_POINT,point,제어점,ポイント,点
+EDITOR_TIMING_TIME,Time :,시간 :,Time :,时间：
+EDITOR_POINT,point,제어점,ポイント,控制点
 EDITOR_POSITION,position,위치,位置,位置
 EDITOR_CURVE,curve,곡률,カーブ,曲线
 EDITOR_TIMING,timing,타이밍,タイミング,时间点
-EDITOR_ZOOM,Zoom,확대 배율,ズーム,缩放
+EDITOR_ZOOM,Zoom,확대 배율,ズーム,视图缩放
 EDITOR_COLLAPSE,Collapse,접기,折りたたむ,折叠
 EDITOR_EXPAND,Expand,펼치기,展開,展开
-EDITOR_PLAY,Play,재생,プレイ,游玩
+EDITOR_PLAY,Play,재생,プレイ,播放
 EDITOR_PAUSE,Pause,일시 정지,一時停止,暂停
 EDITOR_IMPORT,Import,가져오기,インポート,导入
-EDITOR_DUPLICATE,Duplicate,복제,複製,复制
+EDITOR_DUPLICATE,Duplicate,복제,複製,创建副本
 EDITOR_SAVE_SKIN,Save skin file,스킨 파일 저장,スキンファイルを保存,保存皮肤文件
 EDITOR_NAME,name,이름,名前,名称
 EDITOR_IDLE_ANIMATION,idle animation,대기 애니메이션,待機アニメーション,待机动画
 EDITOR_LEFT_ANIMATION,move left animation,왼쪽 이동 애니메이션,左移動アニメーション,左移动画
 EDITOR_RIGHT_ANIMATION,move right animation,오른쪽 이동 애니메이션,右移動アニメーション,右移动画
 EDITOR_SCALE,scale,크기 배율,スケール,缩放
-EDITOR_HIT_ANIMATIONS,note hit animations,노트 입력 애니메이션,ノーツヒットアニメーション,音符命中动画
-EDITOR_HIT_SLOT_FIRST,hit 1,입력 1,ヒット1,命中1
+EDITOR_HIT_ANIMATIONS,note hit animations,노트 입력 애니메이션,ノーツヒットアニメーション,音符输入动画
+EDITOR_HIT_SLOT_FIRST,hit 1,입력 1,ヒット1,输入 1
 EDITOR_NEW_ANIMATION,new animation,새 애니메이션,新規アニメーション,新建动画
 EDITOR_REMOVE_FRAME,remove current frame,현재 프레임 삭제,現在のフレームを削除,删除当前帧
 EDITOR_CALCULATE_SCALE,calculate scale value,크기 배율 계산,スケール値を計算,计算缩放值
@@ -269,23 +269,23 @@ EDITOR_PLAY_PREVIEW,play preview,미리보기 재생,プレビュー再生,播�
 EDITOR_STOP_PREVIEW,stop preview,미리보기 정지,プレビュー停止,停止预览
 EDITOR_ANIMATION_FPS,animation fps,애니메이션 FPS,アニメーションFPS,动画帧率
 EDITOR_ANIMATION_EFFECT,animation effect,애니메이션 효과,アニメーション効果,动画效果
-EDITOR_IMPORT_SPRITES,Import Sprite Images,스프라이트 이미지 가져오기,スプライト画像をインポート,导入精灵图像
+EDITOR_IMPORT_SPRITES,Import Sprite Images,스프라이트 이미지 가져오기,スプライト画像をインポート,导入精灵图片
 EDITOR_REMOVE_ANIMATION,remove animation,애니메이션 삭제,アニメーションを削除,删除动画
 EDITOR_UNSAVED_CHANGES,Unsaved changes,저장하지 않은 변경 사항,未保存の変更,未保存的更改
-EDITOR_DEFERRED_ANIMATION,Deferred,스킨 기본값,遅延,延迟
+EDITOR_DEFERRED_ANIMATION,Deferred,스킨 기본값,遅延,使用默认
 EDITOR_DEFAULT,Default,기본값,デフォルト,默认
 EDITOR_NONE,None,없음,なし,无
-EDITOR_CREATE_SKIN,Create New One,새 스킨 만들기,新規作成,新建
+EDITOR_CREATE_SKIN,Create New One,새 스킨 만들기,新規作成,新建皮肤
 EDITOR_CURRENT_SKIN,%s (current),%s (현재),%s（現在）,%s（当前）
 EDITOR_NO_FRAME,No frame selected,선택된 프레임 없음,フレームが選択されていません,未选择帧
 EDITOR_CHART_SAVED,Difficulty saved.,난이도를 저장했습니다.,難易度を保存しました。,难度已保存。
 EDITOR_SAVE_FAILED,Save failed,저장 실패,保存に失敗しました,保存失败
 EDITOR_TOOL_THEME,Theme (T),테마 (T),テーマ (T),主题 (T)
-EDITOR_TOOL_CAMERA,Camera (C),카메라 (C),カメラ (C),相机 (C)
+EDITOR_TOOL_CAMERA,Camera (C),카메라 (C),カメラ (C),摄像机 (C)
 EDITOR_TOOL_SKIN,Skin (S),스킨 (S),スキン (S),皮肤 (S)
 EDITOR_TOOL_OVERLAY,Overlay (O),오버레이 (O),オーバーレイ (O),叠加层 (O)
 EDITOR_TOOL_FRAME,Frame (F),프레임 (F),フレーム (F),帧 (F)
-EDITOR_CAMERA,CAMERA,카메라,カメラ,相机
+EDITOR_CAMERA,CAMERA,카메라,カメラ,摄像机
 EDITOR_THEME,THEME,테마,テーマ,主题
 EDITOR_SKIN,SKIN,스킨,スキン,皮肤
 EDITOR_OVERLAY,OVERLAY,오버레이,オーバーレイ,叠加层
@@ -298,7 +298,7 @@ EDITOR_EVENT_ID,"ID","ID","ID","ID"
 EDITOR_START_MS,Start (ms),시작 (ms),開始 (ms),开始 (ms)
 EDITOR_DURATION,Duration,지속 시간,長さ,时长
 EDITOR_LAYER,Layer,레이어,レイヤー,图层
-EDITOR_RESOURCE,RESOURCE,리소스,リソース,资源
+EDITOR_RESOURCE,RESOURCE,리소스,リソース,素材
 EDITOR_SKIN_JSON,Skin JSON,스킨 JSON,スキンJSON,皮肤 JSON
 EDITOR_DELETE_SKIN_TRIGGER,Delete skin trigger,스킨 트리거 삭제,スキントリガーを削除,删除皮肤触发器
 EDITOR_KEYFRAMES,KEYFRAMES,키프레임,キーフレーム,关键帧
@@ -323,32 +323,32 @@ EDITOR_TIME_MS,Time (ms),시간 (ms),時間 (ms),时间 (ms)
 EDITOR_ONION_STATE,toggle onion skin (%s),어니언 스킨 전환 (%s),オニオンスキン切替（%s）,切换洋葱皮（%s）
 EDITOR_ON,on,켜짐,オン,开
 EDITOR_OFF,off,꺼짐,オフ,关
-EDITOR_HIT_SLOT,hit %d,입력 %d,ヒット%d,命中 %d
+EDITOR_HIT_SLOT,hit %d,입력 %d,ヒット%d,输入 %d
 EDITOR_EFFECT_GROOVE,groove,흔들기,グルーヴ,律动
 EDITOR_EFFECT_SPIN,spin,회전,スピン,旋转
 EDITOR_TAB_PROPERTY,Property,속성,プロパティ,属性
 EDITOR_TAB_ANIMATIONS,Animations,애니메이션,アニメーション,动画
 EDITOR_NOTE_COUNT,note count:  %d,노트 수: %d,ノーツ数: %d,音符数：%d
 EDITOR_RAIL_COUNT,rail count: %d,레일 수: %d,レール数: %d,轨道数：%d
-EDITOR_IMAGE_FILES,Image Files,이미지 파일,画像ファイル,图像文件
-EDITOR_COVER_IMAGE,Cover Image,커버 이미지,カバー画像,封面图像
+EDITOR_IMAGE_FILES,Image Files,이미지 파일,画像ファイル,图片文件
+EDITOR_COVER_IMAGE,Cover Image,커버 이미지,カバー画像,封面图片
 EDITOR_AUDIO_FILE,Audio File,오디오 파일,音声ファイル,音频文件
 EDITOR_WAV_AUDIO,WAV Audio,WAV 오디오,WAV音声,WAV 音频
-EDITOR_PNG_IMAGE,PNG Image,PNG 이미지,PNG画像,PNG 图像
-EDITOR_EASE_DEFAULT,Default (linear),기본값 (일정한 속도),デフォルト（一定速度）,默认（匀速）
-EDITOR_EASE_LINEAR,Linear,일정한 속도,一定速度,匀速
-EDITOR_EASE_IN_SINE,Sine ease in,사인 가속,サイン 加速,正弦加速
-EDITOR_EASE_OUT_SINE,Sine ease out,사인 감속,サイン 減速,正弦减速
-EDITOR_EASE_IN_OUT_SINE,Sine ease in/out,사인 가속·감속,サイン 加速・減速,正弦加速/减速
-EDITOR_EASE_IN_QUAD,Quadratic ease in,2차 가속,2次 加速,二次加速
-EDITOR_EASE_OUT_QUAD,Quadratic ease out,2차 감속,2次 減速,二次减速
-EDITOR_EASE_IN_OUT_QUAD,Quadratic ease in/out,2차 가속·감속,2次 加速・減速,二次加速/减速
-EDITOR_EASE_IN_CUBIC,Cubic ease in,3차 가속,3次 加速,三次加速
-EDITOR_EASE_OUT_CUBIC,Cubic ease out,3차 감속,3次 減速,三次减速
-EDITOR_EASE_IN_OUT_CUBIC,Cubic ease in/out,3차 가속·감속,3次 加速・減速,三次加速/减速
-EDITOR_EASE_IN_BACK,Back ease in,반동 가속,バック 加速,回弹加速
-EDITOR_EASE_OUT_BACK,Back ease out,반동 감속,バック 減速,回弹减速
-EDITOR_EASE_IN_OUT_BACK,Back ease in/out,반동 가속·감속,バック 加速・減速,回弹加速/减速
+EDITOR_PNG_IMAGE,PNG Image,PNG 이미지,PNG画像,PNG 图片
+EDITOR_EASE_DEFAULT,Default (linear),기본값 (일정한 속도),デフォルト（一定速度）,默认（线性）
+EDITOR_EASE_LINEAR,Linear,일정한 속도,一定速度,线性
+EDITOR_EASE_IN_SINE,Sine ease in,사인 가속,サイン 加速,正弦缓入
+EDITOR_EASE_OUT_SINE,Sine ease out,사인 감속,サイン 減速,正弦缓出
+EDITOR_EASE_IN_OUT_SINE,Sine ease in/out,사인 가속·감속,サイン 加速・減速,正弦缓入·缓出
+EDITOR_EASE_IN_QUAD,Quadratic ease in,2차 가속,2次 加速,二次缓入
+EDITOR_EASE_OUT_QUAD,Quadratic ease out,2차 감속,2次 減速,二次缓出
+EDITOR_EASE_IN_OUT_QUAD,Quadratic ease in/out,2차 가속·감속,2次 加速・減速,二次缓入·缓出
+EDITOR_EASE_IN_CUBIC,Cubic ease in,3차 가속,3次 加速,三次缓入
+EDITOR_EASE_OUT_CUBIC,Cubic ease out,3차 감속,3次 減速,三次缓出
+EDITOR_EASE_IN_OUT_CUBIC,Cubic ease in/out,3차 가속·감속,3次 加速・減速,三次缓入·缓出
+EDITOR_EASE_IN_BACK,Back ease in,반동 가속,バック 加速,回弹缓入
+EDITOR_EASE_OUT_BACK,Back ease out,반동 감속,バック 減速,回弹缓出
+EDITOR_EASE_IN_OUT_BACK,Back ease in/out,반동 가속·감속,バック 加速・減速,回弹缓入·缓出
 EDITOR_ANCHOR_TOP_LEFT,Top Left,왼쪽 위,左上,左上
 EDITOR_ANCHOR_TOP_CENTER,Top Center,가운데 위,上中央,上中
 EDITOR_ANCHOR_TOP_RIGHT,Top Right,오른쪽 위,右上,右上
@@ -365,7 +365,7 @@ MENU_SETTINGS,Options,설정,設定,设置
 MENU_NEW_CHART,New Chart,신규 채보,新規譜面,新建谱面
 MENU_BACK,Back,Back,戻る,返回
 MENU_EDIT_UPLOAD,Upload,업로드,アップロード,上传
-MENU_EDIT_NEW_CHART,New Difficulty,새 난이도,難易度を追加,添加难度
+MENU_EDIT_NEW_CHART,New Difficulty,새 난이도,難易度を追加,新建难度
 MENU_EDIT_DELETE_CHARTSET,Delete Chart,채보 전체 삭제,譜面をすべて削除,删除整份谱面
 MENU_EDIT_DELETE_CHART,Delete Difficulty,난이도 삭제,難易度を削除,删除难度
 PLAYLIST_ALL_CHARTS,All Charts,전체 보기,すべての譜面,全部谱面
@@ -375,7 +375,7 @@ MENU_TAB_OFFICIAL,Original,오리지널,オリジナル,原创
 MENU_TAB_COMMUNITY,Community,커뮤니티,コミュニティ,社区
 COMMON_SEARCH,Search,검색,検索,搜索
 COMMON_FILTER,Filter,필터,絞り込み,筛选
-HINT_SIGN_IN_REQUIRED,Sign in with Steam to use this feature.,이 기능을 사용하려면 Steam으로 로그인해 주세요.,この機能を使うにはSteamでログインしてください。,请使用 Steam 登录后使用此功能。
+HINT_SIGN_IN_REQUIRED,Sign in with Steam to use this feature.,이 기능을 사용하려면 Steam으로 로그인해 주세요.,この機能を使うにはSteamでログインしてください。,请先登录 Steam 再使用此功能。
 ERROR_SIGN_IN_FAILED,Could not sign in. Please retry.,로그인하지 못했습니다. 다시 시도해 주세요.,ログインできませんでした。もう一度お試しください。,登录失败，请重试。
 ERROR_STEAM_UNAVAILABLE,Could not connect to Steam. Restart Steam and the game.,Steam에 연결하지 못했습니다. Steam과 게임을 다시 실행해 주세요.,Steamに接続できませんでした。Steamとゲームを再起動してください。,无法连接到 Steam，请重启 Steam 和游戏。
 ERROR_CHART_INFO,Could not load chart information. Please retry.,채보 정보를 불러오지 못했습니다. 다시 시도해 주세요.,譜面情報を読み込めませんでした。もう一度お試しください。,无法加载谱面信息，请重试。
