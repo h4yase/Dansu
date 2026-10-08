@@ -57,7 +57,7 @@ func _build_properties() -> void:
 
 func _build_tools() -> void:
 	var tools: VBoxContainer = editor.get_node("Object")
-	for path in ["Label", "Hit2", "Hit", "Trace", "Left", "Right", "Spike"]:
+	for path in ["Label", "Tools"]:
 		_normal_tools.append(tools.get_node(path))
 	event_tools = VBoxContainer.new()
 	event_tools.add_theme_constant_override("separation", 6)
@@ -164,6 +164,18 @@ func can_place_overlay(event: OverlayEvent, start: int, duration: int, slot: int
 				return false
 	return true
 
+func find_free_overlay_slot(start: int, duration: int, slot: int) -> int:
+	if slot < 0 or slot >= SLOT_COUNT:
+		return -1
+	if can_place_overlay(null, start, duration, slot):
+		return slot
+	for offset in range(1, SLOT_COUNT):
+		if can_place_overlay(null, start, duration, slot + offset):
+			return slot + offset
+		if can_place_overlay(null, start, duration, slot - offset):
+			return slot - offset
+	return -1
+
 func place(kind: String, raw_time: int, slot: int) -> void:
 	_placement_kind = kind
 	var time: int = maxi(editor.timeline.get_min_time(), editor.timeline.snap_time(raw_time))
@@ -207,7 +219,8 @@ func place(kind: String, raw_time: int, slot: int) -> void:
 		select_event(skin)
 	else:
 		var duration := maxi(1, int(editor.timeline.get_snap_interval_ms(time) * 4))
-		if not can_place_overlay(null, time, duration, slot):
+		slot = find_free_overlay_slot(time, duration, slot)
+		if slot == -1:
 			Notification.notice(GameText.text(GameText.Key.ERROR_OVERLAY_OCCUPIED), Notification.Type.WARNING)
 			return
 		editor._push_history_snapshot()

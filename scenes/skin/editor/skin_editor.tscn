@@ -28,14 +28,24 @@ shader_parameter/triangle_roundness = 0.025
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wave"]
 shader = ExtResource("7_liquid")
 shader_parameter/water_color = Color(0.4392157, 0.35686275, 0.87058824, 1)
-shader_parameter/water_height = 0.3
-shader_parameter/amplitude = 0.1
-shader_parameter/speed = 0.9
+shader_parameter/water_height = 0.4
+shader_parameter/amplitude = 0.05
+shader_parameter/speed = 0.2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_top"]
 bg_color = Color(0.05490196, 0.05882353, 0.08627451, 0.94)
 border_width_bottom = 1
 border_color = Color(0.47058824, 0.40392157, 0.8784314, 0.32)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ewt7v"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.05490196, 0.05882353, 0.08627451, 0.97)
+border_width_top = 2
+border_color = Color(0.47058824, 0.40392157, 0.8784314, 0.8)
+shadow_color = Color(0.47058824, 0.40392157, 0.8784314, 0.15686275)
 
 [node name="SkinEditor" type="Control" unique_id=1593651549 node_paths=PackedStringArray("name_line_edit", "idle_option", "left_option", "right_option", "scale_spinbox", "hits_option", "hits_add_new_button", "skin_contents", "new_animation_button", "animation_list_container", "animation_template", "frames_container", "frame_template", "delete_frame_button", "calculate_scale_button", "onion_skin_button", "preview_play_button", "fps_line_edit", "effect_option", "save_button", "back_to_menu_button", "back_to_chart_button", "import_sprite_button", "sprite_list_container", "sprite_template", "preview_sprite", "preview_onion_prev", "preview_onion_next", "drag_preview", "import_dialog", "unsaved_exit_dialog")]
 layout_mode = 3
@@ -95,7 +105,7 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -112.0
+offset_top = -434.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
@@ -263,11 +273,12 @@ layout_mode = 2
 [node name="FramesPanel" type="PanelContainer" parent="." unique_id=1993371915]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.83000004
+anchor_top = 0.77800006
 anchor_right = 1.0
 anchor_bottom = 1.0070001
-offset_top = -56.400024
+offset_top = -0.24005127
 offset_bottom = -7.5600586
+theme_override_styles/panel = SubResource("StyleBoxFlat_ewt7v")
 
 [node name="MarginContainer" type="MarginContainer" parent="FramesPanel" unique_id=1994497269]
 layout_mode = 2
@@ -412,7 +423,7 @@ stretch_mode = 5
 [node name="Dialogs" type="Node" parent="." unique_id=319213067]
 
 [node name="ImportDialog" type="FileDialog" parent="Dialogs" unique_id=98028452]
-title = "EDITOR_OPEN_FILE"
+title = "Open File(s)"
 file_mode = 1
 access = 2
 filters = PackedStringArray("*.png ; PNG Image")

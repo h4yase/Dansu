@@ -21,6 +21,9 @@ class MeshCacheEntry:
 	extends RefCounted
 
 	var rail: Rail = null
+	var geometry: Rail
+	var note_time := 0
+	var note_length := 0
 	var body_width := 0.0
 	var note_speed := 0.0
 	var owner_basis := Basis.IDENTITY
@@ -143,6 +146,8 @@ func _get_cached_mesh(body_width: float) -> ArrayMesh:
 		return null
 	if entry.rail != _rail:
 		return null
+	if entry.note_time != _note.time or entry.note_length != _note.length or not _rail.has_same_geometry(entry.geometry):
+		return null
 	if not is_equal_approx(entry.body_width, body_width):
 		return null
 	if not is_equal_approx(entry.note_speed, Config.note_speed):
@@ -161,6 +166,9 @@ func _build_and_cache_mesh(body_width: float) -> ArrayMesh:
 
 	var entry := MeshCacheEntry.new()
 	entry.rail = _rail
+	entry.geometry = _rail.copy_geometry()
+	entry.note_time = _note.time
+	entry.note_length = _note.length
 	entry.body_width = body_width
 	entry.note_speed = Config.note_speed
 	entry.owner_basis = _head_owner.transform.basis
@@ -170,19 +178,47 @@ func _build_and_cache_mesh(body_width: float) -> ArrayMesh:
 
 
 func _sample_note_path() -> Array[Vector3]:
+	return sample_note_path(_rail, _note.time, _note.length, _head_owner.transform.affine_inverse(), Config.note_speed)
+
+static func cache_built_mesh(build: GameplayMeshBuild, mesh: ArrayMesh) -> void:
+	var entry := MeshCacheEntry.new()
+	entry.rail = build.rail
+	entry.geometry = build.geometry
+	entry.note_time = build.note_time
+	entry.note_length = build.note_length
+	entry.body_width = build.body_width
+	entry.note_speed = build.note_speed
+	entry.owner_basis = build.owner_transform.basis
+	entry.mesh = mesh
+	_mesh_cache[build.note] = entry
+
+func make_mesh_build(note: Note, rail: Rail, head_owner: Node3D, head_sprite: Sprite3D) -> GameplayMeshBuild:
+	if head_sprite == null or head_sprite.texture == null:
+		return null
+	var build := GameplayMeshBuild.new()
+	build.rail = rail
+	build.note = note
+	build.note_time = note.time
+	build.note_length = note.length
+	build.note_speed = Config.note_speed
+	build.body_width = _get_head_world_width_in_owner_space(head_sprite)
+	build.owner_transform = head_owner.transform
+	return build
+
+static func sample_note_path(rail: Rail, note_time: int, note_length: int, owner_inverse: Transform3D, note_speed: float) -> Array[Vector3]:
 	var path: Array[Vector3] = []
-	var duration_ms := maxi(_note.length, 1)
+	var duration_ms := maxi(note_length, 1)
 	var steps := maxi(4, int(ceil(float(duration_ms) / SAMPLE_INTERVAL_MS)))
 
 	for index in range(steps + 1):
 		var alpha := float(index) / float(steps)
-		var time_ms := int(round(lerp(float(_note.time), float(_note.end_time), alpha)))
+		var time_ms := int(round(lerp(float(note_time), float(note_time + maxi(note_length, 0)), alpha)))
 		var parent_point := Vector3(
-			GameplayPlayfield.normalized_x_to_world(_rail._get_rail_x_at_time(time_ms)),
+			GameplayPlayfield.normalized_x_to_world(rail._get_rail_x_at_time(time_ms)),
 			BODY_SURFACE_Y,
-			GameplayPlayfield.local_z_from_start(_rail.start_time, time_ms)
+			-(time_ms - rail.start_time) * note_speed / 1000.0
 		)
-		path.append(_head_owner.transform.affine_inverse() * parent_point)
+		path.append(owner_inverse * parent_point)
 
 	return path
 

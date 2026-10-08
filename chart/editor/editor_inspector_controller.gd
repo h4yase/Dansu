@@ -183,7 +183,8 @@ func on_beat_division_slider_changed(value: float) -> void:
 	editor._push_history_snapshot()
 	editor.timeline.beat_division = divisions[index]
 	beat_division_label.text = "1/%d" % editor.timeline.beat_division
-	editor.refresh_views()
+	if editor.bpm_lines != null:
+		editor.bpm_lines.queue_redraw()
 
 func add_timing() -> void:
 	if editor == null or editor.chart == null or editor.timeline == null:

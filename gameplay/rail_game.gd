@@ -16,6 +16,8 @@ class RailMeshCacheEntry:
 	extends RefCounted
 
 	var rail: Rail
+	var geometry: Rail
+	var note_speed := 0.0
 	var rail_width := 0.0
 	var rail_outline_size := 0.0
 	var mesh: ArrayMesh = null
@@ -57,6 +59,8 @@ static func prebake_for_rail(_rail: Rail, rail_width: float = DEFAULT_WIDTH, rai
 	var path := _sample_curve_points_for_rail(_rail)
 	var new_entry := RailMeshCacheEntry.new()
 	new_entry.rail = _rail
+	new_entry.geometry = _rail.copy_geometry()
+	new_entry.note_speed = Config.note_speed
 	new_entry.rail_width = rail_width
 	new_entry.rail_outline_size = rail_outline_size
 	new_entry.mesh = build_ribbon_mesh(path, _get_visual_width(rail_width, rail_outline_size))
@@ -130,8 +134,20 @@ static func _get_visual_width(rail_width: float, rail_outline_size: float) -> fl
 	return rail_width + rail_outline_size * 2.0
 
 
-static func _sample_curve_points_for_rail(_rail: Rail) -> Array[Vector3]:
+static func cache_built_mesh(build: GameplayMeshBuild, mesh: ArrayMesh) -> void:
+	var entry := RailMeshCacheEntry.new()
+	entry.rail = build.rail
+	entry.geometry = build.geometry
+	entry.note_speed = build.note_speed
+	entry.rail_width = DEFAULT_WIDTH
+	entry.rail_outline_size = DEFAULT_OUTLINE_SIZE
+	entry.mesh = mesh
+	_mesh_cache.append(entry)
+
+static func _sample_curve_points_for_rail(_rail: Rail, note_speed: float = -1.0) -> Array[Vector3]:
 	var result: Array[Vector3] = []
+	if note_speed < 0.0:
+		note_speed = Config.note_speed
 
 	if _rail == null or _rail.points.size() < 2:
 		return result
@@ -150,7 +166,7 @@ static func _sample_curve_points_for_rail(_rail: Rail) -> Array[Vector3]:
 			var curved_alpha := _rail._apply_curve(alpha, float(a.curve))
 			var x := GameplayPlayfield.normalized_x_to_world(lerp(float(a.x), float(b.x), curved_alpha))
 			var sampled_time := int(round(lerp(float(t0), float(t1), alpha)))
-			var z := GameplayPlayfield.local_z_from_start(_rail.start_time, sampled_time)
+			var z := -(sampled_time - _rail.start_time) * note_speed / 1000.0
 			result.append(Vector3(x, 0.0, z))
 
 	var last := _rail.points[_rail.points.size() - 1]
@@ -158,7 +174,7 @@ static func _sample_curve_points_for_rail(_rail: Rail) -> Array[Vector3]:
 		Vector3(
 			GameplayPlayfield.normalized_x_to_world(float(last.x)),
 			0.0,
-			GameplayPlayfield.local_z_from_start(_rail.start_time, int(last.time))
+			-(last.time - _rail.start_time) * note_speed / 1000.0
 		)
 	)
 	return result
@@ -174,6 +190,8 @@ static func _find_cached_mesh_entry(_rail: Rail, rail_width: float, rail_outline
 			continue
 		if not is_equal_approx(entry.rail_outline_size, rail_outline_size):
 			continue
+		if not is_equal_approx(entry.note_speed, Config.note_speed) or not _rail.has_same_geometry(entry.geometry):
+			continue
 		return entry
 	return null
 
@@ -184,11 +202,21 @@ static func build_ribbon_mesh(
 	round_start: bool = true,
 	round_end: bool = true
 ) -> ArrayMesh:
+	var arrays := build_ribbon_arrays(path, rail_width, round_start, round_end)
+	return mesh_from_arrays(arrays)
+
+static func mesh_from_arrays(arrays: Array) -> ArrayMesh:
+	var mesh := ArrayMesh.new()
+	if arrays.size() == Mesh.ARRAY_MAX and arrays[Mesh.ARRAY_VERTEX] != null and not arrays[Mesh.ARRAY_VERTEX].is_empty():
+		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	return mesh
+
+static func build_ribbon_arrays(path: Array[Vector3], rail_width: float, round_start: bool = true, round_end: bool = true) -> Array:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 
 	if path.size() < 2:
-		return st.commit()
+		return []
 
 	var half_width := rail_width * 0.5
 	var left_points: Array[Vector3] = []
@@ -220,13 +248,15 @@ static func build_ribbon_mesh(
 		var end_dir := (path[path.size() - 1] - path[path.size() - 2]).normalized()
 		_append_cap(st, path[path.size() - 1], end_dir, half_width, false)
 
-	return st.commit()
+	return st.commit_to_arrays()
 
 
 static func build_open_ribbon_mesh(path: Array[Vector3], ribbon_width: float) -> ArrayMesh:
-	var mesh := ArrayMesh.new()
+	return mesh_from_arrays(build_open_ribbon_arrays(path, ribbon_width))
+
+static func build_open_ribbon_arrays(path: Array[Vector3], ribbon_width: float) -> Array:
 	if path.size() < 2 or ribbon_width <= 0.0:
-		return mesh
+		return []
 
 	var point_count := path.size()
 	var vertices := PackedVector3Array()
@@ -262,8 +292,7 @@ static func build_open_ribbon_mesh(path: Array[Vector3], ribbon_width: float) ->
 	arrays[Mesh.ARRAY_VERTEX] = vertices
 	arrays[Mesh.ARRAY_TEX_UV] = uvs
 	arrays[Mesh.ARRAY_INDEX] = indices
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-	return mesh
+	return arrays
 
 
 static func _append_cap(st: SurfaceTool, center: Vector3, forward: Vector3, radius: float, is_start: bool) -> void:

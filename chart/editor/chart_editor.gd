@@ -23,6 +23,7 @@ var event_controller: Node
 @export var playtest_button: Button
 @export var save_button: Button
 @export var delete_button: Button
+@export var rail_button: Button
 @export var hit_button: Button
 @export var trace_button: Button
 @export var left_button: Button
@@ -75,8 +76,6 @@ func _ready() -> void:
 	tabs.set_tab_title(1, GameText.text(GameText.Key.EDITOR_TAB_PROPERTY))
 	tabs.set_tab_title(2, GameText.text(GameText.Key.EDITOR_TIMING))
 	tabs.set_tab_title(3, GameText.text(GameText.Key.EDITOR_SFX))
-	$VBoxContainer/Label2.text = GameText.text(GameText.Key.EDITOR_NOTE_COUNT) % 9999999
-	$VBoxContainer/Label3.text = GameText.text(GameText.Key.EDITOR_RAIL_COUNT) % 9999999
 	if not Game.reopen_editor_without_chart_reload:
 		Game.current_time = 0.0
 	chart = _ensure_chart()
@@ -187,6 +186,18 @@ func refresh_views() -> void:
 	if bpm_lines != null:
 		bpm_lines.queue_redraw()
 
+func update_object_counts() -> void:
+	var note_count := 0
+	var rail_count := 0
+	if CM.parsed_chart != null:
+		for rail: Rail in CM.parsed_chart.rails:
+			if rail == null:
+				continue
+			rail_count += 1
+			note_count += rail.notes.size()
+	$VBoxContainer/Label2.text = GameText.text(GameText.Key.EDITOR_NOTE_COUNT) % note_count
+	$VBoxContainer/Label3.text = GameText.text(GameText.Key.EDITOR_RAIL_COUNT) % rail_count
+
 func refresh_inspector() -> void:
 	if inspector_controller == null:
 		return
@@ -246,6 +257,8 @@ func _connect_ui() -> void:
 	if save_button != null:
 		save_button.pressed.connect(_save_chart)
 	if edit_controller != null:
+		if rail_button != null:
+			rail_button.pressed.connect(edit_controller.create_rail)
 		if delete_button != null:
 			delete_button.pressed.connect(edit_controller.delete_selected)
 		if hit_button != null:

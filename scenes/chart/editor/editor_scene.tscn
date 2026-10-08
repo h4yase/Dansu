@@ -17,7 +17,13 @@
 [ext_resource type="Script" uid="uid://cm18ld8rfd7b3" path="res://chart/editor/game_preview.gd" id="12_game_preview"]
 [ext_resource type="Script" uid="uid://bgdadwghe6gtx" path="res://chart/editor/overlay_frame_view.gd" id="13_frame_view"]
 [ext_resource type="PackedScene" uid="uid://d0gsgs0n6371q" path="res://scenes/gameplay/gameplay.tscn" id="14_gameplay_preview"]
-[ext_resource type="Script" path="res://chart/editor/editor_timing_detection.gd" id="15_timing_detection"]
+[ext_resource type="Script" uid="uid://277tmw6syax1" path="res://chart/editor/editor_timing_detection.gd" id="15_timing_detection"]
+[ext_resource type="Script" uid="uid://c25h853codlvf" path="res://chart/editor/editor_tool_button.gd" id="16_tool_button"]
+[ext_resource type="Texture2D" uid="uid://difs41ibj4x56" path="res://resources/textures/editor/editor_rail_tool.svg" id="17_tool_rail"]
+[ext_resource type="Texture2D" uid="uid://brxc3jkt23rwh" path="res://resources/textures/editor/editor_hit.svg" id="18_tool_hit"]
+[ext_resource type="Texture2D" uid="uid://bsg4k4vr02h0e" path="res://resources/textures/editor/editor_trace.svg" id="19_tool_trace"]
+[ext_resource type="Texture2D" uid="uid://da7yi4i7w56k5" path="res://resources/textures/editor/editor_move.svg" id="20_tool_move"]
+[ext_resource type="Texture2D" uid="uid://chnkbilg6jn5f" path="res://resources/textures/editor/editor_spike.svg" id="21_tool_spike"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ysqcj"]
 shader = ExtResource("2_37swi")
@@ -25,7 +31,7 @@ shader_parameter/bg_color = Color(0.0627451, 0.0627451, 0.078431375, 1)
 shader_parameter/shape_color = Color(0.080000006, 0.080000006, 0.1, 1)
 shader_parameter/rect_size = Vector2(1920, 1080)
 shader_parameter/cell_size = 180.0
-shader_parameter/move_speed = 0.5
+shader_parameter/move_speed = 0.1
 shader_parameter/cycle_speed = 0.2
 shader_parameter/transition_ratio = 0.12
 shader_parameter/softness = 0.0
@@ -113,11 +119,12 @@ back_button = NodePath("TopBar/Margin/Row/Back")
 playtest_button = NodePath("PreviewColumn/Toolbar/PlayTest")
 save_button = NodePath("Object/Save")
 delete_button = NodePath("Object/Delete")
-hit_button = NodePath("Object/Hit")
-trace_button = NodePath("Object/Trace")
-left_button = NodePath("Object/Left")
-right_button = NodePath("Object/Right")
-spike_button = NodePath("Object/Spike")
+rail_button = NodePath("Object/Tools/Hit2")
+hit_button = NodePath("Object/Tools/Hit")
+trace_button = NodePath("Object/Tools/Trace")
+left_button = NodePath("Object/Tools/Left")
+right_button = NodePath("Object/Tools/Right")
+spike_button = NodePath("Object/Tools/Spike")
 title_line_edit = NodePath("Inspector/Chart/ScrollContainer/Contents/title")
 artist_line_edit = NodePath("Inspector/Chart/ScrollContainer/Contents/artist")
 creator_line_edit = NodePath("Inspector/Chart/ScrollContainer/Contents/creator")
@@ -246,6 +253,12 @@ audio_file_dialog = NodePath("../../Dialogs/AudioFileDialog")
 script = ExtResource("9_mjlwm")
 editor = NodePath("../..")
 
+[node name="TimingDetection" type="Node" parent="Controllers" unique_id=1449674288 node_paths=PackedStringArray("editor", "detect_button", "status_label")]
+script = ExtResource("15_timing_detection")
+editor = NodePath("../..")
+detect_button = NodePath("../../Inspector/Timing/ScrollContainer/HBoxContainer/DetectTiming")
+status_label = NodePath("../../Inspector/Timing/ScrollContainer/HBoxContainer/DetectionStatus")
+
 [node name="Inspector" type="TabContainer" parent="." unique_id=792765145]
 layout_mode = 1
 anchors_preset = -1
@@ -262,10 +275,11 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_37swi")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_e6xu1")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_6b80m")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_g36tt")
-current_tab = 0
+current_tab = 1
 tab_focus_mode = 1
 
 [node name="Chart" type="TabBar" parent="Inspector" unique_id=65841320]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -410,7 +424,6 @@ layout_mode = 2
 text = "EDITOR_SELECT_SKIN"
 
 [node name="Property" type="TabBar" parent="Inspector" unique_id=826723775 node_paths=PackedStringArray("editor", "note_tab", "rail_tab", "note_time_lineedit", "note_type_option", "note_length_lineedit", "note_animation_option", "note_hitsound_option", "note_dir_option", "point_list")]
-visible = false
 layout_mode = 2
 script = ExtResource("1_ryhys")
 editor = NodePath("../..")
@@ -483,6 +496,7 @@ text = "EDITOR_NOTE_TYPE"
 
 [node name="OptionButton" type="OptionButton" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/type" unique_id=475769546]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
 selected = 1
 item_count = 4
@@ -506,6 +520,7 @@ text = "EDITOR_DIRECTION"
 
 [node name="OptionButton" type="OptionButton" parent="Inspector/Property/ScrollContainer/MarginContainer/HBoxContainer/Note/dir" unique_id=611654619]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
 selected = 1
 item_count = 2
@@ -579,12 +594,6 @@ theme_override_styles/separator = SubResource("StyleBoxLine_t60lc")
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="TimingDetection" type="Node" parent="Controllers" node_paths=PackedStringArray("editor", "detect_button", "status_label")]
-script = ExtResource("15_timing_detection")
-editor = NodePath("../..")
-detect_button = NodePath("../../Inspector/Timing/ScrollContainer/HBoxContainer/DetectTiming")
-status_label = NodePath("../../Inspector/Timing/ScrollContainer/HBoxContainer/DetectionStatus")
-
 [node name="Timing" type="TabBar" parent="Inspector" unique_id=1819708243]
 visible = false
 layout_mode = 2
@@ -605,12 +614,12 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DetectTiming" type="Button" parent="Inspector/Timing/ScrollContainer/HBoxContainer"]
+[node name="DetectTiming" type="Button" parent="Inspector/Timing/ScrollContainer/HBoxContainer" unique_id=480004658]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "EDITOR_DETECT_TIMING"
 
-[node name="DetectionStatus" type="Label" parent="Inspector/Timing/ScrollContainer/HBoxContainer"]
+[node name="DetectionStatus" type="Label" parent="Inspector/Timing/ScrollContainer/HBoxContainer" unique_id=1048481077]
 layout_mode = 2
 autowrap_mode = 3
 
@@ -761,6 +770,7 @@ offset_right = 731.0
 offset_bottom = -84.0
 grow_vertical = 2
 mouse_filter = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="Panel" parent="Chart" unique_id=154676679]
 layout_mode = 1
@@ -821,9 +831,9 @@ layout_mode = 1
 anchors_preset = -1
 anchor_bottom = 1.0
 offset_left = 24.0
-offset_top = 250.0
-offset_right = 136.0
-offset_bottom = -120.0
+offset_top = 155.0
+offset_right = 174.0
+offset_bottom = -71.0
 theme_override_constants/separation = 6
 alignment = 1
 
@@ -831,29 +841,63 @@ alignment = 1
 layout_mode = 2
 text = "EDITOR_NOTE"
 
-[node name="Hit2" type="Button" parent="Object" unique_id=66446060]
+[node name="Tools" type="VBoxContainer" parent="Object" unique_id=1062908894]
 layout_mode = 2
+
+[node name="Hit2" type="Button" parent="Object/Tools" unique_id=66446060]
+custom_minimum_size = Vector2(72, 84)
+layout_mode = 2
+size_flags_horizontal = 3
 text = "EDITOR_TOOL_RAIL"
+script = ExtResource("16_tool_button")
+shortcut_key = "R"
+tool_icon = ExtResource("17_tool_rail")
 
-[node name="Hit" type="Button" parent="Object" unique_id=823023364]
+[node name="Hit" type="Button" parent="Object/Tools" unique_id=823023364]
+custom_minimum_size = Vector2(72, 84)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "EDITOR_TOOL_HIT"
+script = ExtResource("16_tool_button")
+shortcut_key = "Z"
+tool_icon = ExtResource("18_tool_hit")
 
-[node name="Trace" type="Button" parent="Object" unique_id=53886401]
+[node name="Trace" type="Button" parent="Object/Tools" unique_id=53886401]
+custom_minimum_size = Vector2(72, 84)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "EDITOR_TOOL_TRACE"
+script = ExtResource("16_tool_button")
+shortcut_key = "X"
+tool_icon = ExtResource("19_tool_trace")
 
-[node name="Left" type="Button" parent="Object" unique_id=653754946]
+[node name="Left" type="Button" parent="Object/Tools" unique_id=653754946]
+custom_minimum_size = Vector2(72, 84)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "EDITOR_TOOL_LEFT"
+script = ExtResource("16_tool_button")
+shortcut_key = "A"
+tool_icon = ExtResource("20_tool_move")
 
-[node name="Right" type="Button" parent="Object" unique_id=711043301]
+[node name="Right" type="Button" parent="Object/Tools" unique_id=711043301]
+custom_minimum_size = Vector2(72, 84)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "EDITOR_TOOL_RIGHT"
+script = ExtResource("16_tool_button")
+shortcut_key = "D"
+tool_icon = ExtResource("20_tool_move")
+flip_icon = true
 
-[node name="Spike" type="Button" parent="Object" unique_id=469186168]
+[node name="Spike" type="Button" parent="Object/Tools" unique_id=469186168]
+custom_minimum_size = Vector2(72, 84)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "EDITOR_TOOL_SPIKE"
+script = ExtResource("16_tool_button")
+shortcut_key = "C"
+tool_icon = ExtResource("21_tool_spike")
 
 [node name="Label2" type="Label" parent="Object" unique_id=1482789204]
 layout_mode = 2
@@ -940,11 +984,11 @@ text = "fps:"
 
 [node name="Label2" type="Label" parent="VBoxContainer" unique_id=1809489432]
 layout_mode = 2
-text = "note count:  9999999"
+text = "note count: 0"
 
 [node name="Label3" type="Label" parent="VBoxContainer" unique_id=1235892994]
 layout_mode = 2
-text = "rail count: 9999999"
+text = "rail count: 0"
 
 [node name="PreviewColumn" type="VBoxContainer" parent="." unique_id=784737339]
 layout_mode = 1

@@ -17,12 +17,29 @@ var _selected := false
 var _selected_point_index := -1
 var _point_handles_dimmed := false
 var _rail_geometry_signature := ""
+var _left_hint: Label
+var _right_hint: Label
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texture = null
 	if point_handle_template != null:
 		point_handle_template.visible = false
+	_left_hint = Label.new()
+	_left_hint.text = "← Q"
+	_right_hint = Label.new()
+	_right_hint.text = "E →"
+	for hint in [_left_hint, _right_hint]:
+		hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		hint.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+		hint.z_as_relative = false
+		hint.z_index = 4
+		hint.add_theme_font_size_override("font_size", 18)
+		hint.add_theme_color_override("font_color", Color("8fd0ff"))
+		hint.add_theme_color_override("font_outline_color", Color("101018"))
+		hint.add_theme_constant_override("outline_size", 4)
+		add_child(hint)
+		hint.hide()
 
 func sync_layout(panel_size: Vector2, judge_y: float, pixels_per_ms: float, current_time: float) -> void:
 	var layout_changed := _panel_size != panel_size \
@@ -55,16 +72,34 @@ func sync_layout(panel_size: Vector2, judge_y: float, pixels_per_ms: float, curr
 	if layout_changed or geometry_changed:
 		_sampled_points = _sample_curve()
 		_update_point_handles()
+		_update_selection_hints()
 		queue_redraw()
 
 func set_selection_state(is_selected: bool, selected_point_index: int) -> void:
 	if _selected == is_selected and _selected_point_index == selected_point_index:
 		_update_point_handles()
+		_update_selection_hints()
 		return
 	_selected = is_selected
 	_selected_point_index = selected_point_index
 	_update_point_handles()
+	_update_selection_hints()
 	queue_redraw()
+
+func _update_selection_hints() -> void:
+	var time := int(round(_current_time))
+	var show_hints := _selected and rail != null and rail.start_time <= time and time <= rail.end_time
+	if editor != null and editor.event_controller != null and editor.event_controller.active:
+		show_hints = false
+	_left_hint.visible = show_hints
+	_right_hint.visible = show_hints
+	if not show_hints:
+		return
+	var x := rail._get_rail_x_at_time(time) * _panel_size.x
+	_left_hint.size = _left_hint.get_combined_minimum_size()
+	_right_hint.size = _right_hint.get_combined_minimum_size()
+	_left_hint.position = Vector2(x - _left_hint.size.x - 12.0, _judge_y - _left_hint.size.y - 12.0)
+	_right_hint.position = Vector2(x + 12.0, _judge_y - _right_hint.size.y - 12.0)
 
 
 func set_point_handles_dimmed(is_dimmed: bool) -> void:
@@ -178,6 +213,7 @@ func _update_point_handles() -> void:
 		var point_position := _point_to_panel(point)
 		handle.position = point_position - handle.size * 0.5
 		handle.visible = true
+		handle.selected = editor != null and editor.selection.selected_points.has(point)
 		var point_color := Color(1.2, 1.1, 1.35) if editor != null and editor.selection.selected_points.has(point) \
 			else Color(1, 1, 1, 0.9)
 		if _point_handles_dimmed:

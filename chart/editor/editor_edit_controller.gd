@@ -69,6 +69,8 @@ func handle_key_input(event: InputEventKey) -> void:
 			return
 
 	match event.keycode:
+		KEY_Q: select_next_rail(-1)
+		KEY_E: select_next_rail(1)
 		KEY_I: straighten_next_point()
 		KEY_R: create_rail()
 		KEY_Z: create_hit_note()
@@ -81,6 +83,31 @@ func handle_key_input(event: InputEventKey) -> void:
 		KEY_SPACE: editor.transport.toggle()
 		KEY_LEFT: move_selected_notes(-1)
 		KEY_RIGHT: move_selected_notes(1)
+
+func select_next_rail(direction: int) -> void:
+	if editor == null or CM.parsed_chart == null:
+		return
+	var time := int(round(Game.current_time))
+	var rails: Array[Rail] = []
+	for rail: Rail in CM.parsed_chart.rails:
+		if rail != null and not rail.points.is_empty() and rail.start_time <= time and time <= rail.end_time:
+			rails.append(rail)
+	if rails.is_empty():
+		return
+	rails.sort_custom(func(a: Rail, b: Rail) -> bool:
+		var a_x := a._get_rail_x_at_time(time)
+		var b_x := b._get_rail_x_at_time(time)
+		if a_x == b_x:
+			return CM.parsed_chart.rails.find(a) < CM.parsed_chart.rails.find(b)
+		return a_x < b_x
+	)
+	var index := rails.find(editor.selection.selected_rail)
+	if index == -1:
+		index = 0 if direction > 0 else rails.size() - 1
+	else:
+		index = clampi(index + direction, 0, rails.size() - 1)
+	if rails[index] != editor.selection.selected_rail:
+		editor.selection.select_rail(rails[index])
 
 func copy_selected() -> bool:
 	return editor != null and clipboard.copy(editor.selection)

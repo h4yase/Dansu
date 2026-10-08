@@ -23,6 +23,26 @@ var end_time: int:
 		if not points.is_empty():
 			points[points.size() - 1].time = value
 
+func copy_geometry() -> Rail:
+	var copy := Rail.new()
+	for point in points:
+		var copied_point := RailPoint.new()
+		copied_point.time = point.time
+		copied_point.x = point.x
+		copied_point.curve = point.curve
+		copy.points.append(copied_point)
+	return copy
+
+func has_same_geometry(other: Rail) -> bool:
+	if other == null or points.size() != other.points.size():
+		return false
+	for index in range(points.size()):
+		var a := points[index]
+		var b := other.points[index]
+		if a.time != b.time or a.x != b.x or a.curve != b.curve:
+			return false
+	return true
+
 func sort_points() -> void:
 	var original_order: Dictionary = {}
 	for index in range(points.size()):

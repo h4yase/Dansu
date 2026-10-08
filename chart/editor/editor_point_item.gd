@@ -14,7 +14,6 @@ var rail: Rail
 var point: RailPoint
 var _normal_style: StyleBox
 var _syncing := false
-var _time_history_pending := true
 
 func _ready() -> void:
 	_normal_style = get_theme_stylebox("panel")
@@ -24,7 +23,6 @@ func _ready() -> void:
 	position_slider.value_changed.connect(_on_position_changed)
 	curve_slider.value_changed.connect(_on_curve_changed)
 	time_edit.focus_entered.connect(_on_time_focus)
-	time_edit.text_changed.connect(_on_time_changed)
 	time_edit.text_submitted.connect(_finish_time_edit)
 	time_edit.focus_exited.connect(_finish_time_edit)
 	UIFocusUtils.disable_focus_recursive(self)
@@ -74,29 +72,24 @@ func _on_curve_changed(value: float) -> void:
 	editor.selection.refresh()
 
 func _on_time_focus() -> void:
-	_time_history_pending = true
 	if editor != null:
 		_select_point()
 
-func _on_time_changed(value: String) -> void:
-	if _syncing or editor == null or not value.is_valid_int():
-		return
-	var next_time := maxi(editor.timeline.get_min_time(), value.to_int())
-	next_time = EditorChartOps.constrain_rail_point_time(rail, point, next_time)
-	if next_time == point.time:
-		return
-	_select_point()
-	if _time_history_pending:
-		editor.push_history_snapshot()
-		_time_history_pending = false
-	point.time = next_time
-	rail.sort_points()
-	editor.selection.selected_point_index = rail.points.find(point)
-	editor.view_controller.refresh_geometry([rail])
-	editor.selection.refresh()
-
 func _finish_time_edit(_value: String = "") -> void:
+	if _syncing or editor == null:
+		return
+	var value := time_edit.text
+	if value.is_valid_int():
+		var next_time := maxi(editor.timeline.get_min_time(), value.to_int())
+		next_time = EditorChartOps.constrain_rail_point_time(rail, point, next_time)
+		if next_time != point.time:
+			_select_point()
+			editor.push_history_snapshot()
+			point.time = next_time
+			rail.sort_points()
+			editor.selection.selected_point_index = rail.points.find(point)
+			editor.view_controller.refresh_geometry([rail])
+			editor.selection.refresh()
 	_syncing = true
 	time_edit.text = str(point.time)
 	_syncing = false
-	_time_history_pending = true

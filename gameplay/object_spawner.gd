@@ -19,7 +19,7 @@ func setup(chart, rail_container: Node3D) -> void:
 	_chart = chart
 	_rail_container = rail_container
 
-func build() -> void:
+func build(bake_meshes: bool = true) -> void:
 	clear_nodes()
 	rail_states.clear()
 	note_states.clear()
@@ -59,11 +59,32 @@ func build() -> void:
 		return a.note.end_time < b.note.end_time
 	)
 
-	_prebake_long_notes()
-	var rails: Array[Rail] = []
+	if bake_meshes:
+		_prebake_long_notes()
+		GameRail.prebake_for_rails(get_rails())
+
+func make_preview_mesh_builds() -> Array[GameplayMeshBuild]:
+	var builds: Array[GameplayMeshBuild] = []
 	for state in rail_states:
-		rails.append(state.rail)
-	GameRail.prebake_for_rails(rails)
+		var build := GameplayMeshBuild.new()
+		build.rail = state.rail
+		build.geometry = state.rail.copy_geometry()
+		build.note_speed = Config.note_speed
+		builds.append(build)
+	if long_states.is_empty():
+		return builds
+	var prototype := NOTE_SCENE.instantiate() as GameNote
+	for state in long_states:
+		var build := prototype.make_long_note_mesh_build(state.note, state.rail_state.rail)
+		if build == null:
+			continue
+		for rail_build in builds:
+			if rail_build.note == null and rail_build.rail == build.rail:
+				build.geometry = rail_build.geometry
+				break
+		builds.append(build)
+	prototype.free()
+	return builds
 
 func clear_nodes() -> void:
 	if _rail_container != null:

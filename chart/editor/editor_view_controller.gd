@@ -104,6 +104,8 @@ func mark_layout_dirty() -> void:
 	_hover_mouse = Vector2(INF, INF)
 
 func refresh_views() -> void:
+	if editor != null:
+		editor.update_object_counts()
 	_hover_mouse = Vector2(INF, INF)
 	_mark_preview_dirty()
 	clear_layers()

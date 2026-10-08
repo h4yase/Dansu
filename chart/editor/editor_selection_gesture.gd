@@ -23,6 +23,9 @@ var delta_x := 0.0
 var tail_note: Note
 var tail_rail: Rail
 var tail_length := 0
+var dragged_point: RailPoint
+var position_capsule: PanelContainer
+var position_label: Label
 
 func press(owner: ChartEditor, position: Vector2, ctrl: bool, shift: bool) -> void:
 	editor = owner
@@ -39,7 +42,9 @@ func press(owner: ChartEditor, position: Vector2, ctrl: bool, shift: bool) -> vo
 		if not editor.selection.selected_points.has(point):
 			editor.selection.select_point(rail, points.point_index)
 		begin(position, false)
+		dragged_point = point
 		anchor_time = point.time
+		show_point_position(position)
 	elif notes != null:
 		var note: Note = notes.note
 		range_anchor = note
@@ -64,6 +69,7 @@ func press(owner: ChartEditor, position: Vector2, ctrl: bool, shift: bool) -> vo
 			initial_points.clear()
 
 func begin(position: Vector2, box: bool) -> void:
+	dragged_point = null
 	tail_note = null
 	tail_rail = null
 	active = true
@@ -109,6 +115,8 @@ func motion(position: Vector2) -> void:
 	var local := local_position(position)
 	origin.y = editor.get_judge_y() + (Game.current_time - origin_time) * editor.get_pixels_per_ms()
 	if not dragging and local.distance_to(origin) < DRAG_THRESHOLD:
+		if dragged_point != null:
+			show_point_position(position)
 		return
 	if not dragging:
 		editor.transport.pause()
@@ -126,6 +134,33 @@ func motion(position: Vector2) -> void:
 		if initial_notes.is_empty() and not initial_points.is_empty():
 			dx = snappedf((local.x - origin.x) / maxf(editor.chart_panel.size.x, 1.0), 0.05)
 		apply_delta(proposed, dx)
+		if dragged_point != null:
+			show_point_position(position)
+
+func show_point_position(mouse_position: Vector2) -> void:
+	if position_capsule == null:
+		position_capsule = PanelContainer.new()
+		position_capsule.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		position_capsule.z_index = 100
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color(0.08, 0.09, 0.12, 0.95)
+		style.set_corner_radius_all(12)
+		style.content_margin_left = 10.0
+		style.content_margin_right = 10.0
+		style.content_margin_top = 2.0
+		style.content_margin_bottom = 2.0
+		position_capsule.add_theme_stylebox_override("panel", style)
+		position_label = Label.new()
+		position_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		position_label.add_theme_font_size_override("font_size", 14)
+		position_label.add_theme_color_override("font_color", Color.WHITE)
+		position_capsule.add_child(position_label)
+		editor.add_child(position_capsule)
+	position_label.text = "%.2f" % dragged_point.x
+	position_capsule.size = position_capsule.get_combined_minimum_size()
+	var mouse_local := editor.get_global_transform_with_canvas().affine_inverse() * mouse_position
+	position_capsule.position = mouse_local - Vector2(position_capsule.size.x * 0.5, position_capsule.size.y + 12.0)
+	position_capsule.show()
 
 func update_box(rect: Rect2) -> void:
 	if marquee == null:
@@ -274,6 +309,9 @@ func finish(position: Vector2, cancel: bool = false) -> void:
 		editor._history.push(snapshot)
 	if marquee != null:
 		marquee.hide()
+	if position_capsule != null:
+		position_capsule.hide()
+	dragged_point = null
 	editor.transport.rebuild_playback_notes()
 	active = false
 	dragging = false

@@ -89,6 +89,17 @@ func set_glow_color(color: Color) -> void:
 
 
 func prebake_long_note_visual(note_data: Note, rail_data: Rail) -> void:
+	_prepare_long_note_source(note_data, rail_data)
+	if note != null and rail != null and long_note_visual != null:
+		long_note_visual.prebake(note, rail, self, note_sprite)
+
+func make_long_note_mesh_build(note_data: Note, rail_data: Rail) -> GameplayMeshBuild:
+	_prepare_long_note_source(note_data, rail_data)
+	if note == null or rail == null or long_note_visual == null:
+		return null
+	return long_note_visual.make_mesh_build(note, rail, self, note_sprite)
+
+func _prepare_long_note_source(note_data: Note, rail_data: Rail) -> void:
 	note = note_data
 	rail = rail_data
 	if note == null or rail == null:
@@ -97,8 +108,6 @@ func prebake_long_note_visual(note_data: Note, rail_data: Rail) -> void:
 	position.y = VISUAL_SURFACE_OFFSET
 	position.z = GameplayPlayfield.local_z_from_start(rail.start_time, note.time)
 	_set_note_texture()
-	if long_note_visual != null:
-		long_note_visual.prebake(note, rail, self, note_sprite)
 
 func _set_note_texture() -> void:
 	note_sprite.flip_h = false
