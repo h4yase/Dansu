@@ -245,17 +245,30 @@ func retry() -> void:
 		Game.replay_playback = _replay_playback
 	Game.autoplay_requested = autoplay_enabled
 
+func prepare_editor_preview_meshes() -> Array[GameplayMeshBuild]:
+	_spawner.setup(CM.parsed_chart, rail_container)
+	_spawner.build(false)
+	GameRail.clear_mesh_cache()
+	GameplayLongNoteVisual.clear_mesh_cache()
+	return _spawner.make_preview_mesh_builds()
+
+func finish_editor_preview_meshes() -> void:
+	_spawner.prepare_preview(Game.current_time)
+	_preview_time = Game.current_time
+
 func update_editor_preview(rebuild: bool, events_changed: bool) -> void:
 	if not editor_preview or CM.parsed_chart == null:
 		return
 	var time := Game.current_time
 
 	if rebuild:
+		_spawner.setup(CM.parsed_chart, rail_container)
 		GameRail.clear_mesh_cache()
 		GameplayLongNoteVisual.clear_mesh_cache()
+		_spawner.build()
 
 	if rebuild or time < _preview_time or absf(time - _preview_time) > 1000.0:
-		_spawner.build()
+		_spawner.clear_nodes()
 		_spawner.prepare_preview(time)
 
 	if rebuild or events_changed:

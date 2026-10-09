@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://orocu1cstoen" path="res://chart/editor/chart_editor.gd" id="1_tudub"]
 [ext_resource type="Script" uid="uid://cfpsx7jd38jr4" path="res://chart/editor/sfx_panel.gd" id="1_yxg55"]
 [ext_resource type="Script" uid="uid://tbp77g1a1cni" path="res://chart/editor/editor_bpm_lines.gd" id="2_9wr6r"]
+[ext_resource type="Script" uid="uid://bosd8ipm4hnfx" path="res://chart/editor/editor_waveform.gd" id="22_waveform"]
 [ext_resource type="Shader" uid="uid://cflu32au5woaj" path="res://resources/shaders/bg.gdshader" id="2_37swi"]
 [ext_resource type="Theme" uid="uid://d3ctsqw4vkokp" path="res://resources/themes/editor_mainmenu_theme.tres" id="2_theme"]
 [ext_resource type="PackedScene" uid="uid://bg8obfjf1d3ei" path="res://scenes/chart/editor/ui/inspector/timing.tscn" id="4_8or05"]
@@ -781,6 +782,17 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_37swi")
+
+[node name="Waveform" type="Control" parent="Chart/Panel" node_paths=PackedStringArray("editor")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("22_waveform")
+editor = NodePath("../../..")
 
 [node name="BPMLines" type="Control" parent="Chart/Panel" unique_id=758959830 node_paths=PackedStringArray("editor", "chart_panel")]
 layout_mode = 1

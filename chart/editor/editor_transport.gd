@@ -2,6 +2,7 @@ extends Node
 class_name EditorTransport
 
 signal note_crossed(note: Note)
+signal stream_loaded(stream: AudioStream, path: String)
 
 const SFX_PLAYER_COUNT := 8
 
@@ -61,6 +62,9 @@ func load_stream() -> void:
 	else:
 		stream_length_sec = 0.0
 		stream_length_msec = 0.0
+
+	var audio_path := chart.folder_path.path_join(chart.file_audio) if chart != null and not chart.file_audio.is_empty() else ""
+	stream_loaded.emit(_audio_player.stream, audio_path)
 
 func toggle() -> void:
 	if playing:

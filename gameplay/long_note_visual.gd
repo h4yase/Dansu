@@ -160,7 +160,7 @@ func _get_cached_mesh(body_width: float) -> ArrayMesh:
 func _build_and_cache_mesh(body_width: float) -> ArrayMesh:
 	if body_width <= 0.0:
 		return null
-	var path := _sample_note_path()
+	var path := sample_note_path(_rail, _note.time, _note.length, _head_owner.transform.affine_inverse(), Config.note_speed)
 	if path.size() < 2:
 		return null
 
@@ -176,9 +176,6 @@ func _build_and_cache_mesh(body_width: float) -> ArrayMesh:
 	_mesh_cache[_note] = entry
 	return entry.mesh
 
-
-func _sample_note_path() -> Array[Vector3]:
-	return sample_note_path(_rail, _note.time, _note.length, _head_owner.transform.affine_inverse(), Config.note_speed)
 
 static func cache_built_mesh(build: GameplayMeshBuild, mesh: ArrayMesh) -> void:
 	var entry := MeshCacheEntry.new()
