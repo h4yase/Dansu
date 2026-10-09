@@ -22,6 +22,7 @@ boot_splash/show_image=false
 boot_splash/stretch_mode=0
 boot_splash/image="uid://dq6ei5rasygaa"
 config/icon="uid://cw8cihgunxcv6"
+config/windows_native_icon="res://icon.ico"
 boot_splash/minimum_display_time=120
 
 [audio]
