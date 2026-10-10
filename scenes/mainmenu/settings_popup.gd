@@ -1,457 +1,365 @@
 extends Control
 class_name SettingsPopup
 
-const HIDDEN_SCALE := Vector2(0.38, 0.38)
-const OPEN_OVERSHOOT_SCALE := Vector2(1.035, 1.035)
-const OPEN_SETTLE_SCALE := Vector2(0.985, 0.985)
-const OVERLAY_OPEN_DURATION := 0.08
-const OVERLAY_CLOSE_DURATION := 0.12
-const OPEN_BOUNCE_DURATION := 0.11
-const OPEN_SETTLE_DURATION := 0.06
-const OPEN_FINISH_DURATION := 0.04
-const CLOSE_DURATION := 0.14
+const PANEL_WIDTH := 650.0
+const PANEL_TOP := 87.0
+const HIDDEN_X := -850.0
+const AUDIO_ICON := preload("res://resources/textures/settings/audio.svg")
+const GRAPHICS_ICON := preload("res://resources/textures/settings/graphics.svg")
+const GAMEPLAY_ICON := preload("res://resources/textures/settings/gameplay.svg")
+const KEYS_ICON := preload("res://resources/textures/settings/keybinds.svg")
+const SYSTEM_ICON := preload("res://resources/textures/settings/system.svg")
 
-@export_group("Node References")
-@export var overlay: ColorRect
-@export var panel: PanelContainer
-@export var tab_container: TabContainer
-@export var close_button: Button
-@export var window_mode_option: OptionButton
-@export var vsync_option: OptionButton
-@export var max_fps_spin: SpinBox
-@export var taa_check: CheckBox
-@export var msaa_option: OptionButton
-@export var master_slider: HSlider
-@export var master_value: Label
-@export var music_slider: HSlider
-@export var music_value: Label
-@export var sfx_slider: HSlider
-@export var sfx_value: Label
-@export var hit_effect_slider: HSlider
-@export var hit_effect_value: Label
-@export var offset_spin: SpinBox
-@export var note_speed_slider: HSlider
-@export var note_speed_value: Label
-@export var judgment_line_position_spin: SpinBox
-@export var player_size_spin: SpinBox
-@export var play_area_tilt_spin: SpinBox
-@export var action_left_button: Button
-@export var action_right_button: Button
-@export var action_hit1_button: Button
-@export var action_hit2_button: Button
-@export var ignore_chart_skin_check: CheckBox
-@export var chart_load_threads_spin: SpinBox
-@export var api_url_edit: LineEdit
-
-var max_fps_line_edit: LineEdit
-@onready var language_option: OptionButton = %LanguageOption
-
+var panel: SettingsPanel
+var scroll: SettingsScroll
+var master_dial: SettingsDial
+var music_dial: SettingsDial
+var sfx_dial: SettingsDial
+var offset_field: SettingsNumber
+var output_latency_field: SettingsNumber
+var max_fps_field: SettingsNumber
+var note_speed_field: SettingsNumber
+var judgment_line_field: SettingsNumber
+var player_size_field: SettingsNumber
+var play_area_tilt_field: SettingsNumber
+var chart_threads_field: SettingsNumber
+var window_mode_choice: SettingsChoice
+var vsync_choice: SettingsChoice
+var msaa_choice: SettingsChoice
+var taa_choice: SettingsChoice
+var ignore_skin_choice: SettingsChoice
+var language_choice: SettingsChoice
+var left_key: SettingsButton
+var right_key: SettingsButton
+var hit1_key: SettingsButton
+var hit2_key: SettingsButton
+var _sections: Array[SettingsSection] = []
+var _bookmarks: Array[SettingsButton] = []
 var _is_open := false
-var _is_syncing := false
 var _tween: Tween
 var _pending_keybind_action := ""
-
+var _language_before_focus := ""
+var _previous_focus: Control
+var _overlay_alpha := 0.0:
+	set(value):
+		_overlay_alpha = value
+		queue_redraw()
 
 func _ready() -> void:
-	max_fps_line_edit = max_fps_spin.get_line_edit()
-	for style_name in ["normal", "focus", "read_only"]:
-		var style := max_fps_line_edit.get_theme_stylebox(style_name).duplicate() as StyleBoxFlat
-		style.content_margin_top = 4.0
-		style.content_margin_bottom = 4.0
-		for spin in [max_fps_spin, offset_spin, chart_load_threads_spin, judgment_line_position_spin, player_size_spin, play_area_tilt_spin]:
-			spin.get_line_edit().add_theme_stylebox_override(style_name, style)
 	visible = false
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	process_mode = Node.PROCESS_MODE_ALWAYS
-
-	_setup_options()
-	_connect_signals()
+	z_index = 50
+	panel = SettingsPanel.new()
+	panel.name = "Panel"
+	add_child(panel)
+	scroll = SettingsScroll.new()
+	scroll.name = "Options"
+	panel.add_child(scroll)
+	scroll.wheel_scrolled.connect(panel.spin_gear)
+	scroll.moved.connect(_update_bookmarks)
+	_build_options()
+	resized.connect(_layout)
+	_layout()
+	panel.position.x = HIDDEN_X * panel.scale.x
 	_sync_from_config()
 
-	overlay.modulate.a = 0.0
-	panel.modulate.a = 1.0
-	panel.offset_transform_enabled = true
-	panel.offset_transform_pivot_ratio = Vector2(0.5, 0.5)
-	panel.offset_transform_scale = HIDDEN_SCALE
+func _build_options() -> void:
+	var audio := _add_section(GameText.Key.SETTINGS_AUDIO, AUDIO_ICON)
+	master_dial = _make_dial(GameText.Key.SETTINGS_MASTER_VOLUME, &"master_db", true)
+	music_dial = _make_dial(GameText.Key.SETTINGS_MUSIC_VOLUME, &"music_db")
+	sfx_dial = _make_dial(GameText.Key.SETTINGS_SFX_VOLUME, &"sfx_db")
+	audio.add_dials(master_dial, music_dial, sfx_dial)
+	offset_field = _add_number(audio, GameText.Key.SETTINGS_AUDIO_OFFSET, &"offset", -250, 250, 1, "ms")
+	output_latency_field = _add_number(audio, GameText.Key.SETTINGS_OUTPUT_LATENCY, &"output_latency", AppConfig.MIN_OUTPUT_LATENCY, AppConfig.MAX_OUTPUT_LATENCY, 1, "ms")
+	output_latency_field.hint = GameText.text(GameText.Key.SETTINGS_APPLY_AFTER_RESTART)
 
+	var graphics := _add_section(GameText.Key.SETTINGS_GRAPHICS, GRAPHICS_ICON)
+	window_mode_choice = _add_choice(graphics, GameText.text(GameText.Key.SETTINGS_WINDOW_MODE),
+		[GameText.text(GameText.Key.SETTINGS_FULLSCREEN), GameText.text(GameText.Key.SETTINGS_WINDOWED), GameText.text(GameText.Key.SETTINGS_EXCLUSIVE_FULLSCREEN)],
+		[DisplayServer.WINDOW_MODE_FULLSCREEN, DisplayServer.WINDOW_MODE_WINDOWED, DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN])
+	window_mode_choice.item_selected.connect(func(index: int):
+		Config.window_mode = window_mode_choice.item_ids[index]
+		_persist()
+	)
+	vsync_choice = _add_choice(graphics, GameText.text(GameText.Key.SETTINGS_VSYNC),
+		[GameText.text(GameText.Key.SETTINGS_DISABLED), GameText.text(GameText.Key.SETTINGS_ENABLED), GameText.text(GameText.Key.SETTINGS_VSYNC_ADAPTIVE), GameText.text(GameText.Key.SETTINGS_VSYNC_MAILBOX)],
+		[DisplayServer.VSYNC_DISABLED, DisplayServer.VSYNC_ENABLED, DisplayServer.VSYNC_ADAPTIVE, DisplayServer.VSYNC_MAILBOX])
+	vsync_choice.item_selected.connect(func(index: int):
+		Config.vsync_mode = vsync_choice.item_ids[index]
+		_persist()
+	)
+	max_fps_field = _add_number(graphics, GameText.Key.SETTINGS_MAX_FPS, &"max_fps", 0, 2000)
+	max_fps_field.minimum_positive = AppConfig.MIN_MAX_FPS
+	max_fps_field.zero_text = GameText.text(GameText.Key.SETTINGS_FPS_UNLIMITED)
+	taa_choice = _add_toggle(graphics, GameText.Key.SETTINGS_TEMPORAL_AA, &"taa")
+	msaa_choice = _add_choice(graphics, "MSAA",
+		[GameText.text(GameText.Key.SETTINGS_AA_OFF), "2x", "4x", "8x"],
+		[Viewport.MSAA_DISABLED, Viewport.MSAA_2X, Viewport.MSAA_4X, Viewport.MSAA_8X])
+	msaa_choice.item_selected.connect(func(index: int):
+		Config.msaa = msaa_choice.item_ids[index]
+		_persist()
+	)
+
+	var gameplay := _add_section(GameText.Key.SETTINGS_GAMEPLAY, GAMEPLAY_ICON)
+	note_speed_field = _add_number(gameplay, GameText.Key.SETTINGS_NOTE_SPEED, &"note_speed", 10, 120)
+	judgment_line_field = _add_number(gameplay, GameText.Key.SETTINGS_JUDGMENT_LINE_POSITION, &"judgment_line_position", -50, 50)
+	player_size_field = _add_number(gameplay, GameText.Key.SETTINGS_PLAYER_SIZE, &"player_size", 0.5, 2.0, 0.05)
+	play_area_tilt_field = _add_number(gameplay, GameText.Key.SETTINGS_PLAY_AREA_TILT, &"play_area_tilt", 0, 90, 1, "°")
+	ignore_skin_choice = _add_toggle(gameplay, GameText.Key.SETTINGS_IGNORE_CHART_SKIN, &"ignore_chart_skin")
+
+	var keys := _add_section(GameText.Key.SETTINGS_KEYBINDS, KEYS_ICON)
+	left_key = _add_key(keys, GameText.Key.SETTINGS_MOVE_LEFT, "action_left")
+	right_key = _add_key(keys, GameText.Key.SETTINGS_MOVE_RIGHT, "action_right")
+	hit1_key = _add_key(keys, GameText.Key.SETTINGS_NOTE_HIT_1, "action_hit1")
+	hit2_key = _add_key(keys, GameText.Key.SETTINGS_NOTE_HIT_2, "action_hit2")
+
+	var system := _add_section(GameText.Key.SETTINGS_SYSTEM, SYSTEM_ICON)
+	language_choice = _add_choice(system, GameText.text(GameText.Key.SETTINGS_LANGUAGE), [], [])
+	for locale in Localization.available_locales:
+		language_choice.items.append(TranslationServer.get_locale_name(locale))
+	language_choice.focus_entered.connect(func():
+		_language_before_focus = Config.language
+	)
+	language_choice.focus_exited.connect(func():
+		if Config.language != _language_before_focus:
+			Notification.notice(GameText.text(GameText.Key.HINT_LANGUAGE_RESTART))
+	)
+	language_choice.item_selected.connect(func(index: int):
+		Config.language = Localization.available_locales[index]
+		_persist()
+	)
+	chart_threads_field = _add_number(system, GameText.Key.SETTINGS_CHART_LOAD_THREADS, &"chart_load_threads", 1, 32)
+
+func _add_section(caption: GameText.Key, icon: Texture2D) -> SettingsSection:
+	var section := SettingsSection.new()
+	section.caption = GameText.text(caption)
+	section.icon = icon
+	_sections.append(section)
+	scroll.content.add_child(section)
+	var bookmark := SettingsButton.new()
+	bookmark.caption = section.caption
+	bookmark.icon = icon
+	bookmark.bookmark = true
+	bookmark.pressed.connect(_jump_to_section.bind(section))
+	_bookmarks.append(bookmark)
+	panel.add_child(bookmark)
+	return section
+
+func _make_dial(caption: GameText.Key, property: StringName, large: bool = false) -> SettingsDial:
+	var dial := SettingsDial.new()
+	dial.caption = GameText.text(caption)
+	dial.large = large
+	dial.value_changed.connect(func(value: float):
+		Config.set(property, value)
+		_persist()
+	)
+	_connect_focus(dial)
+	return dial
+
+func _add_number(section: SettingsSection, caption: GameText.Key, property: StringName, minimum: float, maximum: float, step: float = 1.0, unit: String = "") -> SettingsNumber:
+	var field := SettingsNumber.new()
+	field.caption = GameText.text(caption)
+	field.min_value = minimum
+	field.max_value = maximum
+	field.step = step
+	field.unit = unit
+	field.value_changed.connect(func(value: float):
+		Config.set(property, value)
+		field.set_value(float(Config.get(property)))
+		_persist()
+	)
+	section.add_row(field)
+	_connect_focus(field)
+	return field
+
+func _add_choice(section: SettingsSection, caption: String, items: PackedStringArray, ids: PackedInt32Array) -> SettingsChoice:
+	var choice := SettingsChoice.new()
+	choice.caption = caption
+	choice.items = items
+	choice.item_ids = ids
+	section.add_row(choice)
+	_connect_focus(choice)
+	return choice
+
+func _add_toggle(section: SettingsSection, caption: GameText.Key, property: StringName) -> SettingsChoice:
+	var choice := _add_choice(section, GameText.text(caption), [GameText.text(GameText.Key.SETTINGS_DISABLED), GameText.text(GameText.Key.SETTINGS_ENABLED)], [0, 1])
+	choice.toggle = true
+	choice.item_selected.connect(func(index: int):
+		Config.set(property, index > 0)
+		_persist()
+	)
+	return choice
+
+func _add_key(section: SettingsSection, caption: GameText.Key, action: String) -> SettingsButton:
+	var button := SettingsButton.new()
+	button.row_title = GameText.text(caption)
+	button.pressed.connect(_begin_keybind_capture.bind(action))
+	section.add_row(button, 74)
+	_connect_focus(button)
+	return button
+
+func _connect_focus(control: Control) -> void:
+	control.focus_entered.connect(func():
+		var y := control.position.y + (control.get_parent() as Control).position.y
+		if y < scroll.target + SettingsScroll.EDGE_SPACE:
+			scroll.scroll_to(y - SettingsScroll.EDGE_SPACE, true)
+		elif y + control.size.y > scroll.target + scroll.size.y - SettingsScroll.EDGE_SPACE:
+			scroll.scroll_to(y + control.size.y - scroll.size.y + SettingsScroll.EDGE_SPACE, true)
+	)
+
+func _layout() -> void:
+	var ui_scale := minf(1.0, minf(size.x / 850.0, size.y / 780.0))
+	panel.scale = Vector2.ONE * ui_scale
+	panel.position.y = PANEL_TOP * ui_scale
+	panel.size = Vector2(PANEL_WIDTH, size.y / maxf(ui_scale, 0.01) - PANEL_TOP)
+	if not visible:
+		panel.position.x = HIDDEN_X * ui_scale
+	scroll.position = Vector2(34, 0)
+	scroll.size = Vector2(PANEL_WIDTH - 68, panel.size.y)
+	var y := SettingsScroll.EDGE_SPACE
+	for i in range(_sections.size()):
+		var section := _sections[i]
+		section.position = Vector2(0, y)
+		section.size = Vector2(scroll.size.x - 24, section.content_height)
+		y += section.content_height + 46
+		_bookmarks[i].position = Vector2(PANEL_WIDTH - 2, 70 + i * 72)
+		_bookmarks[i].size = Vector2(168, 58)
+	var last_height: float = _sections.back().content_height
+	scroll.content.size = Vector2(scroll.size.x, y - 46 + maxf(SettingsScroll.EDGE_SPACE, scroll.size.y - last_height - SettingsScroll.EDGE_SPACE))
+	scroll.scroll_to(scroll.target)
+	queue_redraw()
 
 func show_popup() -> void:
 	if _is_open:
 		return
-
+	if not visible:
+		_previous_focus = get_viewport().gui_get_focus_owner()
 	_is_open = true
 	visible = true
-	tab_container.current_tab = 0
 	_sync_from_config()
+	scroll.reset()
 	_play_tween(true)
-
+	master_dial.grab_focus()
 
 func close_popup() -> void:
 	if not _is_open:
 		return
-
+	var focus := get_viewport().gui_get_focus_owner()
+	if focus != null and is_ancestor_of(focus):
+		focus.release_focus()
+	_pending_keybind_action = ""
+	_refresh_keybind_labels()
 	_is_open = false
 	_play_tween(false)
-
 
 func is_open() -> bool:
 	return _is_open
 
-
-func _input(event: InputEvent) -> void:
-	if not _is_open:
-		return
-
-	if _pending_keybind_action == "":
-		return
-
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.physical_keycode == KEY_ESCAPE:
-			_pending_keybind_action = ""
-			_refresh_keybind_labels()
-		else:
-			_apply_keybind(_pending_keybind_action, event.physical_keycode)
-			_pending_keybind_action = ""
-			_refresh_keybind_labels()
-		get_viewport().set_input_as_handled()
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not _is_open:
-		return
-
-	if _pending_keybind_action != "":
-		return
-
-	if event.is_action_pressed("ui_cancel"):
-		close_popup()
-		get_viewport().set_input_as_handled()
-		return
-
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if not panel.get_global_rect().has_point(event.position):
-			close_popup()
-			get_viewport().set_input_as_handled()
-
-
-func _setup_options() -> void:
-	tab_container.set_tab_title(0, GameText.text(GameText.Key.SETTINGS_GRAPHICS))
-	tab_container.set_tab_title(1, GameText.text(GameText.Key.SETTINGS_AUDIO))
-	tab_container.set_tab_title(2, GameText.text(GameText.Key.SETTINGS_GAMEPLAY))
-	tab_container.set_tab_title(3, GameText.text(GameText.Key.SETTINGS_KEYBINDS))
-	tab_container.set_tab_title(4, GameText.text(GameText.Key.SETTINGS_SYSTEM))
-
-	window_mode_option.clear()
-	window_mode_option.add_item(GameText.text(GameText.Key.SETTINGS_FULLSCREEN), DisplayServer.WINDOW_MODE_FULLSCREEN)
-	window_mode_option.add_item(GameText.text(GameText.Key.SETTINGS_WINDOWED), DisplayServer.WINDOW_MODE_WINDOWED)
-	window_mode_option.add_item(GameText.text(GameText.Key.SETTINGS_EXCLUSIVE_FULLSCREEN), DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
-
-	vsync_option.clear()
-	vsync_option.add_item(GameText.text(GameText.Key.SETTINGS_DISABLED), DisplayServer.VSYNC_DISABLED)
-	vsync_option.add_item(GameText.text(GameText.Key.SETTINGS_ENABLED), DisplayServer.VSYNC_ENABLED)
-	vsync_option.add_item(GameText.text(GameText.Key.SETTINGS_VSYNC_ADAPTIVE), DisplayServer.VSYNC_ADAPTIVE)
-	vsync_option.add_item(GameText.text(GameText.Key.SETTINGS_VSYNC_MAILBOX), DisplayServer.VSYNC_MAILBOX)
-
-	msaa_option.clear()
-	msaa_option.add_item(GameText.text(GameText.Key.SETTINGS_AA_OFF), Viewport.MSAA_DISABLED)
-	msaa_option.add_item("2x", Viewport.MSAA_2X)
-	msaa_option.add_item("4x", Viewport.MSAA_4X)
-	msaa_option.add_item("8x", Viewport.MSAA_8X)
-
-	max_fps_spin.min_value = 0.0
-	max_fps_spin.max_value = 2000.0
-	max_fps_spin.step = 1.0
-
-
-func _connect_signals() -> void:
-	close_button.pressed.connect(close_popup)
-
-	window_mode_option.item_selected.connect(_on_window_mode_selected)
-	vsync_option.item_selected.connect(_on_vsync_selected)
-	max_fps_spin.value_changed.connect(_on_max_fps_changed)
-	taa_check.toggled.connect(_on_taa_toggled)
-	msaa_option.item_selected.connect(_on_msaa_selected)
-
-	master_slider.value_changed.connect(_on_master_changed)
-	music_slider.value_changed.connect(_on_music_changed)
-	sfx_slider.value_changed.connect(_on_sfx_changed)
-	hit_effect_slider.value_changed.connect(_on_hit_effect_changed)
-	offset_spin.value_changed.connect(_on_offset_changed)
-
-	note_speed_slider.value_changed.connect(_on_note_speed_changed)
-	judgment_line_position_spin.value_changed.connect(_on_judgment_line_position_changed)
-	player_size_spin.value_changed.connect(_on_player_size_changed)
-	play_area_tilt_spin.value_changed.connect(_on_play_area_tilt_changed)
-	action_left_button.pressed.connect(_begin_keybind_capture.bind("action_left"))
-	action_right_button.pressed.connect(_begin_keybind_capture.bind("action_right"))
-	action_hit1_button.pressed.connect(_begin_keybind_capture.bind("action_hit1"))
-	action_hit2_button.pressed.connect(_begin_keybind_capture.bind("action_hit2"))
-	ignore_chart_skin_check.toggled.connect(_on_ignore_chart_skin_toggled)
-
-	chart_load_threads_spin.value_changed.connect(_on_chart_threads_changed)
-	language_option.item_selected.connect(_on_language_selected)
-	api_url_edit.editable = false
-
-
-func _sync_from_config() -> void:
-	_is_syncing = true
-
-	_select_option_by_id(window_mode_option, int(Config.window_mode))
-	_select_option_by_id(vsync_option, int(Config.vsync_mode))
-	_select_option_by_id(msaa_option, int(Config.msaa))
-
-	max_fps_spin.value = Config.max_fps
-	_refresh_max_fps_display()
-	taa_check.button_pressed = Config.taa
-
-	master_slider.value = Config.master_db
-	music_slider.value = Config.music_db
-	sfx_slider.value = Config.sfx_db
-	hit_effect_slider.value = Config.hit_effect_db
-	offset_spin.value = Config.offset
-
-	note_speed_slider.value = Config.note_speed
-	judgment_line_position_spin.value = Config.judgment_line_position
-	player_size_spin.value = Config.player_size
-	play_area_tilt_spin.value = Config.play_area_tilt
-	ignore_chart_skin_check.button_pressed = Config.ignore_chart_skin
-	_refresh_keybind_labels()
-
-	chart_load_threads_spin.value = Config.chart_load_threads
-	api_url_edit.text = Config.SERVER_URL
-
-	_refresh_value_labels()
-	_refresh_language_options()
-	_is_syncing = false
-
-func _refresh_language_options() -> void:
-	language_option.clear()
-	for locale in Localization.available_locales:
-		language_option.add_item(TranslationServer.get_locale_name(locale))
-		language_option.set_item_metadata(language_option.item_count - 1, locale)
-		if locale == Config.language:
-			language_option.select(language_option.item_count - 1)
-
-func _on_language_selected(index: int) -> void:
-	if _is_syncing:
-		return
-	Config.language = str(language_option.get_item_metadata(index))
-	_persist()
-	Notification.notice(GameText.text(GameText.Key.HINT_LANGUAGE_RESTART))
-
+func _draw() -> void:
+	draw_rect(Rect2(Vector2.ZERO, size), Color(SettingsPaint.OVERLAY, _overlay_alpha))
 
 func _play_tween(opening: bool) -> void:
 	if _tween != null:
 		_tween.kill()
-
-	_tween = create_tween()
-
+	_tween = create_tween().set_parallel(true)
 	if opening:
-		overlay.modulate.a = 0.0
-		panel.modulate.a = 1.0
-		panel.offset_transform_scale = HIDDEN_SCALE
-		_tween.set_parallel(true)
-		_tween.tween_property(overlay, "modulate:a", 0.78, OVERLAY_OPEN_DURATION)
-		_tween.tween_property(panel, "offset_transform_scale", OPEN_OVERSHOOT_SCALE, OPEN_BOUNCE_DURATION).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		_tween.chain().tween_property(panel, "offset_transform_scale", OPEN_SETTLE_SCALE, OPEN_SETTLE_DURATION).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-		_tween.chain().tween_property(panel, "offset_transform_scale", Vector2.ONE, OPEN_FINISH_DURATION).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		_tween.tween_property(self, "_overlay_alpha", 0.70, 0.22)
+		_tween.tween_property(panel, "position:x", 10.0, 0.30).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+		_tween.chain().tween_property(panel, "position:x", 0.0, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	else:
-		_tween.set_parallel(true)
-		_tween.tween_property(overlay, "modulate:a", 0.0, OVERLAY_CLOSE_DURATION)
-		_tween.tween_property(panel, "offset_transform_scale", HIDDEN_SCALE, CLOSE_DURATION).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
-		_tween.finished.connect(func() -> void:
+		_tween.tween_property(self, "_overlay_alpha", 0.0, 0.20)
+		_tween.tween_property(panel, "position:x", HIDDEN_X * panel.scale.x, 0.24).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		_tween.finished.connect(func():
 			if not _is_open:
 				visible = false
+				if is_instance_valid(_previous_focus) and _previous_focus.is_visible_in_tree():
+					_previous_focus.grab_focus()
 		)
 
-func _select_option_by_id(option: OptionButton, target_id: int) -> void:
-	for i in range(option.item_count):
-		if option.get_item_id(i) == target_id:
-			option.select(i)
-			return
-	if option.item_count > 0:
-		option.select(0)
+func _input(event: InputEvent) -> void:
+	if not visible:
+		return
+	if not _is_open:
+		get_viewport().set_input_as_handled()
+		return
+	if not _pending_keybind_action.is_empty() and event is InputEventKey and event.pressed and not event.echo:
+		if event.physical_keycode != KEY_ESCAPE:
+			Config.set(_pending_keybind_action, event.physical_keycode)
+			_persist()
+		_pending_keybind_action = ""
+		_refresh_keybind_labels()
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
+		scroll.scroll_wheel((-1.0 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0) * event.factor)
+		get_viewport().set_input_as_handled()
+	elif event is InputEventPanGesture:
+		scroll.scroll_wheel(event.delta.y * 0.3)
+		get_viewport().set_input_as_handled()
 
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		close_popup()
+		accept_event()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if _is_open and event.is_action_pressed("ui_cancel"):
+		close_popup()
+		get_viewport().set_input_as_handled()
+
+func _jump_to_section(section: SettingsSection) -> void:
+	scroll.scroll_to(section.position.y - SettingsScroll.EDGE_SPACE, true)
+
+func _update_bookmarks(offset: float) -> void:
+	var active := 0
+	for i in range(_sections.size()):
+		if _sections[i].position.y <= offset + SettingsScroll.EDGE_SPACE + 20:
+			active = i
+	for i in range(_bookmarks.size()):
+		_bookmarks[i].selected = i == active
+		_bookmarks[i].queue_redraw()
+
+func _sync_from_config() -> void:
+	master_dial.set_value(Config.master_db)
+	music_dial.set_value(Config.music_db)
+	sfx_dial.set_value(Config.sfx_db)
+	offset_field.set_value(Config.offset)
+	output_latency_field.set_value(Config.output_latency)
+	max_fps_field.set_value(Config.max_fps)
+	note_speed_field.set_value(Config.note_speed)
+	judgment_line_field.set_value(Config.judgment_line_position)
+	player_size_field.set_value(Config.player_size)
+	play_area_tilt_field.set_value(Config.play_area_tilt)
+	chart_threads_field.set_value(Config.chart_load_threads)
+	window_mode_choice.select_id(Config.window_mode)
+	vsync_choice.select_id(Config.vsync_mode)
+	msaa_choice.select_id(Config.msaa)
+	taa_choice.select(int(Config.taa))
+	ignore_skin_choice.select(int(Config.ignore_chart_skin))
+	language_choice.select(Localization.available_locales.find(Config.language))
+	_refresh_keybind_labels()
+
+func _begin_keybind_capture(action: String) -> void:
+	var focus := get_viewport().gui_get_focus_owner()
+	if focus != null:
+		focus.release_focus()
+	_pending_keybind_action = action
+	_refresh_keybind_labels()
+
+func _refresh_keybind_labels() -> void:
+	left_key.caption = _key_text("action_left", Config.action_left)
+	right_key.caption = _key_text("action_right", Config.action_right)
+	hit1_key.caption = _key_text("action_hit1", Config.action_hit1)
+	hit2_key.caption = _key_text("action_hit2", Config.action_hit2)
+	for button in [left_key, right_key, hit1_key, hit2_key]:
+		button.queue_redraw()
+
+func _key_text(action: String, keycode: Key) -> String:
+	if _pending_keybind_action == action:
+		return GameText.text(GameText.Key.SETTINGS_PRESS_KEY)
+	if keycode > KEY_SPACE and keycode < KEY_SPECIAL:
+		return String.chr(keycode)
+	return OS.get_keycode_string(keycode)
 
 func _persist() -> void:
 	Config.config.save(Config.FILE_PATH)
-
-
-func _refresh_value_labels() -> void:
-	master_value.text = _format_percent(master_slider.value)
-	music_value.text = _format_percent(music_slider.value)
-	sfx_value.text = _format_percent(sfx_slider.value)
-	hit_effect_value.text = _format_percent(hit_effect_slider.value)
-	note_speed_value.text = "%.0f" % note_speed_slider.value
-
-
-func _refresh_keybind_labels() -> void:
-	action_left_button.text = _get_keybind_button_text("action_left", Config.action_left)
-	action_right_button.text = _get_keybind_button_text("action_right", Config.action_right)
-	action_hit1_button.text = _get_keybind_button_text("action_hit1", Config.action_hit1)
-	action_hit2_button.text = _get_keybind_button_text("action_hit2", Config.action_hit2)
-
-
-func _get_keybind_button_text(action_name: String, keycode: Key) -> String:
-	if _pending_keybind_action == action_name:
-		return GameText.text(GameText.Key.SETTINGS_PRESS_KEY)
-	return OS.get_keycode_string(keycode)
-
-
-func _begin_keybind_capture(action_name: String) -> void:
-	var focus_owner := get_viewport().gui_get_focus_owner()
-	if focus_owner is Control:
-		focus_owner.release_focus()
-	_pending_keybind_action = action_name
-	_refresh_keybind_labels()
-
-
-func _apply_keybind(action_name: String, keycode: Key) -> void:
-	match action_name:
-		"action_left":
-			Config.action_left = keycode
-		"action_right":
-			Config.action_right = keycode
-		"action_hit1":
-			Config.action_hit1 = keycode
-		"action_hit2":
-			Config.action_hit2 = keycode
-		_:
-			return
-	_persist()
-
-
-func _format_percent(value: float) -> String:
-	return "%d" % int(round(value * 100.0))
-
-
-func _refresh_max_fps_display() -> void:
-	if max_fps_line_edit == null:
-		return
-	if int(max_fps_spin.value) == 0:
-		max_fps_line_edit.text = GameText.text(GameText.Key.SETTINGS_FPS_UNLIMITED)
-
-
-func _on_window_mode_selected(index: int) -> void:
-	if _is_syncing:
-		return
-	Config.window_mode = window_mode_option.get_item_id(index) as DisplayServer.WindowMode
-	_persist()
-
-
-func _on_vsync_selected(index: int) -> void:
-	if _is_syncing:
-		return
-	Config.vsync_mode = vsync_option.get_item_id(index) as DisplayServer.VSyncMode
-	_persist()
-
-
-func _on_max_fps_changed(value: float) -> void:
-	if _is_syncing:
-		_refresh_max_fps_display()
-		return
-
-	Config.max_fps = int(value)
-	var sanitized := Config.max_fps
-	if int(max_fps_spin.value) != sanitized:
-		_is_syncing = true
-		max_fps_spin.value = sanitized
-		_is_syncing = false
-	_refresh_max_fps_display()
-	_persist()
-
-
-func _on_taa_toggled(enabled: bool) -> void:
-	if _is_syncing:
-		return
-	Config.taa = enabled
-	_persist()
-
-
-func _on_msaa_selected(index: int) -> void:
-	if _is_syncing:
-		return
-	Config.msaa = msaa_option.get_item_id(index) as Viewport.MSAA
-	_persist()
-
-
-func _on_master_changed(value: float) -> void:
-	master_value.text = _format_percent(value)
-	if _is_syncing:
-		return
-	Config.master_db = value
-	_persist()
-
-
-func _on_music_changed(value: float) -> void:
-	music_value.text = _format_percent(value)
-	if _is_syncing:
-		return
-	Config.music_db = value
-	_persist()
-
-
-func _on_sfx_changed(value: float) -> void:
-	sfx_value.text = _format_percent(value)
-	if _is_syncing:
-		return
-	Config.sfx_db = value
-	_persist()
-
-
-func _on_hit_effect_changed(value: float) -> void:
-	hit_effect_value.text = _format_percent(value)
-	if _is_syncing:
-		return
-	Config.hit_effect_db = value
-	_persist()
-
-
-func _on_offset_changed(value: float) -> void:
-	if _is_syncing:
-		return
-	Config.offset = int(value)
-	_persist()
-
-
-func _on_note_speed_changed(value: float) -> void:
-	note_speed_value.text = "%.0f" % value
-	if _is_syncing:
-		return
-	Config.note_speed = value
-	_persist()
-
-
-func _on_judgment_line_position_changed(value: float) -> void:
-	if _is_syncing:
-		return
-	Config.judgment_line_position = value
-	_persist()
-
-
-func _on_player_size_changed(value: float) -> void:
-	if _is_syncing:
-		return
-	Config.player_size = value
-	_persist()
-
-
-func _on_play_area_tilt_changed(value: float) -> void:
-	if _is_syncing:
-		return
-	Config.play_area_tilt = value
-	_persist()
-
-
-func _on_ignore_chart_skin_toggled(enabled: bool) -> void:
-	if _is_syncing:
-		return
-	Config.ignore_chart_skin = enabled
-	_persist()
-
-
-func _on_chart_threads_changed(value: float) -> void:
-	if _is_syncing:
-		return
-	Config.chart_load_threads = int(value)
-	_persist()

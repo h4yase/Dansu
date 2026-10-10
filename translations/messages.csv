@@ -18,7 +18,7 @@ ACTION_LEAVE_UNSAVED,Leave without saving,저장하지 않고 나가기,保存�
 CONFIRM_DELETE_CHART,Move this difficulty to the Recycle Bin?,이 난이도를 휴지통으로 옮길까요?,この難易度をゴミ箱に移動しますか？,确定要将此难度移入回收站吗？
 CONFIRM_DELETE_DIFFICULTY,Move difficulty '%s' to the Recycle Bin?,해당 난이도(%s)를 휴지통으로 옮기겠습니까?,難易度「%s」をゴミ箱に移動しますか？,确定要将难度“%s”移入回收站吗？
 CONFIRM_DELETE_CHARTSET,"Move chart '%s', including all difficulties and related files, to the Recycle Bin?",채보 '%s'의 모든 난이도와 관련 파일을 휴지통으로 옮길까요?,譜面「%s」のすべての難易度と関連ファイルをゴミ箱に移動しますか？,确定要将谱面“%s”的所有难度及相关文件移入回收站吗？
-HINT_DELETE_LAST_DIFFICULTY,This is the last difficulty. Use Delete Chart to remove the entire chart.,마지막 난이도입니다. 채보 전체 삭제를 사용해 주세요.,最後の難易度です。「譜面をすべて削除」を使ってください。,如需删除，请使用“删除整份谱面”。
+HINT_DELETE_LAST_DIFFICULTY,This is the last difficulty. Use Delete Chart to remove the entire chart.,最後の難易度です。「譜面をすべて削除」を使ってください。,最後の難易度です。「譜面をすべて削除」を使ってください。,如需删除，请使用“删除整份谱面”。
 ERROR_DELETE_CHART,Failed to delete %s.,파일 삭제에 실패했습니다. %s,%sの削除に失敗しました。,删除 %s 失败。
 NOTICE_CHART_DELETED,%s moved to the Recycle Bin.,다음 파일이 휴지통으로 옮겨졌습니다: %s,%sをゴミ箱に移動しました。,%s 已移入回收站。
 ERROR_CHART_NOT_SELECTED,Select a difficulty first.,선택된 난이도가 없습니다.,先に難易度を選択してください。,请先选择难度。
@@ -118,11 +118,13 @@ SETTINGS_WINDOW_MODE,Window Mode,화면 모드,ウィンドウモード,窗口�
 SETTINGS_VSYNC,VSync,수직 동기화,垂直同期,垂直同步
 SETTINGS_MAX_FPS,Max FPS,최대 FPS,最大FPS,最大帧率
 SETTINGS_TEMPORAL_AA,TAA,TAA,TAA,TAA
-SETTINGS_MASTER_VOLUME,Master,전체 음량,マスター,主音量
-SETTINGS_MUSIC_VOLUME,Music,음악 음량,音楽,音乐
-SETTINGS_SFX_VOLUME,SFX,효과음 음량,効果音,音效
-SETTINGS_HITSOUND_VOLUME,hitsound,히트사운드 음량,ヒットサウンド,打击音效
+SETTINGS_MASTER_VOLUME,Master,전체,マスター,主音量
+SETTINGS_MUSIC_VOLUME,Music,음악,音楽,音乐
+SETTINGS_SFX_VOLUME,SFX,효과음,効果音,音效
+SETTINGS_HITSOUND_VOLUME,hitsound,히트사운드,ヒットサウンド,打击音效
 SETTINGS_AUDIO_OFFSET,Audio Offset,음악 싱크 조절,オーディオオフセット,偏移量
+SETTINGS_OUTPUT_LATENCY,Output latency,출력 지연,出力遅延,输出延迟
+SETTINGS_APPLY_AFTER_RESTART,Applies after restart,재시작 후 적용,再起動後に適用,重启后生效
 SETTINGS_NOTE_SPEED,Note Speed,노트 속도,ノーツ速度,下落速度
 SETTINGS_JUDGMENT_LINE_POSITION,Judgment Line Position,판정선 위치,判定ラインの位置,判定线位置
 SETTINGS_PLAYER_SIZE,Player Size,플레이어 크기,プレイヤーサイズ,角色大小
@@ -197,7 +199,7 @@ EDITOR_NO_COVER,(no linked cover art),(연결된 커버 이미지 없음),（カ
 EDITOR_NO_AUDIO,(no linked audio file),(연결된 오디오 파일 없음),（音声ファイル未設定）,（未关联音频文件）
 EDITOR_SELECT_SKIN,Select Skin,스킨 선택,スキンを選択,选择皮肤
 EDITOR_NOTE,Note,노트,ノーツ,音符
-EDITOR_TIME,time,시간,時間,时间
+EDITOR_TIME,time(ms),time(ms),time(ms),time(ms)
 EDITOR_NOTE_TYPE,type,종류,種類,类型
 EDITOR_HIT,Hit,일반,Hit,单键
 EDITOR_MOVE,Move,이동,Move,滑动
@@ -213,7 +215,7 @@ EDITOR_RAIL,Rail,레일,レール,轨道
 EDITOR_ADD_TIMING,Add new timing,타이밍 추가,タイミングを追加,添加时间点
 EDITOR_DETECT_TIMING,Auto detect BPM / offset,BPM / 오프셋 자동 탐지,BPM / オフセットを自動検出,自动检测 BPM / 偏移
 EDITOR_TIMING_DETECTING,Analyzing audio…,오디오 분석 중…,音声を解析中…,正在分析音频…
-EDITOR_TIMING_DETECTED,"BPM %.0f · Offset %.1f ms · Confidence %.1f%% · %d timing points","BPM %.0f · 오프셋 %.1f ms · 신뢰도 %.1f%% · 타이밍 %d개","BPM %.0f · オフセット %.1f ms · 信頼度 %.1f%% · タイミング %d件","BPM %.0f · 偏移 %.1f ms · 置信度 %.1f%% · %d 个时间点"
+EDITOR_TIMING_DETECTED,BPM %.0f · Offset %.1f ms · Confidence %.1f%% · %d timing points,BPM %.0f · 오프셋 %.1f ms · 신뢰도 %.1f%% · 타이밍 %d개,BPM %.0f · オフセット %.1f ms · 信頼度 %.1f%% · タイミング %d件,BPM %.0f · 偏移 %.1f ms · 置信度 %.1f%% · %d 个时间点
 EDITOR_TIMING_FAILED,Could not detect timing.,타이밍을 탐지하지 못했습니다.,タイミングを検出できませんでした。,无法检测时间点。
 EDITOR_TIMING_CHANGED,Audio or timing changed during analysis. Run detection again.,분석 중 오디오 또는 타이밍이 변경되었습니다. 다시 탐지해주세요.,解析中に音声またはタイミングが変更されました。再検出してください。,分析期间音频或时间点已更改。请重新检测。
 EDITOR_TIMING_REVIEW,Some sections are uncertain. Check the beat grid by listening.,일부 구간이 불확실합니다. 재생하며 박자선을 확인해주세요.,不確実な区間があります。再生して拍の位置を確認してください。,部分段落不确定。请播放并检查节拍线。
@@ -235,7 +237,7 @@ EDITOR_COPY,Copy,복사,コピー,复制
 EDITOR_PASTE,Paste,붙여넣기,貼り付け,粘贴
 EDITOR_UNDO,Undo,실행 취소,元に戻す,撤销
 EDITOR_REDO,Redo,다시 실행,やり直す,重做
-EDITOR_CHART,Difficulty,난이도,難易度,难度
+EDITOR_CHART,Chart,채보,難易度,难度
 EDITOR_SAVE_CHART,Save Difficulty,난이도 저장,難易度を保存,保存难度
 EDITOR_PLAY_TEST,Play test,플레이 테스트,テストプレイ,试玩
 EDITOR_OPEN_FILE,Open a File,파일 열기,ファイルを開く,打开文件

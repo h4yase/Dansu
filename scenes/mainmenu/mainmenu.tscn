@@ -771,6 +771,12 @@ corner_radius_top_right = 18
 corner_radius_bottom_right = 18
 corner_radius_bottom_left = 18
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_olbpu"]
+shader = ExtResource("10_jyltf")
+shader_parameter/height = 3.0
+shader_parameter/frequency = 20.0
+shader_parameter/speed = 3.0
+
 [node name="MainMenu" type="Control" unique_id=609673978 node_paths=PackedStringArray("progress_bar", "current_chartset_label", "search_input", "filter_button", "source_tabs", "chart_scroll", "exit_overlay", "audio_1", "audio_2", "menu_audio_switcher", "settings_popup", "logo", "menu_buttons", "account_panel", "username_setup_overlay", "username_input", "username_status", "username_submit_button", "bottom_buttons", "bottom_play_button", "bottom_edit_button", "new_chart_button", "edit_actions", "loved_button", "playlist_button", "playlist_panel", "new_difficulty_button", "delete_difficulty_button", "delete_chartset_button", "delete_chart_dialog", "_publish_button", "chart_info_panel", "_filter_popup", "_catalogue", "_publisher", "animations", "switch_player", "bye_player")]
 layout_mode = 3
 anchors_preset = 15
@@ -1846,6 +1852,7 @@ layout_mode = 2
 theme_override_constants/separation = 14
 
 [node name="Title" type="Label" parent="UsernameSetupOverlay/Center/Panel/Margin/Content" unique_id=45353414]
+material = SubResource("ShaderMaterial_olbpu")
 layout_mode = 2
 theme_override_colors/font_color = Color(0.96862745, 0.95686275, 1, 1)
 theme_override_fonts/font = ExtResource("4_ridl2")
@@ -1883,6 +1890,8 @@ autowrap_mode = 2
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 theme = ExtResource("17_y7e7m")
+theme_override_fonts/font = ExtResource("4_ridl2")
+theme_override_font_sizes/font_size = 24
 text = "Continue"
 
 [node name="SettingsPopup" parent="." unique_id=1336381579 instance=ExtResource("25_settings")]
