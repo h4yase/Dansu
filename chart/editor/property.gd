@@ -19,6 +19,7 @@ var _point_rows: Array[EditorPointItem] = []
 var _listed_rail: Rail
 
 var _syncing := false
+@onready var _empty_selection: Label = $EmptySelection
 
 func _ready() -> void:
 	_connect_signals()
@@ -52,6 +53,8 @@ func _refresh() -> void:
 
 	note_tab.visible = note != null
 	rail_tab.visible = selection.selected_rail != null and selection.selected_notes.is_empty()
+	var editing_events: bool = editor.event_controller != null and editor.event_controller.active
+	_empty_selection.visible = not editing_events and note == null and selection.selected_rail == null
 
 	if note != null:
 		note_time_lineedit.text = str(note.time)

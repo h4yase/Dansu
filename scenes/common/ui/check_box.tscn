@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" path="res://resources/themes/dansu_ui_theme.tres" id="1_theme"]
+[ext_resource type="PackedScene" path="res://scenes/common/ui/feedback.tscn" id="2_feedback"]
+
+[node name="CheckBox" type="CheckBox"]
+custom_minimum_size = Vector2(0, 36)
+theme = ExtResource("1_theme")
+
+[node name="Feedback" parent="." instance=ExtResource("2_feedback")]
+animate_scale = false

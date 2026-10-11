@@ -1,46 +1,61 @@
 [gd_scene format=3 uid="uid://bg8obfjf1d3ei"]
 
-[ext_resource type="Script" uid="uid://c3awl1x0e0ovc" path="res://chart/editor/timing_item.gd" id="1_5b8ms"]
+[ext_resource type="Script" path="res://chart/editor/timing_item.gd" id="1_timing"]
+[ext_resource type="PackedScene" path="res://scenes/common/ui/line_edit.tscn" id="2_input"]
+[ext_resource type="PackedScene" path="res://scenes/common/ui/button.tscn" id="3_button"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ryhys"]
+[ext_resource type="PackedScene" path="res://scenes/common/ui/panel.tscn" id="ui_panel"]
 
-[node name="Timing" type="PanelContainer" unique_id=2110964154 node_paths=PackedStringArray("bpm_line_edit", "time_line_edit", "remove_button")]
-script = ExtResource("1_5b8ms")
-bpm_line_edit = NodePath("MarginContainer/HBoxContainer/BPM")
-time_line_edit = NodePath("MarginContainer/HBoxContainer/Time")
-remove_button = NodePath("MarginContainer/HBoxContainer/Button")
+[node name="Timing" node_paths=PackedStringArray("bpm_line_edit", "time_line_edit", "remove_button") instance=ExtResource("ui_panel")]
+script = ExtResource("1_timing")
+bpm_line_edit = NodePath("Rows/Values/BPM/Input")
+time_line_edit = NodePath("Rows/Values/Time/Input")
+remove_button = NodePath("Rows/Header/Remove")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2110974600]
+[node name="Rows" type="VBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/separation = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=640957604]
+[node name="Header" type="HBoxContainer" parent="Rows"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer" unique_id=788005833]
-layout_mode = 2
-text = "EDITOR_TIMING_BPM"
-
-[node name="BPM" type="LineEdit" parent="MarginContainer/HBoxContainer" unique_id=823514799]
-layout_mode = 2
-placeholder_text = "100.0"
-
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer" unique_id=678686071]
-layout_mode = 2
-text = "EDITOR_TIMING_TIME"
-
-[node name="Time" type="LineEdit" parent="MarginContainer/HBoxContainer" unique_id=686243392]
-layout_mode = 2
-placeholder_text = "100"
-
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer" unique_id=1163102531]
+[node name="Title" type="Label" parent="Rows/Header"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/separator = SubResource("StyleBoxEmpty_ryhys")
+text = "EDITOR_TIMING"
+theme_type_variation = &"ToolLabel"
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer" unique_id=592617524]
+[node name="Remove" parent="Rows/Header" instance=ExtResource("3_button")]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 text = "EDITOR_REMOVE"
+
+[node name="Values" type="HBoxContainer" parent="Rows"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="BPM" type="VBoxContainer" parent="Rows/Values"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Rows/Values/BPM"]
+layout_mode = 2
+text = "EDITOR_TIMING_BPM"
+theme_type_variation = &"CaptionLabel"
+
+[node name="Input" parent="Rows/Values/BPM" instance=ExtResource("2_input")]
+layout_mode = 2
+placeholder_text = "120.0"
+
+[node name="Time" type="VBoxContainer" parent="Rows/Values"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Rows/Values/Time"]
+layout_mode = 2
+text = "EDITOR_TIMING_TIME"
+theme_type_variation = &"CaptionLabel"
+
+[node name="Input" parent="Rows/Values/Time" instance=ExtResource("2_input")]
+layout_mode = 2
+placeholder_text = "0"

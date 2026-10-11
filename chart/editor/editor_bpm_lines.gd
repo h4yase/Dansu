@@ -48,6 +48,9 @@ func _process(_delta: float) -> void:
 func _draw() -> void:
 	if editor == null or editor.timeline == null:
 		return
+	for step in range(1, 10):
+		var x := size.x * step / 10.0
+		draw_line(Vector2(x, 0), Vector2(x, size.y), Color(0.32, 0.28, 0.42, 0.25), 1.0)
 
 	var pixels_per_ms = editor.get_pixels_per_ms()
 	var judge_y = editor.get_judge_y()
@@ -61,11 +64,9 @@ func _draw() -> void:
 	_draw_from_time(editor.timeline.step_time(center_time, -1), -1, visible_bottom, visible_top, judge_y)
 
 func _draw_from_time(start_time: int, direction: int, visible_bottom: int, visible_top: int, judge_y: float) -> void:
-	var visited: Dictionary = {}
 	var current_time := start_time
 
-	while not visited.has(current_time):
-		visited[current_time] = true
+	while true:
 		if current_time >= visible_bottom and current_time <= visible_top:
 			_draw_grid_line(current_time, judge_y)
 		elif direction > 0 and current_time > visible_top:
@@ -73,7 +74,10 @@ func _draw_from_time(start_time: int, direction: int, visible_bottom: int, visib
 		elif direction < 0 and current_time < visible_bottom:
 			break
 
-		current_time = editor.timeline.step_time(current_time, direction)
+		var next_time := editor.timeline.step_time(current_time, direction)
+		if (direction > 0 and next_time <= current_time) or (direction < 0 and next_time >= current_time):
+			break
+		current_time = next_time
 
 func _draw_grid_line(time_value: int, judge_y: float) -> void:
 	var denominator: int = int(editor.timeline.get_division_denominator(time_value))
@@ -82,16 +86,15 @@ func _draw_grid_line(time_value: int, judge_y: float) -> void:
 
 	match denominator:
 		1:
-			color = Color(0.762, 0.762, 0.762, 0.9)
-			thickness = 2.0
+			color = Color(0.58, 0.5, 0.72, 0.48)
 		2:
-			color = Color(0.25, 0.6, 1.0, 0.8)
+			color = Color(0.25, 0.6, 1.0, 0.28)
 		3:
-			color = Color(1.0, 0.85, 0.2, 0.75)
+			color = Color(1.0, 0.85, 0.2, 0.23)
 		4:
-			color = Color(1.0, 0.3, 0.3, 0.75)
+			color = Color(1.0, 0.3, 0.3, 0.18)
 		6:
-			color = Color(0.9, 0.6, 0.1, 0.75)
+			color = Color(0.9, 0.6, 0.1, 0.2)
 
 	var y: float = judge_y + (Game.current_time - time_value) * editor.get_pixels_per_ms()
 	draw_line(Vector2(0, y), Vector2(size.x, y), color, thickness, true)

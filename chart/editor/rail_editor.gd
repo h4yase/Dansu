@@ -17,29 +17,14 @@ var _selected := false
 var _selected_point_index := -1
 var _point_handles_dimmed := false
 var _rail_geometry_signature := ""
-var _left_hint: Label
-var _right_hint: Label
+@onready var _left_hint: Label = $LeftHint
+@onready var _right_hint: Label = $RightHint
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texture = null
 	if point_handle_template != null:
 		point_handle_template.visible = false
-	_left_hint = Label.new()
-	_left_hint.text = "← Q"
-	_right_hint = Label.new()
-	_right_hint.text = "E →"
-	for hint in [_left_hint, _right_hint]:
-		hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		hint.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
-		hint.z_as_relative = false
-		hint.z_index = 4
-		hint.add_theme_font_size_override("font_size", 18)
-		hint.add_theme_color_override("font_color", Color("8fd0ff"))
-		hint.add_theme_color_override("font_outline_color", Color("101018"))
-		hint.add_theme_constant_override("outline_size", 4)
-		add_child(hint)
-		hint.hide()
 
 func sync_layout(panel_size: Vector2, judge_y: float, pixels_per_ms: float, current_time: float) -> void:
 	var layout_changed := _panel_size != panel_size \

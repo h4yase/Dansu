@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/common/ui/button.tscn" id="1_button"]
+
+[node name="PrimaryButton" instance=ExtResource("1_button")]
+theme_type_variation = &"PrimaryButton"
+
+[node name="Feedback" parent="." index=0]
+highlight_enabled = false
+animate_brightness = true
+
+[editable path="Feedback"]

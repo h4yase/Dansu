@@ -38,7 +38,6 @@ static func restore(editor: ChartEditor, snapshot: EditorSnapshot) -> void:
 	editor.refresh_views()
 	_restore_selection(editor, snapshot.selection)
 	editor._update_time_ui(true)
-	editor._update_save_button_state()
 	editor.hitsounds_changed.emit()
 
 static func same_snapshot(a: EditorSnapshotValue, b: EditorSnapshotValue) -> bool:

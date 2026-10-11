@@ -22,3 +22,29 @@ mouse_filter = 2
 texture = ExtResource("3_point")
 expand_mode = 2
 script = ExtResource("4_handle")
+
+[node name="LeftHint" type="Label" parent="."]
+visible = false
+layout_mode = 0
+mouse_filter = 2
+z_as_relative = false
+z_index = 4
+auto_translate_mode = 2
+theme_override_colors/font_color = Color(0.56, 0.82, 1, 1)
+theme_override_colors/font_outline_color = Color(0.063, 0.063, 0.094, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "← Q"
+
+[node name="RightHint" type="Label" parent="."]
+visible = false
+layout_mode = 0
+mouse_filter = 2
+z_as_relative = false
+z_index = 4
+auto_translate_mode = 2
+theme_override_colors/font_color = Color(0.56, 0.82, 1, 1)
+theme_override_colors/font_outline_color = Color(0.063, 0.063, 0.094, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "E →"

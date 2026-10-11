@@ -393,3 +393,13 @@ ACTION_UPDATE,Update,업데이트,更新,更新
 STATUS_SONG_COUNT,%d songs,%d곡,%d曲,%d 首歌曲
 STATUS_SONG_COUNT_PARTIAL,%d of %d songs,%d / %d곡,%d / %d曲,%d / %d 首歌曲
 PUBLISH_DIFFICULTIES,%d difficulties,난이도 %d개,難易度数：%d,%d 个难度
+
+EDITOR_EVENTS_TOGGLE,EVENTS [H],이벤트 [H],イベント [H],事件 [H]
+EDITOR_SAVE,SAVE,저장,保存,保存
+EDITOR_DELETE_SHORT,Delete,삭제,削除,删除
+EDITOR_EDIT_SKIN,Edit,편집,編集,编辑
+EDITOR_SELECT_OBJECT,Select a note or rail.,노트나 레일을 선택하세요.,ノートまたはレールを選択してください。,请选择音符或轨道。
+EDITOR_RAIL_POINT_TIME,Rail point time,레일 포인트 시간,レールポイントの時刻,轨道控制点时间
+EDITOR_INPUT_HINTS,Wheel: Time · Ctrl+Wheel: Zoom · Q/E: Rail,휠: 시간 · Ctrl+휠: 확대 · Q/E: 레일,ホイール: 時刻 · Ctrl+ホイール: ズーム · Q/E: レール,滚轮: 时间 · Ctrl+滚轮: 缩放 · Q/E: 轨道
+EDITOR_UNTITLED,Untitled,제목 없음,無題,未命名
+EDITOR_BROWSE,Browse…,파일 선택…,ファイルを選択…,选择文件…

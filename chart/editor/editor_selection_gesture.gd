@@ -139,23 +139,8 @@ func motion(position: Vector2) -> void:
 
 func show_point_position(mouse_position: Vector2) -> void:
 	if position_capsule == null:
-		position_capsule = PanelContainer.new()
-		position_capsule.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		position_capsule.z_index = 100
-		var style := StyleBoxFlat.new()
-		style.bg_color = Color(0.08, 0.09, 0.12, 0.95)
-		style.set_corner_radius_all(12)
-		style.content_margin_left = 10.0
-		style.content_margin_right = 10.0
-		style.content_margin_top = 2.0
-		style.content_margin_bottom = 2.0
-		position_capsule.add_theme_stylebox_override("panel", style)
-		position_label = Label.new()
-		position_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		position_label.add_theme_font_size_override("font_size", 14)
-		position_label.add_theme_color_override("font_color", Color.WHITE)
-		position_capsule.add_child(position_label)
-		editor.add_child(position_capsule)
+		position_capsule = editor.get_node("PointPosition")
+		position_label = position_capsule.get_node("Value")
 	position_label.text = "%.2f" % dragged_point.x
 	position_capsule.size = position_capsule.get_combined_minimum_size()
 	var mouse_local := editor.get_global_transform_with_canvas().affine_inverse() * mouse_position
@@ -164,13 +149,7 @@ func show_point_position(mouse_position: Vector2) -> void:
 
 func update_box(rect: Rect2) -> void:
 	if marquee == null:
-		marquee = ColorRect.new()
-		marquee.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		marquee.z_index = 3
-		var fill := ShaderMaterial.new()
-		fill.shader = preload("res://resources/shaders/editor_marquee.gdshader")
-		marquee.material = fill
-		editor.chart_panel.add_child(marquee)
+		marquee = editor.chart_panel.get_node("SelectionBox")
 	marquee.show()
 	var clipped := rect.intersection(Rect2(Vector2.ZERO, editor.chart_panel.size))
 	marquee.position = clipped.position

@@ -16,3 +16,17 @@ offset_bottom = 10.28
 texture = ExtResource("1_x8u0d")
 expand_mode = 1
 script = ExtResource("1_o01ly")
+z_as_relative = false
+z_index = 1
+
+[node name="Trail" type="Control" parent="."]
+layout_mode = 0
+mouse_filter = 2
+z_as_relative = false
+z_index = 0
+
+[node name="Tail" type="Control" parent="."]
+layout_mode = 0
+mouse_filter = 2
+z_as_relative = false
+z_index = 2

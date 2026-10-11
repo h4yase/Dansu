@@ -82,7 +82,6 @@ func _apply_result(result: DansuBPMResult) -> void:
 	editor.chart.timings = timings
 	editor.inspector_controller.rebuild_timing_ui()
 	editor.refresh_views()
-	editor._update_save_button_state()
 	status_label.text = GameText.text(GameText.Key.EDITOR_TIMING_DETECTED) % [result.bpm, result.offset_ms, result.confidence * 100.0, timings.size()]
 	if not result.warnings.is_empty():
 		status_label.text += "\n" + GameText.text(GameText.Key.EDITOR_TIMING_REVIEW)

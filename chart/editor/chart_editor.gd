@@ -10,6 +10,8 @@ const DEFAULT_PIXELS_PER_MS := 1.0
 const MIN_PIXELS_PER_MS := 0.05
 const MAX_PIXELS_PER_MS := 4.0
 const TRANSPORT_UI_UPDATE_USEC := 33333
+const PROPERTY_TAB := 0
+const CHART_TAB := 3
 const EventWorkspace := preload("res://chart/editor/event_workspace.gd")
 var event_controller: Node
 
@@ -40,7 +42,6 @@ var event_controller: Node
 @export var add_timing_button: Button
 @export var timing_list_container: VBoxContainer
 @export var timing_template: Node
-@export var skin_file_label: Label
 @export var skin_browser_button: Button
 @export var open_skin_editor_button: Button
 @export var open_event_editor_button: Button
@@ -48,7 +49,12 @@ var event_controller: Node
 @export var inspector_controller: EditorInspectorController
 @export var edit_controller: EditorEditController
 @export var unsaved_exit_dialog: EditorUnsavedChangesDialog
-@export var fps_label: Label
+@export var inspector: TabContainer
+@export var preview_column: VBoxContainer
+@export var tool_list: VBoxContainer
+@export var play_button: Button
+@export var note_count_label: Label
+@export var rail_count_label: Label
 
 var timeline: EditorTimeline = null
 var selection: ChartEditorSelection = ChartEditorSelection.new()
@@ -71,11 +77,10 @@ var _saved_snapshot: EditorSnapshot
 var _pending_exit_target := ""
 
 func _ready() -> void:
-	var tabs: TabContainer = $Inspector
-	tabs.set_tab_title(0, GameText.text(GameText.Key.EDITOR_CHART))
-	tabs.set_tab_title(1, GameText.text(GameText.Key.EDITOR_TAB_PROPERTY))
-	tabs.set_tab_title(2, GameText.text(GameText.Key.EDITOR_TIMING))
-	tabs.set_tab_title(3, GameText.text(GameText.Key.EDITOR_SFX))
+	inspector.set_tab_title(0, GameText.text(GameText.Key.EDITOR_TAB_PROPERTY))
+	inspector.set_tab_title(1, GameText.text(GameText.Key.EDITOR_TIMING))
+	inspector.set_tab_title(2, GameText.text(GameText.Key.EDITOR_SFX))
+	inspector.set_tab_title(3, GameText.text(GameText.Key.EDITOR_CHART))
 	if not Game.reopen_editor_without_chart_reload:
 		Game.current_time = 0.0
 	chart = _ensure_chart()
@@ -101,14 +106,13 @@ func _ready() -> void:
 	refresh_inspector()
 	_update_slider_range()
 	refresh_views()
-	_update_save_button_state()
 	_restore_or_mark_saved_state()
 	UIFocusUtils.disable_focus_recursive(self)
 
 func _process(_delta: float) -> void:
-	fps_label.text = str(Engine.get_frames_per_second())
 	transport.update()
 	_update_time_ui(false)
+	play_button.text = tr("EDITOR_PAUSE") if transport.playing else tr("EDITOR_PLAY")
 
 	if point_dragging and selection.has_point() and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		_drag_selected_point(get_global_mouse_position())
@@ -185,6 +189,7 @@ func refresh_views() -> void:
 		view_controller.refresh_views()
 	if bpm_lines != null:
 		bpm_lines.queue_redraw()
+	chart_root.get_node("Ruler").queue_redraw()
 
 func update_object_counts() -> void:
 	var note_count := 0
@@ -195,8 +200,8 @@ func update_object_counts() -> void:
 				continue
 			rail_count += 1
 			note_count += rail.notes.size()
-	$VBoxContainer/Label2.text = GameText.text(GameText.Key.EDITOR_NOTE_COUNT) % note_count
-	$VBoxContainer/Label3.text = GameText.text(GameText.Key.EDITOR_RAIL_COUNT) % rail_count
+	note_count_label.text = GameText.text(GameText.Key.EDITOR_NOTE_COUNT) % note_count
+	rail_count_label.text = GameText.text(GameText.Key.EDITOR_RAIL_COUNT) % rail_count
 
 func refresh_inspector() -> void:
 	if inspector_controller == null:
@@ -256,6 +261,9 @@ func _connect_ui() -> void:
 		playtest_button.pressed.connect(_start_playtest)
 	if save_button != null:
 		save_button.pressed.connect(_save_chart)
+	play_button.pressed.connect(transport.toggle)
+	$TopBar/Margin/Row/Undo.pressed.connect(_undo_history)
+	$TopBar/Margin/Row/Redo.pressed.connect(_redo_history)
 	if edit_controller != null:
 		if rail_button != null:
 			rail_button.pressed.connect(edit_controller.create_rail)
@@ -346,12 +354,14 @@ func _drag_selected_point(global_mouse_pos: Vector2) -> void:
 # Save
 
 func _save_chart() -> bool:
-	if chart == null or not EditorChartOps.can_save(chart):
+	if chart == null:
+		return false
+	if not EditorChartOps.can_save(chart):
+		inspector_controller.show_save_errors()
 		return false
 	if not EditorChartOps.save_chart(chart, previous_file_path):
 		return false
 	previous_file_path = chart.file_path
-	_update_save_button_state()
 	mark_saved_state()
 	return true
 
@@ -409,10 +419,6 @@ func _update_slider_range() -> void:
 	song_slider.max_value = timeline.get_max_time()
 	song_slider.step = 1.0
 	_update_time_ui(true)
-
-func _update_save_button_state() -> void:
-	if save_button != null:
-		save_button.disabled = not EditorChartOps.can_save(chart)
 
 func _update_time_ui(force: bool) -> void:
 	var now_usec := Time.get_ticks_usec()

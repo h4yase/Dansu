@@ -5,16 +5,13 @@ const END_POINT_RADIUS := 4.5
 const SELECTED_POINT_RADIUS := 7.0
 const POINT_HIT_RADIUS := 11.0
 const RAIL_LINE_WIDTH := 4.0
-const NOTE_LINE_WIDTH := 1.0
 
 const RAIL_COLOR := Color("8d79ee")
 const RAIL_SHADOW_COLOR := Color(0.08, 0.07, 0.14, 0.9)
 const POINT_COLOR := Color("eeeaff")
 const SELECTED_POINT_COLOR := Color("ffd166")
-const NOTE_BOUNDARY_COLOR := Color(1.0, 1.0, 1.0, 0.5)
 
 var editor: ChartEditor = null
-var song_slider: HSlider = null
 
 var _dragged_point: RailPoint = null
 var _drag_history_pending := false
@@ -23,7 +20,6 @@ var _visual_signature := ""
 
 func _ready() -> void:
 	editor = owner as ChartEditor
-	song_slider = get_parent() as HSlider
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	clip_contents = false
 	if editor != null and not editor.selection.changed.is_connected(_on_selection_changed):
@@ -67,18 +63,10 @@ func _gui_input(event: InputEvent) -> void:
 
 func _draw() -> void:
 	var rail := _get_selected_rail()
-	if rail == null or rail.points.is_empty() or song_slider == null:
+	if rail == null or rail.points.is_empty():
 		return
 
 	var center_y := size.y * 0.5
-	var note_bounds := EditorChartOps.get_rail_note_time_bounds(rail)
-	if note_bounds != null:
-		var first_note_x := _time_to_x(int(note_bounds.first))
-		var last_note_x := _time_to_x(int(note_bounds.last))
-		_draw_note_boundary(first_note_x)
-		if not is_equal_approx(first_note_x, last_note_x):
-			_draw_note_boundary(last_note_x)
-
 	var rail_start_x := _time_to_x(rail.start_time)
 	var rail_end_x := _time_to_x(rail.end_time)
 	draw_line(
@@ -111,16 +99,20 @@ func _draw() -> void:
 		else:
 			draw_circle(point_position, END_POINT_RADIUS + 1.0, RAIL_SHADOW_COLOR)
 			draw_arc(point_position, END_POINT_RADIUS, 0.0, TAU, 20, POINT_COLOR, 2.0, true)
+		var font := get_theme_font("font", "Label")
+		var label_y := center_y + 19.0 if index > 0 and index < rail.points.size() - 1 else center_y - 12.0
+		draw_string(font, Vector2(point_position.x - 8.0, label_y), "#%d" % (index + 1), HORIZONTAL_ALIGNMENT_LEFT, 48, 13, POINT_COLOR)
 
 
-func _draw_note_boundary(x_position: float) -> void:
-	draw_line(
-		Vector2(x_position, 1.0),
-		Vector2(x_position, size.y - 1.0),
-		NOTE_BOUNDARY_COLOR,
-		NOTE_LINE_WIDTH,
-		true
-	)
+func _get_visible_point_indices(rail: Rail) -> Array[int]:
+	var indices: Array[int] = [0]
+	var last_index := rail.points.size() - 1
+	if last_index > 0:
+		indices.append(last_index)
+	var selected_index := editor.selection.selected_point_index
+	if editor.selection.has_point() and selected_index > 0 and selected_index < last_index:
+		indices.append(selected_index)
+	return indices
 
 
 func _begin_drag(local_position: Vector2) -> void:
@@ -169,6 +161,7 @@ func _end_drag() -> void:
 	_dragged_point = null
 	_drag_history_pending = false
 	mouse_default_cursor_shape = Control.CURSOR_ARROW
+	queue_redraw()
 
 
 func _get_point_hit_index(local_position: Vector2, rail: Rail) -> int:
@@ -184,23 +177,6 @@ func _get_point_hit_index(local_position: Vector2, rail: Rail) -> int:
 	return closest_index
 
 
-func _get_visible_point_indices(rail: Rail) -> Array[int]:
-	var indices: Array[int] = []
-	if rail == null or rail.points.is_empty():
-		return indices
-
-	indices.append(0)
-	var last_index := rail.points.size() - 1
-	if last_index != 0:
-		indices.append(last_index)
-
-	if editor != null and editor.selection.has_point():
-		var selected_index := editor.selection.selected_point_index
-		if selected_index >= 0 and selected_index < rail.points.size() and not indices.has(selected_index):
-			indices.append(selected_index)
-	return indices
-
-
 func _update_mouse_cursor(local_position: Vector2) -> void:
 	var rail := _get_selected_rail()
 	var is_over_point := rail != null and _get_point_hit_index(local_position, rail) >= 0
@@ -209,10 +185,11 @@ func _update_mouse_cursor(local_position: Vector2) -> void:
 
 func _time_to_x(time_ms: int) -> float:
 	var bounds := _get_track_bounds()
-	var value_range := song_slider.max_value - song_slider.min_value
+	var slider := editor.song_slider
+	var value_range := slider.max_value - slider.min_value
 	if value_range <= 0.0:
 		return bounds.x
-	var ratio := clampf((float(time_ms) - song_slider.min_value) / value_range, 0.0, 1.0)
+	var ratio := clampf((float(time_ms) - slider.min_value) / value_range, 0.0, 1.0)
 	return lerpf(bounds.x, bounds.y, ratio)
 
 
@@ -220,16 +197,16 @@ func _x_to_time(local_x: float) -> float:
 	var bounds := _get_track_bounds()
 	var track_width := bounds.y - bounds.x
 	if track_width <= 0.0:
-		return song_slider.min_value
-	var ratio := clampf((local_x - bounds.x) / track_width, 0.0, 1.0)
-	return lerpf(song_slider.min_value, song_slider.max_value, ratio)
+		return editor.song_slider.min_value
+	var ratio := (local_x - bounds.x) / track_width
+	return lerpf(editor.song_slider.min_value, editor.song_slider.max_value, ratio)
 
 
 func _get_track_bounds() -> Vector2:
-	var half_grabber_width := 0.0
-	if song_slider != null and song_slider.has_theme_icon("grabber"):
-		half_grabber_width = song_slider.get_theme_icon("grabber").get_width() * 0.5
-	return Vector2(half_grabber_width, maxf(half_grabber_width, size.x - half_grabber_width))
+	var slider := editor.song_slider
+	# Use the same inset as the native slider's grabber center.
+	var inset := 0.0 if slider.get_theme_constant("center_grabber") != 0 else slider.get_theme_icon("grabber").get_width() * 0.5
+	return Vector2(inset, maxf(inset, size.x - inset))
 
 
 func _get_selected_rail() -> Rail:
@@ -242,21 +219,20 @@ func _get_selected_rail() -> Rail:
 
 func _build_visual_signature() -> String:
 	var rail := _get_selected_rail()
-	if rail == null or song_slider == null:
+	if rail == null:
 		return ""
 
 	var parts: Array[String] = [
 		str(rail.get_instance_id()),
 		str(editor.selection.selected_point_index),
 		str(size.x),
-		str(song_slider.min_value),
-		str(song_slider.max_value),
+		str(rail.start_time),
+		str(rail.end_time),
+		str(editor.song_slider.min_value),
+		str(editor.song_slider.max_value),
 	]
 	for point: RailPoint in rail.points:
 		parts.append(str(point.time))
-	var note_bounds := EditorChartOps.get_rail_note_time_bounds(rail)
-	if note_bounds != null:
-		parts.append("n%s:%s" % [note_bounds.first, note_bounds.last])
 	return "|".join(parts)
 
 

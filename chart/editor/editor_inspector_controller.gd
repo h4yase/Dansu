@@ -15,9 +15,9 @@ const CREATE_NEW_SKIN_ID := 1000000
 @export var add_timing_button: Button
 @export var timing_list_container: VBoxContainer
 @export var timing_template: Node
-@export var skin_file_label: Label
 @export var skin_browser_button: Button
 @export var cover_texture_rect: TextureRect
+@export var header_cover: TextureRect
 @export var cover_file_label: Label
 @export var audio_file_label: Label
 @export var cover_browser_button: Button
@@ -25,6 +25,9 @@ const CREATE_NEW_SKIN_ID := 1000000
 @export var skin_picker_menu: PopupMenu
 @export var cover_file_dialog: FileDialog
 @export var audio_file_dialog: FileDialog
+@export var title_summary: Label
+@export var difficulty_summary: Label
+@export var metadata_scroll: ScrollContainer
 
 var timing_scene := preload("res://scenes/chart/editor/ui/inspector/timing.tscn")
 var timing_items: Array[EditorTimingItem] = []
@@ -69,12 +72,37 @@ func refresh_metadata_fields() -> void:
 	_syncing_metadata = false
 	update_skin_file_ui()
 	update_media_ui()
+	update_chart_summary()
+
+func update_chart_summary() -> void:
+	if editor == null or editor.chart == null:
+		return
+	title_summary.text = editor.chart.title if not editor.chart.title.is_empty() else tr("EDITOR_UNTITLED")
+	title_summary.tooltip_text = title_summary.text
+	difficulty_summary.text = editor.chart.difficulty if not editor.chart.difficulty.is_empty() else "—"
+
+func show_save_errors() -> void:
+	if editor == null or editor.chart == null:
+		return
+	var missing_title := editor.chart.title.strip_edges().is_empty()
+	var invalid_difficulty := editor.chart.difficulty.strip_edges().is_empty() \
+		or EditorChartOps.has_duplicate_difficulty(editor.chart, editor.chart.difficulty)
+	editor.inspector.current_tab = ChartEditor.CHART_TAB
+	await get_tree().process_frame
+	var first_input := title_line_edit if missing_title else difficulty_line_edit
+	metadata_scroll.ensure_control_visible(first_input)
+	first_input.grab_focus()
+	if missing_title:
+		(title_line_edit.get_node("Feedback") as DansuUIFeedback).reject()
+	if invalid_difficulty:
+		(difficulty_line_edit.get_node("Feedback") as DansuUIFeedback).reject()
 
 func update_skin_file_ui() -> void:
-	if skin_file_label == null or editor == null or editor.chart == null:
+	if skin_browser_button == null or editor == null or editor.chart == null:
 		return
-	skin_file_label.text = editor.chart.file_skin if editor.chart.file_skin != "" else GameText.text(GameText.Key.EDITOR_NO_SKIN)
-	skin_file_label.tooltip_text = skin_file_label.text
+	skin_browser_button.text = editor.chart.file_skin if editor.chart.file_skin != "" else GameText.text(GameText.Key.EDITOR_NO_SKIN)
+	skin_browser_button.tooltip_text = skin_browser_button.text
+	editor.open_skin_editor_button.disabled = editor.chart.file_skin.is_empty()
 
 func update_media_ui() -> void:
 	if editor == null or editor.chart == null:
@@ -92,8 +120,10 @@ func _update_cover_preview() -> void:
 		return
 	if editor.chart.cover_image != null:
 		cover_texture_rect.texture = editor.chart.cover_image
+		header_cover.texture = editor.chart.cover_image
 		return
 	cover_texture_rect.texture = _default_cover_texture
+	header_cover.texture = null
 	if not editor.chart.file_cover_art.is_empty():
 		CoverLoader.request_cover(editor.chart)
 
@@ -142,7 +172,7 @@ func on_title_changed(new_text: String) -> void:
 	if _syncing_metadata or editor == null or editor.chart == null:
 		return
 	editor.chart.title = new_text
-	editor._update_save_button_state()
+	update_chart_summary()
 
 func on_artist_changed(new_text: String) -> void:
 	if _syncing_metadata or editor == null or editor.chart == null:
@@ -159,7 +189,7 @@ func on_difficulty_changed(new_text: String) -> void:
 		_syncing_metadata = false
 	else:
 		editor.chart.difficulty = new_text.strip_edges()
-	editor._update_save_button_state()
+	update_chart_summary()
 
 func on_creator_changed(new_text: String) -> void:
 	if not _syncing_metadata and editor != null and editor.chart != null:
@@ -263,7 +293,6 @@ func _on_skin_picker_id_pressed(id: int) -> void:
 	editor._push_history_snapshot()
 	editor.chart.file_skin = selected_skin
 	update_skin_file_ui()
-	editor._update_save_button_state()
 
 func open_cover_browser() -> void:
 	if editor == null or editor.chart == null or cover_file_dialog == null:
@@ -291,7 +320,6 @@ func _on_cover_file_selected(path: String) -> void:
 	editor.chart.file_cover_art = relative_path
 	editor.chart.cover_image = null
 	update_media_ui()
-	editor._update_save_button_state()
 
 func _on_audio_file_selected(path: String) -> void:
 	var relative_path := _resolve_chart_media_relative_path(path)
@@ -311,19 +339,20 @@ func _on_audio_file_selected(path: String) -> void:
 	if editor.view_controller != null:
 		editor.view_controller.mark_layout_dirty()
 	editor._update_time_ui(true)
-	editor._update_save_button_state()
 
 func _on_cover_loaded(chart: Chart, texture: Texture2D) -> void:
 	if editor == null or editor.chart == null or chart != editor.chart or texture == null:
 		return
 	if cover_texture_rect != null and cover_texture_rect.texture != texture:
 		cover_texture_rect.texture = texture
+	header_cover.texture = texture
 
 func _on_cover_failed(chart: Chart) -> void:
 	if editor == null or editor.chart == null or chart != editor.chart:
 		return
 	if cover_texture_rect != null:
 		cover_texture_rect.texture = _default_cover_texture
+	header_cover.texture = null
 
 func _get_chart_relative_path(path: String) -> String:
 	if editor == null or editor.chart == null:

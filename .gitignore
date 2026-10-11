@@ -4,6 +4,7 @@ contents/*
 # Generated export/build directories
 /android/
 /plugins/
+mockup/*
 
 # Local editor settings
 .vscode/
@@ -19,3 +20,4 @@ contents/*
 .DS_Store
 Thumbs.db
 Desktop.ini
+scenes/common/ui/README.md

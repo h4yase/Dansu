@@ -1,6 +1,5 @@
 extends EditorEventController
 
-const CanvasScript := preload("res://chart/editor/event_placement_canvas.gd")
 const SLOT_COUNT := 10
 
 var active := false
@@ -19,17 +18,11 @@ func setup() -> void:
 		return
 	_setup_complete = true
 	selection_ops.workspace = self
-	resource_import_dialog = FileDialog.new()
-	resource_import_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	resource_import_dialog.access = FileDialog.ACCESS_FILESYSTEM
-	editor.add_child(resource_import_dialog)
+	resource_import_dialog = editor.get_node("Dialogs/EventResourceDialog")
 	_resource_importer.setup(resource_import_dialog)
 	_resource_importer.imported.connect(_on_resource_imported)
-	canvas = CanvasScript.new()
+	canvas = editor.chart_panel.get_node("EventCanvas")
 	canvas.workspace = self
-	editor.chart_panel.add_child(canvas)
-	canvas.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	canvas.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	canvas.hide()
 	_build_properties()
 	_build_tools()
@@ -39,39 +32,19 @@ func setup() -> void:
 	refresh_inspector()
 
 func _build_properties() -> void:
-	_event_properties = ScrollContainer.new()
-	_event_properties.name = "EventProperties"
-	editor.get_node("Inspector/Property").add_child(_event_properties)
-	_event_properties.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_event_properties.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	var margin := MarginContainer.new()
-	margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	for side in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 12)
-	_event_properties.add_child(margin)
-	inspector_content = VBoxContainer.new()
-	inspector_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	inspector_content.add_theme_constant_override("separation", 8)
-	margin.add_child(inspector_content)
+	_event_properties = editor.inspector.get_node("Property/EventProperties")
+	inspector_content = _event_properties.get_node("Margin/Contents")
 	_event_properties.hide()
 
 func _build_tools() -> void:
-	var tools: VBoxContainer = editor.get_node("Object")
-	for path in ["Label", "Tools"]:
-		_normal_tools.append(tools.get_node(path))
-	event_tools = VBoxContainer.new()
-	event_tools.add_theme_constant_override("separation", 6)
-	tools.add_child(event_tools)
-	tools.move_child(event_tools, 0)
-	for item in [[GameText.text(GameText.Key.EDITOR_TOOL_THEME), "theme"], [GameText.text(GameText.Key.EDITOR_TOOL_CAMERA), "camera"], [GameText.text(GameText.Key.EDITOR_TOOL_SKIN), "skin"], [GameText.text(GameText.Key.EDITOR_TOOL_OVERLAY), "overlay"]]:
-		var button := Button.new()
-		button.text = item[0]
-		button.pressed.connect(func(): place(item[1], int(Game.current_time), 5))
-		event_tools.add_child(button)
-	var frame_button := Button.new()
-	frame_button.text = GameText.text(GameText.Key.EDITOR_TOOL_FRAME)
-	frame_button.pressed.connect(add_frame)
-	event_tools.add_child(frame_button)
+	var tools: VBoxContainer = editor.tool_list
+	_normal_tools.append(tools.get_node("ToolArea/Tools"))
+	event_tools = tools.get_node("ToolArea/EventTools")
+	event_tools.get_node("Theme").pressed.connect(func(): place("theme", int(Game.current_time), 5))
+	event_tools.get_node("Camera").pressed.connect(func(): place("camera", int(Game.current_time), 5))
+	event_tools.get_node("Skin").pressed.connect(func(): place("skin", int(Game.current_time), 5))
+	event_tools.get_node("Overlay").pressed.connect(func(): place("overlay", int(Game.current_time), 5))
+	event_tools.get_node("Frame").pressed.connect(add_frame)
 	event_tools.hide()
 	for pair in [["Delete", delete_selection], ["Copy", copy_selected_frames], ["Paste", paste_copied_frames]]:
 		var button: Button = tools.get_node(pair[0])
@@ -87,24 +60,21 @@ func _build_tools() -> void:
 			elif pair[0] == "Paste":
 				editor.edit_controller.paste_copied()
 		)
-	for pair in [["Undo", editor._undo_history], ["Redo", editor._redo_history]]:
-		var button: Button = tools.get_node(pair[0])
-		if button.pressed.get_connections().is_empty():
-			button.pressed.connect(pair[1])
 
 func _build_preview() -> void:
-	preview_column = editor.get_node("PreviewColumn")
-	game_view = editor.get_node("PreviewColumn/GameFrame/GamePreview")
-	frame_view = editor.get_node("PreviewColumn/OverlayFrameView")
+	preview_column = editor.preview_column
+	game_view = preview_column.get_node("GameFrame/GamePreview")
+	frame_view = preview_column.get_node("OverlayFrameView")
 	frame_view.hide()
 	_sync_preview_mode()
 
 func _sync_preview_mode() -> void:
 	game_view.set_preview_enabled(active)
-	editor.get_node("PreviewColumn/GameFrame").visible = active
+	preview_column.visible = active
+	preview_column.get_node("GameFrame").visible = active
 
 func _process(_delta: float) -> void:
-	editor.get_node("PreviewColumn/GameFrame").custom_minimum_size.y = preview_column.size.x * 9.0 / 16.0
+	preview_column.get_node("GameFrame").custom_minimum_size.y = preview_column.size.x * 9.0 / 16.0
 	canvas.queue_redraw()
 	if frame_view.visible:
 		frame_view.queue_redraw()
@@ -112,6 +82,7 @@ func _process(_delta: float) -> void:
 func toggle() -> void:
 	canvas.cancel_drag()
 	active = not active
+	editor.open_event_editor_button.set_pressed_no_signal(active)
 	_sync_preview_mode()
 	editor.point_dragging = false
 	editor.selection.clear()
@@ -122,14 +93,14 @@ func toggle() -> void:
 	editor.view_controller.rail_layer.modulate.a = 0.22 if active else 1.0
 	editor.view_controller.note_layer.modulate.a = 0.22 if active else 1.0
 	_event_properties.visible = active
-	editor.get_node("Inspector/Property/ScrollContainer").visible = not active
-	editor.get_node("Inspector").current_tab = 1
+	editor.inspector.get_node("Property/ScrollContainer").visible = not active
+	editor.inspector.current_tab = ChartEditor.PROPERTY_TAB
 	canvas.cancel_drag()
 	refresh_inspector()
 
 func _selection_updated() -> void:
 	if active and _get_selected_event() != null:
-		editor.get_node("Inspector").current_tab = 1
+		editor.inspector.current_tab = ChartEditor.PROPERTY_TAB
 	frame_view.visible = active and _get_selected_event() is OverlayEvent and _get_selected_frame() != null
 	refresh_inspector()
 	refresh_timeline()

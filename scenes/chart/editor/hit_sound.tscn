@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scenes/chart/editor/hit_sound_row.gd" id="1_row"]
 
+[ext_resource type="PackedScene" path="res://scenes/common/ui/button.tscn" id="ui_button"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ryhys"]
 
 [node name="HitSound" type="PanelContainer" unique_id=1481942741 node_paths=PackedStringArray("file_name_label", "remove_button")]
@@ -31,6 +33,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_ryhys")
 
-[node name="Remove" type="Button" parent="MarginContainer/HBoxContainer" unique_id=1510869327]
+[node name="Remove" parent="MarginContainer/HBoxContainer" unique_id=1510869327 instance=ExtResource("ui_button")]
 layout_mode = 2
 text = "EDITOR_REMOVE"

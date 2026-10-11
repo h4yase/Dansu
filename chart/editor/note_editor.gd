@@ -33,8 +33,8 @@ var _click_time := 1.0
 var _placement_time := PLACEMENT_DURATION
 var _pass_strength := 0.0
 var _motion_time := 0.0
-var _trail: Control
-var _tail_handle: Control
+@onready var _trail: Control = $Trail
+@onready var _tail_handle: Control = $Tail
 var _head_material: ShaderMaterial
 var _tail_material: ShaderMaterial
 
@@ -81,26 +81,13 @@ func _ready() -> void:
 	_head_material.set_shader_parameter("draw_size", NOTE_DRAW_SIZE)
 	_head_material.set_shader_parameter("selected", _selected)
 	material = _head_material
-	# Draw trails behind all note heads, and tail handles in front.
-	z_as_relative = false
-	z_index = 1
-	_trail = Control.new()
-	_trail.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_trail.z_as_relative = false
-	_trail.z_index = 0
 	_trail.draw.connect(_draw_trail)
-	add_child(_trail)
-	_tail_handle = Control.new()
-	_tail_handle.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_tail_handle.z_as_relative = false
-	_tail_handle.z_index = 2
 	_tail_material = ShaderMaterial.new()
 	_tail_material.shader = OUTLINE_SHADER
 	_tail_material.set_shader_parameter("draw_size", TAIL_DRAW_SIZE)
 	_tail_material.set_shader_parameter("selected", _selected)
 	_tail_handle.material = _tail_material
 	_tail_handle.draw.connect(_draw_tail_handle)
-	add_child(_tail_handle)
 	set_process(visible)
 
 func sync_layout(panel_size: Vector2, judge_y: float, pixels_per_ms: float, current_time: float) -> void:
